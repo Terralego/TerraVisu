@@ -33,6 +33,8 @@ Development
   * Webpack watch files in dev mode.
   * Compiled files are located in project/frontend/static directory. Don't commit them.
 
+And go to ``http://localhost:8000``
+
 ### Backend development and testing
 
 Production
