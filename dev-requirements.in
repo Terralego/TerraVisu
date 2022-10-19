@@ -1,0 +1,10 @@
+-c requirements.txt
+
+django-debug-toolbar
+flake8
+isort
+black
+factory-boy
+coverage
+pip-tools
+sphinx-rtd-theme

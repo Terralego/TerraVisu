@@ -1,0 +1,7 @@
+/node_modules/
+.idea
+__pychache__
+*.pyc
+node_modules/
+*.env
+*.mo
