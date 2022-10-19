@@ -1,0 +1,78 @@
+name: Linting
+
+on:
+  push:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DEBIAN_FRONTEND: noninteractive
+
+jobs:
+  flake8:
+    name: Python code styling
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.10
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          pip3 install flake8
+
+      - name: Flake8
+        run: |
+          flake8 project
+
+  isort:
+    name: Python code import sorting
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.10
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          pip3 install isort
+
+      - name: Isort
+        run: |
+          isort -c --profile=black project
+
+  black:
+    name: Black checking
+    runs-on: ubuntu-latest
+    container:
+      image: python:3.10
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install dependencies
+        run: |
+          pip3 install black
+
+      - name: Black
+        run: |
+          black --check project
+
+  eslint:
+    name: Check code styling
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install dependencies
+        run: |
+          npm ci
+
+      - name: ESlint
+        run: |
+          npm run lint

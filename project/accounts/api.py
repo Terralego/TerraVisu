@@ -7,7 +7,11 @@ from project.accounts.serializers import UserSerializer
 
 
 class UserViewsSet(viewsets.ModelViewSet):
-    authentication_classes = [SessionAuthentication, ]
-    permission_classes = [IsAuthenticated, ]
+    authentication_classes = [
+        SessionAuthentication,
+    ]
+    permission_classes = [
+        IsAuthenticated,
+    ]
     queryset = User.objects.all()
     serializer_class = UserSerializer

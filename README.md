@@ -11,11 +11,16 @@ Development
 
 ### Start
 
+1. Prepare stack
 ```bash
     cp db.env.dist db.env
     docker-compose up
 ```
-### Frontend development
+2. Create your super user
+```bash
+    docker-compose run --rm web ./manage.py createsuperuser
+```
+### Frontend development & testing
 
 ```bash
     nvm use
@@ -27,6 +32,8 @@ Development
   * Source files are located in project/frontend/src directory.
   * Webpack watch files in dev mode.
   * Compiled files are located in project/frontend/static directory. Don't commit them.
+
+### Backend development and testing
 
 Production
 ----------

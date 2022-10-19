@@ -34,5 +34,5 @@ class UserAdmin(BaseUserAdmin):
     )
     list_display = ("email", "is_staff")
     list_filter = ("is_staff", "is_superuser", "is_active", "groups")
-    search_fields = ("email", )
-    ordering = ("email", )
+    search_fields = ("email",)
+    ordering = ("email",)
