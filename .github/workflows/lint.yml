@@ -41,7 +41,7 @@ jobs:
 
       - name: Isort
         run: |
-          isort -c --profile=black project
+          isort -c project
 
   black:
     name: Black checking
@@ -60,7 +60,7 @@ jobs:
           black --check project
 
   eslint:
-    name: Check code styling
+    name: JS code styling
     runs-on: ubuntu-latest
 
     steps:
