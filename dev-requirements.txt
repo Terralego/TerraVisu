@@ -101,7 +101,7 @@ snowballstemmer==2.2.0
     # via sphinx
 sphinx==5.3.0
     # via sphinx-rtd-theme
-sphinx-rtd-theme==1.0.0
+sphinx-rtd-theme==1.1.1
     # via -r dev-requirements.in
 sphinxcontrib-applehelp==1.0.2
     # via sphinx
@@ -120,11 +120,6 @@ sqlparse==0.4.3
     #   -c requirements.txt
     #   django
     #   django-debug-toolbar
-tomli==2.0.1
-    # via
-    #   black
-    #   build
-    #   pep517
 urllib3==1.26.12
     # via
     #   -c requirements.txt
