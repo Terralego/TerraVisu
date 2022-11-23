@@ -19,6 +19,8 @@ from django.urls import include, path
 urlpatterns = [
     path("dj-admin/", admin.site.urls),
     path("accounts/", include("django.contrib.auth.urls")),
+    path("base-layers/", include("mapbox_baselayer.urls")),
     path("", include("project.accounts.urls")),
+    path("", include("project.visu.urls")),
     path("", include("project.frontend.urls")),
 ]

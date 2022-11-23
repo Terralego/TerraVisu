@@ -40,8 +40,11 @@ INSTALLED_APPS = [
     "rest_framework",
     "rest_framework_gis",
     "geostore",
+    "mapbox_baselayer",
+    "siteprefs",
     "project.accounts",
     "project.frontend",
+    "project.visu",
 ]
 
 MIDDLEWARE = [
