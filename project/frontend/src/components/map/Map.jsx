@@ -29,6 +29,9 @@ export default function Map() {
     });
 
     map.current.addControl(new MapboxStyleSwitcherControl(styles));
+    map.current.addControl(new maplibregl.NavigationControl());
+    map.current.addControl(new maplibregl.FullscreenControl());
+    map.current.addControl(new maplibregl.ScaleControl());
   });
 
   return (
