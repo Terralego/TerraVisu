@@ -65,6 +65,7 @@ mypy-extensions==0.4.3
     # via black
 packaging==21.3
     # via
+    #   -c requirements.txt
     #   build
     #   sphinx
 pathspec==0.10.1
@@ -82,9 +83,13 @@ pyflakes==2.5.0
 pygments==2.13.0
     # via sphinx
 pyparsing==3.0.9
-    # via packaging
+    # via
+    #   -c requirements.txt
+    #   packaging
 python-dateutil==2.8.2
-    # via faker
+    # via
+    #   -c requirements.txt
+    #   faker
 pytz==2022.5
     # via
     #   -c requirements.txt
@@ -120,6 +125,11 @@ sqlparse==0.4.3
     #   -c requirements.txt
     #   django
     #   django-debug-toolbar
+tomli==2.0.1
+    # via
+    #   black
+    #   build
+    #   pep517
 urllib3==1.26.12
     # via
     #   -c requirements.txt
