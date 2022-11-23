@@ -71,7 +71,7 @@ pathspec==0.10.1
     # via black
 pep517==0.13.0
     # via build
-pip-tools==6.9.0
+pip-tools==6.10.0
     # via -r dev-requirements.in
 platformdirs==2.5.2
     # via black
@@ -120,11 +120,6 @@ sqlparse==0.4.3
     #   -c requirements.txt
     #   django
     #   django-debug-toolbar
-tomli==2.0.1
-    # via
-    #   black
-    #   build
-    #   pep517
 urllib3==1.26.12
     # via
     #   -c requirements.txt
