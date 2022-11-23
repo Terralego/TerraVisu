@@ -2,6 +2,7 @@ from django.urls import reverse
 from mapbox_baselayer.models import MapBaseLayer
 from rest_framework.response import Response
 from rest_framework.views import APIView
+
 from project.visu import settings as app_settings
 
 
