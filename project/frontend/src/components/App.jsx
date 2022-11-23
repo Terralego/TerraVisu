@@ -1,49 +1,19 @@
-import React, { Component } from 'react';
-import { render } from 'react-dom';
+import React from 'react';
+import Navbar from './navBar/navBar';
+import Map from './map/Map';
 
-class App extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
-      loaded: false,
-      placeholder: 'Loading',
-    };
-  }
+function App() {
+  fetch('/api/settings/').then((response) => response.json())
+    .then((data) => {
+      localStorage.setItem('settings', JSON.stringify(data));
+    });
 
-  componentDidMount() {
-    fetch('api/accounts/users/')
-      .then((response) => {
-        if (response.status > 400) {
-          return this.setState(() => ({ placeholder: 'Something went wrong!' }));
-        }
-        return response.json();
-      })
-      .then((data) => {
-        this.setState(() => ({
-          data,
-          loaded: true,
-        }));
-      });
-  }
-
-  render() {
-    return (
-      <ul>
-        {this.state.data.map((user) => (
-          <li key={user.id}>
-            {user.email}
-            {' '}
-            -
-            {user.uuid}
-          </li>
-        ))}
-      </ul>
-    );
-  }
+  return (
+    <div className="App">
+      <Navbar />
+      <Map />
+    </div>
+  );
 }
 
 export default App;
-
-const container = document.getElementById('app');
-render(<App />, container);
