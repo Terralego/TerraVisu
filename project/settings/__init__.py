@@ -39,6 +39,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "rest_framework",
     "rest_framework_gis",
+    "crispy_forms",
+    "crispy_bootstrap5",
     "geostore",
     "mapbox_baselayer",
     "siteprefs",
@@ -135,3 +137,7 @@ AUTH_USER_MODEL = "accounts.User"
 LOCALE_PATHS = (os.path.join(BASE_DIR, "locales"),)
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
+
+CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+
+CRISPY_TEMPLATE_PACK = "bootstrap5"

@@ -2,8 +2,11 @@ django==4.1.*
 django-geostore
 pillow
 gunicorn
+django-crispy-forms
+crispy-bootstrap5
 django-mapbox-baselayer
 django-siteprefs
 celery[redis]
 django-celery-results
 django-celery-beat
+sentry-sdk

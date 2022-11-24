@@ -9,7 +9,7 @@ async function fetchSettings() {
   return data;
 }
 
-function App() {
+export default function App() {
   fetchSettings().then((data) => {
     localStorage.removeItem('settings');
     localStorage.setItem('settings', JSON.stringify(data));
@@ -22,5 +22,3 @@ function App() {
     </div>
   );
 }
-
-export default App;

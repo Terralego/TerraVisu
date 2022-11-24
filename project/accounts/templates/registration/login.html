@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{%  load i18n %}
+{%  load i18n crispy_forms_tags %}
 
 {% block title %}
     {% trans "Login to TerraVisu" %}
@@ -10,9 +10,18 @@
     <div class="row">
         <div class="col-12 col-md-6 offset-md-3">
             <form method="post">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input class="btn btn-primary" type="submit" value="{% trans "Submit" %}" />
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">{% trans "Login" %}</h3>
+                    </div>
+                    <div class="card-body">
+                        {% crispy form %}
+                    </div>
+                    <div class="card-footer">
+                        <input class="btn btn-primary" type="submit" value="{% trans "Submit" %}" />
+                        <a href="{% url 'password_reset' %}" style="float: right;">{% trans "Reset password" %}</a>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
