@@ -37,8 +37,10 @@ class Command(BaseCommand):
 
             if resp.lower() == "y":
                 if options["sync"]:
-                    print(f"Refreshing source {source}<{source.id}>...")
+                    self.stdout.write(f"Refreshing source {source}<{source.id}>...")
                     source.refresh_data()
                 else:
-                    print(f"Schedule refresh for source {source}<{source.id}>...")
+                    self.stdout.write(
+                        f"Schedule refresh for source {source}<{source.id}>..."
+                    )
                     source.run_async_method("refresh_data", force=options["force"])

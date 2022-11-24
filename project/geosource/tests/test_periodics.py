@@ -10,13 +10,14 @@ from project.geosource.periodics import auto_refresh_source
 
 
 class PeriodicsTestCase(TestCase):
-    def setUp(self):
-        self.geosource = GeoJSONSource.objects.create(
+    @classmethod
+    def setUpTestData(cls):
+        cls.geosource = GeoJSONSource.objects.create(
             name="test",
             geom_type=GeometryTypes.Point.value,
             file=os.path.join(os.path.dirname(__file__), "data", "test.geojson"),
         )
-        self.source = PostGISSource.objects.create(
+        cls.source = PostGISSource.objects.create(
             name="First Source",
             db_host="localhost",
             db_name="dbname",
@@ -27,7 +28,7 @@ class PeriodicsTestCase(TestCase):
             last_refresh=datetime(2020, 1, 1, tzinfo=timezone.utc),
             geom_type=GeometryTypes.LineString.value,
         )
-        self.source2 = PostGISSource.objects.create(
+        cls.source2 = PostGISSource.objects.create(
             name="Second Source",
             db_host="localhost",
             db_name="dbname",

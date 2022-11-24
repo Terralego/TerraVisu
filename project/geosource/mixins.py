@@ -36,7 +36,7 @@ class CeleryCallMethodsMixin:
         force=False,
         countdown=None,
     ):
-        """Schedule an async task that will be runned by celery.
+        """Schedule an async task that will be run by celery.
         Raises an error if a task is already running or scheduled, can be forced with
         `force` argument.
         """

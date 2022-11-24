@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Navbar from './navBar/navBar';
 import Map from './map/Map';
 import './App.css';

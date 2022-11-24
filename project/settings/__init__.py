@@ -168,3 +168,4 @@ CACHES = {
 }
 
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+CELERY_TASK_ALWAYS_EAGER = False

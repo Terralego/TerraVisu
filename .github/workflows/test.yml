@@ -32,4 +32,4 @@ jobs:
 
       - name: Tests
         run: |
-          docker-compose run --rm web ./manage.py test
+          docker-compose run --rm web coverage run ./manage.py test --settings=project.settings.tests

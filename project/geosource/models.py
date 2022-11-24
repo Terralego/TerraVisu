@@ -12,12 +12,6 @@ from celery.utils.log import LoggingProxy
 from django.conf import settings
 from django.contrib.gis.gdal.error import GDALException
 from django.contrib.gis.geos import GEOSGeometry
-
-try:
-    from django.db.models import JSONField
-except ImportError:  # TODO Remove when dropping Django releases < 3.1
-    from django.contrib.postgres.fields import JSONField
-
 from django.core.management import call_command
 from django.db import models, transaction
 from django.utils import timezone
@@ -26,8 +20,6 @@ from polymorphic.models import PolymorphicModel
 from psycopg2 import sql
 
 from .callbacks import get_attr_from_path
-
-# from .celery import app as celery_app
 from .fields import LongURLField
 from .mixins import CeleryCallMethodsMixin
 from .signals import refresh_data_done
@@ -91,8 +83,8 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     id_field = models.CharField(max_length=255, default="id")
     geom_type = models.IntegerField(choices=GeometryTypes.choices())
 
-    settings = JSONField(default=dict)
-    report = JSONField(default=dict)
+    settings = models.JSONField(default=dict)
+    report = models.JSONField(default=dict)
 
     task_id = models.CharField(null=True, max_length=255)
     task_date = models.DateTimeField(null=True)
@@ -265,7 +257,7 @@ class Field(models.Model):
         choices=FieldTypes.choices(), default=FieldTypes.Undefined.value
     )
     level = models.IntegerField(default=0)
-    sample = JSONField(default=list)
+    sample = models.JSONField(default=list)
     order = models.IntegerField(default=0)
 
     def __str__(self):
