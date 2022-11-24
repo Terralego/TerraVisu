@@ -1,0 +1,46 @@
+name: Linting frontend
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - '.eslintrc.js'
+      - '.babelrc'
+      - '.nvmrc'
+      - 'webpack.config.js'
+      - 'project/frontend/src/**'
+  pull_request:
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+      - '.eslintrc.js'
+      - '.babelrc'
+      - '.nvmrc'
+      - 'webpack.config.js'
+      - 'project/frontend/src/**'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  eslint:
+    name: JS code styling
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version-file: .nvmrc
+
+      - name: Install dependencies
+        run: |
+          npm ci
+
+      - name: ESlint
+        run: |
+          npm run lint

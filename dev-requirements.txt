@@ -10,11 +10,11 @@ asgiref==3.5.2
     # via
     #   -c requirements.txt
     #   django
-babel==2.10.3
+babel==2.11.0
     # via sphinx
 black==22.10.0
     # via -r dev-requirements.in
-build==0.8.0
+build==0.9.0
     # via pip-tools
 certifi==2022.9.24
     # via
@@ -43,9 +43,9 @@ docutils==0.17.1
     #   sphinx-rtd-theme
 factory-boy==3.2.1
     # via -r dev-requirements.in
-faker==15.1.1
+faker==15.3.3
     # via factory-boy
-flake8==5.0.4
+flake8==6.0.0
     # via -r dev-requirements.in
 idna==3.4
     # via
@@ -68,17 +68,17 @@ packaging==21.3
     #   -c requirements.txt
     #   build
     #   sphinx
-pathspec==0.10.1
+pathspec==0.10.2
     # via black
 pep517==0.13.0
     # via build
 pip-tools==6.10.0
     # via -r dev-requirements.in
-platformdirs==2.5.2
+platformdirs==2.5.4
     # via black
-pycodestyle==2.9.1
+pycodestyle==2.10.0
     # via flake8
-pyflakes==2.5.0
+pyflakes==3.0.0
     # via flake8
 pygments==2.13.0
     # via sphinx
@@ -90,7 +90,7 @@ python-dateutil==2.8.2
     # via
     #   -c requirements.txt
     #   faker
-pytz==2022.5
+pytz==2022.6
     # via
     #   -c requirements.txt
     #   babel
@@ -134,7 +134,7 @@ urllib3==1.26.12
     # via
     #   -c requirements.txt
     #   requests
-wheel==0.37.1
+wheel==0.38.4
     # via pip-tools
 
 # The following packages are considered to be unsafe in a requirements file:

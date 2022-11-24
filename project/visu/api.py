@@ -1,14 +1,24 @@
 from django.urls import reverse
 from mapbox_baselayer.models import MapBaseLayer
+from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
+from project.accounts.serializers import UserSerializer
 from project.visu import settings as app_settings
 
 
 class SettingsView(APIView):
+    permission_classes = [
+        permissions.AllowAny,
+    ]
+
     def get(self, request, *args, **kwargs):
         base_layers = MapBaseLayer.objects.all()
+        user = (
+            UserSerializer(request.user).data if request.user.is_authenticated else None
+        )
+
         return Response(
             {
                 "instance": {
@@ -19,7 +29,13 @@ class SettingsView(APIView):
                 },
                 "map": {
                     "baseLayers": [
-                        {"label": layer.name, "slug": layer.slug, "url": f"{layer.url}"}
+                        {
+                            "label": layer.name,
+                            "slug": layer.slug,
+                            "url": f"{request.build_absolute_uri(layer.url)}"
+                            if layer.url.startswith("/")
+                            else f"{layer.url}",
+                        }
                         for layer in base_layers
                     ],
                     "bounds": {
@@ -38,5 +54,6 @@ class SettingsView(APIView):
                         "zoom": app_settings.MAP_DEFAULT_ZOOM,
                     },
                 },
+                "user": user,
             }
         )

@@ -1,0 +1,35 @@
+name: Unit tests
+
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  DEBIAN_FRONTEND: noninteractive
+
+jobs:
+  backend:
+    name: Python unit tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Build image
+        run: |
+          cp db.env.dist db.env
+          cp app.env.dist app.env
+          docker-compose build
+
+      - name: Check migration
+        run: |
+          docker-compose run --rm web ./manage.py makemigrations --check
+
+      - name: Tests
+        run: |
+          docker-compose run --rm web ./manage.py test
