@@ -4,9 +4,10 @@ from unittest import mock
 from django.contrib.auth.models import Group
 from django.contrib.gis.geos import GEOSGeometry
 from django.test import TestCase
+from geostore.models import Feature, Layer
+
 from project.geosource import geostore_callbacks
 from project.geosource.models import GeoJSONSource, GeometryTypes
-from geostore.models import Feature, Layer
 
 
 class GeostoreCallBacksTestCase(TestCase):

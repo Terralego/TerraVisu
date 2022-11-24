@@ -1,11 +1,12 @@
+import os
 from datetime import datetime
 from unittest import mock
 
 from django.test import TestCase
 from django.utils import timezone
-from project.geosource.models import GeometryTypes, PostGISSource, GeoJSONSource
+
+from project.geosource.models import GeoJSONSource, GeometryTypes, PostGISSource
 from project.geosource.periodics import auto_refresh_source
-import os
 
 
 class PeriodicsTestCase(TestCase):

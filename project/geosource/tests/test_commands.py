@@ -3,8 +3,9 @@ from unittest import mock
 
 from django.core.management import call_command
 from django.test import TestCase
-from project.geosource.models import GeoJSONSource, GeometryTypes
 from rest_framework.exceptions import MethodNotAllowed
+
+from project.geosource.models import GeoJSONSource, GeometryTypes
 
 
 def side_effect(method, list, **kwargs):
@@ -33,7 +34,9 @@ class ResyncAllSourcesTestCase(TestCase):
 
     def test_resync_all_sources_sync(self):
 
-        with mock.patch("project.geosource.models.GeoJSONSource.refresh_data") as mocked:
+        with mock.patch(
+            "project.geosource.models.GeoJSONSource.refresh_data"
+        ) as mocked:
             call_command("resync_all_sources", sync=True)
 
         mocked.assert_called_once()
@@ -53,13 +56,17 @@ class ResyncAllSourcesTestCase(TestCase):
 
     def test_resync_source_sync(self):
 
-        with mock.patch("project.geosource.models.GeoJSONSource.refresh_data") as mocked:
+        with mock.patch(
+            "project.geosource.models.GeoJSONSource.refresh_data"
+        ) as mocked:
             call_command("resync_source", pk=self.source.id, sync=True)
 
         mocked.assert_called_once()
 
     def test_resync_all_sources_fail(self):
-        with mock.patch("project.geosource.mixins.CeleryCallMethodsMixin.update_status"):
+        with mock.patch(
+            "project.geosource.mixins.CeleryCallMethodsMixin.update_status"
+        ):
             with mock.patch(
                 "project.geosource.mixins.CeleryCallMethodsMixin.can_sync",
                 new_callable=mock.PropertyMock,

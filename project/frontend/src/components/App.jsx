@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Navbar from './navBar/navBar';
 import Map from './map/Map';
 import './App.css';
@@ -11,7 +11,7 @@ async function fetchSettings() {
 
 export default function App() {
   fetchSettings().then((data) => {
-    localStorage.removeItem('settings');
+    // localStorage.removeItem('settings');
     localStorage.setItem('settings', JSON.stringify(data));
   });
 

@@ -2,8 +2,8 @@ from os.path import basename
 
 import psycopg2
 import requests
-from django.contrib.gis.geos import GEOSGeometry
 from django.contrib.gis.gdal.error import GDALException
+from django.contrib.gis.geos import GEOSGeometry
 from django.db import transaction
 from django.utils.translation import gettext as _
 from psycopg2 import sql

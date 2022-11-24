@@ -1,4 +1,5 @@
 import logging
+
 from project.geosource.models import Source
 
 logger = logging.getLogger(__name__)

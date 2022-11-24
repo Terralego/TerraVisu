@@ -1,8 +1,8 @@
 import json
 import sys
-from io import BytesIO
 from datetime import datetime, timedelta
 from enum import Enum, IntEnum, auto
+from io import BytesIO
 
 import fiona
 import psycopg2
@@ -20,8 +20,8 @@ except ImportError:  # TODO Remove when dropping Django releases < 3.1
 
 from django.core.management import call_command
 from django.db import models, transaction
-from django.utils.text import slugify
 from django.utils import timezone
+from django.utils.text import slugify
 from polymorphic.models import PolymorphicModel
 from psycopg2 import sql
 
@@ -31,7 +31,6 @@ from .callbacks import get_attr_from_path
 from .fields import LongURLField
 from .mixins import CeleryCallMethodsMixin
 from .signals import refresh_data_done
-
 
 # Decimal fields must be returned as float
 DEC2FLOAT = psycopg2.extensions.new_type(

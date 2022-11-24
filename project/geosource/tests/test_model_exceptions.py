@@ -1,12 +1,12 @@
 import json
 import os
-import pyexcel
-from psycopg2 import OperationalError
-from unittest.mock import patch, PropertyMock
+from unittest.mock import PropertyMock, patch
 
+import pyexcel
 from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
+from psycopg2 import OperationalError
 
 from project.geosource.models import (
     CSVSource,

@@ -5,6 +5,8 @@ from unittest import mock
 
 from django.conf import settings
 from django.test import TestCase
+from geostore.models import Layer
+
 from project.geosource.models import (
     CommandSource,
     CSVSource,
@@ -16,7 +18,6 @@ from project.geosource.models import (
     Source,
     WMTSSource,
 )
-from geostore.models import Layer
 
 
 class MockBackend(object):

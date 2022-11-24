@@ -2,8 +2,9 @@ from datetime import timedelta
 
 from celery import states
 from django.utils.timezone import now
-from project.geosource.tasks import run_model_object_method
 from rest_framework.exceptions import MethodNotAllowed
+
+from project.geosource.tasks import run_model_object_method
 
 from .app_settings import MAX_TASK_RUNTIME
 

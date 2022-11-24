@@ -22,9 +22,7 @@ class CSVSourceSerializerTestCase(TestCase):
             "use_header": True,
             "ignore_columns": False,
         }
-        csv_path = os.path.join(
-            settings.BASE_DIR, "geosource", "tests", "source.csv"
-        )
+        csv_path = os.path.join(settings.BASE_DIR, "geosource", "tests", "source.csv")
         with open(csv_path, "r") as f:
             cls.csv = SimpleUploadedFile(f.name, bytes(f.read(), "UTF-8"))
 
