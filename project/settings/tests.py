@@ -1,5 +1,3 @@
-from tempfile import TemporaryDirectory
-
 from . import *  # noqa
 
 CELERY_TASK_ALWAYS_EAGER = True
