@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-cd /opt/terra-visu || exit
-
 # Activate venv
 . /opt/venv/bin/activate
 
