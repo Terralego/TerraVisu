@@ -5,3 +5,4 @@ __pychache__
 node_modules/
 *.env
 *.mo
+/.coverage

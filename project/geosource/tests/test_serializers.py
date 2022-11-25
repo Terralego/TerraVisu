@@ -1,12 +1,11 @@
-import os
 from unittest.mock import patch
 
-from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
 from project.geosource.models import CSVSource
 from project.geosource.serializers import CSVSourceSerializer
+from project.geosource.tests.helper import get_file
 
 
 class CSVSourceSerializerTestCase(TestCase):
@@ -22,9 +21,7 @@ class CSVSourceSerializerTestCase(TestCase):
             "use_header": True,
             "ignore_columns": False,
         }
-        csv_path = os.path.join(settings.BASE_DIR, "geosource", "tests", "source.csv")
-        with open(csv_path, "r") as f:
-            cls.csv = SimpleUploadedFile(f.name, bytes(f.read(), "UTF-8"))
+        cls.csv = get_file("source.csv")
 
     # mock validation method, the file validity does not matter for this test
     @patch.object(CSVSourceSerializer, "_validate_field_infos")

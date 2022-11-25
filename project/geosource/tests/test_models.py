@@ -3,7 +3,7 @@ import os
 from io import StringIO
 from unittest import mock
 
-from django.conf import settings
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from geostore.models import Layer
 
@@ -18,6 +18,7 @@ from project.geosource.models import (
     Source,
     WMTSSource,
 )
+from project.geosource.tests.helper import get_file
 
 
 class MockBackend(object):
@@ -73,14 +74,16 @@ class MockAsyncResultFail(MockAsyncResult):
 
 
 class ModelSourceTestCase(TestCase):
-    def setUp(self):
-        self.source = Source.objects.create(
-            name="Toto", geom_type=GeometryTypes.LineString.value
+    @classmethod
+    def setUpTestData(cls):
+        cls.source = Source.objects.create(
+            name="Toto", geom_type=GeometryTypes.LineString
         )
-        self.geojson_source = GeoJSONSource.objects.create(
+
+        cls.geojson_source = GeoJSONSource.objects.create(
             name="Titi",
-            geom_type=GeometryTypes.Point.value,
-            file=os.path.join(os.path.dirname(__file__), "data", "test.geojson"),
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
         )
 
     def test_source_str(self):
@@ -96,7 +99,7 @@ class ModelSourceTestCase(TestCase):
         results = Source.objects.all()
         self.assertEqual(len(results), 2)
 
-        results = Source.objects.filter(geom_type=GeometryTypes.LineString.value)
+        results = Source.objects.filter(geom_type=GeometryTypes.LineString)
         self.assertEqual(len(results), 1)
 
     def test_geojsonsource_type(self):
@@ -136,7 +139,7 @@ class ModelSourceTestCase(TestCase):
 
 class ModelFieldTestCase(TestCase):
     def test_field_str(self):
-        source = Source.objects.create(name="Toto", geom_type=GeometryTypes.Point.value)
+        source = Source.objects.create(name="Toto", geom_type=GeometryTypes.Point)
         field = Field.objects.create(source=source, name="tutu")
         self.assertEqual(str(field), "tutu (Toto - 5)")
 
@@ -145,7 +148,7 @@ class ModelPostGISSourceTestCase(TestCase):
     def setUp(self):
         self.geom_field = "geom"
         self.source = PostGISSource.objects.create(
-            name="Toto", geom_type=GeometryTypes.Point.value, geom_field=self.geom_field
+            name="Toto", geom_type=GeometryTypes.Point, geom_field=self.geom_field
         )
 
     def test_source_geom_attribute(self):
@@ -161,9 +164,10 @@ class ModelGeoJSONSourceTestCase(TestCase):
     def test_get_file_as_dict(self):
         source = GeoJSONSource.objects.create(
             name="Titi",
-            geom_type=GeometryTypes.Point.value,
-            file=os.path.join(os.path.dirname(__file__), "data", "test.geojson"),
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
         )
+
         self.assertEqual(
             source.get_file_as_dict(),
             {
@@ -184,18 +188,20 @@ class ModelGeoJSONSourceTestCase(TestCase):
     def test_get_file_as_dict_wrong_file(self):
         source = GeoJSONSource.objects.create(
             name="Titi",
-            geom_type=GeometryTypes.Point.value,
-            file=os.path.join(os.path.dirname(__file__), "data", "bad.geojson"),
+            geom_type=GeometryTypes.Point,
+            file=get_file("bad.geojson"),
         )
+
         with self.assertRaises(json.decoder.JSONDecodeError):
             source.get_file_as_dict()
 
     def test_get_records_wrong_geom_file(self):
         source = GeoJSONSource.objects.create(
             name="Titi",
-            geom_type=GeometryTypes.Point.value,
-            file=os.path.join(os.path.dirname(__file__), "data", "bad_geom.geojson"),
+            geom_type=GeometryTypes.Point,
+            file=get_file("bad_geom.geojson"),
         )
+
         with self.assertRaises(ValueError) as m:
             source._get_records(1)
         self.assertEqual(
@@ -208,9 +214,10 @@ class ModelShapeFileSourceTestCase(TestCase):
     def test_get_records(self):
         source = ShapefileSource.objects.create(
             name="Titi",
-            geom_type=GeometryTypes.Point.value,
-            file=os.path.join(os.path.dirname(__file__), "data", "test.zip"),
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.zip"),
         )
+
         records = source._get_records(1)
         self.assertEqual(records[0]["NOM"], "Trifouilli-les-Oies")
         self.assertEqual(records[0]["Insee"], 99999)
@@ -220,7 +227,7 @@ class ModelShapeFileSourceTestCase(TestCase):
 class ModelCommandSourceTestCase(TestCase):
     def setUp(self):
         self.source = CommandSource.objects.create(
-            name="Titi", geom_type=GeometryTypes.Point.value, command="command_test"
+            name="Titi", geom_type=GeometryTypes.Point, command="command_test"
         )
 
     @mock.patch("sys.stdout", new_callable=StringIO)
@@ -237,7 +244,7 @@ class ModelWMTSSourceTestCase(TestCase):
     def setUp(self):
         self.source = WMTSSource.objects.create(
             name="Titi",
-            geom_type=GeometryTypes.Point.value,
+            geom_type=GeometryTypes.Point,
             tile_size=256,
             minzoom=14,
         )
@@ -265,20 +272,22 @@ class ModelCSVSourceTestCase(TestCase):
         }
 
     def test_get_records_with_two_columns_coordinates(self):
-        source_name = os.path.join(
-            settings.BASE_DIR, "geosource", "tests", "source.csv"
-        )
-        source = CSVSource.objects.create(
-            file=source_name,
-            geom_type=0,
-            id_field="ID",
-            settings={
-                **self.base_settings,
-                "coordinates_field": "two_columns",
-                "longitude_field": "XCOORD",
-                "latitude_field": "YCOORD",
-            },
-        )
+        file_name = "source.csv"
+        with open(
+            os.path.join(os.path.dirname(__file__), "data", file_name), "rb+"
+        ) as f:
+            source = CSVSource.objects.create(
+                file=SimpleUploadedFile(file_name, f.read()),
+                geom_type=GeometryTypes.Point,
+                id_field="ID",
+                settings={
+                    **self.base_settings,
+                    "coordinates_field": "two_columns",
+                    "longitude_field": "XCOORD",
+                    "latitude_field": "YCOORD",
+                },
+            )
+
         records = source._get_records()
         self.assertEqual(len(records), 6, len(records))
 
@@ -286,12 +295,9 @@ class ModelCSVSourceTestCase(TestCase):
         self.assertEqual(row_count["count"], len(records), row_count)
 
     def test_get_records_with_one_column_coordinates(self):
-        source_name = os.path.join(
-            settings.BASE_DIR, "geosource", "tests", "source_xy.csv"
-        )
         source = CSVSource.objects.create(
-            file=source_name,
-            geom_type=0,
+            file=get_file("source_xy.csv"),
+            geom_type=GeometryTypes.Point,
             id_field="ID",
             settings={
                 **self.base_settings,
@@ -301,18 +307,16 @@ class ModelCSVSourceTestCase(TestCase):
                 "coordinates_field_count": "xy",
             },
         )
+
         records = source._get_records()
         self.assertEqual(len(records), 9, len(records))
         row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
     def test_get_records_with_decimal_separator_as_comma(self):
-        source_name = os.path.join(
-            settings.BASE_DIR, "geosource", "tests", "source_xy_with_comma.csv"
-        )
         source = CSVSource.objects.create(
-            file=source_name,
-            geom_type=0,
+            file=get_file("source_xy_with_comma.csv"),
+            geom_type=GeometryTypes.Point,
             id_field="ID",
             settings={
                 "encoding": "UTF-8",
@@ -333,15 +337,9 @@ class ModelCSVSourceTestCase(TestCase):
         self.assertEqual(row_count["count"], len(records), row_count)
 
     def test_get_records_with_nulled_columns_ignored(self):
-        source_name = os.path.join(
-            settings.BASE_DIR,
-            "geosource",
-            "tests",
-            "source.csv",
-        )
         source = CSVSource.objects.create(
-            file=source_name,
-            geom_type=0,
+            file=get_file("source.csv"),
+            geom_type=GeometryTypes.Point,
             id_field="ID",
             settings={
                 **self.base_settings,
@@ -363,15 +361,9 @@ class ModelCSVSourceTestCase(TestCase):
         self.assertEqual(row_count["count"], len(records), row_count)
 
     def test_get_records_with_no_header_and_yx_csv(self):
-        source_name = os.path.join(
-            settings.BASE_DIR,
-            "geosource",
-            "tests",
-            "source_xy_noheader.csv",
-        )
         source = CSVSource.objects.create(
-            file=source_name,
-            geom_type=0,
+            file=get_file("source_xy_noheader.csv"),
+            geom_type=GeometryTypes.Point,
             id_field="1",
             settings={
                 **self.base_settings,
@@ -389,14 +381,8 @@ class ModelCSVSourceTestCase(TestCase):
         self.assertEqual(row_count["count"], len(records), row_count)
 
     def test_get_records_with_no_header_and_two_columns_csv(self):
-        source_name = os.path.join(
-            settings.BASE_DIR,
-            "geosource",
-            "tests",
-            "source_noheader.csv",
-        )
         source = CSVSource.objects.create(
-            file=source_name,
+            file=get_file("source_noheader.csv"),
             geom_type=0,
             id_field="2",
             settings={
@@ -414,12 +400,9 @@ class ModelCSVSourceTestCase(TestCase):
         self.assertEqual(row_count["count"], len(records), row_count)
 
     def test_update_fields_keep_order(self):
-        source_name = os.path.join(
-            settings.BASE_DIR, "geosource", "tests", "source.csv"
-        )
         source = CSVSource.objects.create(
-            file=source_name,
-            geom_type=0,
+            file=get_file("source.csv"),
+            geom_type=GeometryTypes.Point,
             id_field="ID",
             settings={
                 **self.base_settings,

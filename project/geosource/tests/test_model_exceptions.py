@@ -1,9 +1,7 @@
 import json
-import os
 from unittest.mock import PropertyMock, patch
 
 import pyexcel
-from django.conf import settings
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from psycopg2 import OperationalError
@@ -15,6 +13,7 @@ from project.geosource.models import (
     PostGISSource,
     ShapefileSource,
 )
+from project.geosource.tests.helper import get_file
 
 
 def mocked_decode():
@@ -27,15 +26,9 @@ class MockedBytes(PropertyMock):
 
 
 class CSVSourceExceptionsTestCase(TestCase):
-    @classmethod
-    def setUpTestData(cls):
-        cls.csv_name = os.path.join(
-            settings.BASE_DIR, "geosource", "tests", "source.csv"
-        )
-
     def test_csv_with_wrong_x_coord(self):
         source = CSVSource.objects.create(
-            file=self.csv_name,
+            file=get_file("source.csv"),
             geom_type=0,
             id_field="ID",
             settings={
@@ -57,7 +50,7 @@ class CSVSourceExceptionsTestCase(TestCase):
 
     def test_csv_with_wrong_y_coord(self):
         source = CSVSource.objects.create(
-            file=self.csv_name,
+            file=get_file("source.csv"),
             geom_type=0,
             id_field="ID",
             settings={
@@ -104,7 +97,7 @@ class CSVSourceExceptionsTestCase(TestCase):
 
     def test_invalid_coordinate_format_raise_error(self):
         source = CSVSource.objects.create(
-            file=self.csv_name,
+            file=get_file("source.csv"),
             geom_type=0,
             id_field="ID",
             settings={
@@ -127,7 +120,7 @@ class CSVSourceExceptionsTestCase(TestCase):
 
     def test_coordinates_system_without_digit_srid_raise_value_error(self):
         source = CSVSource.objects.create(
-            file=self.csv_name,
+            file=get_file("source.csv"),
             geom_type=0,
             id_field="ID",
             settings={
@@ -147,7 +140,7 @@ class CSVSourceExceptionsTestCase(TestCase):
 
     def test_coordinates_systems_malformed_raise_index_error(self):
         source = CSVSource.objects.create(
-            file=self.csv_name,
+            file=get_file("source.csv"),
             geom_type=0,
             id_field="ID",
             settings={
@@ -167,7 +160,7 @@ class CSVSourceExceptionsTestCase(TestCase):
 
     def test_invalid_id_field_raise_value_error_when_refreshing_data(self):
         source = CSVSource.objects.create(
-            file=self.csv_name,
+            file=get_file("source.csv"),
             geom_type=0,
             id_field="identifier",
             settings={
@@ -238,7 +231,7 @@ class ShapefileSourceExceptionsTestCase(TestCase):
         source = ShapefileSource.objects.create(
             name="test_shapefile",
             geom_type=GeometryTypes.Point.value,
-            file=os.path.join(os.path.dirname(__file__), "data", "test.zip"),
+            file=get_file("test.zip"),
             id_field="wrongid",
         )
         msg = "Can't find identifier field for this record"

@@ -33,3 +33,11 @@ jobs:
       - name: Tests
         run: |
           docker-compose run --rm web coverage run ./manage.py test --settings=project.settings.tests
+
+      - name: Prepare coverage report
+        run: |
+          docker-compose run --rm web coverage xml
+
+      - uses: codecov/codecov-action@v3
+        with:
+          flags: backend-unittests
