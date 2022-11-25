@@ -29,11 +29,11 @@ jobs:
 
       - name: Check migration
         run: |
-          docker-compose run --rm web --user root ./manage.py makemigrations --check
+          docker-compose run --rm web ./manage.py makemigrations --check
 
       - name: Tests
         run: |
-          docker-compose run --rm web --user root coverage run ./manage.py test --settings=project.settings.tests
+          docker-compose run --rm web coverage run ./manage.py test --settings=project.settings.tests
 
       - name: Prepare coverage report
         run: |
