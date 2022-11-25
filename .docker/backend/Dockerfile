@@ -14,6 +14,7 @@ RUN apt-get -y -qq update \
     binutils \
     libproj-dev \
     gdal-bin \
+    gettext \
     postgresql-client \
     tzdata \
     netcat \
@@ -21,7 +22,7 @@ RUN apt-get -y -qq update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives/*
 
-RUN adduser docker
+RUN adduser docker --disabled-password
 RUN mkdir -p /opt/terra-visu && chown docker:docker /opt
 WORKDIR /opt/terra-visu
 
@@ -38,7 +39,6 @@ RUN apt-get -y -qq update \
     python3-venv \
     build-essential \
     libpq-dev \
-    gettext \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives/*
@@ -63,7 +63,7 @@ COPY --from=build /opt/venv /opt/venv
 COPY project /opt/terra-visu/project
 COPY manage.py /opt/terra-visu/manage.py
 
-RUN ["./manage.py", "compilemessages"]
+RUN ["/opt/venv/bin/python", "manage.py", "compilemessages"]
 
 USER root
 

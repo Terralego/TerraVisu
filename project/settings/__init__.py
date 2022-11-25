@@ -44,9 +44,13 @@ INSTALLED_APPS = [
     "geostore",
     "mapbox_baselayer",
     "siteprefs",
+    "django_filters",
+    "django_celery_results",
+    "django_celery_beat",
     "project.accounts",
     "project.frontend",
     "project.visu",
+    "project.geosource",
 ]
 
 MIDDLEWARE = [
@@ -134,10 +138,35 @@ MEDIA_URL = "media/"
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 AUTH_USER_MODEL = "accounts.User"
-LOCALE_PATHS = (os.path.join(BASE_DIR, "locales"),)
+LOCALE_PATHS = (BASE_DIR / "locales",)
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
+
+GEOSOURCE_LAYER_CALLBACK = "project.geosource.geostore_callbacks.layer_callback"
+GEOSOURCE_FEATURE_CALLBACK = "project.geosource.geostore_callbacks.feature_callback"
+GEOSOURCE_CLEAN_FEATURE_CALLBACK = "project.geosource.geostore_callbacks.clear_features"
+GEOSOURCE_DELETE_LAYER_CALLBACK = "project.geosource.geostore_callbacks.delete_layer"
+
+REST_FRAMEWORK = {
+    "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    "DEFAULT_FILTER_BACKENDS": [
+        "rest_framework.filters.OrderingFilter",
+        "rest_framework.filters.SearchFilter",
+        "django_filters.rest_framework.DjangoFilterBackend",
+    ],
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f'redis://{os.getenv("REDIS_HOST", "redis")}:{os.getenv("REDIS_PORT", "6379")}',
+    }
+}
+
+SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+CELERY_TASK_ALWAYS_EAGER = False
+MEDIA_ROOT = PROJECT_DIR / "public" / "media"

@@ -24,12 +24,21 @@ jobs:
         run: |
           cp db.env.dist db.env
           cp app.env.dist app.env
+          echo $UID
           docker-compose build
 
       - name: Check migration
         run: |
-          docker-compose run --rm web ./manage.py makemigrations --check
+          docker-compose run --user root --rm web ./manage.py makemigrations --check
 
       - name: Tests
         run: |
-          docker-compose run --rm web ./manage.py test
+          docker-compose run --user root --rm web coverage run ./manage.py test --settings=project.settings.tests
+
+      - name: Prepare coverage report
+        run: |
+          docker-compose run --user root --rm web coverage xml
+
+      - uses: codecov/codecov-action@v3
+        with:
+          flags: backend-unittests

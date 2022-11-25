@@ -11,7 +11,7 @@ async function fetchSettings() {
 
 export default function App() {
   fetchSettings().then((data) => {
-    localStorage.removeItem('settings');
+    // localStorage.removeItem('settings');
     localStorage.setItem('settings', JSON.stringify(data));
   });
 
