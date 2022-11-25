@@ -7,7 +7,7 @@ from geostore.models import Feature, Layer
 
 from project.geosource.models import GeoJSONSource, GeometryTypes
 from project.geosource.tasks import run_model_object_method
-from project.geosource.tests.helper import get_file
+from project.geosource.tests.helpers import get_file
 
 
 class TaskTestCase(TestCase):

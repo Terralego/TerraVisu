@@ -5,7 +5,7 @@ from django.test import TestCase
 
 from project.geosource.models import CSVSource
 from project.geosource.serializers import CSVSourceSerializer
-from project.geosource.tests.helper import get_file
+from project.geosource.tests.helpers import get_file
 
 
 class CSVSourceSerializerTestCase(TestCase):

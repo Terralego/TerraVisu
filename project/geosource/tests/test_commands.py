@@ -5,7 +5,7 @@ from django.test import TestCase
 from rest_framework.exceptions import MethodNotAllowed
 
 from project.geosource.models import GeoJSONSource, GeometryTypes
-from project.geosource.tests.helper import get_file
+from project.geosource.tests.helpers import get_file
 
 
 def side_effect(method, list, **kwargs):

@@ -16,7 +16,7 @@ from project.geosource.models import (
     Source,
     WMTSSource,
 )
-from project.geosource.tests.helper import get_file
+from project.geosource.tests.helpers import get_file
 
 
 class MockBackend(object):

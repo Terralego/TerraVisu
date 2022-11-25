@@ -13,7 +13,7 @@ from project.geosource.models import (
     PostGISSource,
     ShapefileSource,
 )
-from project.geosource.tests.helper import get_file
+from project.geosource.tests.helpers import get_file
 
 
 def mocked_decode():

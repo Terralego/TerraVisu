@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from project.geosource.models import GeoJSONSource, GeometryTypes, PostGISSource
 from project.geosource.periodics import auto_refresh_source
-from project.geosource.tests.helper import get_file
+from project.geosource.tests.helpers import get_file
 
 
 class PeriodicsTestCase(TestCase):

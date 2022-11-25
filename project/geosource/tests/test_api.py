@@ -24,7 +24,7 @@ from project.geosource.models import (
     ShapefileSource,
     Source,
 )
-from project.geosource.tests.helper import get_file
+from project.geosource.tests.helpers import get_file
 
 UserModel = get_user_model()
 
