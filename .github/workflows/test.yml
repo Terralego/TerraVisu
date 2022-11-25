@@ -25,7 +25,7 @@ jobs:
           cp db.env.dist db.env
           cp app.env.dist app.env
           echo $UID
-          docker-compose build --build-arg UID=$UID
+          docker-compose build
 
       - name: Check migration
         run: |

@@ -1,5 +1,4 @@
 FROM ubuntu:jammy as base
-ARG UID=1000
 
 ENV PYTHONBUFFERED 1
 ENV DEBIAN_FRONTEND noninteractive
@@ -23,8 +22,7 @@ RUN apt-get -y -qq update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives/*
 
-RUN adduser docker -uid ${UID} -disabled-password
-RUN mkdir -p /opt/terra-visu && chown docker:docker /opt
+RUN mkdir -p /opt/terra-visu
 WORKDIR /opt/terra-visu
 
 COPY .docker/backend/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -44,7 +42,6 @@ RUN apt-get -y -qq update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives/*
 
-USER docker
 
 RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir --upgrade pip wheel
 
@@ -66,13 +63,9 @@ COPY manage.py /opt/terra-visu/manage.py
 
 RUN ["/opt/venv/bin/python", "manage.py", "compilemessages"]
 
-USER root
-
 RUN apt-get -y -qq update \
     && apt-get -y -qq full-upgrade \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives/*
-
-USER docker
 
 CMD /opt/venv/bin/gunicorn backend.wsgi:application 0.0.0.0:8000
