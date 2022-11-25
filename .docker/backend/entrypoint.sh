@@ -9,5 +9,7 @@ while ! nc -z $POSTGRES_HOST $POSTGRES_PORT; do
 done
 echo "PostgreSQL started"
 
+chown -R docker:docker /opt/terra-visu
+
 # exec
 exec "$@"
