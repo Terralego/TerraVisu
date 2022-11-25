@@ -22,7 +22,7 @@ RUN apt-get -y -qq update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives/*
 
-RUN adduser docker -uid ${UID} -disabled-password
+RUN adduser docker -uid ${UID} --disabled-password
 RUN mkdir -p /opt/terra-visu && chown docker:docker /opt
 WORKDIR /opt/terra-visu
 
