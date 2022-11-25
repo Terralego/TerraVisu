@@ -10,4 +10,4 @@ def get_file(file_name):
         with open(file_path, "rb+") as f:
             return SimpleUploadedFile(f.name, f.read())
     except PermissionError:
-        raise Exception(f"Permission denied to read file {os.stat(file_path)}")
+        raise Exception(f"Permission denied to read file {os.stat(file_path)}. Exiting : {os.path.exists(file_path)}")
