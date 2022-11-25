@@ -254,7 +254,7 @@ class Field(models.Model):
     name = models.CharField(max_length=255, blank=False)
     label = models.CharField(max_length=255)
     data_type = models.IntegerField(
-        choices=FieldTypes.choices(), default=FieldTypes.Undefined.value
+        choices=FieldTypes.choices(), default=FieldTypes.Undefined
     )
     level = models.IntegerField(default=0)
     sample = models.JSONField(default=list)

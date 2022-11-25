@@ -1,4 +1,3 @@
-import os
 from unittest import mock
 
 from django.core.management import call_command
@@ -6,6 +5,7 @@ from django.test import TestCase
 from rest_framework.exceptions import MethodNotAllowed
 
 from project.geosource.models import GeoJSONSource, GeometryTypes
+from project.geosource.tests.helper import get_file
 
 
 def side_effect(method, list, **kwargs):
@@ -16,8 +16,8 @@ class ResyncAllSourcesTestCase(TestCase):
     def setUp(self):
         self.source = GeoJSONSource.objects.create(
             name="test",
-            geom_type=GeometryTypes.Point.value,
-            file=os.path.join(os.path.dirname(__file__), "data", "test.geojson"),
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
         )
 
     def test_resync_all_sources(self):

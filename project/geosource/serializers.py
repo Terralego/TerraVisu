@@ -313,7 +313,7 @@ class WMTSSourceSerialize(SourceSerializer):
     minzoom = IntegerField(min_value=0, max_value=24, allow_null=True, default=0)
     maxzoom = IntegerField(min_value=0, max_value=24, allow_null=True, default=24)
     geom_type = CharField(
-        required=False, allow_null=True, default=GeometryTypes.Undefined.value
+        required=False, allow_null=True, default=GeometryTypes.Undefined
     )
 
     class Meta:
@@ -355,7 +355,7 @@ class CSVSourceSerializer(FileSourceSerializer):
     coordinates_field_count = CharField(required=False)
     coordinates_separator = CharField(required=False)
     geom_type = ChoiceField(
-        default=GeometryTypes.Point.value, choices=GeometryTypes.choices()
+        default=GeometryTypes.Point, choices=GeometryTypes.choices()
     )
 
     class Meta:

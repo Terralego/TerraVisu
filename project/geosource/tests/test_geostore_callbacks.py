@@ -1,4 +1,3 @@
-import os
 from unittest import mock
 
 from django.contrib.auth.models import Group
@@ -8,6 +7,7 @@ from geostore.models import Feature, Layer
 
 from project.geosource import geostore_callbacks
 from project.geosource.models import GeoJSONSource, GeometryTypes
+from project.geosource.tests.helper import get_file
 
 
 class GeostoreCallBacksTestCase(TestCase):
@@ -15,8 +15,8 @@ class GeostoreCallBacksTestCase(TestCase):
         group = Group.objects.create(name="Group")
         source = GeoJSONSource.objects.create(
             name="test",
-            geom_type=GeometryTypes.Point.value,
-            file=os.path.join(os.path.dirname(__file__), "data", "test.geojson"),
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
             settings={"groups": [group.pk]},
         )
         layer = geostore_callbacks.layer_callback(source)
@@ -26,8 +26,8 @@ class GeostoreCallBacksTestCase(TestCase):
         group = Group.objects.create(name="Group")
         source = GeoJSONSource.objects.create(
             name="test",
-            geom_type=GeometryTypes.Point.value,
-            file=os.path.join(os.path.dirname(__file__), "data", "test.geojson"),
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
             settings={"groups": [group.pk]},
         )
         layer = Layer.objects.create(name="test")
@@ -43,8 +43,8 @@ class GeostoreCallBacksTestCase(TestCase):
         group = Group.objects.create(name="Group")
         source = GeoJSONSource.objects.create(
             name="test",
-            geom_type=GeometryTypes.Point.value,
-            file=os.path.join(os.path.dirname(__file__), "data", "test.geojson"),
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
             settings={"groups": [group.pk]},
         )
         layer = Layer.objects.create(name="test")
@@ -65,8 +65,8 @@ class GeostoreCallBacksTestCase(TestCase):
         group = Group.objects.create(name="Group")
         source = GeoJSONSource.objects.create(
             name="test",
-            geom_type=GeometryTypes.Point.value,
-            file=os.path.join(os.path.dirname(__file__), "data", "test.geojson"),
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
             settings={"groups": [group.pk]},
         )
         layer = Layer.objects.create(name="test")
@@ -77,8 +77,8 @@ class GeostoreCallBacksTestCase(TestCase):
         group = Group.objects.create(name="Group")
         source = GeoJSONSource.objects.create(
             name="test",
-            geom_type=GeometryTypes.Point.value,
-            file=os.path.join(os.path.dirname(__file__), "data", "test.geojson"),
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
             settings={"groups": [group.pk]},
         )
         layer = Layer.objects.create(name="test")

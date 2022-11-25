@@ -1,4 +1,3 @@
-import os
 from datetime import datetime
 from unittest import mock
 
@@ -7,6 +6,7 @@ from django.utils import timezone
 
 from project.geosource.models import GeoJSONSource, GeometryTypes, PostGISSource
 from project.geosource.periodics import auto_refresh_source
+from project.geosource.tests.helper import get_file
 
 
 class PeriodicsTestCase(TestCase):
@@ -14,8 +14,8 @@ class PeriodicsTestCase(TestCase):
     def setUpTestData(cls):
         cls.geosource = GeoJSONSource.objects.create(
             name="test",
-            geom_type=GeometryTypes.Point.value,
-            file=os.path.join(os.path.dirname(__file__), "data", "test.geojson"),
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
         )
         cls.source = PostGISSource.objects.create(
             name="First Source",
@@ -26,7 +26,7 @@ class PeriodicsTestCase(TestCase):
             geom_field="geom",
             refresh=-1,
             last_refresh=datetime(2020, 1, 1, tzinfo=timezone.utc),
-            geom_type=GeometryTypes.LineString.value,
+            geom_type=GeometryTypes.LineString,
         )
         cls.source2 = PostGISSource.objects.create(
             name="Second Source",
@@ -37,7 +37,7 @@ class PeriodicsTestCase(TestCase):
             geom_field="geom",
             refresh=60 * 24 * 3,
             last_refresh=datetime(2020, 1, 1, tzinfo=timezone.utc),
-            geom_type=GeometryTypes.LineString.value,
+            geom_type=GeometryTypes.LineString,
         )
 
     @mock.patch("django.utils.timezone.now")

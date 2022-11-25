@@ -1,9 +1,7 @@
 import json
-import os
 from io import StringIO
 from unittest import mock
 
-from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from geostore.models import Layer
 
@@ -221,7 +219,7 @@ class ModelShapeFileSourceTestCase(TestCase):
         records = source._get_records(1)
         self.assertEqual(records[0]["NOM"], "Trifouilli-les-Oies")
         self.assertEqual(records[0]["Insee"], 99999)
-        self.assertEqual(records[0]["_geom_"].geom_typeid, GeometryTypes.Polygon.value)
+        self.assertEqual(records[0]["_geom_"].geom_typeid, GeometryTypes.Polygon)
 
 
 class ModelCommandSourceTestCase(TestCase):
@@ -272,21 +270,17 @@ class ModelCSVSourceTestCase(TestCase):
         }
 
     def test_get_records_with_two_columns_coordinates(self):
-        file_name = "source.csv"
-        with open(
-            os.path.join(os.path.dirname(__file__), "data", file_name), "rb+"
-        ) as f:
-            source = CSVSource.objects.create(
-                file=SimpleUploadedFile(file_name, f.read()),
-                geom_type=GeometryTypes.Point,
-                id_field="ID",
-                settings={
-                    **self.base_settings,
-                    "coordinates_field": "two_columns",
-                    "longitude_field": "XCOORD",
-                    "latitude_field": "YCOORD",
-                },
-            )
+        source = CSVSource.objects.create(
+            file=get_file("source.csv"),
+            geom_type=GeometryTypes.Point,
+            id_field="ID",
+            settings={
+                **self.base_settings,
+                "coordinates_field": "two_columns",
+                "longitude_field": "XCOORD",
+                "latitude_field": "YCOORD",
+            },
+        )
 
         records = source._get_records()
         self.assertEqual(len(records), 6, len(records))

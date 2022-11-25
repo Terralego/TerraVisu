@@ -1,5 +1,4 @@
 import logging
-import os
 from unittest import mock
 
 from django.contrib.auth.models import Group
@@ -8,6 +7,7 @@ from geostore.models import Feature, Layer
 
 from project.geosource.models import GeoJSONSource, GeometryTypes
 from project.geosource.tasks import run_model_object_method
+from project.geosource.tests.helper import get_file
 
 
 class TaskTestCase(TestCase):
@@ -15,8 +15,8 @@ class TaskTestCase(TestCase):
         self.group = Group.objects.create(name="Group")
         self.element = GeoJSONSource.objects.create(
             name="test",
-            geom_type=GeometryTypes.Point.value,
-            file=os.path.join(os.path.dirname(__file__), "data", "test.geojson"),
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
             settings={"groups": [self.group.pk]},
         )
 

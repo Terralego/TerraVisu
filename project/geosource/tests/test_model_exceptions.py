@@ -199,7 +199,7 @@ class GeoJSONSourceExceptionsTestCase(TestCase):
         geojson = json.dumps(geodict)
         source = GeoJSONSource.objects.create(
             name="test",
-            geom_type=GeometryTypes.Point.value,
+            geom_type=GeometryTypes.Point,
             file=SimpleUploadedFile("geojson", bytes(geojson, encoding="UTF-8")),
             id_field="gid",  # wrong id field
         )
@@ -214,7 +214,7 @@ class PostGISSourceExceptionsTestCase(TestCase):
     def setUpTestData(cls):
         cls.source = PostGISSource.objects.create(
             name="source_test",
-            geom_type=GeometryTypes.Point.value,
+            geom_type=GeometryTypes.Point,
             geom_field="geom",
         )
 
@@ -230,7 +230,7 @@ class ShapefileSourceExceptionsTestCase(TestCase):
     def test_wrong_id_raise_exception_on_refresh_and_get_reported(self):
         source = ShapefileSource.objects.create(
             name="test_shapefile",
-            geom_type=GeometryTypes.Point.value,
+            geom_type=GeometryTypes.Point,
             file=get_file("test.zip"),
             id_field="wrongid",
         )
