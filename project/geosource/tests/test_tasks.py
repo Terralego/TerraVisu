@@ -11,13 +11,14 @@ from project.geosource.tests.helpers import get_file
 
 
 class TaskTestCase(TestCase):
-    def setUp(self):
-        self.group = Group.objects.create(name="Group")
-        self.element = GeoJSONSource.objects.create(
+    @classmethod
+    def setUpTestData(cls):
+        cls.group = Group.objects.create(name="Group")
+        cls.element = GeoJSONSource.objects.create(
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
-            settings={"groups": [self.group.pk]},
+            settings={"groups": [cls.group.pk]},
         )
 
     def test_task_refresh_data_method(self):
