@@ -42,7 +42,7 @@ services:
 
   celery:
     <<: [ *django ]
-    command: celery -A project worker -l info
+    command: celery -A project worker -c 1 -l debug -E
     depends_on:
       - db
       - redis
