@@ -1,4 +1,5 @@
 FROM ubuntu:jammy as base
+ARG UID=1000
 
 ENV PYTHONBUFFERED 1
 ENV DEBIAN_FRONTEND noninteractive
@@ -22,7 +23,7 @@ RUN apt-get -y -qq update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives/*
 
-RUN adduser docker -uid ${UID:-1000} -disabled-password
+RUN adduser docker -uid ${UID} -disabled-password
 RUN mkdir -p /opt/terra-visu && chown docker:docker /opt
 WORKDIR /opt/terra-visu
 

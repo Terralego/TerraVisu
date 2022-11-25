@@ -6,8 +6,6 @@ x-images:
       context: .
       dockerfile: .docker/backend/Dockerfile
       target: dev
-      args:
-        - UID=${UID:-1000}
     user: ${UID:-1000}:${GID:-1000}
     environment:
       - DJANGO_SETTINGS_MODULE=project.settings
