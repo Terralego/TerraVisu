@@ -78,7 +78,7 @@ platformdirs==2.5.4
     # via black
 pycodestyle==2.10.0
     # via flake8
-pyflakes==3.0.0
+pyflakes==3.0.1
     # via flake8
 pygments==2.13.0
     # via sphinx
@@ -130,7 +130,7 @@ tomli==2.0.1
     #   black
     #   build
     #   pep517
-urllib3==1.26.12
+urllib3==1.26.13
     # via
     #   -c requirements.txt
     #   requests
