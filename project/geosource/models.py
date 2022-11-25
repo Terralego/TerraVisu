@@ -1,7 +1,7 @@
 import json
 import sys
 from datetime import datetime, timedelta
-from enum import Enum, IntEnum, auto
+from enum import Enum, auto
 from io import BytesIO
 
 import fiona
@@ -16,6 +16,7 @@ from django.core.management import call_command
 from django.db import models, transaction
 from django.utils import timezone
 from django.utils.text import slugify
+from geostore import GeometryTypes
 from polymorphic.models import PolymorphicModel
 from psycopg2 import sql
 
@@ -58,22 +59,6 @@ class FieldTypes(Enum):
         return types.get(type(data), cls.Undefined)
 
 
-class GeometryTypes(IntEnum):
-    Point = 0
-    LineString = 1
-    # LinearRing 2
-    Polygon = 3
-    MultiPoint = 4
-    MultiLineString = 5
-    MultiPolygon = 6
-    GeometryCollection = 7
-    Undefined = 8
-
-    @classmethod
-    def choices(cls):
-        return [(enum.value, enum) for enum in cls]
-
-
 class Source(PolymorphicModel, CeleryCallMethodsMixin):
     name = models.CharField(max_length=255, unique=True)
     credit = models.TextField(blank=True)
@@ -81,7 +66,9 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     description = models.TextField(blank=True)
 
     id_field = models.CharField(max_length=255, default="id")
-    geom_type = models.IntegerField(choices=GeometryTypes.choices())
+    geom_type = models.IntegerField(
+        choices=GeometryTypes.choices(), null=True, blank=True
+    )
 
     settings = models.JSONField(default=dict)
     report = models.JSONField(default=dict)
@@ -254,7 +241,7 @@ class Field(models.Model):
     name = models.CharField(max_length=255, blank=False)
     label = models.CharField(max_length=255)
     data_type = models.IntegerField(
-        choices=FieldTypes.choices(), default=FieldTypes.Undefined
+        choices=FieldTypes.choices(), default=FieldTypes.Undefined.value
     )
     level = models.IntegerField(default=0)
     sample = models.JSONField(default=list)

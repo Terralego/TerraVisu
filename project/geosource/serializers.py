@@ -7,16 +7,8 @@ from django.contrib.gis.geos import GEOSGeometry
 from django.db import transaction
 from django.utils.translation import gettext as _
 from psycopg2 import sql
-from rest_framework.serializers import (
-    BooleanField,
-    CharField,
-    ChoiceField,
-    IntegerField,
-    ModelSerializer,
-    SerializerMethodField,
-    SlugField,
-    ValidationError,
-)
+from rest_framework import serializers
+from rest_framework.exceptions import ValidationError
 
 from .models import (
     CommandSource,
@@ -31,7 +23,7 @@ from .models import (
 )
 
 
-class PolymorphicModelSerializer(ModelSerializer):
+class PolymorphicModelSerializer(serializers.ModelSerializer):
     type_field = "_type"
     type_class_map = {}
 
@@ -103,7 +95,7 @@ class PolymorphicModelSerializer(ModelSerializer):
             return serializer.create(validated_data)
 
 
-class FieldSerializer(ModelSerializer):
+class FieldSerializer(serializers.ModelSerializer):
     class Meta:
         model = Field
         exclude = ("source",)
@@ -112,8 +104,8 @@ class FieldSerializer(ModelSerializer):
 
 class SourceSerializer(PolymorphicModelSerializer):
     fields = FieldSerializer(many=True, required=False)
-    status = SerializerMethodField()
-    slug = SlugField(max_length=255, read_only=True)
+    status = serializers.SerializerMethodField()
+    slug = serializers.SlugField(max_length=255, read_only=True)
 
     class Meta:
         fields = "__all__"
@@ -157,9 +149,9 @@ class SourceSerializer(PolymorphicModelSerializer):
         return instance.get_status()
 
 
-class SourceListSerializer(ModelSerializer):
-    _type = SerializerMethodField()
-    status = SerializerMethodField()
+class SourceListSerializer(serializers.ModelSerializer):
+    _type = serializers.SerializerMethodField()
+    status = serializers.SerializerMethodField()
 
     class Meta:
         model = Source
@@ -179,8 +171,8 @@ class SourceListSerializer(ModelSerializer):
 
 
 class PostGISSourceSerializer(SourceSerializer):
-    id_field = CharField(required=False)
-    geom_field = CharField(required=False, allow_null=True)
+    id_field = serializers.CharField(required=False)
+    geom_field = serializers.CharField(required=False, allow_null=True)
 
     def _get_connection(self, data):
         conn = psycopg2.connect(
@@ -242,7 +234,7 @@ class PostGISSourceSerializer(SourceSerializer):
 
 
 class FileSourceSerializer(SourceSerializer):
-    filename = SerializerMethodField()
+    filename = serializers.SerializerMethodField()
 
     def to_internal_value(self, data):
         if len(data.get("file", [])) > 0:
@@ -310,11 +302,13 @@ class CommandSourceSerializer(SourceSerializer):
 
 
 class WMTSSourceSerialize(SourceSerializer):
-    minzoom = IntegerField(min_value=0, max_value=24, allow_null=True, default=0)
-    maxzoom = IntegerField(min_value=0, max_value=24, allow_null=True, default=24)
-    geom_type = CharField(
-        required=False, allow_null=True, default=GeometryTypes.Undefined
+    minzoom = serializers.IntegerField(
+        min_value=0, max_value=24, allow_null=True, default=0
     )
+    maxzoom = serializers.IntegerField(
+        min_value=0, max_value=24, allow_null=True, default=24
+    )
+    geom_type = serializers.CharField(required=False, allow_null=True, default=None)
 
     class Meta:
         model = WMTSSource
@@ -339,22 +333,21 @@ class WMTSSourceSerialize(SourceSerializer):
 
 
 class CSVSourceSerializer(FileSourceSerializer):
-    coordinate_reference_system = CharField(required=True)
-    encoding = CharField(required=True)
-    field_separator = CharField(required=True)
-    decimal_separator = CharField(required=True)
-    char_delimiter = CharField(required=True)
-    coordinates_field = CharField(required=True)
-    number_lines_to_ignore = IntegerField(required=True)
-
-    use_header = BooleanField(required=False, default=False)
-    ignore_columns = BooleanField(required=False, default=False)
-    latitude_field = CharField(required=False)
-    longitude_field = CharField(required=False)
-    latlong_field = CharField(required=False)
-    coordinates_field_count = CharField(required=False)
-    coordinates_separator = CharField(required=False)
-    geom_type = ChoiceField(
+    coordinate_reference_system = serializers.CharField(required=True)
+    encoding = serializers.CharField(required=True)
+    field_separator = serializers.CharField(required=True)
+    decimal_separator = serializers.CharField(required=True)
+    char_delimiter = serializers.CharField(required=True)
+    coordinates_field = serializers.CharField(required=True)
+    number_lines_to_ignore = serializers.IntegerField(required=True)
+    use_header = serializers.BooleanField(required=False, default=False)
+    ignore_columns = serializers.BooleanField(required=False, default=False)
+    latitude_field = serializers.CharField(required=False)
+    longitude_field = serializers.CharField(required=False)
+    latlong_field = serializers.CharField(required=False)
+    coordinates_field_count = serializers.CharField(required=False)
+    coordinates_separator = serializers.CharField(required=False)
+    geom_type = serializers.ChoiceField(
         default=GeometryTypes.Point, choices=GeometryTypes.choices()
     )
 

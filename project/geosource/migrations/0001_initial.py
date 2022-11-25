@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
                                     "GeometryCollection"
                                 ],
                             ),
-                            (8, project.geosource.models.GeometryTypes["Undefined"]),
+                            (None, "Undefined"),
                         ]
                     ),
                 ),

@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.gis.geos import GEOSGeometry
 from django.test import TestCase
 from django.urls import reverse
+from geostore import GeometryTypes
 from rest_framework.status import (
     HTTP_200_OK,
     HTTP_201_CREATED,
@@ -19,7 +20,6 @@ from project.geosource.models import (
     Field,
     FieldTypes,
     GeoJSONSource,
-    GeometryTypes,
     PostGISSource,
     ShapefileSource,
     Source,
@@ -196,7 +196,7 @@ class ModelSourceViewsetTestCase(TestCase):
             source=source,
             name="field_name",
             label="Label",
-            data_type=FieldTypes.String,
+            data_type=FieldTypes.String.value,
         )
 
         response = self.client.get(
@@ -243,7 +243,7 @@ class ModelSourceViewsetTestCase(TestCase):
             source=source,
             name="field_name",
             label="Label",
-            data_type=FieldTypes.String,
+            data_type=FieldTypes.String.value,
         )
         response = self.client.get(
             reverse("geosource:geosource-detail", args=[source.pk])
@@ -276,9 +276,9 @@ class ModelSourceViewsetTestCase(TestCase):
         obj = Source.objects.create(geom_type=10)
         obj.update_fields()
 
-        self.assertEqual(FieldTypes.String, obj.fields.get(name="a").data_type)
-        self.assertEqual(FieldTypes.Integer, obj.fields.get(name="c").data_type)
-        self.assertEqual(FieldTypes.Undefined, obj.fields.get(name="d").data_type)
+        self.assertEqual(FieldTypes.String.value, obj.fields.get(name="a").data_type)
+        self.assertEqual(FieldTypes.Integer.value, obj.fields.get(name="c").data_type)
+        self.assertEqual(FieldTypes.Undefined.value, obj.fields.get(name="d").data_type)
 
     @patch(
         "project.geosource.models.Source._get_records",
@@ -290,12 +290,12 @@ class ModelSourceViewsetTestCase(TestCase):
             source=obj,
             name="field_name",
             label="Label",
-            data_type=FieldTypes.String,
+            data_type=FieldTypes.String.value,
         )
         obj.update_fields()
 
-        self.assertEqual(FieldTypes.String, obj.fields.get(name="a").data_type)
-        self.assertEqual(FieldTypes.Integer, obj.fields.get(name="c").data_type)
+        self.assertEqual(FieldTypes.String.value, obj.fields.get(name="a").data_type)
+        self.assertEqual(FieldTypes.Integer.value, obj.fields.get(name="c").data_type)
         self.assertEqual(0, Field.objects.filter(name="field_name").count())
 
     def test_ordering_filtering_search(self):
@@ -303,15 +303,15 @@ class ModelSourceViewsetTestCase(TestCase):
 
         obj = GeoJSONSource.objects.create(
             name="foo",
-            geom_type=GeometryTypes.Point,
+            geom_type=GeometryTypes.Point.value,
         )
         obj2 = CommandSource.objects.create(
             name="bar",
-            geom_type=GeometryTypes.LineString,
+            geom_type=GeometryTypes.LineString.value,
         )
         ShapefileSource.objects.create(
             name="baz",
-            geom_type=GeometryTypes.Polygon,
+            geom_type=GeometryTypes.Polygon.value,
         )
 
         list_url = reverse("geosource:geosource-list")
@@ -335,10 +335,10 @@ class ModelSourceViewsetTestCase(TestCase):
         self.assertEqual(response.json()[-1]["name"], obj2.name)
 
         # Test filter
-        response = self.client.get(list_url, {"geom_type": GeometryTypes.Point})
+        response = self.client.get(list_url, {"geom_type": GeometryTypes.Point.value})
         data = response.json()
         self.assertEqual(len(data), 1, data)
-        self.assertEqual(data[0]["name"], obj.name)
+        self.assertEqual(data[0]["name"], obj.name, data)
 
         # Test search
         response = self.client.get(list_url, {"search": "foo"})
