@@ -5,7 +5,8 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from project.accounts.serializers import UserSerializer
-from project.visu import settings as app_settings
+
+from . import settings as app_settings
 
 
 class SettingsView(APIView):

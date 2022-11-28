@@ -82,9 +82,6 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     SOURCE_GEOM_ATTRIBUTE = "_geom_"
     MAX_SAMPLE_DATA = 5
 
-    class Meta:
-        permissions = (("can_manage_sources", "Can manage sources"),)
-
     def get_layer(self):
         return get_attr_from_path(settings.GEOSOURCE_LAYER_CALLBACK)(self)
 

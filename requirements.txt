@@ -164,7 +164,7 @@ texttable==1.6.7
     # via pyexcel
 tzdata==2022.6
     # via django-celery-beat
-urllib3==1.26.12
+urllib3==1.26.13
     # via
     #   requests
     #   sentry-sdk
