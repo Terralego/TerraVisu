@@ -1,0 +1,54 @@
+{"fields":
+[{"exportable": false,
+  "field": "toto",
+  "filter_enable": false,
+  "filter_settings": {},
+  "format_type": null,
+  "label": "Label_field",
+  "order": 0,
+  "shown": false
+}],
+  "extra_styles": [{
+    "style_config": {},
+    "interactions":
+    [{
+      "id": "custom_style",
+      "trigger": "click",
+      "interaction": "highlight"
+    }],
+    "source": "test"
+  }],
+  "uuid": "91c60192-9060-4bf6-b0de-818c5a362d89",
+  "name": "Layer_without_custom_style",
+  "in_tree": true,
+  "order": [],
+  "description": "",
+  "layer_style": {},
+  "settings": {},
+  "active_by_default": false,
+  "legends":
+  [{
+    "exportable": false,
+    "field": "tutu",
+    "filter_enable": false,
+    "filter_settings": {},
+    "format_type": null,
+    "label": "Test",
+    "order": 0,
+    "shown": false
+  }],
+  "table_enable": false,
+  "table_export_enable": false,
+  "popup_enable": false,
+  "popup_template": "",
+  "popup_minzoom": 0.0,
+  "popup_maxzoom": 22.0,
+  "minisheet_enable": false,
+  "minisheet_template": "",
+  "highlight_color": "",
+  "interactions": [],
+  "source": "test",
+  "group": null,
+  "main_field": "toto",
+  "view": "test_scene"
+}
