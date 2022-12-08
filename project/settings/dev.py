@@ -1,6 +1,8 @@
 from . import *  # NOQA
 
 DEBUG = True
+SECRET_KEY = "secret-key-for-dev-do-not-use-in-production"
+ALLOWED_HOSTS = ["*"]
 INSTALLED_APPS += ("debug_toolbar",)  # NOQA
 
 MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)  # NOQA
