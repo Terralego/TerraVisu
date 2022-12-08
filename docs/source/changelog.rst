@@ -2,7 +2,7 @@
 CHANGELOG
 =========
 
-1.9.9+dev (XXXX-XX-XX)
+2.0.0      (XXXX-XX-XX)
 -----------------------
 
 * New Version
