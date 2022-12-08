@@ -18,6 +18,7 @@ Init database
 :
     docker-compose run --rm web ./manage.py createsuperuser
 
+
 ---------------------
 Create your superuser
 ---------------------

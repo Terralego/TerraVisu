@@ -31,3 +31,7 @@ exclude_patterns = []
 
 html_theme = 'sphinx_rtd_theme'
 html_static_path = ['_static']
+html_logo = "logo.webp"
+html_theme_options = {
+    'logo_only': True,
+}
