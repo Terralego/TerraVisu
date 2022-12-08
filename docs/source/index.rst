@@ -12,6 +12,7 @@ Welcome to TerraVisu's documentation!
 
    install
    development
+   changelog
 
 
 Indices and tables
