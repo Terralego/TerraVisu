@@ -47,6 +47,13 @@ services:
       - db
       - redis
 
+  frontend:
+    build:
+      context: .
+      dockerfile: .docker/frontend/Dockerfile
+    volumes:
+      - .:/app
+
 volumes:
   db:
   redis:
