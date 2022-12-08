@@ -11,6 +11,7 @@ Welcome to TerraVisu's documentation!
    :caption: Contents:
 
    install
+   configuration
    development
    changelog
 

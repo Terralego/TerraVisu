@@ -39,6 +39,7 @@ RUN apt-get -y -qq update \
     python3-venv \
     build-essential \
     libpq-dev \
+    git \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives/*

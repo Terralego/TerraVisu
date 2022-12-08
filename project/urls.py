@@ -1,3 +1,5 @@
+import os
+
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -5,6 +7,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path("config/", admin.site.urls),
+    path("oidc/", include("django_auth_oidc.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("base-layers/", include("mapbox_baselayer.urls")),
     path("api/geosource/", include("project.geosource.urls", namespace="geosource")),
@@ -14,4 +17,6 @@ urlpatterns = [
     path("", include("project.frontend.urls")),
 ]
 
-urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+if "dev" in os.getenv("DJANGO_SETTINGS_MODULE"):
+    urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+    urlpatterns += (path("__debug__/", include("debug_toolbar.urls")),)

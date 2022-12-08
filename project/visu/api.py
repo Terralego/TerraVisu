@@ -25,7 +25,7 @@ class SettingsView(APIView):
                 "instance": {
                     "title": app_settings.INSTANCE_TITLE,
                     "logo": app_settings.INSTANCE_LOGO,
-                    "loginUrl": reverse("login"),
+                    "loginUrl": reverse("login_dispatcher"),
                     "logoutUrl": reverse("logout"),
                 },
                 "map": {
