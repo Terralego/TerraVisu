@@ -42,4 +42,5 @@ jobs:
       - uses: codecov/codecov-action@v3
         with:
           flags: backend-unittests
+          token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
