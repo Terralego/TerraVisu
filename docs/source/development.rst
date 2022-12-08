@@ -6,7 +6,8 @@ Development
 Prepare stack
 -------------
 
-:
+..  code-block:: bash
+
     cp db.env.dist db.env
     cp app.env.dist app.env
     docker-compose build
@@ -15,7 +16,8 @@ Prepare stack
 Init database
 -------------
 
-:
+..  code-block:: bash
+
     docker-compose run --rm web ./manage.py createsuperuser
 
 
@@ -23,7 +25,8 @@ Init database
 Create your superuser
 ---------------------
 
-:
+..  code-block:: bash
+
     docker-compose run --rm web ./manage.py createsuperuser
 
 
@@ -31,8 +34,9 @@ Create your superuser
 Launch stack
 ---------------
 
-:
+..  code-block:: bash
+
     docker-compose up
 
 
-Then got to http://127.0.0.1:8000
+Then go to http://127.0.0.1:8000
