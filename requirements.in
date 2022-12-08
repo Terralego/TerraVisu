@@ -8,10 +8,12 @@ crispy-bootstrap5
 django-mapbox-baselayer
 django-siteprefs
 django-filter
-celery[redis]
+celery
+redis
 django-celery-results
 django-celery-beat
 sentry-sdk
 django-polymorphic
 fiona
 pyexcel
+python-decouple
