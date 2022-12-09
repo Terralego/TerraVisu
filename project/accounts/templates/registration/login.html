@@ -3,22 +3,20 @@
 {%  load i18n crispy_forms_tags %}
 
 {% block title %}
-    {% trans "Login to TerraVisu" %}
+    {% trans "Login to" %} {{ block.super }}
 {% endblock %}
 
 {% block content %}
     <div class="row">
-        <div class="col-12 col-md-6 offset-md-3">
+        <div class="col-12 col-md-4 offset-md-4">
             <form method="post">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">{% trans "Login" %}</h3>
-                    </div>
+                <div class="card mt-5">
+                    <img src="{{ INSTANCE_LOGO }}" class="card-img-top bg-secondary p-2" alt="logo">
                     <div class="card-body">
                         {% crispy form %}
                     </div>
                     <div class="card-footer">
-                        <input class="btn btn-primary" type="submit" value="{% trans "Submit" %}" />
+                        <input class="btn btn-primary" type="submit" value="{% trans "Log in" %}" />
                         <a href="{% url 'password_reset' %}" style="float: right;">{% trans "Reset password" %}</a>
                     </div>
                     {% if OIDC_ENABLED %}

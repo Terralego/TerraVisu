@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-19 14:37+0000\n"
+"POT-Creation-Date: 2022-12-09 09:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-msgid "Permissions"
-msgstr ""
-
-msgid "Important dates"
-msgstr ""
 
 msgid "Unique identifier"
 msgstr ""
@@ -49,5 +44,40 @@ msgstr ""
 msgid "Login to TerraVisu"
 msgstr ""
 
+msgid "Login"
+msgstr ""
+
 msgid "Submit"
+msgstr ""
+
+msgid "Reset password"
+msgstr ""
+
+msgid "OIDC connect"
+msgstr ""
+
+msgid "URL"
+msgstr ""
+
+msgid "latlong_field must be defined when coordinates are set to one column"
+msgstr ""
+
+msgid ""
+"Coordinates order must be specified when coordinates are set to one column"
+msgstr ""
+
+msgid ""
+"Coordinates separator must be specified when coordinates are set to one "
+"column"
+msgstr ""
+
+msgid ""
+"Latitude field must be specified when coordinates are set to two columns"
+msgstr ""
+
+msgid ""
+"Longitude field must be specified when coordinates are set to two columns"
+msgstr ""
+
+msgid "Incorrect value for coordinates field"
 msgstr ""

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-19 14:37+0000\n"
+"POT-Creation-Date: 2022-12-09 09:37+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,11 +17,6 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
-msgid "Permissions"
-msgstr ""
-
-msgid "Important dates"
-msgstr ""
 
 msgid "Unique identifier"
 msgstr "Identifiant unique"
@@ -42,8 +37,8 @@ msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
 msgstr ""
-"Défini si l'utilisateur est considéré comme actif. Désactiver "
-"au lieu de supprimer les comptes."
+"Défini si l'utilisateur est considéré comme actif. Désactiver au lieu de "
+"supprimer les comptes."
 
 msgid "date joined"
 msgstr "date d'inscription"
@@ -51,5 +46,40 @@ msgstr "date d'inscription"
 msgid "Login to TerraVisu"
 msgstr "Connexion à TerraVisu"
 
+msgid "Login"
+msgstr "Connexion"
+
 msgid "Submit"
 msgstr "Envoyer"
+
+msgid "Reset password"
+msgstr "Mot de passe oublié ?"
+
+msgid "OIDC connect"
+msgstr "Connexion via OIDC"
+
+msgid "URL"
+msgstr ""
+
+msgid "latlong_field must be defined when coordinates are set to one column"
+msgstr "latlong_field doit être défini quand les coordonnées sont dans une seule colonne"
+
+msgid ""
+"Coordinates order must be specified when coordinates are set to one column"
+msgstr "L'ordre des coordonnées doit être spécifié quand les coordonnées sont dans une seule colonne"
+
+msgid ""
+"Coordinates separator must be specified when coordinates are set to one "
+"column"
+msgstr "Le séparateur des coordonnées doit être spécifié quand les coordonnées sont dans une seule colonne"
+
+msgid ""
+"Latitude field must be specified when coordinates are set to two columns"
+msgstr "le champ 'Latitude' doit être spécifié quand les coordonnées sont dans deux colonnes"
+
+msgid ""
+"Longitude field must be specified when coordinates are set to two columns"
+msgstr "le champ 'Longitude' doit être spécifié quand les coordonnées sont dans deux colonnes"
+
+msgid "Incorrect value for coordinates field"
+msgstr "Valeur incorrecte pour le champ 'coordinates'"
