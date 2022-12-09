@@ -4,4 +4,4 @@
 
 ![Screenshot](./docs/source/_static/screenshot.png)
 
-Full documentation : https://terravisu.readthedocs.io/ddddddddddddddZ
+Full documentation : https://terravisu.readthedocs.io/
