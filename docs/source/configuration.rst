@@ -36,7 +36,11 @@ General
 
     Example::
 
-        SSL_ENABLED=1
+        SSL_ENABLED=True
+
+    Default::
+
+        False
 
 
 ^^^^^^^^^^^^
@@ -45,17 +49,17 @@ OIDC Connect
 
 To allow OIDC login, you should configure these settings.
 
-.. envvar:: OIDC_ENABLED
+.. envvar:: OIDC_ENABLE_LOGIN
 
     Enable OIDC connect login.
 
     Example::
 
-        OIDC_ENABLED=true
+        OIDC_ENABLE_LOGIN=True
 
     Default::
 
-        false
+        False
 
 .. envvar:: OIDC_DISABLE_INTERNAL_LOGIN
 
@@ -63,11 +67,11 @@ To allow OIDC login, you should configure these settings.
 
     Example::
 
-        OIDC_DISABLE_INTERNAL_LOGIN=true
+        OIDC_DISABLE_INTERNAL_LOGIN=True
 
     Default::
 
-        false
+        False
 
 .. envvar:: OIDC_AUTH_SERVER
 
