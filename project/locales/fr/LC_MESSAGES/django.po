@@ -53,7 +53,7 @@ msgid "Submit"
 msgstr "Envoyer"
 
 msgid "Reset password"
-msgstr "Mot de passe ublié ?"
+msgstr "Mot de passe oublié ?"
 
 msgid "OIDC connect"
 msgstr "Connexion via OIDC"
