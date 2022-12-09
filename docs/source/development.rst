@@ -18,7 +18,7 @@ Init database
 
 ..  code-block:: bash
 
-    docker-compose run --rm web ./manage.py createsuperuser
+    docker-compose run --rm web ./manage.py migrate
 
 
 ---------------------

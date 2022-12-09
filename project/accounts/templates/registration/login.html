@@ -21,6 +21,11 @@
                         <input class="btn btn-primary" type="submit" value="{% trans "Submit" %}" />
                         <a href="{% url 'password_reset' %}" style="float: right;">{% trans "Reset password" %}</a>
                     </div>
+                    {% if OIDC_ENABLED %}
+                    <div class="card-footer text-center">
+                        <a class="btn btn-secondary" href="/oidc/">{% trans "OIDC connect" %}</a>
+                    </div>
+                    {% endif %}
                 </div>
             </form>
         </div>

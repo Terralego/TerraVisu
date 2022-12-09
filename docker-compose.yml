@@ -8,7 +8,7 @@ x-images:
       target: dev
     user: ${UID:-1000}:${GID:-1000}
     environment:
-      - DJANGO_SETTINGS_MODULE=project.settings
+      - DJANGO_SETTINGS_MODULE=project.settings.dev
     env_file:
       - db.env
       - app.env

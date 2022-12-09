@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+from decouple import Csv, config
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_DIR = BASE_DIR.parent
@@ -21,12 +23,12 @@ PROJECT_DIR = BASE_DIR.parent
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = "django-insecure-^m=99#x(hg96op$zmqhv2!)!@5)i%kfw7v+wmg1mc&fmsdoezv"
+SECRET_KEY = config("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config("ALLOWED_HOST", default=[], cast=Csv())
 
 
 # Application definition
@@ -37,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "django_auth_oidc",
     "rest_framework",
     "rest_framework_gis",
     "crispy_forms",
@@ -78,6 +81,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                "project.context_processors.custom_settings",
             ],
         },
     },
@@ -172,3 +176,22 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 CELERY_TASK_ALWAYS_EAGER = False
 MEDIA_ROOT = PROJECT_DIR / "public" / "media"
 TERRA_DEFAULT_MAP_SETTINGS = {}
+
+
+SSL_ENABLED = config("SSL_ENABLED", default=False, cast=bool)
+if SSL_ENABLED:
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    SECURE_SSL_REDIRECT = True
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+
+# OpenID
+OIDC_ENABLE_LOGIN = config("OIDC_ENABLE_LOGIN", default=False, cast=bool)
+OIDC_DISABLE_INTERNAL_LOGIN = config(
+    "OIDC_DISABLE_INTERNAL_LOGIN", default=False, cast=bool
+)
+AUTH_SERVER = config("OIDC_AUTH_SERVER", default=None)
+AUTH_CLIENT_ID = config("OIDC_AUTH_CLIENT_ID", default=None)
+AUTH_CLIENT_SECRET = config("OIDC_AUTH_CLIENT_SECRET", default=None)
+AUTH_SCOPE = config("OIDC_AUTH_SCOPE", default="openid", cast=Csv())
+AUTH_GET_USER_FUNCTION = "project.accounts.oidc:get_user"
