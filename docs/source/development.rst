@@ -21,6 +21,15 @@ Init database
     docker-compose run --rm web ./manage.py migrate
 
 
+-----------------
+Load initial data
+-----------------
+
+..  code-block:: bash
+
+    docker-compose run --rm web ./manage.py loaddata project/fixtures/initial.json
+
+
 ---------------------
 Create your superuser
 ---------------------

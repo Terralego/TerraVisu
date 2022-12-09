@@ -1,0 +1,68 @@
+[
+  {
+    "model": "mapbox_baselayer.mapbaselayer",
+    "pk": 1,
+    "fields": {
+      "name": "OSM",
+      "order": 0,
+      "slug": "osm",
+      "base_layer_type": "raster",
+      "map_box_url": "",
+      "sprite": "",
+      "glyphs": "",
+      "min_zoom": 0,
+      "max_zoom": 19,
+      "tile_size": 256,
+      "attribution": "<a href=\"https://www.openstreetmap.org/copyright\">OSM Contributors</a>"
+    }
+  },
+  {
+    "model": "mapbox_baselayer.mapbaselayer",
+    "pk": 2,
+    "fields": {
+      "name": "IGN ortho",
+      "order": 1,
+      "slug": "ign-ortho",
+      "base_layer_type": "raster",
+      "map_box_url": "",
+      "sprite": "",
+      "glyphs": "",
+      "min_zoom": 0,
+      "max_zoom": 19,
+      "tile_size": 256,
+      "attribution": "© IGN - GeoPortail"
+    }
+  },
+  {
+    "model": "mapbox_baselayer.baselayertile",
+    "pk": 1,
+    "fields": {
+      "base_layer": 1,
+      "url": "//a.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    }
+  },
+  {
+    "model": "mapbox_baselayer.baselayertile",
+    "pk": 2,
+    "fields": {
+      "base_layer": 1,
+      "url": "//b.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    }
+  },
+  {
+    "model": "mapbox_baselayer.baselayertile",
+    "pk": 3,
+    "fields": {
+      "base_layer": 1,
+      "url": "//c.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    }
+  },
+  {
+    "model": "mapbox_baselayer.baselayertile",
+    "pk": 4,
+    "fields": {
+      "base_layer": 2,
+      "url": "//wxs.ign.fr/essentiels/geoportail/wmts?LAYER=ORTHOIMAGERY.ORTHOPHOTOS&EXCEPTIONS=text/xml&FORMAT=image/jpeg&SERVICE=WMTS&VERSION=1.0.0&REQUEST=GetTile&STYLE=normal&TILEMATRIXSET=PM&TILEMATRIX={z}&TILEROW={y}&TILECOL={x}"
+    }
+  }
+]
