@@ -12,7 +12,7 @@ asgiref==3.5.2
     #   django
 babel==2.11.0
     # via sphinx
-black==22.10.0
+black==22.12.0
     # via -r dev-requirements.in
 build==0.9.0
     # via pip-tools
@@ -120,11 +120,6 @@ sqlparse==0.4.3
     #   -c requirements.txt
     #   django
     #   django-debug-toolbar
-tomli==2.0.1
-    # via
-    #   black
-    #   build
-    #   pep517
 urllib3==1.26.13
     # via
     #   -c requirements.txt
