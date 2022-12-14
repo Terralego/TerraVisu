@@ -1,4 +1,4 @@
-<img src="./docs/source/_static/logo.webp" alt="TerraVisu" style="max-height: 100px; background-color: gray; padding: 10px;"/>
+![Logo](./docs/source/_static/logo_color.png)
 
 ![https://github.com/submarcos/TerraVisu/actions/workflows/test.yml](https://github.com/submarcos/TerraVisu/actions/workflows/test.yml/badge.svg)![https://codecov.io/gh/submarcos/TerraVisu](https://codecov.io/gh/submarcos/TerraVisu/branch/master/graph/badge.svg)
 
