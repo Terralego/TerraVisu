@@ -6,6 +6,8 @@
 Welcome to TerraVisu's documentation!
 =====================================
 
+.. image:: ./_static/logo_color.png
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
