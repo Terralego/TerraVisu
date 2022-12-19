@@ -64,7 +64,7 @@ COPY --from=build /opt/venv /opt/venv
 COPY project /opt/terra-visu/project
 COPY manage.py /opt/terra-visu/manage.py
 
-RUN ["SECRET_KEY=temp", "/opt/venv/bin/python", "manage.py", "compilemessages"]
+RUN SECRET_KEY=temp /opt/venv/bin/python manage.py compilemessages
 
 USER root
 
