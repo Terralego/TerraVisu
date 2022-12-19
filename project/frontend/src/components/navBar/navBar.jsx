@@ -1,16 +1,19 @@
 import React from 'react';
 import './navBar.css';
+import { useQuery } from 'react-query';
 import Menu from './menu';
+import { fetchScenes } from '../../Api';
 
-export default function Navbar() {
-  const settings = JSON.parse(localStorage.getItem('settings'));
+export default function Navbar(props) {
+  const { user, instance } = props;
+  const { isLoading, error, scenes } = useQuery('scenes', () => fetchScenes());
   return (
     <div className="heading">
-      <img src={settings.instance.logo} alt="logo" id="navbar-logo" />
+      <img src={props.instance.logo} alt="logo" id="navbar-logo" />
       <h1>
-        {settings.instance.title}
+        {props.instance.title}
         {' '}
-        <Menu />
+        <Menu user={props.user} instance={props.instance} />
       </h1>
     </div>
   );

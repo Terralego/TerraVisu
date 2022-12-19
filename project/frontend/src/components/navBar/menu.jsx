@@ -1,25 +1,34 @@
 import React from 'react';
 import './menu.css';
+import PropTypes from 'prop-types';
 
-const settings = JSON.parse(localStorage.getItem('settings'));
-
-function LoginButton() {
+function LoginButton(props) {
+  const { loginUrl } = props;
   return (
-    <a href={settings.instance.loginUrl}>Login</a>
+    <a href={loginUrl}>Login</a>
+
   );
 }
+LoginButton.propTypes = {
+  loginUrl: PropTypes.string.isRequired,
+};
 
-function LogoutButton() {
+function LogoutButton(props) {
   return (
     <div>
-      <span>{settings.user.email}</span>
-      <a href={settings.instance.logoutUrl}>Logout</a>
+      <span>{props.user.email}</span>
+      <a href={props.instance.logoutUrl}>Logout</a>
     </div>
   );
 }
-export default function Menu() {
-  if (settings.user !== null) {
-    return <LogoutButton />;
+export default function Menu(props) {
+  if (props.user !== null) {
+    return <LogoutButton user={props.user} instance={props.instance} />;
   }
-  return <LoginButton />;
+  return <LoginButton loginUrl={props.instance.loginUrl} />;
 }
+
+Menu.propTypes = {
+  instance: PropTypes.object.isRequired,
+  user: PropTypes.object.isRequired,
+};
