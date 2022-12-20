@@ -1,25 +1,25 @@
 import React from 'react';
 import './menu.css';
 
-const settings = JSON.parse(localStorage.getItem('settings'));
-
-function LoginButton() {
+function LoginButton(props) {
+  const { loginUrl } = props;
   return (
-    <a href={settings.instance.loginUrl}>Login</a>
+    <a href={loginUrl}>Login</a>
+
   );
 }
 
-function LogoutButton() {
+function LogoutButton({ instance, user }) {
   return (
     <div>
-      <span>{settings.user.email}</span>
-      <a href={settings.instance.logoutUrl}>Logout</a>
+      <span>{user.email}</span>
+      <a href={instance.logoutUrl}>Logout</a>
     </div>
   );
 }
-export default function Menu() {
-  if (settings.user !== null) {
-    return <LogoutButton />;
+export default function Menu({ user, instance }) {
+  if (user !== null) {
+    return <LogoutButton user={user} instance={instance} />;
   }
-  return <LoginButton />;
+  return <LoginButton loginUrl={instance.loginUrl} />;
 }

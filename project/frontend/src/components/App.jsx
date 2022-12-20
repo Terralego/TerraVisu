@@ -1,24 +1,30 @@
 import React from 'react';
+import { useQuery } from 'react-query';
 import Navbar from './navBar/navBar';
 import Map from './map/Map';
 import './App.css';
 
-async function fetchSettings() {
-  const response = await fetch('/api/settings/');
-  const data = await response.json();
-  return data;
-}
+import fetchSettings from '../Api';
 
 export default function App() {
-  fetchSettings().then((data) => {
-    // localStorage.removeItem('settings');
-    localStorage.setItem('settings', JSON.stringify(data));
-  });
+  const { isLoading, error, data } = useQuery('settings', () => fetchSettings());
+  if (isLoading) {
+    return <span>Loading...</span>;
+  }
+
+  if (error) {
+    return (
+      <span>
+        Error:
+        {error.message}
+      </span>
+    );
+  }
 
   return (
     <div className="App">
-      <Navbar />
-      <Map />
+      <Navbar instance={data.instance} user={data.user} />
+      <Map data />
     </div>
   );
 }
