@@ -108,3 +108,44 @@ To allow OIDC login, you should configure these settings.
     Default::
 
         openid
+
+
+^^^^^^
+SENTRY
+^^^^^^
+
+.. envvar:: SENTRY_DSN
+
+    Set your SENTRY_DSN to enable sentry reporting.
+
+    Example::
+
+        SENTRY_DSN=https://your.sentry/dsn
+
+    Default::
+
+        None
+
+.. envvar:: SENTRY_TRACE_SAMPLE_RATE
+
+    Specify sample rate for your performance tracking.
+
+    Example::
+
+        SENTRY_TRACE_SAMPLE_RATE=1.0
+
+    Default::
+
+        0.2
+
+.. envvar:: SENTRY_SEND_DEFAULT_PII
+
+    Specify if sentry enable user informations.
+
+    Example::
+
+        SENTRY_SEND_DEFAULT_PII=False
+
+    Default::
+
+        True
