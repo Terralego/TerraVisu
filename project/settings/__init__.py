@@ -12,7 +12,11 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 import os
 from pathlib import Path
 
+import sentry_sdk
 from decouple import Csv, config
+from sentry_sdk.integrations.celery import CeleryIntegration
+from sentry_sdk.integrations.django import DjangoIntegration
+from sentry_sdk.integrations.redis import RedisIntegration
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -199,3 +203,12 @@ AUTH_CLIENT_ID = config("OIDC_AUTH_CLIENT_ID", default=None)
 AUTH_CLIENT_SECRET = config("OIDC_AUTH_CLIENT_SECRET", default=None)
 AUTH_SCOPE = config("OIDC_AUTH_SCOPE", default="openid", cast=Csv())
 AUTH_GET_USER_FUNCTION = "project.accounts.oidc:get_user"
+
+SENTRY_DSN = config("SENTRY_DSN", default=None, cast=str)
+if SENTRY_DSN:
+    sentry_sdk.init(
+        dsn=SENTRY_DSN,
+        integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
+        traces_sample_rate=config("SENTRY_TRACE_SAMPLE_RATE", default=0.2, cast=float),
+        send_default_pii=config("SENTRY_SEND_DEFAULT_PII", default=True, cast=bool),
+    )
