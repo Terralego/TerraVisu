@@ -178,7 +178,9 @@ SESSION_ENGINE = "django.contrib.sessions.backends.cache"
 CELERY_TASK_ALWAYS_EAGER = False
 
 TERRA_DEFAULT_MAP_SETTINGS = {}
-
+CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="", cast=Csv())
+SESSION_COOKIE_DOMAIN = config("SESSION_COOKIE_DOMAIN", default=None, cast=str)
+CSRF_COOKIE_DOMAIN = config("CSRF_COOKIE_DOMAIN", default=None, cast=str)
 
 SSL_ENABLED = config("SSL_ENABLED", default=False, cast=bool)
 if SSL_ENABLED:
