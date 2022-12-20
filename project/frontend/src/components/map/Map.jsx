@@ -8,7 +8,7 @@ import { useQuery } from 'react-query';
 import fetchSettings from '../../Api';
 
 export default function Map() {
-  const { isLoading, error, data } = useQuery('settings', () => fetchSettings());
+  const { isLoading, data } = useQuery('settings', () => fetchSettings());
   const mapContainer = useRef(null);
   const map = useRef(null);
   const { lng, lat, zoom } = data.map.default;
