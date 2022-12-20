@@ -204,7 +204,7 @@ AUTH_CLIENT_SECRET = config("OIDC_AUTH_CLIENT_SECRET", default=None)
 AUTH_SCOPE = config("OIDC_AUTH_SCOPE", default="openid", cast=Csv())
 AUTH_GET_USER_FUNCTION = "project.accounts.oidc:get_user"
 
-SENTRY_DSN = config("SENTRY_DSN", default=None, cast=str)
+SENTRY_DSN = config("SENTRY_DSN", default="", cast=str)
 if SENTRY_DSN:
     sentry_sdk.init(
         dsn=SENTRY_DSN,
