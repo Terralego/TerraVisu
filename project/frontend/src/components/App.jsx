@@ -24,7 +24,7 @@ export default function App() {
   return (
     <div className="App">
       <Navbar instance={data.instance} user={data.user} />
-      <Map data />
+      <Map mapData={data.map} />
     </div>
   );
 }
