@@ -61,8 +61,12 @@ CMD /opt/venv/bin/python manage.py runserver 0.0.0.0:8000
 FROM base as prod
 
 COPY --from=build /opt/venv /opt/venv
+
 COPY project /opt/terra-visu/project
 COPY manage.py /opt/terra-visu/manage.py
+COPY Procfile /opt/terra-visu/Procfile
+COPY .docker/backend/release.sh /usr/local/bin/release.sh
+
 
 RUN ["/opt/venv/bin/python", "manage.py", "compilemessages"]
 
