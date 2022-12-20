@@ -4,22 +4,17 @@ import 'maplibre-gl/dist/maplibre-gl.css';
 import './Map.css';
 import { MapboxStyleSwitcherControl } from 'mapbox-gl-style-switcher';
 import 'mapbox-gl-style-switcher/styles.css';
-import { useQuery } from 'react-query';
-import fetchSettings from '../../Api';
 
-export default function Map() {
-  const { isLoading, data } = useQuery('settings', () => fetchSettings());
+export default function Map({ mapData }) {
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const { lng, lat, zoom } = data.map.default;
-  if (isLoading) {
-    return <span>Loading...</span>;
-  }
+  const { lng, lat, zoom } = mapData.default;
+
   useEffect(() => {
-    if (map.current) return;
+    if (mapData.current) return;
     const styles = [];
 
-    data.map.baseLayers.forEach((element) => {
+    mapData.baseLayers.forEach((element) => {
       styles.push({
         title: element.label,
         uri: element.url,

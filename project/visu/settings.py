@@ -4,6 +4,7 @@ from siteprefs.toolbox import preferences
 
 INSTANCE_TITLE = getattr(settings, "INSTANCE_TITLE", "TerraVisu")
 INSTANCE_LOGO = getattr(settings, "INSTANCE_LOGO", "/static/img/logo.webp")
+INSTANCE_FAVICON = getattr(settings, "INSTANCE_FAVICON", "/static/img/favicon.ico")
 MAP_BBOX_LNG_MIN = getattr(settings, "MAP_BBOX_LNG_MIN", -180.0)
 MAP_BBOX_LNG_MAX = getattr(settings, "MAP_BBOX_LNG_MAX", 180.0)
 MAP_BBOX_LAT_MIN = getattr(settings, "MAP_BBOX_LAT_MIN", -90.0)
@@ -23,6 +24,11 @@ with preferences() as prefs:
                 INSTANCE_TITLE,
                 prefs.one(
                     INSTANCE_LOGO, static=False, field=ImageField(upload_to="logos/")
+                ),
+                prefs.one(
+                    INSTANCE_FAVICON,
+                    static=False,
+                    field=ImageField(upload_to="favicons/"),
                 ),
             ),
             static=False,

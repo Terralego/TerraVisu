@@ -8,4 +8,5 @@ def custom_settings(request):
         "OIDC_ENABLED": settings.OIDC_ENABLE_LOGIN,
         "INSTANCE_TITLE": visu_settings.INSTANCE_TITLE,
         "INSTANCE_LOGO": visu_settings.INSTANCE_LOGO,
+        "INSTANCE_FAVICON": visu_settings.INSTANCE_FAVICON,
     }
