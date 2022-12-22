@@ -55,7 +55,7 @@ def run_model_object_method(self, app, model, pk, method, success_state=states.S
 
 
 @shared_task(bind=True)
-def run_auto_refresh_source():
+def run_auto_refresh_source(*args, **kwargs):
     from project.geosource.periodics import auto_refresh_source
 
     auto_refresh_source()
