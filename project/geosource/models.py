@@ -70,11 +70,11 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         choices=GeometryTypes.choices(), null=True, blank=True
     )
 
-    settings = models.JSONField(default=dict)
-    report = models.JSONField(default=dict)
+    settings = models.JSONField(default=dict, blank=True)
+    report = models.JSONField(default=dict, blank=True)
 
-    task_id = models.CharField(null=True, max_length=255)
-    task_date = models.DateTimeField(null=True)
+    task_id = models.CharField(null=True, max_length=255, blank=True)
+    task_date = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     last_refresh = models.DateTimeField(default=timezone.now)

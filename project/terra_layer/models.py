@@ -4,12 +4,6 @@ from hashlib import md5
 from django.contrib.auth.models import Group
 from django.core.cache import cache
 from django.db import models, transaction
-
-try:
-    from django.db.models import JSONField
-except ImportError:  # TODO Remove when dropping Django releases < 3.1
-    from django.contrib.postgres.fields import JSONField
-
 from django.utils.functional import cached_property
 from django.utils.text import slugify
 from mapbox_baselayer.models import MapBaseLayer
@@ -34,10 +28,10 @@ class Scene(models.Model):
         max_length=255, upload_to="scene-icons", null=True, default=None
     )
     order = models.IntegerField(default=0, db_index=True)
-    tree = JSONField(
+    tree = models.JSONField(
         default=list, validators=[JSONSchemaValidator(limit_value=SCENE_LAYERTREE)]
     )
-    config = JSONField(default=dict)
+    config = models.JSONField(default=dict)
     baselayer = models.ManyToManyField(MapBaseLayer)
 
     def get_absolute_url(self):
@@ -142,8 +136,8 @@ class LayerGroup(models.Model):
     )
     order = models.IntegerField(default=0)
     exclusive = models.BooleanField(default=False)
-    selectors = JSONField(null=True, default=None)
-    settings = JSONField(default=dict)
+    selectors = models.JSONField(null=True, default=None)
+    settings = models.JSONField(default=dict)
 
     class Meta:
         ordering = ["order"]
@@ -168,27 +162,27 @@ class Layer(models.Model):
     # Contains the filter expression for source data
     source_filter = models.TextField(blank=True)
 
-    layer_style = JSONField(default=dict)  # To be removed
-    layer_style_wizard = JSONField(default=dict)  # To be removed
+    layer_style = models.JSONField(default=dict)  # To be removed
+    layer_style_wizard = models.JSONField(default=dict)  # To be removed
 
-    main_style = JSONField(default=dict)
+    main_style = models.JSONField(default=dict)
 
-    settings = JSONField(default=dict)
+    settings = models.JSONField(default=dict)
     active_by_default = models.BooleanField(default=False)
 
-    legends = JSONField(default=list)
+    legends = models.JSONField(default=list)
 
     table_enable = models.BooleanField(default=False)
     table_export_enable = models.BooleanField(default=False)
 
-    popup_config = JSONField(default=dict)
-    minisheet_config = JSONField(default=dict)
+    popup_config = models.JSONField(default=dict)
+    minisheet_config = models.JSONField(default=dict)
 
     main_field = models.ForeignKey(
         Field, null=True, on_delete=models.SET_NULL, related_name="is_main_of"
     )
 
-    interactions = JSONField(default=list)
+    interactions = models.JSONField(default=list)
 
     fields = models.ManyToManyField(Field, through="FilterField")
 
@@ -358,10 +352,10 @@ class CustomStyle(models.Model):
     source = models.ForeignKey(
         Source, on_delete=models.CASCADE, related_name="sublayers"
     )
-    style = JSONField(default=dict)  # To be removed
-    style_config = JSONField(default=dict)
+    style = models.JSONField(default=dict)  # To be removed
+    style_config = models.JSONField(default=dict)
 
-    interactions = JSONField(default=list)
+    interactions = models.JSONField(default=list)
 
     @property
     def map_style(self):
@@ -384,7 +378,7 @@ class FilterField(models.Model):
     order = models.IntegerField(default=0)
 
     filter_enable = models.BooleanField(default=False)
-    filter_settings = JSONField(default=dict)
+    filter_settings = models.JSONField(default=dict)
     format_type = models.CharField(max_length=255, default=None, null=True)
 
     # Whether the field can be exported
@@ -397,7 +391,7 @@ class FilterField(models.Model):
     display = models.BooleanField(default=True)
 
     # Config for all non handled things
-    settings = JSONField(default=dict)
+    settings = models.JSONField(default=dict)
 
     class Meta:
         ordering = ("order",)
