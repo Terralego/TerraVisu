@@ -52,7 +52,12 @@ services:
       context: .
       dockerfile: .docker/frontend/Dockerfile
     volumes:
-      - .:/app
+      - ./project/frontend:/app/project/frontend
+      - ./webpack.config.js:/app/webpack.config.js
+      - ./package.json:/app/package.json
+      - ./package-lock.json:/app/package-lock.json
+      - ./.eslintrc.js:/app/.eslintrc.js
+      - ./.babelrc:/app/.babelrc
 
 volumes:
   db:
