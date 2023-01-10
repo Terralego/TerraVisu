@@ -48,4 +48,4 @@ Launch stack
     docker-compose up
 
 
-Then go to http://127.0.0.1:8000
+Then go to http://visu.localhost:8000
