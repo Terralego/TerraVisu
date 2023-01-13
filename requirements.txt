@@ -146,7 +146,7 @@ python-crontab==2.6.0
     # via django-celery-beat
 python-dateutil==2.8.2
     # via python-crontab
-python-decouple==3.6
+python-decouple==3.7
     # via -r requirements.in
 python-jose==3.3.0
     # via openid-connect
