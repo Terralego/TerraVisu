@@ -54,7 +54,7 @@ crispy-bootstrap5==0.7
     # via -r requirements.in
 deepmerge==1.1.0
     # via django-geostore
-django==4.1.5
+django==4.1.6
     # via
     #   -r requirements.in
     #   crispy-bootstrap5
