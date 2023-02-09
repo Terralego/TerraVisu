@@ -184,7 +184,6 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                     len(fields[field_name].sample) < self.MAX_SAMPLE_DATA
                     and value is not None
                 ):
-
                     if isinstance(value, bytes):
                         try:
                             value = value.decode()

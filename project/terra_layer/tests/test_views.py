@@ -171,7 +171,6 @@ class ModelSourceViewsetTestCase(APITestCase):
         self.assertEqual(response.get("slug"), "my-newslug")
 
     def test_create_scene_with_group_in_tree(self):
-
         query = {
             "name": "Scene Name",
             "category": "map",
@@ -197,7 +196,6 @@ class ModelSourceViewsetTestCase(APITestCase):
         self.assertEqual(group.view.pk, response["id"])
 
     def test_create_scene_with_layer_in_tree(self):
-
         layer = Layer.objects.create(
             group=None, source=self.source, minisheet_config={"enable": False}
         )
@@ -552,7 +550,6 @@ class ModelSourceViewsetTestCase(APITestCase):
             self.assertEqual(response.status_code, HTTP_200_OK)
 
     def test_validation_error_on_scene_create(self):
-
         layer = Layer.objects.create(group=None, source=self.source)
 
         query = {
@@ -594,7 +591,6 @@ class ModelSourceViewsetTestCase(APITestCase):
         self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
 
     def test_validation_error_on_delete_attached_layer(self):
-
         layer = Layer.objects.create(group=None, source=self.source)
 
         query = {

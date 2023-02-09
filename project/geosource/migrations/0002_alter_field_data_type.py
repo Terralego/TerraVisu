@@ -6,7 +6,6 @@ import project.geosource.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("geosource", "0001_initial"),
     ]

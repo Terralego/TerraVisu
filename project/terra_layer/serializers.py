@@ -103,7 +103,6 @@ class LayerDetailSerializer(ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-
         instance = super().update(instance, validated_data)
 
         # Update m2m through field

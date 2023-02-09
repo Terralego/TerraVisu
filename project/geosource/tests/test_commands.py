@@ -21,7 +21,6 @@ class ResyncAllSourcesTestCase(TestCase):
         )
 
     def test_resync_all_sources(self):
-
         with mock.patch(
             "project.geosource.models.GeoJSONSource.refresh_data"
         ) as mocked, mock.patch(
@@ -33,7 +32,6 @@ class ResyncAllSourcesTestCase(TestCase):
         mocked.assert_called_once()
 
     def test_resync_all_sources_sync(self):
-
         with mock.patch(
             "project.geosource.models.GeoJSONSource.refresh_data"
         ) as mocked:
@@ -55,7 +53,6 @@ class ResyncAllSourcesTestCase(TestCase):
         mocked.assert_called_once()
 
     def test_resync_source_sync(self):
-
         with mock.patch(
             "project.geosource.models.GeoJSONSource.refresh_data"
         ) as mocked:
@@ -79,7 +76,6 @@ class ResyncAllSourcesTestCase(TestCase):
                     call_command("resync_all_sources")
 
     def test_resync_all_sources_fail_force(self):
-
         with mock.patch(
             "project.geosource.models.GeoJSONSource.refresh_data"
         ) as mocked, mock.patch(

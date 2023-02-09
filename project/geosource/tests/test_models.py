@@ -230,7 +230,6 @@ class ModelCommandSourceTestCase(TestCase):
 
     @mock.patch("sys.stdout", new_callable=StringIO)
     def test_refresh_data(self, mocked_stdout):
-
         self.source.refresh_data()
         self.assertIn("TestFooBarBar", mocked_stdout.getvalue())
 
