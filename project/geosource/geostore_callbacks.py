@@ -8,7 +8,6 @@ logger = logging.getLogger(__name__)
 
 
 def layer_callback(geosource):
-
     group_name = geosource.settings.pop("group", "reference")
 
     defaults = {

@@ -10,7 +10,6 @@ from .app_settings import MAX_TASK_RUNTIME
 
 
 class CeleryCallMethodsMixin:
-
     DONE_STATUSES = ("SUCCESS", "FAILURE", "NEED_SYNC", None)
 
     def update_status(self, task):

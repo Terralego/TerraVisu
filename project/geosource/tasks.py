@@ -8,7 +8,6 @@ logger = logging.getLogger(__name__)
 
 
 def set_failure_state(task, method, message):
-
     # Failure messaging needs to be formed as expected by celery API
     logger.warning(message)
     task.update_state(

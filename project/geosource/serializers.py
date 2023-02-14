@@ -35,7 +35,6 @@ class PolymorphicModelSerializer(serializers.ModelSerializer):
             return cls.many_init(*args, **kwargs)
 
         if "data" in kwargs:
-
             data_type = kwargs["data"].get(cls.type_field)
 
             serializer = cls.get_serializer_from_type(data_type)
@@ -132,7 +131,6 @@ class SourceSerializer(PolymorphicModelSerializer):
         self._update_fields(source)
 
         for field_data in self.get_initial().get("fields", []):
-
             try:
                 instance = source.fields.get(name=field_data.get("name"))
                 serializer = FieldSerializer(instance=instance, data=field_data)

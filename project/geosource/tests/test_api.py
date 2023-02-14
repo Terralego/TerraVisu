@@ -157,7 +157,6 @@ class ModelSourceViewsetTestCase(APITestCase):
         self.assertDictContainsSubset(self.source_example, response.json())
 
     def test_wmts_source_creation(self):
-
         wmts_source = {
             "_type": "WMTSSource",
             "name": "Test Source",

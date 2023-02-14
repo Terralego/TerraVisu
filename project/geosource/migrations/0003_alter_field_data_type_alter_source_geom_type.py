@@ -6,7 +6,6 @@ import project.geosource.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("geosource", "0002_alter_field_data_type"),
     ]

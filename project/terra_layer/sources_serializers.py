@@ -12,7 +12,6 @@ DEFAULT_SOURCE_NAME = "terra"
 class SourceSerializer(serializers.BaseSerializer):
     @classmethod
     def get_object_serializer(cls, obj):
-
         source = obj.source.get_real_instance()
         clsmembers = inspect.getmembers(sys.modules[__name__], inspect.isclass)
 

@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("geosource", "0003_alter_field_data_type_alter_source_geom_type"),
     ]

@@ -9,7 +9,6 @@ import project.terra_layer.schema
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
     dependencies = [

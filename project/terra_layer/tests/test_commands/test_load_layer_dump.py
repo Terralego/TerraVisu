@@ -13,7 +13,6 @@ UserModel = get_user_model()
 
 class LayerDumpTestCase(TestCase):
     def setUp(self):
-
         self.file = os.path.join(
             "project", "terra_layer", "tests", "test_commands", "data", "data.json"
         )

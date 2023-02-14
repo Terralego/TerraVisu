@@ -2692,7 +2692,6 @@ class StyleTestCase(TestCase):
         )
 
     def test_categorize_colors_0value(self):
-
         self.layer.main_style = {
             "map_style_type": "fill",
             "type": "wizard",
@@ -2730,7 +2729,6 @@ class StyleTestCase(TestCase):
         )
 
     def test_categorize_colors(self):
-
         self.layer.main_style = {
             "map_style_type": "fill",
             "type": "wizard",
@@ -2799,7 +2797,6 @@ class StyleTestCase(TestCase):
         )
 
     def test_categorize_colors_with_no_value(self):
-
         self.layer.main_style = {
             "map_style_type": "fill",
             "type": "wizard",
@@ -2882,7 +2879,6 @@ class StyleTestCase(TestCase):
         )
 
     def test_categorize_radius_with_no_value(self):
-
         self.layer.main_style = {
             "map_style_type": "circle",
             "type": "wizard",
@@ -2988,7 +2984,6 @@ class StyleTestCase(TestCase):
         )
 
     def test_categorize_values_with_no_value(self):
-
         self.layer.main_style = {
             "map_style_type": "line",
             "type": "wizard",
@@ -3089,7 +3084,6 @@ class StyleTestCase(TestCase):
         )
 
     def test_zoom_weight_style(self):
-
         self.layer.main_style = {
             "map_style_type": "icon",
             "type": "wizard",
@@ -3120,7 +3114,6 @@ class StyleTestCase(TestCase):
         )
 
     def test_icon_style(self):
-
         self.layer.main_style = {
             "map_style_type": "icon",
             "type": "wizard",
@@ -3152,7 +3145,6 @@ class StyleTestCase(TestCase):
         )
 
     def test_text_style(self):
-
         self.layer.main_style = {
             "map_style_type": "text",
             "type": "wizard",
@@ -3206,7 +3198,6 @@ class StyleTestCase(TestCase):
         )
 
     def test_remove_unused_style(self):
-
         self.layer.main_style = {
             "map_style_type": "icon",
             "type": "wizard",
