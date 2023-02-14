@@ -100,7 +100,7 @@ djangorestframework-gis==1.0
     # via django-geostore
 ecdsa==0.18.0
     # via python-jose
-fiona==1.9.1
+fiona==1.8.22
     # via
     #   -r requirements.in
     #   django-geostore
@@ -171,6 +171,7 @@ six==1.16.0
     # via
     #   click-repl
     #   ecdsa
+    #   fiona
     #   munch
     #   python-dateutil
 sqlparse==0.4.3
