@@ -60,6 +60,7 @@ django==4.1.6
     #   crispy-bootstrap5
     #   django-auth-oidc
     #   django-celery-beat
+    #   django-crispy-forms
     #   django-filter
     #   django-geostore
     #   django-mapbox-baselayer
@@ -72,7 +73,7 @@ django-celery-beat==2.4.0
     # via -r requirements.in
 django-celery-results==2.4.0
     # via -r requirements.in
-django-crispy-forms==1.14.0
+django-crispy-forms==2.0
     # via
     #   -r requirements.in
     #   crispy-bootstrap5
