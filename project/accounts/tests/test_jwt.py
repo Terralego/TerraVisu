@@ -15,12 +15,16 @@ class JWTAuthTestCase(APITestCase):
         cls.user = User.objects.create_user(email="user@test.com", password="secret")
 
     def test_obtain_token(self):
-        response = self.client.post(reverse("token-obtain"), {"email": self.user.email, "password": "secret"})
+        response = self.client.post(
+            reverse("token-obtain"), {"email": self.user.email, "password": "secret"}
+        )
         self.assertEqual(HTTP_201_CREATED, response.status_code, response.json())
         self.assertIsNotNone(response.json().get("token"))
 
     def test_refresh_token(self):
-        r = self.client.post(reverse("token-obtain"), {"email": self.user.email, "password": "secret"})
+        r = self.client.post(
+            reverse("token-obtain"), {"email": self.user.email, "password": "secret"}
+        )
         token = r.json().get("token")
 
         response = self.client.post(reverse("token-refresh"), {"token": token})
@@ -29,7 +33,9 @@ class JWTAuthTestCase(APITestCase):
         self.assertIsNotNone(response.json().get("token"))
 
     def test_verify_token(self):
-        r = self.client.post(reverse("token-obtain"), {"email": self.user.email, "password": "secret"})
+        r = self.client.post(
+            reverse("token-obtain"), {"email": self.user.email, "password": "secret"}
+        )
         token = r.json().get("token")
 
         response = self.client.post(reverse("token-verify"), {"token": token})
