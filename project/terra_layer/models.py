@@ -395,3 +395,18 @@ class FilterField(models.Model):
 
     class Meta:
         ordering = ("order",)
+
+
+class Pictogram(models.Model):
+    name = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255)
+    layer = models.ForeignKey(Layer, on_delete=models.PROTECT)
+    file = models.ImageField(upload_to="terra_layer/pictogram/%Y/")
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+        super().save(*args, **kwargs)
+
+    class Meta:
+        unique_together = ("name", "layer")
