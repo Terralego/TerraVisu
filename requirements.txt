@@ -27,6 +27,8 @@ certifi==2022.12.7
     #   fiona
     #   requests
     #   sentry-sdk
+cffi==1.15.1
+    # via cryptography
 chardet==5.1.0
     # via pyexcel
 charset-normalizer==2.1.1
@@ -52,6 +54,8 @@ cligj==0.7.2
     # via fiona
 crispy-bootstrap5==0.7
     # via -r requirements.in
+cryptography==39.0.1
+    # via pyjwt
 deepmerge==1.1.0
     # via django-geostore
 django==4.1.7
@@ -67,6 +71,7 @@ django==4.1.7
     #   django-polymorphic
     #   django-token-tools
     #   djangorestframework
+    #   drf-jwt
 django-auth-oidc @ git+https://gitlab.com/PaulFlorence/django-auth-oidc.git@fix_4
     # via -r requirements.in
 django-celery-beat==2.4.0
@@ -97,8 +102,11 @@ djangorestframework==3.14.0
     # via
     #   django-geostore
     #   djangorestframework-gis
+    #   drf-jwt
 djangorestframework-gis==1.0
     # via django-geostore
+drf-jwt==1.19.2
+    # via -r requirements.in
 ecdsa==0.18.0
     # via python-jose
 fiona==1.8.22
@@ -137,10 +145,14 @@ pyasn1==0.4.8
     # via
     #   python-jose
     #   rsa
+pycparser==2.21
+    # via cffi
 pyexcel==0.7.0
     # via -r requirements.in
 pyexcel-io==0.6.6
     # via pyexcel
+pyjwt[crypto]==2.6.0
+    # via drf-jwt
 pyrsistent==0.19.2
     # via jsonschema
 python-crontab==2.6.0
