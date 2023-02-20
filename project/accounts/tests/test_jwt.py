@@ -17,21 +17,19 @@ class JWTAuthTestCase(APITestCase):
     def test_obtain_token(self):
         response = self.client.post(reverse("token-obtain"), {"email": self.user.email, "password": "secret"})
         self.assertEqual(HTTP_201_CREATED, response.status_code, response.json())
-        self.assertTrue(response.json().get("token"))
+        self.assertIsNotNone(response.json().get("token"))
 
     def test_refresh_token(self):
-        user = User.objects.create_user(email="user2@test.com", password="mysecret")
-        r = self.client.post(reverse("token-obtain"), {"email": user.email, "password": "mysecret"})
+        r = self.client.post(reverse("token-obtain"), {"email": self.user.email, "password": "secret"})
         token = r.json().get("token")
 
         response = self.client.post(reverse("token-refresh"), {"token": token})
         # A new token should be send when refresh
         self.assertEqual(HTTP_201_CREATED, response.status_code, response.json())
-        self.assertTrue(response.json().get("token"))
+        self.assertIsNotNone(response.json().get("token"))
 
     def test_verify_token(self):
-        user = User.objects.create_user(email="test.user@test.com", password="secret")
-        r = self.client.post(reverse("token-obtain"), {"email": user.email, "password": "secret"})
+        r = self.client.post(reverse("token-obtain"), {"email": self.user.email, "password": "secret"})
         token = r.json().get("token")
 
         response = self.client.post(reverse("token-verify"), {"token": token})
