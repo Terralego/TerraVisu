@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 import os
+from datetime import timedelta
 from pathlib import Path
 
 import sentry_sdk
@@ -45,6 +46,8 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django_auth_oidc",
     "rest_framework",
+    "rest_framework_jwt",
+    "rest_framework_jwt.blacklist",
     "rest_framework_gis",
     "crispy_forms",
     "crispy_bootstrap5",
@@ -169,6 +172,15 @@ REST_FRAMEWORK = {
         "rest_framework.filters.SearchFilter",
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
+    "DEFAULT_AUTHENTICATION_CLASSES": (
+        "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
+    ),
+}
+
+
+JWT_AUTH = {
+    "JWT_PAYLOAD_HANDLER": "project.accounts.jwt_payload.terra_payload_handler",
+    "JWT_EXPIRATION_DELTA": timedelta(seconds=9999),
 }
 
 CACHES = {
