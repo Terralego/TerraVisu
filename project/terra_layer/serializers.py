@@ -71,7 +71,7 @@ class CustomStyleSerializer(ModelSerializer):
 class StyleImageSerializer(ModelSerializer):
     class Meta:
         model = StyleImage
-        fields = "__all__"
+        exclude = ("layer",)
 
 
 class LayerListSerializer(ModelSerializer):

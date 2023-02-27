@@ -3,8 +3,10 @@ import json
 from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group
+from django.contrib.auth.models import Group, Permission
 from django.core.cache import cache
+from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import RequestFactory
 from django.urls import reverse
 from geostore import GeometryTypes
 from geostore.tests.factories import LayerFactory
@@ -19,7 +21,13 @@ from rest_framework.status import (
 from rest_framework.test import APITestCase
 
 from project.geosource.models import FieldTypes, PostGISSource, Source, WMTSSource
-from project.terra_layer.models import CustomStyle, FilterField, Layer, LayerGroup
+from project.terra_layer.models import (
+    CustomStyle,
+    FilterField,
+    Layer,
+    LayerGroup,
+    StyleImage,
+)
 from project.terra_layer.utils import get_layer_group_cache_key
 
 from .factories import SceneFactory
@@ -788,3 +796,36 @@ class LayerViewTestCase(APITestCase):
         )
 
         self.assertEqual(response.status_code, HTTP_200_OK)
+
+    def test_style_images_in_layer_detail(self):
+        user = UserModel.objects.create(email="user@test.com", password="secret")
+        perm = Permission.objects.get(name="Can manage layers")
+        user.user_permissions.add(perm)
+
+        source = PostGISSource.objects.create(**self.source_params)
+        layer = Layer.objects.create(
+            name="test_layer", source=source, group=self.layer_group
+        )
+        style_image = StyleImage.objects.create(
+            name="test image",
+            layer=layer,
+            file=SimpleUploadedFile(content=b"abcdefgh", name="test file"),
+        )
+
+        self.client.force_authenticate(user)
+        response = self.client.get(reverse("layer-detail", args=[layer.pk]))
+        self.assertEqual(response.status_code, HTTP_200_OK, response.json())
+
+        # Needed to build the absolute url of the Image
+        request = RequestFactory().get("/")
+        self.assertEqual(
+            response.json().get("style_images"),
+            [
+                {
+                    "id": style_image.id,
+                    "name": style_image.name,
+                    "slug": style_image.slug,
+                    "file": request.build_absolute_uri(style_image.file.url),
+                }
+            ],
+        )
