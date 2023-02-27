@@ -397,10 +397,10 @@ class FilterField(models.Model):
         ordering = ("order",)
 
 
-class Pictogram(models.Model):
+class StyleImage(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
-    layer = models.ForeignKey(Layer, on_delete=models.PROTECT)
+    layer = models.ForeignKey(Layer, on_delete=models.CASCADE)
     file = models.ImageField(upload_to="terra_layer/pictogram/%Y/")
 
     def save(self, *args, **kwargs):
