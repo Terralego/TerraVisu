@@ -409,4 +409,4 @@ class Pictogram(models.Model):
         super().save(*args, **kwargs)
 
     class Meta:
-        unique_together = ("name", "layer")
+        unique_together = (("name", "layer"),)
