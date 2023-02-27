@@ -68,6 +68,12 @@ class CustomStyleSerializer(ModelSerializer):
         exclude = ("layer",)
 
 
+class StyleImageSerializer(ModelSerializer):
+    class Meta:
+        model = StyleImage
+        fields = "__all__"
+
+
 class LayerListSerializer(ModelSerializer):
     class Meta:
         model = Layer
@@ -84,6 +90,7 @@ class LayerDetailSerializer(ModelSerializer):
     fields = FilterFieldSerializer(many=True, read_only=True, source="fields_filters")
     extra_styles = CustomStyleSerializer(many=True, read_only=True)
     group = PrimaryKeyRelatedField(read_only=True)
+    style_images = StyleImageSerializer(many=True)
 
     @transaction.atomic
     def create(self, validated_data):
@@ -136,7 +143,3 @@ class LayerDetailSerializer(ModelSerializer):
         fields = "__all__"
 
 
-class StyleImageSerializer(ModelSerializer):
-    class Meta:
-        model = StyleImage
-        fields = "__all__"

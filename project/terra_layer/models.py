@@ -400,7 +400,7 @@ class FilterField(models.Model):
 class StyleImage(models.Model):
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
-    layer = models.ForeignKey(Layer, on_delete=models.CASCADE)
+    layer = models.ForeignKey(Layer, related_name="style_images", on_delete=models.CASCADE)
     file = models.ImageField(upload_to="terra_layer/pictogram/%Y/")
 
     def save(self, *args, **kwargs):
