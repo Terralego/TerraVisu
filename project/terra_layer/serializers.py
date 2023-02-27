@@ -141,5 +141,3 @@ class LayerDetailSerializer(ModelSerializer):
     class Meta:
         model = Layer
         fields = "__all__"
-
-
