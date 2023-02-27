@@ -120,7 +120,7 @@ class LayerViewset(ModelViewSet):
     search_fields = ["name", "settings"]
 
     def get_queryset(self):
-        return self.model.objects.all()
+        return self.model.objects.all().prefetch_related('style_images')
 
     def get_serializer_class(
         self,
