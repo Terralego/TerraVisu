@@ -60,6 +60,7 @@ class LayerDumpTestCase(TestCase):
                 "group": None,
                 "main_field": None,
                 "view": None,
+                "style_images": [],
             },
         )
 
