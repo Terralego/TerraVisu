@@ -6,7 +6,7 @@ from rest_framework.fields import SerializerMethodField
 from rest_framework.reverse import reverse
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 
-from .models import CustomStyle, FilterField, Layer, StyleImage, Scene
+from .models import CustomStyle, FilterField, Layer, Scene, StyleImage
 
 
 class SceneListSerializer(ModelSerializer):
