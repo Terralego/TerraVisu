@@ -59,6 +59,25 @@ services:
       - ./.eslintrc.js:/app/.eslintrc.js
       - ./.babelrc:/app/.babelrc
 
+  admin:
+    build:
+      context: .
+      dockerfile: .docker/admin/Dockerfile
+    environment:
+      - PORT=3000
+    volumes:
+      - ./admin/public:/app/public
+      - ./admin/src:/app/src
+      - ./admin/package.json:/app/package.json
+      - ./admin/package-lock.json:/app/package-lock.json
+      - ./admin/.eslintrc.js:/app/.eslintrc.js
+      - ./admin/.env:/app/.env
+
+    ports:
+      - "3000:3000"
+
+    stdin_open: true
+
 volumes:
   db:
   redis:

@@ -3,6 +3,7 @@ import uuid
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import Permission, PermissionsMixin, _user_has_perm
 from django.db import models
+from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
 from project.accounts.managers import UserManager
@@ -37,6 +38,25 @@ class User(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+    @property
+    def functional_permissions(self):
+        if self.is_active:
+            perms = FunctionalPermission.objects.all()
+
+            if not self.is_superuser:
+                perms = perms.filter(
+                    Q(pk__in=self.user_permissions.all())
+                    | Q(group__in=self.groups.all())
+                )
+        else:
+            perms = FunctionalPermission.objects.none()
+        return perms
+
+    @property
+    def terra_permissions_codenames(self):
+        perms = self.functional_permissions
+        return perms.values_list("codename", flat=True)
 
     def has_terra_perm(self, codename):
         if self.is_superuser:

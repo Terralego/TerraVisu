@@ -172,8 +172,12 @@ REST_FRAMEWORK = {
         "rest_framework.filters.SearchFilter",
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
+    "DEFAULT_PAGINATION_CLASS": "project.pagination.PagePagination",
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
     ),
 }
 
@@ -181,6 +185,7 @@ REST_FRAMEWORK = {
 JWT_AUTH = {
     "JWT_PAYLOAD_HANDLER": "project.accounts.jwt_payload.terra_payload_handler",
     "JWT_EXPIRATION_DELTA": timedelta(seconds=9999),
+    "JWT_AUTH_HEADER_PREFIX": "JWT",
 }
 
 CACHES = {
