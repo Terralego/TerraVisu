@@ -87,12 +87,13 @@ services:
     volumes:
       - ./admin/public:/app/public
       - ./admin/src:/app/src
+      - ./admin/build:/app/build
       - ./admin/package.json:/app/package.json
       - ./admin/package-lock.json:/app/package-lock.json
       - ./admin/.eslintrc.js:/app/.eslintrc.js
       - ./conf/admin.env:/app/.env
-      - .git/modules/admin:/app/.git
-    command: npm run build
+
+    command: npx react-scripts build
     depends_on:
       - web
       - elasticsearch
