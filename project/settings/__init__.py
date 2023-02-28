@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     "rest_framework_gis",
     "crispy_forms",
     "crispy_bootstrap5",
-    "crispy_bootstrap3",
     "geostore",
     "mapbox_baselayer",
     "siteprefs",
