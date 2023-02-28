@@ -91,7 +91,6 @@ services:
       - ./admin/package-lock.json:/app/package-lock.json
       - ./admin/.eslintrc.js:/app/.eslintrc.js
       - ./conf/admin.env:/app/.env
-      - ./admin/.git:/app/.git
       - .git/modules/admin:/app/.git
     command: npm run build
     depends_on:
