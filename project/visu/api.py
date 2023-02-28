@@ -22,6 +22,17 @@ class SettingsView(APIView):
 
         return Response(
             {
+                # deprecated section
+                "title": app_settings.INSTANCE_TITLE,
+                "theme": {
+                    "logo": {
+                        "src": app_settings.INSTANCE_LOGO,
+                        "alt": "Logo",
+                    },
+                    "favicon": app_settings.INSTANCE_FAVICON,
+                    "heading": "<h2>Administration</h2>",
+                },
+                # end deprecated section
                 "instance": {
                     "title": app_settings.INSTANCE_TITLE,
                     "logo": app_settings.INSTANCE_LOGO,

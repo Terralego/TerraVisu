@@ -30,11 +30,29 @@ services:
     image: redis:7-alpine
     volumes:
       - redis:/data
-  
+
+  elasticsearch:
+    hostname: elasticsearch
+    image: elasticsearch:7.16.2
+    #env_file: docker.env
+    environment:
+      ES_JAVA_OPTS: ${ES_JAVA_OPTS:--Xms1g -Xmx1g}
+    healthcheck:
+      test:
+        [
+          'CMD-SHELL',
+          'curl --silent --fail localhost:9200/_cluster/health || exit 1',
+        ]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+    volumes:
+      - ./conf/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - elasticsearch:/usr/share/elasticsearch/data/
+
   web:
     <<: [ *django ]
-    ports:
-      - "127.0.0.1:8000:8000"
     depends_on:
       - db
       - redis
@@ -58,26 +76,41 @@ services:
       - ./package-lock.json:/app/package-lock.json
       - ./.eslintrc.js:/app/.eslintrc.js
       - ./.babelrc:/app/.babelrc
+    depends_on:
+      - web
+      - elasticsearch
 
   admin:
     build:
       context: .
       dockerfile: .docker/admin/Dockerfile
-    environment:
-      - PORT=3000
     volumes:
       - ./admin/public:/app/public
       - ./admin/src:/app/src
       - ./admin/package.json:/app/package.json
       - ./admin/package-lock.json:/app/package-lock.json
       - ./admin/.eslintrc.js:/app/.eslintrc.js
-      - ./admin/.env:/app/.env
+      - ./conf/admin.env:/app/.env
+      - ./admin/.git:/app/.git
+      - .git/modules/admin:/app/.git
+    command: npm run build
+    depends_on:
+      - web
+      - elasticsearch
 
+  nginx:
+    image: nginx:latest
     ports:
-      - "3000:3000"
-
-    stdin_open: true
+      - "8080:80"
+    depends_on:
+      - web
+      - elasticsearch
+      - admin
+    volumes:
+      - ./admin/build:/var/www/admin/
+      - ./conf/nginx.dev.conf:/etc/nginx/conf.d/default.conf
 
 volumes:
   db:
   redis:
+  elasticsearch:

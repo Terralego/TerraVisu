@@ -35,11 +35,6 @@ class SceneListSerializer(ModelSerializer):
 
 class SceneDetailSerializer(ModelSerializer):
     slug = serializers.SlugField(required=False)
-    icon = serializers.SerializerMethodField()
-
-    def get_icon(self, obj):
-        if obj.custom_icon:
-            return obj.custom_icon.url
 
     class Meta:
         model = Scene
