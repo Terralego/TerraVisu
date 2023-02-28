@@ -72,8 +72,9 @@ class ModelSourceViewsetTestCase(APITestCase):
         ]
 
         response = self.client.get(reverse("geosource:geosource-list"))
+        data = response.json()["results"]
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(Source.objects.count(), len(response.json()))
+        self.assertEqual(Source.objects.count(), len(data))
 
     def test_refresh_view_fail(self):
         with patch(
@@ -310,40 +311,44 @@ class ModelSourceViewsetTestCase(APITestCase):
 
         list_url = reverse("geosource:geosource-list")
         response = self.client.get(list_url)
-        data = response.json()
+        data = response.json()["results"]
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(data), 3)
-        self.assertEqual(response.json()[0]["name"], obj.name)
+        self.assertEqual(data[0]["name"], obj.name)
 
         # Test ordering
-        response = self.client.get(list_url, {"ordering": "name"})
-        self.assertEqual(response.json()[-1]["name"], obj.name)
+        response = self.client.get(list_url, data={"ordering": "name"})
+        data = response.json()["results"]
+        self.assertEqual(data[-1]["name"], obj.name)
 
         response = self.client.get(list_url, {"ordering": "-name"})
-        self.assertEqual(response.json()[0]["name"], obj.name)
+        data = response.json()["results"]
+        self.assertEqual(data[0]["name"], obj.name)
 
         response = self.client.get(list_url, {"ordering": "polymorphic_ctype__model"})
-        self.assertEqual(response.json()[0]["name"], obj2.name)
+        data = response.json()["results"]
+        self.assertEqual(data[0]["name"], obj2.name)
 
         response = self.client.get(list_url, {"ordering": "-polymorphic_ctype__model"})
-        self.assertEqual(response.json()[-1]["name"], obj2.name)
+        data = response.json()["results"]
+        self.assertEqual(data[-1]["name"], obj2.name)
 
         # Test filter
         response = self.client.get(list_url, {"geom_type": GeometryTypes.Point.value})
-        data = response.json()
-        self.assertEqual(len(data), 1, data)
-        self.assertEqual(data[0]["name"], obj.name, data)
+        data = response.json()["results"]
+        self.assertEqual(len(data), 1)
+        self.assertEqual(data[0]["name"], obj.name)
 
         # Test search
         response = self.client.get(list_url, {"search": "foo"})
 
-        data = response.json()
+        data = response.json()["results"]
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["name"], obj.name)
 
         response = self.client.get(list_url, {"search": "bar"})
 
-        data = response.json()
+        data = response.json()["results"]
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["name"], obj2.name)
 

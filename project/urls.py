@@ -4,6 +4,11 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
+from drf_spectacular.views import (
+    SpectacularAPIView,
+    SpectacularRedocView,
+    SpectacularSwaggerView,
+)
 from rest_framework.routers import SimpleRouter
 
 from project.accounts.api import FunctionalPermissionViewSet, GroupViewSet, UserViewsSet
@@ -25,6 +30,18 @@ urlpatterns = [
     path("api/geosource/", include("project.geosource.urls", namespace="geosource")),
     path("api/geolayer/", include("project.terra_layer.urls")),
     path("api/auth/", include("project.accounts.urls")),
+    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
+    # Optional UI:
+    path(
+        "api/schema/swagger/",
+        SpectacularSwaggerView.as_view(url_name="schema"),
+        name="swagger",
+    ),
+    path(
+        "api/schema/redoc/",
+        SpectacularRedocView.as_view(url_name="schema"),
+        name="redoc",
+    ),
     path("api/", include(router.urls)),
     path("", include("project.visu.urls")),
     path("", include("project.frontend.urls")),

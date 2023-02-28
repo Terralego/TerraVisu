@@ -19,3 +19,4 @@ pyexcel
 python-decouple
 git+https://gitlab.com/PaulFlorence/django-auth-oidc.git@fix_4#egg=django-auth-oidc
 drf-jwt
+drf-spectacular

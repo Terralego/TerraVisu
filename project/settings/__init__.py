@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "rest_framework_gis",
     "crispy_forms",
     "crispy_bootstrap5",
+    "crispy_bootstrap3",
     "geostore",
     "mapbox_baselayer",
     "siteprefs",
@@ -62,6 +63,7 @@ INSTALLED_APPS = [
     "project.visu",
     "project.geosource",
     "project.terra_layer",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -156,7 +158,7 @@ LOCALE_PATHS = (BASE_DIR / "locales",)
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_ALLOWED_TEMPLATE_PACKS = ("bootstrap5",)
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
@@ -167,11 +169,19 @@ GEOSOURCE_DELETE_LAYER_CALLBACK = "project.geosource.geostore_callbacks.delete_l
 
 REST_FRAMEWORK = {
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_FILTER_BACKENDS": [
         "rest_framework.filters.OrderingFilter",
         "rest_framework.filters.SearchFilter",
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
+    "PAGE_SIZE": 100,
+    "DEFAULT_PARSER_CLASSES": (
+        "rest_framework.parsers.JSONParser",
+        "rest_framework.parsers.FormParser",
+        "rest_framework.parsers.MultiPartParser",
+    ),
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
     "DEFAULT_PAGINATION_CLASS": "project.pagination.PagePagination",
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -187,6 +197,16 @@ JWT_AUTH = {
     "JWT_EXPIRATION_DELTA": timedelta(seconds=9999),
     "JWT_AUTH_HEADER_PREFIX": "JWT",
 }
+
+
+with open(BASE_DIR / "VERSION") as version_file:
+    __version__ = version_file.read().strip()
+    SPECTACULAR_SETTINGS = {
+        "TITLE": "TerraVisu API",
+        "DESCRIPTION": "API for TerraVisu application",
+        "VERSION": __version__,
+        "SERVE_INCLUDE_SCHEMA": False,
+    }
 
 CACHES = {
     "default": {
