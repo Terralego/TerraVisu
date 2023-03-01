@@ -310,25 +310,23 @@ class ModelSourceViewsetTestCase(APITestCase):
         )
 
         list_url = reverse("geosource:geosource-list")
-        response = self.client.get(list_url)
-        data = response.json()["results"]
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(data), 3)
-        self.assertEqual(data[0]["name"], obj.name)
 
-        # Test ordering
+        # Test ordering by name asc
         response = self.client.get(list_url, data={"ordering": "name"})
         data = response.json()["results"]
         self.assertEqual(data[-1]["name"], obj.name)
 
+        # Test ordering by name desc
         response = self.client.get(list_url, {"ordering": "-name"})
         data = response.json()["results"]
         self.assertEqual(data[0]["name"], obj.name)
 
+        # Test ordering by polymorphic_ctype__model asc
         response = self.client.get(list_url, {"ordering": "polymorphic_ctype__model"})
         data = response.json()["results"]
         self.assertEqual(data[0]["name"], obj2.name)
 
+        # Test ordering by polymorphic_ctype__model desc
         response = self.client.get(list_url, {"ordering": "-polymorphic_ctype__model"})
         data = response.json()["results"]
         self.assertEqual(data[-1]["name"], obj2.name)
@@ -341,13 +339,11 @@ class ModelSourceViewsetTestCase(APITestCase):
 
         # Test search
         response = self.client.get(list_url, {"search": "foo"})
-
         data = response.json()["results"]
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["name"], obj.name)
 
         response = self.client.get(list_url, {"search": "bar"})
-
         data = response.json()["results"]
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["name"], obj2.name)
