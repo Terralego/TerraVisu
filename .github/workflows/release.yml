@@ -7,8 +7,10 @@ on:
 jobs:
   build_admin:
     runs-on: ubuntu-latest
-    env:
-      working-directory: ./admin
+    defaults:
+      run:
+        working-directory: admin
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
