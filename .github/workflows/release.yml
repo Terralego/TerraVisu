@@ -5,8 +5,31 @@ on:
     types: [created]
 
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      working-directory: ./admin
+
+    steps:
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+          cache: 'npm'
+
+      - name: Install admin dependencies
+        run: |
+          cd admin
+          npm ci --legacy-peer-deps --cache ~/.npm --prefer-offline --no-audit
+
+      - name: Build admin
+        run: |
+          npm run build
+
   release:
     runs-on: ubuntu-latest
+    needs: [build]
     permissions:
       packages: write  # required to publish docker image
     env:

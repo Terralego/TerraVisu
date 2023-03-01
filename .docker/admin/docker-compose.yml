@@ -1,0 +1,9 @@
+version: "3.8"
+services:
+  admin:
+    image: node:18
+    working_dir: /app
+
+    volumes:
+      - ../../admin:/app
+      - ../../conf/admin.env:/app/.env

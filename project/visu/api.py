@@ -1,3 +1,4 @@
+from constance import config
 from django.urls import reverse
 from mapbox_baselayer.models import MapBaseLayer
 from rest_framework import permissions
@@ -19,14 +20,19 @@ class SettingsView(APIView):
         user = (
             UserSerializer(request.user).data if request.user.is_authenticated else None
         )
+        from django.core.files.storage import default_storage
 
+        if default_storage.exists(config.INSTANCE_LOGO):
+            LOGO_URL = default_storage.url(config.INSTANCE_LOGO)
+        else:
+            LOGO_URL = config.INSTANCE_LOGO
         return Response(
             {
                 # deprecated section
                 "title": app_settings.INSTANCE_TITLE,
                 "theme": {
                     "logo": {
-                        "src": app_settings.INSTANCE_LOGO,
+                        "src": LOGO_URL,
                         "alt": "Logo",
                     },
                     "favicon": app_settings.INSTANCE_FAVICON,

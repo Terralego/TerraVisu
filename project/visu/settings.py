@@ -23,7 +23,9 @@ with preferences() as prefs:
             (
                 INSTANCE_TITLE,
                 prefs.one(
-                    INSTANCE_LOGO, static=False, field=ImageField(upload_to="logos/")
+                    INSTANCE_LOGO,
+                    static=False,
+                    field=ImageField(upload_to="logos/"),
                 ),
                 prefs.one(
                     INSTANCE_FAVICON,

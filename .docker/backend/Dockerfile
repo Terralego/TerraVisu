@@ -1,3 +1,14 @@
+FROM node:${NODE_VERSION_ADMIN:-18} as admin
+
+WORKDIR /app
+
+COPY admin .
+
+RUN npm ci --legacy-peer-deps
+COPY ./conf/admin.env .env
+RUN npx react-scripts --openssl-legacy-provider build
+
+
 FROM ubuntu:jammy as base
 
 ENV PYTHONBUFFERED 1
@@ -53,8 +64,10 @@ RUN /opt/venv/bin/pip install --no-cache-dir --upgrade -r /opt/terra-visu/requir
 
 FROM build as dev
 
+COPY --from=admin /app/build /opt/admin
 COPY dev-requirements.txt /opt/terra-visu/dev-requirements.txt
 RUN /opt/venv/bin/pip install --no-cache-dir --upgrade -r /opt/terra-visu/dev-requirements.txt
+COPY .docker/backend/update.sh /usr/local/bin/update.sh
 
 CMD /opt/venv/bin/python manage.py runserver 0.0.0.0:8000
 
@@ -65,8 +78,8 @@ COPY --from=build /opt/venv /opt/venv
 COPY project /opt/terra-visu/project
 COPY manage.py /opt/terra-visu/manage.py
 COPY Procfile /opt/terra-visu/Procfile
-COPY .docker/backend/release.sh /opt/release.sh
-
+COPY .docker/backend/update.sh /usr/local/bin/update.sh
+COPY --from=admin /app/build /opt/admin
 
 RUN ["/opt/venv/bin/python", "manage.py", "compilemessages"]
 
