@@ -54,7 +54,6 @@ INSTALLED_APPS = [
     "crispy_bootstrap5",
     "geostore",
     "mapbox_baselayer",
-    "siteprefs",
     "django_filters",
     "django_celery_results",
     "django_celery_beat",

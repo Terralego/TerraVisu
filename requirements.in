@@ -6,7 +6,6 @@ gunicorn
 django-crispy-forms
 crispy-bootstrap5
 django-mapbox-baselayer
-django-siteprefs
 django-constance[database]
 django-filter
 celery
