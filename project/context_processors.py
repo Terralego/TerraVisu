@@ -10,7 +10,7 @@ def custom_settings(request):
         "INSTANCE_LOGO": config.INSTANCE_LOGO
         if config.INSTANCE_LOGO.startswith("/")
         else default_storage.url(config.INSTANCE_LOGO),
-        "INSTANCE_FAVICON": config.INSTANCE_FAVISON
-        if config.INSTANCE_FAVISON.startswith("/")
-        else default_storage.url(config.INSTANCE_FAVISON),
+        "INSTANCE_FAVICON": config.INSTANCE_FAVICON
+        if config.INSTANCE_FAVICON.startswith("/")
+        else default_storage.url(config.INSTANCE_FAVICON),
     }
