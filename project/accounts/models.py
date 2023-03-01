@@ -53,11 +53,6 @@ class User(AbstractBaseUser, PermissionsMixin):
             perms = FunctionalPermission.objects.none()
         return perms
 
-    @property
-    def terra_permissions_codenames(self):
-        perms = self.functional_permissions
-        return perms.values_list("codename", flat=True)
-
     def has_terra_perm(self, codename):
         if self.is_superuser:
             return True
