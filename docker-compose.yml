@@ -34,7 +34,6 @@ services:
   elasticsearch:
     hostname: elasticsearch
     image: elasticsearch:7.16.2
-    #env_file: docker.env
     environment:
       ES_JAVA_OPTS: ${ES_JAVA_OPTS:--Xms1g -Xmx1g}
     healthcheck:
@@ -89,7 +88,6 @@ services:
     depends_on:
       - web
       - elasticsearch
-      #- admin
     volumes:
       - ./public:/var/www/
       - ./conf/nginx.dev.conf:/etc/nginx/conf.d/default.conf
