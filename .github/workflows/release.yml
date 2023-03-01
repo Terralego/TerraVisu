@@ -35,6 +35,7 @@ jobs:
       - name: Build admin
         working-directory: ./admin
         run: |
+          cp ../conf/admin.env .env
           npx react-scripts --openssl-legacy-provider build
           cp -r ./build ../public/admin
 
