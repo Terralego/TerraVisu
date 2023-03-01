@@ -41,6 +41,6 @@ class FunctionalPermissionViewSet(viewsets.ReadOnlyModelViewSet):
     )
     def available(self, request, *args, **kwargs):
         """List only logged user permission"""
-        perms = request.user.terra_permissions
+        perms = request.user.functional_permissions
         serializer = self.get_serializer(perms, many=True)
         return Response(serializer.data)
