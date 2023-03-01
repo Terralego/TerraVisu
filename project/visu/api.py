@@ -20,15 +20,16 @@ class SettingsView(APIView):
         )
         from django.core.files.storage import default_storage
 
-        if default_storage.exists(config.INSTANCE_LOGO):
-            LOGO_URL = default_storage.url(config.INSTANCE_LOGO)
-        else:
+        if config.INSTANCE_LOGO.startswith("/"):
             LOGO_URL = config.INSTANCE_LOGO
-
-        if default_storage.exists(config.INSTANCE_FAVICON):
-            FAVICON_URL = default_storage.url(config.INSTANCE_FAVICON)
         else:
+            LOGO_URL = default_storage.url(config.INSTANCE_LOGO)
+
+        if config.INSTANCE_FAVICON.startswith("/"):
             FAVICON_URL = config.INSTANCE_FAVICON
+        else:
+            FAVICON_URL = default_storage.url(config.INSTANCE_FAVICON)
+
         return Response(
             {
                 # deprecated section
