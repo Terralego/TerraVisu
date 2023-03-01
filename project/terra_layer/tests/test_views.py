@@ -51,9 +51,10 @@ class ModelSourceViewsetTestCase(APITestCase):
         [Layer.objects.create(group=group, source=self.source) for x in range(5)]
 
         response = self.client.get(reverse("layer-list"))
+        data = response.json()["results"]
         self.assertEqual(response.status_code, HTTP_200_OK)
 
-        self.assertEqual(Layer.objects.count(), len(response.json()))
+        self.assertEqual(Layer.objects.count(), len(data))
 
     def test_create_layer(self):
         query = {
@@ -110,7 +111,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         response = self.client.get(reverse("scene-list"))
         self.assertEqual(response.status_code, HTTP_200_OK)
         response = response.json()
-        self.assertEqual(response[0].get("name"), "test_scene")
+        self.assertEqual(response["results"][0].get("name"), "test_scene")
 
     def test_create_empty_tree_scene(self):
         query = {

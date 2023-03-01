@@ -7,6 +7,7 @@ django-crispy-forms
 crispy-bootstrap5
 django-mapbox-baselayer
 django-siteprefs
+django-constance[database]
 django-filter
 celery
 redis
@@ -19,3 +20,4 @@ pyexcel
 python-decouple
 git+https://gitlab.com/PaulFlorence/django-auth-oidc.git@fix_4#egg=django-auth-oidc
 drf-jwt
+drf-spectacular

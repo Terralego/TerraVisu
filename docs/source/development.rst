@@ -39,13 +39,25 @@ Create your superuser
     docker-compose run --rm web ./manage.py createsuperuser
 
 
----------------
+------------
 Launch stack
----------------
+------------
 
 ..  code-block:: bash
 
     docker-compose up
 
 
-Then go to http://visu.localhost:8000
+Then go to http://visu.localhost:8080
+
+
+---------
+Use admin
+---------
+
+..  code-block:: bash
+
+    make build_admin
+
+
+Then go to http://visu.localhost:8080/admin/

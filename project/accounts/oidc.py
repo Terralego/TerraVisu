@@ -23,6 +23,8 @@ def get_user(id_token):
         defaults={
             "properties": {
                 "openid_sub": id_token.get("sub"),
+                "last_name": id_token.get("lastname", ""),
+                "first_name": id_token.get("firstname", ""),
             }
         },
     )

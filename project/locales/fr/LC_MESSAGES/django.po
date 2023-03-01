@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-09 09:59+0000\n"
+"POT-Creation-Date: 2023-03-01 14:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Is able to create, delete, update users"
+msgstr "Peut créer, supprimer, mettre à jour des utilisateurs"
+
+msgid "Is able to create, delete, update groups"
+msgstr "Peut créer, supprimer, mettre à jour des groupes"
+
+msgid "Can manage layers"
+msgstr "Peut gérer les couches de données"
+
+msgid "Can manage sources"
+msgstr "Peut gérer les sources de données"
+
+msgid "Can manage base map layers"
+msgstr "Peut gérer les fonds de plan de cartes"
 
 msgid "Unique identifier"
 msgstr "Identifiant unique"
@@ -90,3 +105,56 @@ msgstr ""
 
 msgid "Incorrect value for coordinates field"
 msgstr "Valeur incorrecte pour le champ 'coordinates'"
+
+msgid "Instance title"
+msgstr "Titre de l'instance"
+
+msgid "Logo"
+msgstr ""
+
+msgid "Favicon"
+msgstr ""
+
+msgid "Splashscreen"
+msgstr ""
+
+msgid "Map bbox lng mini"
+msgstr "Longitude mini de la BBox de la carte"
+
+msgid "Map bbox lng maxi"
+msgstr "Longitude maxi de la BBox de la carte"
+
+msgid "Map bbox lat mini"
+msgstr "Latitude mini de la BBox de la carte"
+
+msgid "Map bbox lat maxi"
+msgstr "Latitude maxi de la BBox de la carte"
+
+msgid "Map max zoom"
+msgstr "Zoom maximum de la carte"
+
+msgid "Map min zoom"
+msgstr "Zoom minimum de la carte"
+
+msgid "Map default zoom"
+msgstr "Zoom par défaut de la carte"
+
+msgid "Map default lng"
+msgstr "Longitude par défaut du centre de la carte"
+
+msgid "Map default lat"
+msgstr "Latitude par défaut du centre de la carte"
+
+msgid "'tiles' should not be filled for mapbox base layers."
+msgstr "'tiles' ne doit pas être saisi pour les fonds de plan mapbox."
+
+msgid "'map_box_url' should be filled for mapbox base layers."
+msgstr "'map_box_url' ne doit pas être saisi pour les fonds de plan mapbox."
+
+msgid "'tiles' should be filled for raster and vector base layers."
+msgstr "'tiles' doit être saisi pour les fonds de plan raster et vecteur."
+
+msgid "'map_box_url' should not be filled for raster and vector base layers."
+msgstr ""
+"'map_box_url' ne doit pas être saisi pour les fonds de plan raster et "
+"vecteur."

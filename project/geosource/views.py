@@ -11,7 +11,6 @@ from .serializers import SourceListSerializer, SourceSerializer
 
 
 class SourceModelViewset(ModelViewSet):
-    model = Source
     parser_classes = (JSONParser, NestedMultipartJSONParser)
     permission_classes = (SourcePermission,)
     ordering_fields = (
@@ -33,7 +32,7 @@ class SourceModelViewset(ModelViewSet):
         return SourceSerializer
 
     def get_queryset(self):
-        return self.model.objects.all()
+        return Source.objects.all().order_by("-id")
 
     @action(detail=True, methods=["get"])
     def refresh(self, request, pk):

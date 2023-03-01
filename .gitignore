@@ -7,3 +7,5 @@ node_modules/
 *.mo
 /.coverage
 public/media/
+/public/admin/
+/var/

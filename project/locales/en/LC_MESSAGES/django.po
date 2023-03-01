@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-09 09:59+0000\n"
+"POT-Creation-Date: 2023-03-01 14:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,21 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Is able to create, delete, update users"
+msgstr ""
+
+msgid "Is able to create, delete, update groups"
+msgstr ""
+
+msgid "Can manage layers"
+msgstr ""
+
+msgid "Can manage sources"
+msgstr ""
+
+msgid "Can manage base map layers"
+msgstr ""
 
 msgid "Unique identifier"
 msgstr ""
@@ -77,4 +92,55 @@ msgid ""
 msgstr ""
 
 msgid "Incorrect value for coordinates field"
+msgstr ""
+
+msgid "Instance title"
+msgstr ""
+
+msgid "Logo"
+msgstr ""
+
+msgid "Favicon"
+msgstr ""
+
+msgid "Splashscreen"
+msgstr ""
+
+msgid "Map bbox lng mini"
+msgstr ""
+
+msgid "Map bbox lng maxi"
+msgstr ""
+
+msgid "Map bbox lat mini"
+msgstr ""
+
+msgid "Map bbox lat maxi"
+msgstr ""
+
+msgid "Map max zoom"
+msgstr ""
+
+msgid "Map min zoom"
+msgstr ""
+
+msgid "Map default zoom"
+msgstr ""
+
+msgid "Map default lng"
+msgstr ""
+
+msgid "Map default lat"
+msgstr ""
+
+msgid "'tiles' should not be filled for mapbox base layers."
+msgstr ""
+
+msgid "'map_box_url' should be filled for mapbox base layers."
+msgstr ""
+
+msgid "'tiles' should be filled for raster and vector base layers."
+msgstr ""
+
+msgid "'map_box_url' should not be filled for raster and vector base layers."
 msgstr ""

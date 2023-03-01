@@ -15,6 +15,7 @@ from pathlib import Path
 
 import sentry_sdk
 from decouple import Csv, config
+from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
@@ -57,11 +58,14 @@ INSTALLED_APPS = [
     "django_filters",
     "django_celery_results",
     "django_celery_beat",
+    "constance",
+    "constance.backends.database",
     "project.accounts",
     "project.frontend",
     "project.visu",
     "project.geosource",
     "project.terra_layer",
+    "drf_spectacular",
 ]
 
 MIDDLEWARE = [
@@ -138,6 +142,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+VAR_DIR = PROJECT_DIR / "var"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
@@ -146,6 +151,7 @@ STATIC_URL = "static/"
 STATIC_ROOT = PROJECT_DIR / "public" / "static"
 MEDIA_URL = "media/"
 MEDIA_ROOT = PROJECT_DIR / "public" / "media"
+ADMIN_ROOT = PROJECT_DIR / "public" / "admin"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
@@ -156,7 +162,7 @@ LOCALE_PATHS = (BASE_DIR / "locales",)
 LOGIN_REDIRECT_URL = "/"
 LOGOUT_REDIRECT_URL = "/"
 
-CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
+CRISPY_ALLOWED_TEMPLATE_PACKS = ("bootstrap5",)
 
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
@@ -167,13 +173,25 @@ GEOSOURCE_DELETE_LAYER_CALLBACK = "project.geosource.geostore_callbacks.delete_l
 
 REST_FRAMEWORK = {
     "TEST_REQUEST_DEFAULT_FORMAT": "json",
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
     "DEFAULT_FILTER_BACKENDS": [
         "rest_framework.filters.OrderingFilter",
         "rest_framework.filters.SearchFilter",
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
+    "PAGE_SIZE": 100,
+    "DEFAULT_PARSER_CLASSES": (
+        "rest_framework.parsers.JSONParser",
+        "rest_framework.parsers.FormParser",
+        "rest_framework.parsers.MultiPartParser",
+    ),
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    "DEFAULT_PAGINATION_CLASS": "project.pagination.PagePagination",
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_jwt.authentication.JSONWebTokenAuthentication",
+        "rest_framework.authentication.SessionAuthentication",
+        "rest_framework.authentication.BasicAuthentication",
     ),
 }
 
@@ -181,7 +199,18 @@ REST_FRAMEWORK = {
 JWT_AUTH = {
     "JWT_PAYLOAD_HANDLER": "project.accounts.jwt_payload.terra_payload_handler",
     "JWT_EXPIRATION_DELTA": timedelta(seconds=9999),
+    "JWT_AUTH_HEADER_PREFIX": "JWT",
 }
+
+
+with open(BASE_DIR / "VERSION") as version_file:
+    __version__ = version_file.read().strip()
+    SPECTACULAR_SETTINGS = {
+        "TITLE": "TerraVisu API",
+        "DESCRIPTION": "API for TerraVisu application",
+        "VERSION": __version__,
+        "SERVE_INCLUDE_SCHEMA": False,
+    }
 
 CACHES = {
     "default": {
@@ -190,7 +219,59 @@ CACHES = {
     }
 }
 
-SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_ENGINE = "django.contrib.sessions.backends.file"
+SESSION_FILE_PATH = VAR_DIR / "cache" / "sessions"
+
+CONSTANCE_ADDITIONAL_FIELDS = {"image_field": ["django.forms.ImageField", {}]}
+
+CONSTANCE_CONFIG = {
+    "INSTANCE_TITLE": ("TerraVisu", _("Instance title"), str),
+    "INSTANCE_LOGO": ("/static/img/logo.webp", _("Logo"), "image_field"),
+    "INSTANCE_FAVICON": ("/static/img/favicon.ico", _("Favicon"), "image_field"),
+    "INSTANCE_SPLASHSCREEN": (
+        "/static/img/splashscreen.png",
+        _("Splashscreen"),
+        "image_field",
+    ),
+    "MAP_BBOX_LNG_MIN": (-180.0, _("Map bbox lng mini"), float),
+    "MAP_BBOX_LNG_MAX": (180.0, _("Map bbox lng maxi"), float),
+    "MAP_BBOX_LAT_MIN": (-90.0, _("Map bbox lat mini"), float),
+    "MAP_BBOX_LAT_MAX": (90.0, _("Map bbox lat maxi"), float),
+    "MAP_MAX_ZOOM": (23.0, _("Map max zoom"), float),
+    "MAP_MIN_ZOOM": (0.0, _("Map min zoom"), float),
+    "MAP_DEFAULT_ZOOM": (7.0, _("Map default zoom"), float),
+    "MAP_DEFAULT_LNG": (2.0, _("Map default lng"), float),
+    "MAP_DEFAULT_LAT": (44.0, _("Map default lat"), float),
+}
+
+CONSTANCE_CONFIG_FIELDSETS = {
+    "General Options": {"fields": ("INSTANCE_TITLE",)},
+    "Theme Options": {
+        "fields": ("INSTANCE_LOGO", "INSTANCE_FAVICON", "INSTANCE_SPLASHSCREEN"),
+        "collapse": True,
+    },
+    "Map BBOX options": {
+        "fields": (
+            "MAP_BBOX_LNG_MIN",
+            "MAP_BBOX_LNG_MAX",
+            "MAP_BBOX_LAT_MIN",
+            "MAP_BBOX_LAT_MAX",
+        ),
+        "collapse": True,
+    },
+    "Map Zoom options": {
+        "fields": ("MAP_MAX_ZOOM", "MAP_MIN_ZOOM"),
+        "collapse": True,
+    },
+    "Map default options": {
+        "fields": ("MAP_DEFAULT_ZOOM", "MAP_DEFAULT_LNG", "MAP_DEFAULT_LAT"),
+        "collapse": True,
+    },
+}
+
+CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
+CONSTANCE_DATABASE_CACHE_BACKEND = "default"
+
 CELERY_TASK_ALWAYS_EAGER = False
 
 TERRA_DEFAULT_MAP_SETTINGS = {}
@@ -215,6 +296,10 @@ AUTH_CLIENT_ID = config("OIDC_AUTH_CLIENT_ID", default=None)
 AUTH_CLIENT_SECRET = config("OIDC_AUTH_CLIENT_SECRET", default=None)
 AUTH_SCOPE = config("OIDC_AUTH_SCOPE", default="openid", cast=Csv())
 AUTH_GET_USER_FUNCTION = "project.accounts.oidc:get_user"
+
+API_SCHEMA = config("API_SCHEMA", default=False, cast=bool)
+API_SWAGGER = config("API_SWAGGER", default=False, cast=bool)  # NEED API_SCHEMA
+API_REDOC = config("API_REDOC", default=False, cast=bool)  # NEED API_SCHEMA
 
 SENTRY_DSN = config("SENTRY_DSN", default="", cast=str)
 if SENTRY_DSN:
