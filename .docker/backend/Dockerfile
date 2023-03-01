@@ -80,4 +80,4 @@ RUN apt-get -y -qq update \
 
 USER docker
 
-CMD /opt/venv/bin/gunicorn project.wsgi:application 0.0.0.0:8000
+CMD /opt/venv/bin/gunicorn project.wsgi:application --bind 0.0.0.0:8000
