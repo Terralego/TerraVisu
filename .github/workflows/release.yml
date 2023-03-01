@@ -7,9 +7,6 @@ on:
 jobs:
   build_admin:
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: admin
 
     steps:
       - name: Checkout repository
@@ -17,14 +14,17 @@ jobs:
 
       - name: Setup node
         uses: actions/setup-node@v3
+        working-directory: ./admin
         with:
           node-version-file: '.nvmrc'
 
       - name: Install dependencies
+        working-directory: ./admin
         run: |
           npm ci --legacy-peer-deps --no-audit
 
       - name: Build admin
+        working-directory: ./admin
         run: |
           npm run build
           cp -r ./build ../public/admin
