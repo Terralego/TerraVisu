@@ -57,6 +57,8 @@ INSTALLED_APPS = [
     "django_filters",
     "django_celery_results",
     "django_celery_beat",
+    "constance",
+    "constance.backends.database",
     "project.accounts",
     "project.frontend",
     "project.visu",
@@ -216,7 +218,17 @@ CACHES = {
     }
 }
 
-SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+SESSION_ENGINE = "django.contrib.sessions.backends.file"
+SESSION_FILE_PATH = VAR_DIR / "cache" / "sessions"
+
+CONSTANCE_ADDITIONAL_FIELDS = {"image_field": ["django.forms.ImageField", {}]}
+
+CONSTANCE_CONFIG = {
+    "INSTANCE_LOGO": ("default_logo.png", "Company logo", "image_field"),
+}
+CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
+CONSTANCE_DATABASE_CACHE_BACKEND = "default"
+
 CELERY_TASK_ALWAYS_EAGER = False
 
 TERRA_DEFAULT_MAP_SETTINGS = {}

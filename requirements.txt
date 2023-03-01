@@ -68,6 +68,7 @@ django==4.1.7
     #   django-filter
     #   django-geostore
     #   django-mapbox-baselayer
+    #   django-picklefield
     #   django-polymorphic
     #   django-token-tools
     #   djangorestframework
@@ -78,6 +79,8 @@ django-auth-oidc @ git+https://gitlab.com/PaulFlorence/django-auth-oidc.git@fix_
 django-celery-beat==2.4.0
     # via -r requirements.in
 django-celery-results==2.4.0
+    # via -r requirements.in
+django-constance[database]==2.9.1
     # via -r requirements.in
 django-crispy-forms==2.0
     # via
@@ -91,6 +94,8 @@ django-geostore==0.7.0
     # via -r requirements.in
 django-mapbox-baselayer==0.0.9
     # via -r requirements.in
+django-picklefield==3.1
+    # via django-constance
 django-polymorphic==3.1.0
     # via -r requirements.in
 django-siteprefs==1.2.3
