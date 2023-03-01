@@ -61,6 +61,9 @@ CMD /opt/venv/bin/python manage.py runserver 0.0.0.0:8000
 
 FROM base as prod
 
+ENV GUNICORN_WORKERS 1
+ENV GUNICORN_TIMEOUT 60
+
 COPY --from=build /opt/venv /opt/venv
 
 COPY public/admin /opt/admin
@@ -80,4 +83,4 @@ RUN apt-get -y -qq update \
 
 USER docker
 
-CMD /opt/venv/bin/gunicorn project.wsgi:application --bind 0.0.0.0:8000
+CMD /opt/venv/bin/gunicorn project.wsgi:application --bind 0.0.0.0:8000 --workers=$GUNICORN_WORKERS --timeout=$GUNICORN_TIMEOUT
