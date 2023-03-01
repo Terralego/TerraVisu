@@ -297,9 +297,9 @@ AUTH_CLIENT_SECRET = config("OIDC_AUTH_CLIENT_SECRET", default=None)
 AUTH_SCOPE = config("OIDC_AUTH_SCOPE", default="openid", cast=Csv())
 AUTH_GET_USER_FUNCTION = "project.accounts.oidc:get_user"
 
-API_SCHEMA = config("API_SCHEMA", default=True, cast=bool)
-API_SWAGGER = config("API_SWAGGER", default=True, cast=bool)
-API_REDOC = config("API_REDOC", default=True, cast=bool)
+API_SCHEMA = config("API_SCHEMA", default=False, cast=bool)
+API_SWAGGER = config("API_SWAGGER", default=False, cast=bool)  # NEED API_SCHEMA
+API_REDOC = config("API_REDOC", default=False, cast=bool)  # NEED API_SCHEMA
 
 SENTRY_DSN = config("SENTRY_DSN", default="", cast=str)
 if SENTRY_DSN:

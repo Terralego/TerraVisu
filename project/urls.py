@@ -30,24 +30,13 @@ urlpatterns = [
     path("api/geosource/", include("project.geosource.urls", namespace="geosource")),
     path("api/geolayer/", include("project.terra_layer.urls")),
     path("api/auth/", include("project.accounts.urls")),
-    path("api/schema/", SpectacularAPIView.as_view(), name="schema"),
-    # Optional UI:
-    path(
-        "api/schema/swagger/",
-        SpectacularSwaggerView.as_view(url_name="schema"),
-        name="swagger",
-    ),
-    path(
-        "api/schema/redoc/",
-        SpectacularRedocView.as_view(url_name="schema"),
-        name="redoc",
-    ),
     path("api/", include(router.urls)),
     path("", include("project.visu.urls")),
     path("", include("project.frontend.urls")),
 ]
 
 if settings.API_SCHEMA:
+    print(f"API_SCHEMA {settings.API_SCHEMA}")
     urlpatterns += [path("api/schema/", SpectacularAPIView.as_view(), name="schema")]
     if settings.API_SWAGGER:
         urlpatterns += [
