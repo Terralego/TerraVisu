@@ -63,6 +63,7 @@ FROM base as prod
 
 COPY --from=build /opt/venv /opt/venv
 
+COPY public/admin /opt/admin
 COPY project /opt/terra-visu/project
 COPY manage.py /opt/terra-visu/manage.py
 COPY Procfile /opt/terra-visu/Procfile

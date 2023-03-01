@@ -17,6 +17,10 @@ build_admin:
 	mv ./admin/build ./public/admin
 	rm -rf ./admin/node_modules
 
+build_prod: build_admin
+	docker pull ubuntu:jammy
+	docker build -t terra-visu:latest -f .docker/backend/Dockerfile .
+
 messages:
 	docker compose run --rm web ./manage.py makemessages -a --no-location --no-obsolete
 	docker compose run --rm web ./manage.py compilemessages
