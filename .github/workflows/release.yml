@@ -13,7 +13,6 @@ jobs:
 
       - name: Build admin
         run: |
-          sudo chown -R 123:0 "/.npm"
           make build_admin
 
   release:
