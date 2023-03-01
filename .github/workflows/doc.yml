@@ -34,4 +34,4 @@ jobs:
         run: |
           cd docs/
           pip install -r ./requirements.txt
-          make html
+          make html -e SPHINXOPTS="-W"
