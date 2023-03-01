@@ -7,13 +7,25 @@ on:
 jobs:
   build_admin:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./admin
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install dependencies
+        run: |
+          npm ci --legacy-peer-deps --no-audit
+
       - name: Build admin
         run: |
-          make build_admin
+          npm run build
+          cp -r ./build ../public/admin
 
   release:
     runs-on: ubuntu-latest
