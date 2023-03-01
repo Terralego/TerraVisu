@@ -34,7 +34,7 @@ SECRET_KEY = config("SECRET_KEY", default="please-override-me")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = config("ALLOWED_HOST", default="", cast=Csv())
+ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="", cast=Csv())
 
 
 # Application definition
