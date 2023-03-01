@@ -10,3 +10,5 @@ MEDIA_ROOT = TemporaryDirectory().name
 CACHES["default"] = {  # NOQA
     "BACKEND": "django.core.cache.backends.locmem.LocMemCache",
 }
+
+CONSTANCE_BACKEND = "constance.backends.memory.MemoryBackend"

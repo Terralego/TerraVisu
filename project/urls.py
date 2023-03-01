@@ -47,6 +47,25 @@ urlpatterns = [
     path("", include("project.frontend.urls")),
 ]
 
+if settings.API_SCHEMA:
+    urlpatterns += [path("api/schema/", SpectacularAPIView.as_view(), name="schema")]
+    if settings.API_SWAGGER:
+        urlpatterns += [
+            path(
+                "api/schema/swagger/",
+                SpectacularSwaggerView.as_view(url_name="schema"),
+                name="swagger",
+            )
+        ]
+    if settings.API_REDOC:
+        urlpatterns += [
+            path(
+                "api/schema/redoc/",
+                SpectacularRedocView.as_view(url_name="schema"),
+                name="redoc",
+            )
+        ]
+
 if "dev" in os.getenv("DJANGO_SETTINGS_MODULE"):
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

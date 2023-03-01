@@ -15,6 +15,7 @@ from pathlib import Path
 
 import sentry_sdk
 from decouple import Csv, config
+from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
@@ -224,8 +225,50 @@ SESSION_FILE_PATH = VAR_DIR / "cache" / "sessions"
 CONSTANCE_ADDITIONAL_FIELDS = {"image_field": ["django.forms.ImageField", {}]}
 
 CONSTANCE_CONFIG = {
-    "INSTANCE_LOGO": ("default_logo.png", "Company logo", "image_field"),
+    "INSTANCE_TITLE": ("TerraVisu", _("Instance title"), str),
+    "INSTANCE_LOGO": ("default_logo.png", _("Logo"), "image_field"),
+    "INSTANCE_FAVICON": ("default_favicon.png", _("Favicon"), "image_field"),
+    "INSTANCE_SPLASHSCREEN": (
+        "default_splashscreen.png",
+        _("Splashscreen"),
+        "image_field",
+    ),
+    "MAP_BBOX_LNG_MIN": (-180.0, _("Map bbox lng mini"), float),
+    "MAP_BBOX_LNG_MAX": (180.0, _("Map bbox lng maxi"), float),
+    "MAP_BBOX_LAT_MIN": (-90.0, _("Map bbox lat mini"), float),
+    "MAP_BBOX_LAT_MAX": (90.0, _("Map bbox lat maxi"), float),
+    "MAP_MAX_ZOOM": (23.0, _("Map max zoom"), float),
+    "MAP_MIN_ZOOM": (0.0, _("Map min zoom"), float),
+    "MAP_DEFAULT_ZOOM": (7.0, _("Map default zoom"), float),
+    "MAP_DEFAULT_LNG": (2.0, _("Map default lng"), float),
+    "MAP_DEFAULT_LAT": (44.0, _("Map default lat"), float),
 }
+
+CONSTANCE_CONFIG_FIELDSETS = {
+    "General Options": {"fields": ("INSTANCE_TITLE",)},
+    "Theme Options": {
+        "fields": ("INSTANCE_LOGO", "INSTANCE_FAVICON", "INSTANCE_SPLASHSCREEN"),
+        "collapse": True,
+    },
+    "Map BBOX options": {
+        "fields": (
+            "MAP_BBOX_LNG_MIN",
+            "MAP_BBOX_LNG_MAX",
+            "MAP_BBOX_LAT_MIN",
+            "MAP_BBOX_LAT_MAX",
+        ),
+        "collapse": True,
+    },
+    "Map Zoom options": {
+        "fields": ("MAP_MAX_ZOOM", "MAP_MIN_ZOOM"),
+        "collapse": True,
+    },
+    "Map default options": {
+        "fields": ("MAP_DEFAULT_ZOOM", "MAP_DEFAULT_LNG", "MAP_DEFAULT_LAT"),
+        "collapse": True,
+    },
+}
+
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 CONSTANCE_DATABASE_CACHE_BACKEND = "default"
 
@@ -253,6 +296,10 @@ AUTH_CLIENT_ID = config("OIDC_AUTH_CLIENT_ID", default=None)
 AUTH_CLIENT_SECRET = config("OIDC_AUTH_CLIENT_SECRET", default=None)
 AUTH_SCOPE = config("OIDC_AUTH_SCOPE", default="openid", cast=Csv())
 AUTH_GET_USER_FUNCTION = "project.accounts.oidc:get_user"
+
+API_SCHEMA = config("API_SCHEMA", default=True, cast=bool)
+API_SWAGGER = config("API_SWAGGER", default=True, cast=bool)
+API_REDOC = config("API_REDOC", default=True, cast=bool)
 
 SENTRY_DSN = config("SENTRY_DSN", default="", cast=str)
 if SENTRY_DSN:
