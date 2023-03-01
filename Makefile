@@ -25,6 +25,13 @@ messages:
 	docker compose run --rm web ./manage.py makemessages -a --no-location --no-obsolete
 	docker compose run --rm web ./manage.py compilemessages
 
+tests:
+	docker compose run --rm web ./manage.py test -v 3 --settings=project.settings.tests
+
+coverage:
+	docker compose run --rm web coverage run ./manage.py test -v 3 --settings=project.settings.tests
+	docker compose run --rm web coverage report -m
+
 sphinx:
 	docker compose run --workdir=/opt/terra-visu/docs --rm web make html -e SPHINXOPTS="-W"
 
