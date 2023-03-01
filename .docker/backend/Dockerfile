@@ -69,7 +69,7 @@ COPY manage.py /opt/terra-visu/manage.py
 COPY Procfile /opt/terra-visu/Procfile
 COPY .docker/backend/update.sh /usr/local/bin/update.sh
 
-RUN ["/opt/venv/bin/python", "manage.py", "compilemessages"]
+RUN DJANGO_SETTINGS_MODULE=project.settings.tests /opt/venv/bin/python manage.py compilemessages
 
 USER root
 
