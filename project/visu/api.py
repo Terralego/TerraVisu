@@ -44,7 +44,7 @@ class SettingsView(APIView):
                 # end deprecated section
                 "instance": {
                     "title": config.INSTANCE_TITLE,
-                    "logo": config.INSTANCE_LOGO,
+                    "logo": LOGO_URL,
                     "loginUrl": reverse("login_dispatcher"),
                     "logoutUrl": reverse("logout"),
                 },
