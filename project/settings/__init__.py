@@ -226,10 +226,10 @@ CONSTANCE_ADDITIONAL_FIELDS = {"image_field": ["django.forms.ImageField", {}]}
 
 CONSTANCE_CONFIG = {
     "INSTANCE_TITLE": ("TerraVisu", _("Instance title"), str),
-    "INSTANCE_LOGO": ("default_logo.png", _("Logo"), "image_field"),
-    "INSTANCE_FAVICON": ("default_favicon.png", _("Favicon"), "image_field"),
+    "INSTANCE_LOGO": ("/static/img/logo.webp", _("Logo"), "image_field"),
+    "INSTANCE_FAVICON": ("/static/img/favicon.ico", _("Favicon"), "image_field"),
     "INSTANCE_SPLASHSCREEN": (
-        "default_splashscreen.png",
+        "/static/img/splashscreen.png",
         _("Splashscreen"),
         "image_field",
     ),
