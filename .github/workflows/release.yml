@@ -14,9 +14,8 @@ jobs:
 
       - name: Setup node
         uses: actions/setup-node@v3
-        working-directory: ./admin
         with:
-          node-version-file: '.nvmrc'
+          node-version-file: './admin/.nvmrc'
 
       - name: Install dependencies
         working-directory: ./admin
