@@ -36,7 +36,6 @@ urlpatterns = [
 ]
 
 if settings.API_SCHEMA:
-    print(f"API_SCHEMA {settings.API_SCHEMA}")
     urlpatterns += [path("api/schema/", SpectacularAPIView.as_view(), name="schema")]
     if settings.API_SWAGGER:
         urlpatterns += [
