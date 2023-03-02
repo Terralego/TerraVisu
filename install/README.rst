@@ -79,11 +79,19 @@ at least:
 
       docker compose up -d
 
-* ... and access to your project
+* ... and access to TerraVisu
 
   .. code-block :: bash
 
       http://<your_domain>/
+
+
+You can change port mapping by using a .env file in terra_visu directory :
+
+      .. code-block :: bash
+
+        # .env
+        NGINX_PORT=8080
 
 
 Update
@@ -113,20 +121,3 @@ Update
 
       docker compose down
       docker compose up -d
-
-
-
-
-
-
-cp .env.dist .env
-
-FILL database informations
-
-FILL ALLOWED_HOSTS matching your domain
-
-docker compose run --rm web update.sh
-docker compose run --rm web ./manage.py loaddata project/fixtures/initial.json
-docker compose run --rm web ./manage.py createsuperuser
-
-then login with it
