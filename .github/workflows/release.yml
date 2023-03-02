@@ -85,7 +85,7 @@ jobs:
       - name: Prepare install.zip
         run: |
           cd install
-          mkdir -p terra_visu/var
+          mkdir -p terra_visu/var terra_visu/public
           cp * ./terra_visu 2>/dev/null || :
           cp .env.dist ./terra_visu
           zip -r ../install.zip terra_visu/
