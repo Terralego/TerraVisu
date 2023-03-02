@@ -6,7 +6,7 @@ Requirements
 
 * **Optional** : if you want to use external database, prepare a postgresql 11+ (15 recommended) postgis2.5 (3.3 recommended) database with postgis enabled, and a dedicated user.
 
-    You can use external database by commenting postgres container and volume references in docker-compose.yml, and set variables :
+    You can use external database by commenting postgres container and volume references in docker-compose.yml, and set variables in your conf/visu.env file :
         * POSTGRES_HOST
         * POSTGRES_PORT
         * POSTGRES_USER
@@ -35,7 +35,7 @@ Install
 
   .. code-block :: bash
 
-      mv .env.dist .env
+      ./conf/visu.env
 
   **-> Set or change all required values**
 
