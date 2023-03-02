@@ -100,7 +100,7 @@ class SceneViewset(ModelViewSet):
 
 
 class LayerViewset(ModelViewSet):
-    model = Layer
+    queryset = Layer.objects.all()
     ordering_fields = (
         "name",
         "source__name",
@@ -118,9 +118,6 @@ class LayerViewset(ModelViewSet):
     )
     permission_classes = (LayerPermission,)
     search_fields = ["name", "settings"]
-
-    def get_queryset(self):
-        return self.model.objects.all()
 
     def get_serializer_class(
         self,

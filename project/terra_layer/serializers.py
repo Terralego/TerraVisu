@@ -9,7 +9,7 @@ from rest_framework.fields import SerializerMethodField
 from rest_framework.reverse import reverse
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 
-from .models import CustomStyle, FilterField, Layer, Scene
+from .models import CustomStyle, FilterField, Layer, Scene, StyleImage
 
 
 class SceneListSerializer(ModelSerializer):
@@ -66,6 +66,12 @@ class CustomStyleSerializer(ModelSerializer):
         exclude = ("layer",)
 
 
+class StyleImageSerializer(ModelSerializer):
+    class Meta:
+        model = StyleImage
+        exclude = ("layer",)
+
+
 class LayerListSerializer(ModelSerializer):
     class Meta:
         model = Layer
@@ -82,6 +88,7 @@ class LayerDetailSerializer(ModelSerializer):
     fields = FilterFieldSerializer(many=True, read_only=True, source="fields_filters")
     extra_styles = CustomStyleSerializer(many=True, read_only=True)
     group = PrimaryKeyRelatedField(read_only=True)
+    style_images = StyleImageSerializer(many=True, read_only=True)
 
     @transaction.atomic
     def create(self, validated_data):
