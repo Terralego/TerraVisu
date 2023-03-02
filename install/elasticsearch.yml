@@ -1,0 +1,16 @@
+
+cluster.name: "docker-cluster"
+network.host: 0.0.0.0
+
+# Upgrading from es 6 to 7:
+# see https://www.elastic.co/guide/en/elasticsearch/reference/current/modules-discovery-bootstrap-cluster.html
+node.name: main-node
+
+cluster.initial_master_nodes:
+  - main-node
+
+http.cors.enabled : true
+
+http.cors.allow-origin : "*"
+http.cors.allow-methods : OPTIONS, HEAD, GET, POST, PUT, DELETE
+http.cors.allow-headers : X-Requested-With,X-Auth-Token,Content-Type, Content-Length

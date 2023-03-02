@@ -71,3 +71,7 @@ class FunctionalPermission(Permission):
 
     def __str__(self):
         return f"{self.module}: {self.original.name} ({self.codename})"
+
+    class Meta:
+        verbose_name = _("Functional permission")
+        verbose_name_plural = _("Functional permissions")

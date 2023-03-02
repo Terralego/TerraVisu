@@ -6,9 +6,11 @@ on:
       - master
     paths:
       - 'docs/**'
+      - 'install/README.rst'
   pull_request:
     paths:
       - 'docs/**'
+      - 'install/README.rst'
   release:
     types:
       - created

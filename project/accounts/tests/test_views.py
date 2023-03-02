@@ -3,7 +3,7 @@ from django.urls import reverse
 from requests import HTTPError
 from rest_framework.test import APITestCase
 
-from project.accounts.models import User
+from project.accounts.tests.factories import UserFactory
 
 
 class LoginDispatchViewTestCase(TestCase):
@@ -31,7 +31,7 @@ class LoginDispatchViewTestCase(TestCase):
 class FunctionalPermissionAPITestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = User.objects.create_user(email="test", password="test")
+        cls.user = UserFactory()
 
     def test_list_anonymous(self):
         response = self.client.get(reverse("permission-list"))

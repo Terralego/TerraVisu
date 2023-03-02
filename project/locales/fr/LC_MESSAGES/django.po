@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-01 14:00+0000\n"
+"POT-Creation-Date: 2023-03-02 08:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,6 +57,12 @@ msgstr ""
 
 msgid "date joined"
 msgstr "date d'inscription"
+
+msgid "Functional permission"
+msgstr "Permission fonctionnelle"
+
+msgid "Functional permissions"
+msgstr "Permissions fonctionnelles"
 
 msgid "Login to"
 msgstr "Connexion à"

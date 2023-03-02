@@ -12,8 +12,9 @@ then
   # Delete previous admin if exists
   if [ -d "/opt/terra-visu/public/admin" ];
   then
+      echo "Deleting previous admin static files"
       rm -r /opt/terra-visu/public/admin
   fi
-
+  echo "Collect admin static files"
   cp -r /opt/admin /opt/terra-visu/public/
 fi

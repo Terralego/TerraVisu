@@ -1,9 +1,5 @@
-=======
-Install
-=======
+====================
+Install instructions
+====================
 
-------------
-Requirements
-------------
-
-* docker / docker-compose
+.. include:: ../../install/README.rst
