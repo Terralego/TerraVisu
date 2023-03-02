@@ -24,6 +24,8 @@ from sentry_sdk.integrations.redis import RedisIntegration
 BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_DIR = BASE_DIR.parent
 
+with open(BASE_DIR / "VERSION") as version_file:
+    __version__ = version_file.read().strip()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -201,15 +203,12 @@ JWT_AUTH = {
     "JWT_AUTH_HEADER_PREFIX": "JWT",
 }
 
-
-with open(BASE_DIR / "VERSION") as version_file:
-    __version__ = version_file.read().strip()
-    SPECTACULAR_SETTINGS = {
-        "TITLE": "TerraVisu API",
-        "DESCRIPTION": "API for TerraVisu application",
-        "VERSION": __version__,
-        "SERVE_INCLUDE_SCHEMA": False,
-    }
+SPECTACULAR_SETTINGS = {
+    "TITLE": "TerraVisu API",
+    "DESCRIPTION": "API for TerraVisu application",
+    "VERSION": __version__,
+    "SERVE_INCLUDE_SCHEMA": False,
+}
 
 CACHES = {
     "default": {
@@ -306,4 +305,5 @@ if SENTRY_DSN:
         integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
         traces_sample_rate=config("SENTRY_TRACE_SAMPLE_RATE", default=0.2, cast=float),
         send_default_pii=config("SENTRY_SEND_DEFAULT_PII", default=True, cast=bool),
+        release=f"terra-visu@{__version__}",
     )
