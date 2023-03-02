@@ -4,7 +4,7 @@ from mapbox_baselayer.models import MapBaseLayer
 from rest_framework import status
 from rest_framework.test import APITestCase
 
-from project.accounts.models import User
+from project.accounts.tests.factories import SuperUserFactory
 
 
 class MapBaseLayerViewsSetTesCase(APITestCase):
@@ -14,9 +14,7 @@ class MapBaseLayerViewsSetTesCase(APITestCase):
         cls.mapbox = MapBaseLayer.objects.create(
             name="mapbox", base_layer_type="mapbox", map_box_url="mapbox://test/"
         )
-        cls.user = User.objects.create_user(
-            email="test", password="test", is_superuser=True
-        )
+        cls.user = SuperUserFactory()
 
     def setUp(self) -> None:
         self.client.force_authenticate(user=self.user)

@@ -1,9 +1,8 @@
-from django.contrib.auth import get_user_model
 from django.shortcuts import reverse
 from rest_framework.status import HTTP_201_CREATED
 from rest_framework.test import APITestCase
 
-User = get_user_model()
+from project.accounts.tests.factories import UserFactory
 
 
 class JWTAuthTestCase(APITestCase):
@@ -11,29 +10,29 @@ class JWTAuthTestCase(APITestCase):
 
     @classmethod
     def setUpTestData(cls):
-        cls.user = User.objects.create_user(email="user@test.com", password="secret")
+        cls.user = UserFactory()
 
     def test_obtain_token(self):
         response = self.client.post(
-            reverse("token-obtain"), {"email": self.user.email, "password": "secret"}
+            reverse("token-obtain"), {"email": self.user.email, "password": "password"}
         )
         self.assertEqual(HTTP_201_CREATED, response.status_code, response.json())
         self.assertIsNotNone(response.json().get("token"))
 
     def test_refresh_token(self):
         r = self.client.post(
-            reverse("token-obtain"), {"email": self.user.email, "password": "secret"}
+            reverse("token-obtain"), {"email": self.user.email, "password": "password"}
         )
         token = r.json().get("token")
 
         response = self.client.post(reverse("token-refresh"), {"token": token})
-        # A new token should be send when refresh
+        # A new token should be sent when refresh
         self.assertEqual(HTTP_201_CREATED, response.status_code, response.json())
         self.assertIsNotNone(response.json().get("token"))
 
     def test_verify_token(self):
         r = self.client.post(
-            reverse("token-obtain"), {"email": self.user.email, "password": "secret"}
+            reverse("token-obtain"), {"email": self.user.email, "password": "password"}
         )
         token = r.json().get("token")
 
