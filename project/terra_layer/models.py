@@ -6,6 +6,7 @@ from django.core.cache import cache
 from django.db import models, transaction
 from django.utils.functional import cached_property
 from django.utils.text import slugify
+from django.views.generic.dates import timezone_today
 from mapbox_baselayer.models import MapBaseLayer
 from rest_framework.reverse import reverse
 
@@ -14,6 +15,11 @@ from project.geosource.models import Field, Source
 from .schema import SCENE_LAYERTREE, JSONSchemaValidator
 from .style import generate_style_from_wizard
 from .utils import get_layer_group_cache_key
+
+
+def scene_icon_path(instance, filename):
+    y, m, d = timezone_today().isoformat().split("-")
+    return f"terra_layer/scenes/custom_icon/{y}/{m}/{d}/{filename}"
 
 
 class Scene(models.Model):
@@ -25,7 +31,7 @@ class Scene(models.Model):
     slug = models.SlugField(max_length=255, unique=True)
     category = models.CharField(max_length=255, default="map")
     custom_icon = models.ImageField(
-        max_length=255, upload_to="scene-icons", null=True, default=None
+        max_length=255, upload_to=scene_icon_path, null=True, default=None
     )
     order = models.IntegerField(default=0, db_index=True)
     tree = models.JSONField(
@@ -148,7 +154,11 @@ class Layer(models.Model):
     source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name="layers")
 
     group = models.ForeignKey(
-        LayerGroup, on_delete=models.SET_NULL, null=True, related_name="layers"
+        LayerGroup,
+        on_delete=models.SET_NULL,
+        null=True,
+        related_name="layers",
+        blank=True,
     )
     name = models.CharField(max_length=255, blank=False)
 
@@ -162,27 +172,31 @@ class Layer(models.Model):
     # Contains the filter expression for source data
     source_filter = models.TextField(blank=True)
 
-    layer_style = models.JSONField(default=dict)  # To be removed
-    layer_style_wizard = models.JSONField(default=dict)  # To be removed
+    layer_style = models.JSONField(default=dict, blank=True)  # To be removed
+    layer_style_wizard = models.JSONField(default=dict, blank=True)  # To be removed
 
-    main_style = models.JSONField(default=dict)
+    main_style = models.JSONField(default=dict, blank=True)
 
-    settings = models.JSONField(default=dict)
+    settings = models.JSONField(default=dict, blank=True)
     active_by_default = models.BooleanField(default=False)
 
-    legends = models.JSONField(default=list)
+    legends = models.JSONField(default=list, blank=True)
 
     table_enable = models.BooleanField(default=False)
     table_export_enable = models.BooleanField(default=False)
 
-    popup_config = models.JSONField(default=dict)
-    minisheet_config = models.JSONField(default=dict)
+    popup_config = models.JSONField(default=dict, blank=True)
+    minisheet_config = models.JSONField(default=dict, blank=True)
 
     main_field = models.ForeignKey(
-        Field, null=True, on_delete=models.SET_NULL, related_name="is_main_of"
+        Field,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="is_main_of",
+        blank=True,
     )
 
-    interactions = models.JSONField(default=list)
+    interactions = models.JSONField(default=list, blank=True)
 
     fields = models.ManyToManyField(Field, through="FilterField")
 
@@ -397,13 +411,18 @@ class FilterField(models.Model):
         ordering = ("order",)
 
 
+def style_image_path(instance, filename):
+    y, m, d = timezone_today().isoformat().split("-")
+    return f"terra_layer/layers/{instance.layer_id}/style_images/{y}/{m}/{d}/{filename}"
+
+
 class StyleImage(models.Model):
     name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255)
+    slug = models.SlugField(max_length=255, blank=True)
     layer = models.ForeignKey(
         Layer, related_name="style_images", on_delete=models.CASCADE
     )
-    file = models.ImageField(upload_to="terra_layer/pictogram/%Y/")
+    file = models.ImageField(upload_to=style_image_path)
 
     def save(self, *args, **kwargs):
         if not self.slug:
