@@ -87,7 +87,7 @@ jobs:
           cd install
           mkdir -p terra_visu/var terra_visu/public
           cp * ./terra_visu 2>/dev/null || :
-          cp .env.dist ./terra_visu
+          cp -r ./conf ./terra_visu
           zip -r ../install.zip terra_visu/
       - name: Attach zip archive as release binary
         uses: skx/github-action-publish-binaries@master
