@@ -1,4 +1,5 @@
 from django.contrib import admin
+from geostore.models import Layer as GeostoreLayer
 
 from project.terra_layer.models import Layer, StyleImage
 
@@ -17,3 +18,4 @@ class LayerAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Layer, LayerAdmin)
+admin.site.register(GeostoreLayer)

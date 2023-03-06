@@ -1,6 +1,6 @@
 /node_modules/
 .idea
-__pychache__
+__pycache__
 *.pyc
 node_modules/
 *.env
@@ -10,5 +10,6 @@ node_modules/
 /var/
 /install/public/
 /install/var/
-/public/media/
-/public/static/
+/public/
+!/public/media/.empty
+/front/

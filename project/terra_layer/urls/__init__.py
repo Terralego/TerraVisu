@@ -12,7 +12,7 @@ router.register(r"", LayerViewset, basename="layer")
 # Extras viewsets
 
 urlpatterns = [
-    path(r"view/<str:slug>/", LayerView.as_view(), name="layerview"),
+    path("view/<str:slug>/", LayerView.as_view(), name="layerview"),
     # Extra urls from third part modules
     path("geostore/", include(geostore_patterns)),
     path("", include(router.urls)),

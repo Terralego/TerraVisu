@@ -32,7 +32,6 @@ urlpatterns = [
     path("api/auth/", include("project.accounts.urls")),
     path("api/", include(router.urls)),
     path("", include("project.visu.urls")),
-    path("", include("project.frontend.urls")),
 ]
 
 if settings.API_SCHEMA:

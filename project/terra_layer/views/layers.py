@@ -2,7 +2,7 @@ import tempfile
 from copy import deepcopy
 from urllib.parse import unquote
 
-from django.conf import settings
+from constance import config
 from django.core.cache import cache
 from django.core.management import call_command, get_commands
 from django.db.models import Prefetch, Q
@@ -166,24 +166,19 @@ class LayerView(APIView):
 
     def get(self, request, slug=None, format=None):
         update_cache = request.query_params.get("cache") == "false"
-
         self.scene = get_object_or_404(Scene, slug=slug)
         self.layergroup = self.layers.first().source.get_layer().layer_groups.first()
-
         self.user_groups = tiles_token_generator.get_groups_intersect(
             self.request.user, self.layergroup
         )
-
         cache_key = get_layer_group_cache_key(
             self.scene, self.user_groups.values_list("name", flat=True)
         )
-
         if update_cache:
             response = self.get_response_with_sources()
             cache.set(cache_key, response)
         else:
             response = cache.get_or_set(cache_key, self.get_response_with_sources)
-
         return Response(response)
 
     def get_response_with_sources(self):
@@ -258,13 +253,26 @@ class LayerView(APIView):
         return layer_structure
 
     def get_map_settings(self, scene):
+        default_map_settings = {
+            "accessToken": config.MAPBOX_ACCESS_TOKEN,
+            "center": [config.MAP_DEFAULT_LNG, config.MAP_DEFAULT_LAT],
+            "zoom": config.MAP_DEFAULT_ZOOM,
+            "maxZoom": config.MAP_MAX_ZOOM,
+            "minZoom": config.MAP_MIN_ZOOM,
+            "fitBounds": {
+                "coordinates": [
+                    [config.MAP_BBOX_LNG_MIN, config.MAP_BBOX_LAT_MIN],
+                    [config.MAP_BBOX_LNG_MAX, config.MAP_BBOX_LAT_MAX],
+                ]
+            },
+        }
         """Return the default map settings overridden with map settings from the scene if present"""
         if "map_settings" in scene.config:
             return {
-                **settings.TERRA_DEFAULT_MAP_SETTINGS,
+                **default_map_settings,
                 **scene.config["map_settings"],
             }
-        return settings.TERRA_DEFAULT_MAP_SETTINGS
+        return default_map_settings
 
     def get_layer_structure(self):
         """Return the structured layerTree"""
