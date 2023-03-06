@@ -10,3 +10,6 @@ CHANGELOG
 * New Simplified Installation
 
 * New documentation
+
+* Bug fixes:
+  * Fix date usage in source fields and imported data

@@ -13,6 +13,7 @@ from django.conf import settings
 from django.contrib.gis.gdal.error import GDALException
 from django.contrib.gis.geos import GEOSGeometry
 from django.core.management import call_command
+from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models, transaction
 from django.utils import timezone
 from django.utils.text import slugify
@@ -240,7 +241,7 @@ class Field(models.Model):
         choices=FieldTypes.choices(), default=FieldTypes.Undefined.value
     )
     level = models.IntegerField(default=0)
-    sample = models.JSONField(default=list)
+    sample = models.JSONField(default=list, encoder=DjangoJSONEncoder)
     order = models.IntegerField(default=0)
 
     def __str__(self):
