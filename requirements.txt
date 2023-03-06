@@ -88,7 +88,7 @@ django-crispy-forms==2.0
     #   crispy-bootstrap5
 django-filter==22.1
     # via -r requirements.in
-django-geostore==0.7.1
+django-geostore==0.7.2
     # via -r requirements.in
 django-mapbox-baselayer==0.0.9
     # via -r requirements.in
