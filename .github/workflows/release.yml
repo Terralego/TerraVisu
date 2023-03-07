@@ -37,21 +37,21 @@ jobs:
         run: |
           cp ../conf/admin.env .env
           npx react-scripts --openssl-legacy-provider build
-          cp -r ./build ../public/admin
 
-      - name: Setup front node
+      - name: Setup node for front
         uses: actions/setup-node@v3
         with:
-          node-version-file: '.nvmrc'
-          cache: 'npm'
+          node-version-file: './front/.nvmrc'
 
-      - name: Install dependencies
+      - name: Install admin dependencies
+        working-directory: ./front
         run: |
-          npm ci --cache ~/.npm --prefer-offline --no-audit
+          npm ci
 
       - name: Build front
+        working-directory: ./front
         run: |
-          npm run build
+          npx react-scripts build
 
       - name: Log in to the Container registry
         uses: docker/login-action@v2

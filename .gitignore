@@ -6,10 +6,8 @@ node_modules/
 *.env
 *.mo
 /.coverage
-/public/admin/
 /var/
 /install/public/
 /install/var/
 /public/
 !/public/media/.empty
-/front/

@@ -1,0 +1,11 @@
+version: "3.8"
+services:
+  front:
+    build:
+      context: ../..
+      dockerfile: .docker/frontend/Dockerfile.old
+    working_dir: /app/front
+
+    volumes:
+      - ../..:/app
+    user: ${CURRENT_UID}:${CURRENT_GID}

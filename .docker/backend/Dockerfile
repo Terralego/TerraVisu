@@ -66,7 +66,8 @@ ENV GUNICORN_TIMEOUT 60
 
 COPY --from=build /opt/venv /opt/venv
 
-COPY public/admin /opt/admin
+COPY front/build /opt/frontend
+COPY admin/build /opt/frontend/admin
 COPY project /opt/terra-visu/project
 COPY manage.py /opt/terra-visu/manage.py
 COPY Procfile /opt/terra-visu/Procfile
