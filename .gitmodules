@@ -5,4 +5,3 @@
 [submodule "front"]
 	path = front
 	url = https://github.com/Terralego/visu-front.git
-	branch = master
