@@ -17,6 +17,17 @@ build_admin:
 	mv ./admin/build ./public/admin
 	rm -rf ./admin/node_modules
 
+build_front:
+	git submodule update --init
+	git submodule update --remote
+	docker compose -f .docker/frontend/docker-compose.yml pull
+	docker compose -f .docker/frontend/docker-compose.yml build
+	docker compose -f .docker/frontend/docker-compose.yml run --rm front bash -c "npm ci && npx react-scripts build"
+	find ./public -maxdepth 1 -type f -exec rm {} \;
+	rm -r ./public/static ./public/images ./public/locales
+	mv ./front/build/* ./public/
+	rm -rf ./front/node_modules
+
 build_prod: build_admin
 	docker pull ubuntu:jammy
 	docker build -t terra-visu:latest -f .docker/backend/Dockerfile .

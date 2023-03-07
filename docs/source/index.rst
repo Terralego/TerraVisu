@@ -16,6 +16,7 @@ Welcome to TerraVisu's documentation!
    configuration
    usage
    development
+   troubleshooting
    changelog
 
 

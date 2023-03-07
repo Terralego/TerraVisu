@@ -25,7 +25,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 PROJECT_DIR = BASE_DIR.parent
 
 with open(BASE_DIR / "VERSION") as version_file:
-    __version__ = version_file.read().strip()
+    VERSION = version_file.read().strip()
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
@@ -148,8 +148,8 @@ VAR_DIR = PROJECT_DIR / "var"
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
-STATIC_URL = "static/"
-STATIC_ROOT = PROJECT_DIR / "public" / "static"
+STATIC_URL = "static_dj/"
+STATIC_ROOT = PROJECT_DIR / "public" / "static_dj"
 MEDIA_URL = "media/"
 MEDIA_ROOT = PROJECT_DIR / "public" / "media"
 ADMIN_ROOT = PROJECT_DIR / "public" / "admin"
@@ -206,7 +206,7 @@ JWT_AUTH = {
 SPECTACULAR_SETTINGS = {
     "TITLE": "TerraVisu API",
     "DESCRIPTION": "API for TerraVisu application",
-    "VERSION": __version__,
+    "VERSION": VERSION,
     "SERVE_INCLUDE_SCHEMA": False,
 }
 
@@ -224,13 +224,14 @@ CONSTANCE_ADDITIONAL_FIELDS = {"image_field": ["django.forms.ImageField", {}]}
 
 CONSTANCE_CONFIG = {
     "INSTANCE_TITLE": ("TerraVisu", _("Instance title"), str),
-    "INSTANCE_LOGO": ("/static/img/logo.webp", _("Logo"), "image_field"),
-    "INSTANCE_FAVICON": ("/static/img/favicon.ico", _("Favicon"), "image_field"),
+    "INSTANCE_LOGO": ("/static_dj/img/logo.webp", _("Logo"), "image_field"),
+    "INSTANCE_FAVICON": ("/static_dj/img/favicon.ico", _("Favicon"), "image_field"),
     "INSTANCE_SPLASHSCREEN": (
-        "/static/img/splashscreen.png",
+        "/static_dj/img/splashscreen.png",
         _("Splashscreen"),
         "image_field",
     ),
+    "MAPBOX_ACCESS_TOKEN": ("", "Mapbox access token", str),
     "MAP_BBOX_LNG_MIN": (-180.0, _("Map bbox lng mini"), float),
     "MAP_BBOX_LNG_MAX": (180.0, _("Map bbox lng maxi"), float),
     "MAP_BBOX_LAT_MIN": (-90.0, _("Map bbox lat mini"), float),
@@ -240,6 +241,8 @@ CONSTANCE_CONFIG = {
     "MAP_DEFAULT_ZOOM": (7.0, _("Map default zoom"), float),
     "MAP_DEFAULT_LNG": (2.0, _("Map default lng"), float),
     "MAP_DEFAULT_LAT": (44.0, _("Map default lat"), float),
+    "VIEW_ROOT_PATH": ("view", _("Frontend view root path"), str),
+    "DEFAULT_VIEW_NAME": ("", _("Frontend default view name"), str),
 }
 
 CONSTANCE_CONFIG_FIELDSETS = {
@@ -265,6 +268,14 @@ CONSTANCE_CONFIG_FIELDSETS = {
         "fields": ("MAP_DEFAULT_ZOOM", "MAP_DEFAULT_LNG", "MAP_DEFAULT_LAT"),
         "collapse": True,
     },
+    "Mapbox options": {
+        "fields": ("MAPBOX_ACCESS_TOKEN",),
+        "collapse": True,
+    },
+    "Frontend options": {
+        "fields": ("VIEW_ROOT_PATH", "DEFAULT_VIEW_NAME"),
+        "collapse": True,
+    },
 }
 
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
@@ -272,7 +283,6 @@ CONSTANCE_DATABASE_CACHE_BACKEND = "default"
 
 CELERY_TASK_ALWAYS_EAGER = False
 
-TERRA_DEFAULT_MAP_SETTINGS = {}
 CSRF_TRUSTED_ORIGINS = config("CSRF_TRUSTED_ORIGINS", default="", cast=Csv())
 SESSION_COOKIE_DOMAIN = config("SESSION_COOKIE_DOMAIN", default=None)
 CSRF_COOKIE_DOMAIN = config("CSRF_COOKIE_DOMAIN", default=None)
@@ -305,5 +315,5 @@ if SENTRY_DSN:
         integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
         traces_sample_rate=config("SENTRY_TRACE_SAMPLE_RATE", default=0.2, cast=float),
         send_default_pii=config("SENTRY_SEND_DEFAULT_PII", default=True, cast=bool),
-        release=f"terra-visu@{__version__}",
+        release=f"terra-visu@{VERSION}",
     )

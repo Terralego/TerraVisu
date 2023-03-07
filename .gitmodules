@@ -2,3 +2,6 @@
 	path = admin
 	url = https://github.com/Terralego/terra-admin.git
 	branch = upgrades
+[submodule "front"]
+	path = front
+	url = https://github.com/Terralego/visu-front.git

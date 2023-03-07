@@ -7,14 +7,12 @@ python ./manage.py migrate --noinput
 python ./manage.py collectstatic --noinput
 
 # Collect admin static files if prod image
-if [ -d "/opt/admin" ];
+if [ -d "/opt/frontend" ];
 then
-  # Delete previous admin if exists
-  if [ -d "/opt/terra-visu/public/admin" ];
-  then
-      echo "Deleting previous admin static files"
-      rm -r /opt/terra-visu/public/admin
-  fi
-  echo "Collect admin static files"
-  cp -r /opt/admin /opt/terra-visu/public/
+  # Delete previous frontend files
+  echo "Deleting previous frontend static files"
+  find /opt/terra-visu/public -maxdepth 1 -type f -exec rm {} \;
+  rm -r /opt/terra-visu/public/static /opt/terra-visu/public/images /opt/terra-visu/public/locales /opt/terra-visu/admin
+  echo "Collect frontend static files"
+  cp -r /opt/frontend/* /opt/terra-visu/public/
 fi
