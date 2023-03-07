@@ -43,7 +43,7 @@ jobs:
         with:
           node-version-file: './front/.nvmrc'
 
-      - name: Install admin dependencies
+      - name: Install front dependencies
         working-directory: ./front
         run: |
           npm ci
