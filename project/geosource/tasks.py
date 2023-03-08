@@ -20,7 +20,10 @@ def set_failure_state(task, method, message, instance=None):
     }
     task.update_state(**state)
     if instance and hasattr(instance, "report"):
-        instance.report = state
+        text = ""
+        for key, value in state["meta"].items():
+            text += f"{key}: {value},"
+        instance.report["lines"] = text
         instance.save(update_fields=["report"])
 
 
@@ -32,12 +35,18 @@ def run_model_object_method(self, app, model, pk, method, success_state=states.S
 
     try:
         obj = Model.objects.get(pk=pk)
-        raise Exception("not okkkkkkk")
+        # raise Exception("not okkkkkkk")
         logger.info(f"Call method {method} on {obj}")
         state = {"action": method, **getattr(obj, method)()}
         logger.info(f"Method {method} on {obj} ended")
 
         self.update_state(state=success_state, meta=state)
+        if obj and hasattr(obj, "report"):
+            text = ""
+            for key, value in state.items():
+                text += f"{key}: {value},"
+            obj.report["lines"] = text
+            obj.save(update_fields=["report"])
 
     except Model.DoesNotExist:
         set_failure_state(

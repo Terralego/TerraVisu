@@ -155,7 +155,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             raise Exception("Failed to refresh data")
 
         if row_count == total:
-            self.report["status"] = "success"
+            self.report["status"] = "SUCCESS"
             self.save(update_fields=["report"])
         return {"count": row_count, "total": total}
 
@@ -511,7 +511,7 @@ class CSVSource(Source):
                 "No record could be imported, check the report"
             )
         elif row_count == total:
-            self.report["status"] = "Success"
+            self.report["status"] = "SUCCESS"
         return records
 
     def _extract_coordinates(self, row, colnames, fields):
