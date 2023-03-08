@@ -8,6 +8,7 @@ crispy-bootstrap5
 django-mapbox-baselayer
 django-constance[database]
 django-filter
+elasticsearch
 celery
 redis
 django-celery-results

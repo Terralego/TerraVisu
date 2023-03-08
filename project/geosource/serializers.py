@@ -211,7 +211,7 @@ class PostGISSourceSerializer(SourceSerializer):
         return data
 
     def _validate_query_connection(self, data):
-        """Check if connection informations are valid or not, trying to
+        """Check if connection information are valid or not, trying to
         connect to the Pg server and executing the query
         """
         try:

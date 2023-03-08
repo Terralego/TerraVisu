@@ -22,6 +22,7 @@ from polymorphic.models import PolymorphicModel
 from psycopg2 import sql
 
 from .callbacks import get_attr_from_path
+from .elasticsearch.index import LayerESIndex
 from .fields import LongURLField
 from .mixins import CeleryCallMethodsMixin
 from .signals import refresh_data_done
@@ -72,7 +73,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     )
 
     settings = models.JSONField(default=dict, blank=True)
-    report = models.JSONField(default=dict, blank=True)
+    report = models.JSONField(default=dict, blank=True, encoder=DjangoJSONEncoder)
 
     task_id = models.CharField(null=True, max_length=255, blank=True)
     task_date = models.DateTimeField(null=True, blank=True)
@@ -110,12 +111,15 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         return next_run < now
 
     def refresh_data(self):
+        layer = self.get_layer()
         try:
-            return self._refresh_data()
+            response = self._refresh_data()
+            es_index = LayerESIndex(layer)
+            es_index.index()
+            return response
         finally:
             self.last_refresh = timezone.now()
             self.save()
-            layer = self.get_layer()
             refresh_data_done.send_robust(
                 sender=self.__class__,
                 layer=layer.pk,
@@ -151,7 +155,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             raise Exception("Failed to refresh data")
 
         if row_count == total:
-            self.report["status"] = "success"
+            self.report["status"] = "SUCCESS"
             self.save(update_fields=["report"])
         return {"count": row_count, "total": total}
 
@@ -217,8 +221,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             if task.successful():
                 response["result"] = task.result
             if task.failed():
-                task_data = task.backend.get(task.backend.get_key_for_task(task.id))
-                response.update(json.loads(task_data).get("result", {}))
+                response["result"] = {"error": str(task.result)}
 
         return response
 
@@ -508,7 +511,7 @@ class CSVSource(Source):
                 "No record could be imported, check the report"
             )
         elif row_count == total:
-            self.report["status"] = "Success"
+            self.report["status"] = "SUCCESS"
         return records
 
     def _extract_coordinates(self, row, colnames, fields):
