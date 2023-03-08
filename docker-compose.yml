@@ -48,7 +48,6 @@ services:
 
     volumes:
       - ./conf/elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
-      #- ./conf/elasticsearch/elasticsearch.keystore:/usr/share/elasticsearch/config/elasticsearch.keystore
       - elasticsearch:/usr/share/elasticsearch/data/
 
   web:
