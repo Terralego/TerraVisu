@@ -132,7 +132,7 @@ class ModelSourceTestCase(TestCase):
         self.geojson_source.task_id = 1
         self.geojson_source.save()
         self.assertDictEqual(
-            {"state": "ENDED", "done": "DONE", "result": {"error": {1: "NOT OK!"}}},
+            {"state": "ENDED", "done": "DONE", "result": {"error": "{1: 'NOT OK!'}"}},
             self.geojson_source.get_status(),
         )
 
