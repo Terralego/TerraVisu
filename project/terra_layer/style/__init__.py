@@ -58,7 +58,7 @@ def generate_style_from_wizard(geo_layer, config):
     """
 
     # fill, fill_extrusion, line, text, symbol, circle
-    map_style_type = config["map_style_type"]
+    map_style_type = config.get("map_style_type", {})
     suid = config["uid"]
 
     map_style = {"type": get_layer_type(map_style_type)}
@@ -72,7 +72,7 @@ def generate_style_from_wizard(geo_layer, config):
 
     legends = []
 
-    for map_field, prop_config in config["style"].items():
+    for map_field, prop_config in config.get("style", {}).items():
         style_type = prop_config.get("type", "none")
 
         # Ignore style from other representation
