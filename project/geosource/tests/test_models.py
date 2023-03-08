@@ -43,7 +43,7 @@ class MockAsyncResult(object):
         return "ENDED"
 
 
-class MockAsyncResultSucess(MockAsyncResult):
+class MockAsyncResultSuccess(MockAsyncResult):
     @property
     def result(self):
         return "OK!"
@@ -109,13 +109,15 @@ class ModelSourceTestCase(TestCase):
         with self.assertRaisesRegexp(Exception, "Failed to refresh data"):
             self.geojson_source.refresh_data()
 
-    def test_delete(self):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
+    def test_delete(self, mock_index):
+        mock_index.return_value = True
         self.geojson_source.refresh_data()
         self.assertEqual(Layer.objects.count(), 1)
         self.geojson_source.delete()
         self.assertEqual(Layer.objects.count(), 0)
 
-    @mock.patch("project.geosource.models.AsyncResult", new=MockAsyncResultSucess)
+    @mock.patch("project.geosource.models.AsyncResult", new=MockAsyncResultSuccess)
     def test_get_status(self):
         self.geojson_source.task_id = 1
         self.geojson_source.save()
@@ -129,8 +131,8 @@ class ModelSourceTestCase(TestCase):
     def test_get_status_fail(self):
         self.geojson_source.task_id = 1
         self.geojson_source.save()
-        self.assertEqual(
-            {"state": "ENDED", "done": "DONE", "1": "NOT OK!"},
+        self.assertDictEqual(
+            {"state": "ENDED", "done": "DONE", "result": {1: "NOT OK!"}},
             self.geojson_source.get_status(),
         )
 
@@ -268,7 +270,9 @@ class ModelCSVSourceTestCase(TestCase):
             "use_header": True,
         }
 
-    def test_get_records_with_two_columns_coordinates(self):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
+    def test_get_records_with_two_columns_coordinates(self, mock_index):
+        mock_index.return_value = True
         source = CSVSource.objects.create(
             file=get_file("source.csv"),
             geom_type=GeometryTypes.Point,
@@ -287,7 +291,9 @@ class ModelCSVSourceTestCase(TestCase):
         row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
-    def test_get_records_with_one_column_coordinates(self):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
+    def test_get_records_with_one_column_coordinates(self, mock_index):
+        mock_index.return_value = True
         source = CSVSource.objects.create(
             file=get_file("source_xy.csv"),
             geom_type=GeometryTypes.Point,
@@ -306,8 +312,11 @@ class ModelCSVSourceTestCase(TestCase):
         row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
-    def test_get_records_with_decimal_separator_as_comma(self):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
+    def test_get_records_with_decimal_separator_as_comma(self, mock_index):
+        mock_index.return_value = True
         source = CSVSource.objects.create(
+            name="csv-source",
             file=get_file("source_xy_with_comma.csv"),
             geom_type=GeometryTypes.Point,
             id_field="ID",
@@ -329,7 +338,9 @@ class ModelCSVSourceTestCase(TestCase):
         row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
-    def test_get_records_with_nulled_columns_ignored(self):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
+    def test_get_records_with_nulled_columns_ignored(self, mock_index):
+        mock_index.return_value = True
         source = CSVSource.objects.create(
             file=get_file("source.csv"),
             geom_type=GeometryTypes.Point,
@@ -353,7 +364,9 @@ class ModelCSVSourceTestCase(TestCase):
         row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
-    def test_get_records_with_no_header_and_yx_csv(self):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
+    def test_get_records_with_no_header_and_yx_csv(self, mock_index):
+        mock_index.return_value = True
         source = CSVSource.objects.create(
             file=get_file("source_xy_noheader.csv"),
             geom_type=GeometryTypes.Point,
@@ -373,7 +386,9 @@ class ModelCSVSourceTestCase(TestCase):
         row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
-    def test_get_records_with_no_header_and_two_columns_csv(self):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
+    def test_get_records_with_no_header_and_two_columns_csv(self, mock_index):
+        mock_index.return_value = True
         source = CSVSource.objects.create(
             file=get_file("source_noheader.csv"),
             geom_type=0,

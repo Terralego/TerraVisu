@@ -73,7 +73,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     )
 
     settings = models.JSONField(default=dict, blank=True)
-    report = models.JSONField(default=dict, blank=True)
+    report = models.JSONField(default=dict, blank=True, encoder=DjangoJSONEncoder)
 
     task_id = models.CharField(null=True, max_length=255, blank=True)
     task_date = models.DateTimeField(null=True, blank=True)
@@ -221,8 +221,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             if task.successful():
                 response["result"] = task.result
             if task.failed():
-                task_data = task.backend.get(task.backend.get_key_for_task(task.id))
-                response.update(json.loads(task_data).get("result", {}))
+                response["result"] = {"error": str(task.result)}
 
         return response
 
