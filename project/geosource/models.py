@@ -22,6 +22,7 @@ from polymorphic.models import PolymorphicModel
 from psycopg2 import sql
 
 from .callbacks import get_attr_from_path
+from .elasticsearch.index import LayerESIndex
 from .fields import LongURLField
 from .mixins import CeleryCallMethodsMixin
 from .signals import refresh_data_done
@@ -110,12 +111,15 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         return next_run < now
 
     def refresh_data(self):
+        layer = self.get_layer()
         try:
-            return self._refresh_data()
+            response = self._refresh_data()
+            es_index = LayerESIndex(layer)
+            es_index.index()
+            return response
         finally:
             self.last_refresh = timezone.now()
             self.save()
-            layer = self.get_layer()
             refresh_data_done.send_robust(
                 sender=self.__class__,
                 layer=layer.pk,
