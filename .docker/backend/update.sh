@@ -12,7 +12,7 @@ then
   # Delete previous frontend files
   echo "Deleting previous frontend static files"
   find /opt/terra-visu/public -maxdepth 1 -type f -exec rm {} \;
-  rm -r /opt/terra-visu/public/static /opt/terra-visu/public/images /opt/terra-visu/public/locales /opt/terra-visu/admin
+  rm -r /opt/terra-visu/public/static /opt/terra-visu/public/images /opt/terra-visu/public/locales /opt/terra-visu/public/admin
   echo "Collect frontend static files"
   cp -r /opt/frontend/* /opt/terra-visu/public/
 fi
