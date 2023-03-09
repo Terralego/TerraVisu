@@ -13,3 +13,7 @@ CHANGELOG
 
 * Bug fixes:
   * Fix date usage in source fields and imported data
+  * Fix group creation / edition in admin
+
+* Improvements:
+  * Direct use elasticsearch connector for data indexation instead of terra-bonobo-nodes
