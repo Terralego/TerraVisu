@@ -1,7 +1,8 @@
 [submodule "admin"]
 	path = admin
 	url = https://github.com/Terralego/terra-admin.git
-	branch = upgrades
+	branch = master
 [submodule "front"]
 	path = front
 	url = https://github.com/Terralego/visu-front.git
+	branch = master
