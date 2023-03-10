@@ -222,8 +222,6 @@ ES_URL = config("ES_URL", default="http://elasticsearch:9200", cast=str)
 SESSION_ENGINE = "django.contrib.sessions.backends.file"
 SESSION_FILE_PATH = VAR_DIR / "cache" / "sessions"
 
-TOKEN_TIMEOUT = 3600
-
 CONSTANCE_ADDITIONAL_FIELDS = {"image_field": ["django.forms.ImageField", {}]}
 
 CONSTANCE_CONFIG = {
