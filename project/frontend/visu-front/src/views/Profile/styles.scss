@@ -1,0 +1,31 @@
+.profile {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 130;
+  background-color: rgba(0,0,0,.8);
+  display: flex;
+  align-items: center;
+
+  &__content {
+    margin: auto;
+  }
+
+  &-form {
+    width: 20rem;
+
+    &__fieldset {
+      border: none;
+    }
+
+    &__legend {
+      font-weight: bold;
+    }
+
+    &__toaster {
+      z-index: 20;
+    }
+  }
+}

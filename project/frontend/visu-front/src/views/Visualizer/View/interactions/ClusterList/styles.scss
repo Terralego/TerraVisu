@@ -1,0 +1,22 @@
+.visualizer-view .clustered-features-list-container.mapboxgl-popup .mapboxgl-popup-content {
+  padding: .5rem 0;
+}
+
+.clustered-features-list {
+  &__scroll .bp3-menu {
+    max-height: 20rem;
+    overflow: auto;
+  }
+
+  &.clustered-features-list {
+    background: transparent;
+  }
+
+  &__search {
+    margin: 0 .5rem .5rem .5rem;
+  }
+
+  &__clear-search {
+    flex: none ! important;
+  }
+}

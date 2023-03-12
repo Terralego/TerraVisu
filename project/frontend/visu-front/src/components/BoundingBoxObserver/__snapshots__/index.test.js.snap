@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render if children is a component 1`] = `
+<div>
+  <div>
+    foo
+  </div>
+</div>
+`;
+
+exports[`should render if children is a function 1`] = `
+<p>
+  bar
+</p>
+`;

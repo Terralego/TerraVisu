@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`rendering should render correctly when auth is false 1`] = `
+<div>
+  LoginForm Mock
+</div>
+`;
+
+exports[`rendering should render correctly when auth is true 1`] = `
+Array [
+  <p>
+    Vous êtes connecté !
+  </p>,
+  <button
+    onClick={[Function]}
+    type="button"
+  >
+    Déconnexion
+  </button>,
+]
+`;

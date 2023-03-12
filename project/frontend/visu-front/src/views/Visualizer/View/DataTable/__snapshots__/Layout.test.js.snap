@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render correctly hidden 1`] = `
+<div
+  className="data-table"
+/>
+`;
+
+exports[`should render correctly visible 1`] = `
+<div
+  className="data-table data-table--visible"
+>
+  <p>
+    Foo
+  </p>
+</div>
+`;

@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render a loader 1`] = `
+<div
+  className="data-table data-table--visible"
+>
+  <div
+    className="table-container table-container--visible"
+  >
+    <p
+      Header={[Function]}
+      columns={Array []}
+      data={Array []}
+      loading={true}
+      locales={
+        Object {
+          "sortAsc": "Trier dans l'ordre croissant",
+          "sortDesc": "Trier dans l'ordre décroissant",
+        }
+      }
+      onSelection={[Function]}
+    >
+      Table
+    </p>
+  </div>
+</div>
+`;
+
+exports[`should render correctly 1`] = `
+<div
+  className="data-table data-table--visible"
+>
+  <div
+    className="table-container table-container--visible"
+  >
+    <p
+      Header={[Function]}
+      columns={Array []}
+      data={Array []}
+      loading={true}
+      locales={
+        Object {
+          "sortAsc": "Trier dans l'ordre croissant",
+          "sortDesc": "Trier dans l'ordre décroissant",
+        }
+      }
+      onSelection={[Function]}
+    >
+      Table
+    </p>
+  </div>
+</div>
+`;
+
+exports[`should render correctly with results 1`] = `
+<div
+  className="data-table data-table--visible"
+>
+  <div
+    className="table-container table-container--visible"
+  >
+    <p
+      Header={[Function]}
+      columns={
+        Array [
+          Object {
+            "display": true,
+            "label": "Foo",
+            "sortable": true,
+            "value": "foo_prop",
+          },
+          Object {
+            "display": true,
+            "label": "Bar",
+            "sortable": true,
+            "value": "bar_prop",
+          },
+        ]
+      }
+      data={
+        Array [
+          Array [
+            "foo",
+            "bar",
+          ],
+          Array [
+            "foo1",
+            "bar1",
+          ],
+        ]
+      }
+      loading={false}
+      locales={
+        Object {
+          "sortAsc": "Trier dans l'ordre croissant",
+          "sortDesc": "Trier dans l'ordre décroissant",
+        }
+      }
+      onSelection={[Function]}
+    >
+      Table
+    </p>
+  </div>
+</div>
+`;
+
+exports[`should render unvisible correctly 1`] = `
+<div
+  className="data-table"
+>
+  <div
+    className="table-container"
+  />
+</div>
+`;

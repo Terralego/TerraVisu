@@ -1,0 +1,16 @@
+{
+  "favicon": "<FAVICON>",
+  "title": "<TITLE>",
+  "version": "<VERSION>",
+  "credits": "<CREDITS>",
+  "theme": {
+    "logo": "<LOGO_PATH>",
+    "brandLogo": "<BRAND_LOGO>",
+    "logoUrl": "<LOGO_URL>",
+    "styles": [
+      "<STYLE_PATH>"
+    ]
+  },
+  "extraMenuItems": [],
+  "allowUserRegistration": false
+}
