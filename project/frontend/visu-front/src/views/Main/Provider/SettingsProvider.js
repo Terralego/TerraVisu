@@ -4,7 +4,9 @@ import { contextSettings } from './context';
 
 const { Provider } = contextSettings;
 
-const SETTINGS_PATH = '/settings.json';
+const { DJANGO_APP } = process.env;
+
+const SETTINGS_PATH = `${DJANGO_APP ? '/static' : ''}/settings.json`;
 
 const DEFAULT_SETTINGS = {
   favicon: '/terravisu/favicon.png',
@@ -12,8 +14,8 @@ const DEFAULT_SETTINGS = {
   version: 'v0.1',
   credits: 'Source: Terravisu',
   theme: {
-    logo: '/images/terravisu-logo.png',
-    brandLogo: '/images/terravisu-logo.png',
+    logo: `${DJANGO_APP ? '/static' : ''}/images/terravisu-logo.png`,
+    brandLogo: `${DJANGO_APP ? '/static' : ''}/images/terravisu-logo.png`,
     logoUrl: '/',
     styles: [],
   },
@@ -33,8 +35,7 @@ const getSettings =  async () => {
         throw new Error('Unable to get response from API.');
       }
       return await customSettings.json();
-    }
-    catch (exc) {
+    } catch (exc) {
       console.log('settings.json is missing. Please create a public/settings.json from public/settings.dist.json');
       return DEFAULT_SETTINGS;
     }

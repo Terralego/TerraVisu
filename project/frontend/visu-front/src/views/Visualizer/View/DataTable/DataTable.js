@@ -187,7 +187,11 @@ export class DataTable extends React.Component {
 
   async loadResults () {
     const {
-      displayedLayer: { filters: { layer, fields, form } = {}, state: { filters = {} } = {}, baseEsQuery } = {},
+      displayedLayer: {
+        filters: { layer, fields, form } = {},
+        state: { filters = {} } = {},
+        baseEsQuery,
+      } = {},
       query,
       map,
       visibleBoundingBox,

@@ -1,5 +1,7 @@
+const { DJANGO_APP } = process.env;
+
 export async function fetchEnv () {
-  const rawEnv = await fetch('/env.json');
+  const rawEnv = await fetch(`${DJANGO_APP ? '/static' : ''}/env.json`);
   return rawEnv.json();
 }
 

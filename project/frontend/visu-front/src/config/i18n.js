@@ -4,7 +4,7 @@ import LanguageDetector from 'i18next-browser-languagedetector';
 import { initReactI18next } from 'react-i18next';
 import fr from '@terralego/core/locales/fr/translation';
 
-const { PUBLIC_URL, REACT_APP_DEBUG } = process.env;
+const { PUBLIC_URL, REACT_APP_DEBUG, DJANGO_APP } = process.env;
 
 i18n
   .use(XHR)
@@ -12,7 +12,10 @@ i18n
   .use(initReactI18next) // if not using I18nextProvider
   .init({
     backend: {
-      loadPath: `${PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`,
+      loadPath: DJANGO_APP
+        ? '/static/locales/{{lng}}/{{ns}}.json'
+        : `${PUBLIC_URL}/locales/{{lng}}/{{ns}}.json`
+      ,
     },
     fallbackLng: 'fr',
     debug: !!REACT_APP_DEBUG,

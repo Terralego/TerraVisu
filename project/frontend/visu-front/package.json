@@ -101,7 +101,7 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js && cp _headers.dist ./build/_headers",
-    "build-watch": "nodemon --watch ./src/ scripts/build.js && cp _headers.dist ./build/_headers",
+    "build-watch": "DJANGO_APP=true nodemon --watch ./src/ scripts/build.js && cp _headers.dist ./build/_headers",
     "postbuild": "echo $npm_package_version > build/build.txt && git describe >> build/build.txt && date -R >> build/build.txt",
     "version": "git changelog -n -t $npm_package_version && git add CHANGELOG.md",
     "test": "node scripts/test.js",
