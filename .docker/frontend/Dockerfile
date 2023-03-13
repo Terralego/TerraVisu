@@ -1,12 +1,14 @@
-ARG NODE_VERSION=18
+ARG NODE_VERSION=12
 
-FROM node:${NODE_VERSION}-alpine
+FROM --platform=linux/amd64 node:${NODE_VERSION}
 
-WORKDIR /app
+RUN ls -al
 
-COPY package.json ./
-COPY package-lock.json ./
+WORKDIR /app/project/frontend/visu-front/
+
+COPY ./project/frontend/visu-front/package.json ./
+COPY ./project/frontend/visu-front/package-lock.json ./
 
 RUN npm ci
 
-CMD ["npm", "run", "dev"]
+CMD ["npm", "run", "build-watch"]

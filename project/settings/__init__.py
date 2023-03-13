@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "constance",
     "constance.backends.database",
+    "webpack_loader",
     "project.accounts",
     "project.frontend",
     "project.visu",
@@ -319,3 +320,12 @@ if SENTRY_DSN:
         send_default_pii=config("SENTRY_SEND_DEFAULT_PII", default=True, cast=bool),
         release=f"terra-visu@{VERSION}",
     )
+
+WEBPACK_LOADER = {
+  'DEFAULT': {
+    'CACHE': not DEBUG,
+    'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'visu-test', 'webpack-stats.json'),
+    'POLL_INTERVAL': 0.1,
+    'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
+  }
+}
