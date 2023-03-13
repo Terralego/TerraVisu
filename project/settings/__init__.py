@@ -324,7 +324,7 @@ if SENTRY_DSN:
 WEBPACK_LOADER = {
   'DEFAULT': {
     'CACHE': not DEBUG,
-    'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'visu-test', 'webpack-stats.json'),
+    'STATS_FILE': os.path.join(BASE_DIR, 'frontend', 'visu-front', 'webpack-stats.json'),
     'POLL_INTERVAL': 0.1,
     'IGNORE': [r'.+\.hot-update.js', r'.+\.map'],
   }
