@@ -1,0 +1,4 @@
+/admin/*  <ADMIN_HOST>admin/:splat 200
+/api/* <BACKEND_URL>api/:splat 200
+/elasticsearch/* <BACKEND_URL>elasticsearch/:splat 200
+/*    /index.html   200

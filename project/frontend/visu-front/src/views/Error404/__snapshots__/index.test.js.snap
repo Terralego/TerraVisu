@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`should render correctly 1`] = `
+<div>
+  <div>
+    blueprint h1
+  </div>
+  <p>
+    <strong>
+      Retourner à la page d'accueil: 
+    </strong>
+  </p>
+</div>
+`;

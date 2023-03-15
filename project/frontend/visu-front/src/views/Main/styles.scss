@@ -1,0 +1,175 @@
+@import '../../theme.scss';
+@import '../variables.scss';
+
+$navWidth: 4rem;
+$layersTreeWidth: 22.5rem;
+$widgetsWidth: 20rem;
+$detailsWidth: 25.5rem;
+$mapboxContributionsWidth: 18.5rem;
+$mapboxControlScaleWidth: 4rem;
+
+$tableHeight: 33vh;
+
+
+.main {
+  display: flex;
+}
+
+.main .map-navigation {
+  padding: 0 ! important;
+
+  &__header {
+    .appName-title-logo {
+      margin-top: 0;
+    }
+  }
+}
+
+.layerstree-group:first-child {
+  margin-top: 0;
+}
+
+.layerstree-panel-list {
+  width: 100%;
+}
+
+.main .layerNode-options__buttons--active, .layerNode-widgets__buttons--active {
+  .icon, svg {
+    filter: invert(0.5) sepia(1) saturate(5) hue-rotate(140deg);
+  }
+}
+
+.details {
+  .details__info-administrative {
+    text-align: center;
+    margin-bottom: 4px;
+  }
+
+  .details__list {
+
+    .details__column-label {
+      white-space: normal;
+      font-size: .85rem;
+      width: 15.5rem;
+      padding-right: .5rem;
+    }
+
+    .details__column-value {
+      vertical-align: bottom;
+    }
+  }
+}
+
+// Fix temporary waiting upgrade TerraLego
+.visualizer {
+  .interactive-map__legends {
+
+    .tf-legend {
+      max-width: none;
+    }
+
+    .tf-legend__title {
+      align-self: center;
+    }
+  }
+}
+
+// Override TerraLego
+.mapboxgl-ctrl:hover {
+  color: #202B33;
+}
+
+.interactive-map {
+  .tf-legend {
+    margin-bottom: 1em;
+  }
+}
+
+.visualizer {
+  .mapboxgl-control-container {
+    transition: all .2s ease-in;
+  }
+
+  .mapboxgl-ctrl-top-left,
+  .mapboxgl-ctrl-bottom-left {
+    transform: none;
+    transition: all .2s ease-in;
+  }
+
+  .mapboxgl-ctrl-bottom-left {
+    transform: none;
+    margin: -0.5rem 0.5rem;
+    left: 0rem;
+    right: 22rem;
+    transition: all .2s ease-in;
+
+    .mapboxgl-ctrl {
+      float: none;
+    }
+  }
+
+  &.visualizer--with-layers-tree {
+    .mapboxgl-ctrl-bottom-left {
+      transform: none;
+      margin: -0.5rem 0.5rem;
+      left: $layersTreeWidth;
+      right: 22rem;
+      transition: all .2s ease-in;
+    }
+
+    &.visualizer--with-table {
+      .mapboxgl-ctrl-bottom-left {
+        left: 0;
+        transition: none;
+      }
+
+      .mapboxgl-ctrl-logo {
+        right: 19.5rem;
+        transition: none;
+      }
+    }
+  }
+
+  .mapboxgl-popup {
+
+    .mapboxgl-popup-content {
+      text-align: center;
+    }
+  }
+}
+
+// Override Mapbox position logo
+.visualizer {
+
+  .mapboxgl-ctrl-logo {
+    position: absolute;
+    right: 10px;
+    bottom: 15px;
+    transition: all .2s ease-in;
+
+  }
+
+  &.visualizer--with-layers-tree {
+    .mapboxgl-ctrl-logo {
+      right: -38px;
+      bottom: 15px;
+    }
+  }
+
+}
+
+@media(min-width: $breakpoints-tablet) and (max-width: $breakpoints-desktop) and (orientation: landscape) {
+  .visualizer {
+    .interactive-map__legends {
+      right: 3.25rem;
+    }
+  }
+}
+
+@media(min-width: $breakpoints-phone) and (max-width: $breakpoints-tablet) and (orientation: portrait) {
+  .visualizer {
+    .interactive-map__legends {
+      right: 3.75rem;
+    }
+  }
+}

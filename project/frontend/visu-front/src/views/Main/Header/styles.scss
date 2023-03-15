@@ -1,0 +1,254 @@
+@import '../../variables.scss';
+
+.main {
+
+  &__header {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    flex: 0 0 3.35rem;
+    z-index: 100;
+
+    &__target {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      z-index: 105;
+    }
+
+    &--mobile {
+      flex: 0 0 10rem;
+      transform: translateX(0rem);
+      margin-left: -7.65rem;
+      transition: transform .2s ease-in;
+
+      .header-link {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        align-content: space-between;
+        font-size: .7rem;
+        text-align: right;
+        outline: none;
+        text-decoration: none;
+        width: 9.5rem;
+        height: 3rem;
+
+        .header-button-label {
+          color: #f5f8fa;
+          display: table-cell;
+          padding-right: 1rem;
+          width: 10rem;
+          margin: 0;
+        }
+      }
+
+      .header-button {
+        width: 2.25rem;
+        height: 2.25rem;
+        margin: auto;
+        align-items: center;
+      }
+
+      .active .header-button-label {
+        font-weight: 600;
+        font-size: .75rem;
+      }
+
+      &--open {
+        transform: translateX(7.65rem);
+      }
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex: 1;
+    justify-content: center;
+    align-items: center;
+    min-width: 0;
+  }
+
+  @media print {
+    display: block;
+    &__header {
+      display: none;
+    }
+    &__content {
+      display: block;
+    }
+  }
+
+  &__navbar {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    flex: 1;
+    padding: 0;
+
+    .navBar__header,
+    .navBar__group {
+      display: flex;
+      padding: .5rem;
+    }
+    
+    .navBar__header {
+      text-align: center;
+      margin: 0;
+
+      #welcome img {
+        width: 2.4rem;
+        height: auto;
+      };
+    }
+
+    .navBar__header + .navBar__group {
+      margin-top: 0;
+    }
+
+    .navBar__group {
+      padding-top: .2rem;
+      margin: auto 0;
+      flex-direction: column;
+      height: auto;
+      &:last-of-type {
+        margin-bottom: 0;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      li {
+        margin: 0 0 1rem;
+      }
+
+      button {
+        outline: none;
+      }
+    }
+
+    .header-button {
+      img,
+      svg {
+        width: 16px;
+        transition: .3s ease-in filter;
+      }
+    }
+
+    .log-out .header-button {
+      background: radial-gradient(#5a91b3 0, transparent 70%);
+      svg {
+        filter: invert(.5) sepia(1) saturate(5) hue-rotate(175deg);
+      }
+    }
+
+    .navBar__group .active .header-button {
+      background: radial-gradient(#5a91b3 0, transparent 55%);
+      svg {
+        filter: invert(.5) sepia(1) saturate(5) hue-rotate(175deg);
+      }
+    }
+
+    // Below override blueprint
+    .bp3-overlay {
+      white-space: nowrap;
+    }
+  }
+}
+
+.modal-signin {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 130;
+
+  &__form {
+    max-width: 30rem;
+    min-width: 20rem;
+
+    &-buttons {
+      display: flex;
+      justify-content: center;
+
+      button {
+        margin: .25rem;
+      }
+    }
+  }
+}
+
+.modal-mentions-legales {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  z-index: 130;
+
+  .bp3-card {
+    padding: 0;
+  }
+
+  .mentions-legales {
+    color: #394b59;
+    padding: 1.5rem;
+
+    .mentions-legales-container {
+      font-family: "SFProText-Regular", Arial, Helvetica, sans-serif;
+    }
+
+    &-title {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 500;
+      font-family: "SFProText-Medium", Arial, Helvetica, sans-serif;
+      margin: 0 0 2rem 0;
+    }
+
+    .container-block {
+      > h4 {
+        margin-bottom: 0;
+        font-family: "SFProText-Medium", Arial, Helvetica, sans-serif;
+        padding-bottom: 0.4rem;
+      }
+
+      > address {
+        font-style: normal;
+      }
+
+      p {
+        margin-bottom: 0.2rem;
+      }
+
+      a {
+        color: #394b59;
+      }
+
+      a:hover {
+        font-weight: bold;
+      }
+    }
+  }
+}
+
+@media(min-width: $breakpoints-tablet) and (max-width: $breakpoints-desktop) and (orientation: landscape) {
+  .modal-partner {
+    >.bp3-card {
+      max-width: 50%;
+      min-height: 45%;
+    }
+  }
+}
+
+@media(min-width: $breakpoints-phone) and (max-width: $breakpoints-tablet) and (orientation: portrait) {
+  .modal-partner {
+    .bp3-overlay-content {
+      max-width: 90%;
+      max-height: 90%;
+      overflow: scroll;
+    }
+  }
+}

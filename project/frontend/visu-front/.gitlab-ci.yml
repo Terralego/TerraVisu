@@ -1,0 +1,286 @@
+image: node:12.13 # Should match .nvmrc content
+
+stages:
+  #- prepare
+  - e2e-tests
+  - build
+  - deploy
+
+before_script:
+  - node --version
+  - npm --version
+  - ls -alh
+
+# Tests stage
+
+#Tests:
+#  before_script:
+#    - npm ci
+#  tags: [visu-cicd-docker]
+#  stage: prepare
+#  script:
+#    - npm run coverage
+#  coverage: /All files[^|]*\|[^|]*\s+([\d\.]+)/
+#
+#Lint:
+#  before_script:
+#    - npm ci
+#  tags: [visu-cicd-docker]
+#  stage: prepare
+#  script:
+#    - npm run lint
+
+# End-to-end tests using Cypress
+
+cypress:
+  stage: e2e-tests
+  tags: [visu-cicd-docker]
+  image: docker/compose:latest
+  services:
+    - docker:dind
+  variables:
+    DOCKER_HOST: "tcp://docker:2375/"
+    DOCKER_DRIVER: overlay2
+    VISUBACK_COMMIT_ID: "master"
+    VISUBACK_IMAGE_NAME: "registry2.makina-corpus.net/terralego/visu-back"
+    REGISTRY_URL: "registry2.makina-corpus.net"
+    DOCKER_IMAGE_CACHE: "/cache/${CI_PROJECT_PATH_SLUG}/docker-images"
+
+  before_script:
+    # This is required for bind-mounting $PWD inside visu-front container (running as user node)
+    - chown -R 1000:1000 .
+    - apk add git
+    - git clone https://github.com/Terralego/visu-back.git
+    - git -C visu-back reset --hard ${VISUBACK_COMMIT_ID}
+    - echo "${REGISTRY_PASSWD}" |docker login -u ${REGISTRY_USER} --password-stdin ${REGISTRY_URL}
+    # Restore images from local cache
+    - rm -r "${DOCKER_IMAGE_CACHE}" || true
+    # - test -d "${DOCKER_IMAGE_CACHE}" && find "${DOCKER_IMAGE_CACHE}" -name "*.tar" -exec docker image load -i {} \; || true
+
+  script:
+    # Configure node app through env.json and settings.json file
+    - sed "s#<BACKEND_URL>#http://nginx/api#" <public/env.dist.json |tee public/env.json
+    - |
+      cat <<EOT >public/env.json
+      {
+        "API_HOST": "http://nginx/api",
+        "VIEW_ROOT_PATH": "visualiser",
+        "DEFAULT_VIEWNAME": "test_map_scene"
+      }
+      EOT
+    - cat public/env.json
+    - |
+      cat <<EOT >public/settings.json
+      {
+        "favicon": "/favicon.png",
+        "title": "TerraVisu",
+        "version": "0.1",
+        "credits": "no credits",
+        "theme": {
+          "logo": "/images/terravisu-logo.png",
+          "brandLogo": "/images/terravisu-logo.png",
+          "logoUrl": "/",
+          "styles": []
+        },
+        "extraMenuItems": []
+      }
+      EOT
+    - cat public/settings.json
+    # Configure django app through .env, docker.env and local.py files
+    - sed "s#^FRONT_URL=.*#FRONT_URL=visu-front-${CI_PIPELINE_ID}#;
+      \$a POSTGRES_STARTUP_TIMEOUT=300s"
+      <visu-back/docker.env.dist >visu-back/docker.env
+    - |
+      cat <<EOT >>visu-back/docker.env
+      # Storage config
+      PYFILES_BACKEND=pyfiles.storages.s3storage.S3Storage
+      PYFILES_ACCESS_KEY=${PYFILES_ACCESS_KEY}
+      PYFILES_SECRET_KEY=${PYFILES_SECRET_KEY}
+      PYFILES_ENDPOINT_URL=${PYFILES_ENDPOINT_URL}
+      PYFILES_REGION_NAME=${PYFILES_REGION_NAME}
+      PYFILES_BUCKET_NAME=${PYFILES_BUCKET_NAME}
+      NO_MIGRATE=1
+      LANG=C.UTF-8
+      EOT
+    - cat visu-back/docker.env
+    - sed "s#^DJANGO_IMAGE=.*#DJANGO_IMAGE=${VISUBACK_IMAGE_NAME}#;
+      s#^DJANGO_IMAGE_VERSION=.*#DJANGO_IMAGE_VERSION=${VISUBACK_COMMIT_ID}#"
+      <visu-back/.env.dist |tee visu-back/.env
+    - |
+      cat <<EOT |tee visu-back/src/project/settings/local.py
+      import os
+      # ALLOWED_HOSTS = ['nginx']
+      ALLOWED_HOSTS = ['*']
+      CORS_ORIGIN_WHITELIST = ('visu-front-${CI_PIPELINE_ID}')
+      CORS_ORIGIN_ALLOW_ALL = True
+      SECRET_KEY = 'super-hot-secret-123456789'
+      TERRA_TILES_HOSTNAMES = ['http://nginx/',]
+      TERRA_DEFAULT_MAP_SETTINGS = {
+          'accessToken': '${MAPBOX_ACCESS_TOKEN}',
+          "backgroundStyle": [
+            {
+              "label": "Clair",
+              "url": "mapbox://styles/makinacorpus/cjpdvdqdj0b7a2slajmjqy3py"
+            },
+            {
+              "label": "Photographies aériennes IGN",
+              "url": "/background-ign-satellite.json"
+            },
+            {
+              "label": "Plan IGN",
+              "url": "/background-ign-plan.json"
+            }
+          ],
+          'center': [5.386195159396806, 43.30072210972415],
+          'zoom': 9,
+          'maxZoom': 24,
+          'minZoom': 7,
+          'fitBounds': {
+              'coordinates': [[4.2301364, 42.9822468], [7.7184776, 45.1266002]]
+          }
+      }
+      TERRA_APPLIANCE_SETTINGS = {
+          'VIEW_ROOT_PATH': 'map',
+          'DEFAULT_VIEWNAME': 'test',
+          'enabled_modules': ['User', 'DataSource', 'DataLayer'],
+      }
+      EOT
+    # Emptied pg_tune.sh file to avoid broken optims on CI
+    - |
+      cat <<EOT >visu-back/prod/pg-tune.sh
+      #!/bin/sh
+      EOT
+    # Nginx conf with SPA config
+    - |
+      cat <<EOT >nginx.conf
+      server {
+        listen 80;
+        listen  [::]:80;
+        server_name  visu-front-${CI_PIPELINE_ID};
+        location / {
+          root   /usr/share/nginx/html;
+          try_files \$uri \$uri/ /index.html;
+          index  index.html index.htm;
+        }
+      }
+      EOT
+    - cat nginx.conf
+    # Run visu-back stack
+    # Note: we explicitly run a docker-compose pull first to fetch visu-back
+    # image so that docker-compose doesn't try to build it (because of the
+    # `build:` instruction set inside the main docker-compose.yml file)
+    - docker-compose -p visu-back-${CI_PIPELINE_ID} --env-file visu-back/.env
+      -f visu-back/docker-compose.yml -f visu-back/docker-compose-prod.yml
+      pull
+    - docker-compose -p visu-back-${CI_PIPELINE_ID} --env-file visu-back/.env
+      -f visu-back/docker-compose.yml -f visu-back/docker-compose-prod.yml
+      up --detach --no-build
+    - docker-compose -p visu-back-${CI_PIPELINE_ID} --env-file visu-back/.env
+      -f visu-back/docker-compose.yml -f visu-back/docker-compose-prod.yml
+      exec -T django sh -c "dockerize -wait http://setup-postgres -timeout 240s /code/venv/bin/python manage.py migrate"
+    - docker-compose -p visu-back-${CI_PIPELINE_ID} --env-file visu-back/.env
+      -f visu-back/docker-compose.yml -f visu-back/docker-compose-prod.yml
+      exec -T django sh -c "dockerize -wait http://setup-postgres -timeout 120s /code/venv/bin/python manage.py populatedata --test-data"
+    # Build frontend
+    - docker run
+      --user node --workdir /home/node/
+      --env CYPRESS_INSTALL_BINARY=0
+      --volume $PWD/:/home/node/
+      --rm
+      node:12.13 sh -c "npm ci && npm run build"
+    # Serve frontend with nginx
+    - docker run
+      --name visu-front-${CI_PIPELINE_ID}
+      --network visu-back-${CI_PIPELINE_ID}_default
+      --volume $PWD/nginx.conf:/etc/nginx/conf.d/default.conf
+      --volume $PWD/build:/usr/share/nginx/html:ro
+      --detach
+      nginx
+    # Start cypress
+    - docker run
+      --name cypress-${CI_PIPELINE_ID}
+      --network visu-back-${CI_PIPELINE_ID}_default
+      --user node --workdir /home/node/
+      --env CYPRESS_BASE_URL=http://visu-front-${CI_PIPELINE_ID}/
+      --volume $PWD/cypress/:/home/node/cypress/
+      --volume $PWD/cypress.json:/home/node/cypress.json
+      --rm
+      cypress/included:4.9.0
+  after_script:
+    # Display logs in case of failure
+    - chown -R root:root .
+    - docker-compose -p visu-back-${CI_PIPELINE_ID} --env-file visu-back/.env
+      -f visu-back/docker-compose.yml -f visu-back/docker-compose-prod.yml
+      logs &>visu-back.log || true
+    - docker logs visu-front-${CI_PIPELINE_ID} &>visu-front.log || true
+    # Save images to local cache
+    - mkdir -p "${DOCKER_IMAGE_CACHE}"
+    - rm -rf "${DOCKER_IMAGE_CACHE}/*.tar"
+    - docker image ls
+    # - for img in $(docker image ls -q); do
+    #  echo "${img}";
+    #  docker image save -o "${DOCKER_IMAGE_CACHE}/${img}.tar" "${img}";
+    #  done
+    # Cleanup: stop and purge everything
+    - docker rm -f visu-front-${CI_PIPELINE_ID} || true
+    - docker-compose -p visu-back-${CI_PIPELINE_ID} --env-file visu-back/.env
+      -f visu-back/docker-compose.yml -f visu-back/docker-compose-prod.yml
+      down --rmi all --volumes --remove-orphans || true
+
+  artifacts:
+    paths:
+      - cypress/videos/
+      - cypress/screenshots/
+      - visu-back.log
+      - visu-front.log
+    expire_in: 3 days
+    when: always
+
+# Deploy story book
+
+Build:
+  tags: [visu-cicd-docker]
+  stage: build
+  script:
+    - npm ci
+    - npm run build
+  artifacts:
+    expire_in: 3 days
+    paths:
+      - build/
+
+.deploy: &deploy # Deploy template
+  tags: [visu-cicd-docker]
+  stage: deploy
+  when: manual
+  variables:
+    SITE_ID: "yournamehere.netlify.com"
+    BACKEND_URL: "yourbackend.makina.com"
+    ADMIN_HOST: "https:\\/\\/terra-admin-dev.netlify.com\\/"
+  dependencies:
+    - Build
+  script:
+    - cat ./build/env.dist.json | sed
+      -e "s/<BACKEND_URL>/${BACKEND_URL}/g" > ./build/env.json
+    - cat ./build/env.json
+    - cat ./_redirects.dist | sed
+      -e "s/<ADMIN_HOST>/${ADMIN_HOST}/g" | sed
+      -e "s/<BACKEND_URL>/${BACKEND_URL}/g" > ./build/_redirects
+    - npm i -g netlify-cli
+    - npx netlify deploy --site=$SITE_ID --auth=$NETLIFY_ACCESS_TOKEN  --dir=./build --prod
+
+Deploy Dev (force): &deploy_predev
+  <<: *deploy
+  environment:
+    name: dev
+    url: https://terravisu-demo.netlify.com
+  variables:
+    SITE_ID: "terravisu-demo.netlify.com"
+    BACKEND_URL: "https:\\/\\/terravisu-demo.makina-corpus.net\\/"
+    ADMIN_HOST: "https:\\/\\/terra-admin-dev.netlify.com\\/"
+
+Deploy Dev:
+  <<: *deploy_predev
+  only:
+    - master
+  when: always

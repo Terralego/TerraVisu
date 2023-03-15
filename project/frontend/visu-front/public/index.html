@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="utf-8">
+    <!--link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico"-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, maximum-scale=1, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <style type="text/css">
+
+      body {
+        background-color: #394B59;
+      }
+      .splash-screen_container {
+        opacity: 0;
+        transition: opacity 1s ease-in;
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 120;
+      }
+
+      .placeholder__navbar {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 3.3rem;
+        background-color: #394b59;
+        z-index: 100;
+      }
+      .with-splash .splash-screen_container {
+        opacity: 1;
+      }
+
+      .splash-screen {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      @media(min-width: 768px) and (max-width: 1024px) and (orientation: landscape) {
+        .placeholder__navbar {
+        width: 2.65rem;
+      }
+      .splash-screen {
+          top: 25%;
+          left: 25%;
+          transform: scale(.85);
+        }
+      }
+
+      @media(min-width: 320px) and (max-width: 768px) and (orientation: portrait) {
+        .placeholder__navbar {
+        width: 2.75rem;
+      }
+        .splash-screen {
+          transform: scale(.65);
+        }
+      }
+
+    </style>
+    <!--
+      manifest.json provides metadata used when your web app is added to the
+      homescreen on Android. See https://developers.google.com/web/fundamentals/web-app-manifest/
+    -->
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json">
+    <!--
+      Notice the use of %PUBLIC_URL% in the tags above.
+      It will be replaced with the URL of the `public` folder during the build.
+      Only files inside the `public` folder can be referenced from the HTML.
+
+      Unlike "/favicon.ico" or "favicon.ico", "%PUBLIC_URL%/favicon.ico" will
+      work correctly both with client-side routing and a non-root public URL.
+      Learn how to configure a non-root public URL by running `npm run build`.
+    -->
+  </head>
+  <body class="with-splash">
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root"></div>
+    <div class="splash-screen_container">
+      <div class="placeholder__navbar"></div>
+      <div class="splash-screen">
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,252 @@
+{
+  "auth": {
+    "loginform": {
+      "email": {
+        "helper": "Saisissez votre e-mail",
+        "helper_invalid": "E-mail invalide",
+        "info": "requis",
+        "label": "E-mail",
+        "placeholder": "E-mail"
+      },
+      "error_generic": "Identifiants invalides",
+      "password": {
+        "helper": "Saisissez votre votre mot de passe",
+        "helper_invalid": "Mot de passe invalide",
+        "info": "requis",
+        "label": "Mot de passe",
+        "placeholder": "Mot de passe"
+      },
+      "submit": "Se connecter",
+      "title": "Connexion"
+    },
+    "logout": {
+      "cancel": {
+        "button_label": "Annuler"
+      },
+      "confirm": {
+        "button_label": "Confirmer",
+        "label": "Voulez-vous vraiment vous déconnecter ?"
+      }
+    },
+    "signupform": {
+      "email": {
+        "help": "Saisissez votre e-mail",
+        "info": "requis",
+        "label": "E-mail",
+        "placeholder": "E-mail"
+      },
+      "error_generic": "Identifiants invalides",
+      "password": {
+        "help": "Saisissez votre votre mot de passe",
+        "info": "requis",
+        "label": "Mot de passe",
+        "placeholder": "Mot de passe"
+      },
+      "submit": "Créer le compte",
+      "submitSuccess": "E-mail envoyé à {{email}}",
+      "title": "Créer un compte"
+    }
+  },
+  "menu": {
+    "informations": "Informations",
+    "home": "Accueil",
+    "login": "Connexion",
+    "logout": "Déconnexion"
+  },
+  "terralego": {
+    "forms": {
+      "controls": {
+        "daterangeinput": {
+          "end_placeholder": "Au JJ/MM/AAAA",
+          "invalid_date": "Date invalide",
+          "overlapping_dates": "Date chevauchante",
+          "start_placeholder": "Du JJ/MM/AAAA"
+        },
+        "generic": {
+          "empty_item": "Tous(tes)"
+        },
+        "multiselect": {
+          "input_placeholder": "Rechercher...",
+          "no_results": "Aucun résultat",
+          "select_placeholder": "Saisissez un terme de recherche",
+          "select_placeholder_plural": "Saisissez au moins {{count}} caractères",
+          "too_many": "Trop de résultats, affinez votre recherche"
+        },
+        "noValues": "Aucune valeur disponible",
+        "range_from": "De",
+        "range_to": "à",
+        "select": {
+          "empty_item": "Tous(tes)",
+          "input_placeholder": "Filtrer...",
+          "no_results": "Aucun résultat",
+          "select_placeholder": "Saisissez un terme de recherche"
+        }
+      }
+    },
+    "legend": {
+      "nolabel": "Sans valeur",
+      "label": "De {{lower}} à {{upper}}",
+      "labelNoValue": "Valeur non disponible",
+      "labelFirst": "Supérieur à {{lower}}",
+      "labelLast": "Inférieur à {{upper}}"
+    },
+    "map": {
+      "backgroundstyles_control": {
+        "button_label": "Fonds de carte"
+      },
+      "capture_control": {
+        "button_label": "Capture"
+      },
+      "compass_arrow_control": {
+        "title": "Orienter vers le nord"
+      },
+      "draw_control": {
+        "combine": "Grouper",
+        "line": "Ligne",
+        "point": "Point",
+        "polygon": "Polygone",
+        "trash": "Supprimer",
+        "uncombine": "Dégrouper"
+      },
+      "home_control": {
+        "button_label": "Réinitialiser la position de la carte"
+      },
+      "print_control": {
+        "button_label": "Impression vers PDF",
+        "cancel_label": "Annuler",
+        "landscape_label": "Paysage",
+        "portrait_label": "Portrait"
+      },
+      "report_control": {
+        "toaster": "Cliquer sur la carte pour indiquer la localisation du signalement",
+        "content": "signaler une information manquante ou incorrecte",
+        "form": {
+          "title": "Signaler une erreur ou proposer une amélioration",
+          "cancel": "ANNULER",
+          "comment": {
+            "label": "Commentaire",
+            "optional": "optionnel"
+          },
+          "radio": {
+            "doesnotexist": {
+              "label": "L'élément n'existe pas"
+            },
+            "missing_info": {
+              "label": "Information manquante"
+            },
+            "wrong_info": {
+              "label": "Information erronée"
+            },
+            "wrong_location": {
+              "label": "Emplacement incorrect"
+            }
+          },
+          "radiogroup": {
+            "label": "Que voulez-vous signaler?"
+          },
+          "submit": "SIGNALER",
+          "url": {
+            "label": "URL de la localisation du signalement"
+          }
+        },
+        "success": {
+          "done": "Ok",
+          "message": "votre signalement a été soumis avec succès",
+          "other_report": "Faire un autre signalement",
+          "title": "Merci!"
+        }
+      },
+      "NavigationControl.ResetBearing": "Orienter vers le nord",
+      "NavigationControl.ZoomIn": "Zoomer",
+      "NavigationControl.ZoomOut": "Dézoomer",
+      "search_control": {
+        "button_label": "Rechercher"
+      },
+      "search_results": {
+        "group_total": "(1 résultat trouvé)",
+        "group_total_plural": "({{count}} résultats trouvés)",
+        "no_result": "Pas de résultat",
+        "title": "Résultats de recherche"
+      },
+      "share_control": {
+        "copied": "Lien copié !",
+        "link": "Partager la carte",
+        "share": "Partager la carte sur {{context}}"
+      },
+      "zoom_in_control": {
+        "title": "Zoomer"
+      },
+      "zoom_out_control": {
+        "title": "Dézoomer"
+      }
+    },
+    "widget": {
+      "synthesis":{
+        "title": "Synthèse : {{layer}}"
+      },
+      "default":{
+        "title": "Widget"
+      }
+    },
+    "visualizer": {
+      "fold": "Replier",
+      "story": {
+        "start": "Démarrer",
+        "next": "Suivant",
+        "previous": "Précédent",
+        "restart": "Recommencer"
+      },
+      "layerstree": {
+        "group": {
+          "selector": "Aucune couche disponible"
+        },
+        "itemFilters": {
+          "date": "le {{value}}",
+          "label": "{{label}} : ",
+          "range": {
+            "date": "Entre le {{from}} et le {{to}}",
+            "dateEnding": "Terminant le {{from}}",
+            "dateStarting": "Commençant le {{from}}",
+            "numeric": "Entre {{from}} et {{to}}"
+          }
+        },
+        "itemOptions": {
+          "filter": {
+            "alt": "Ouvrir les filtres",
+            "alt_close": "Fermer les filtres",
+            "label": "Filtres",
+            "tooltip": "Ouvrir les filtres",
+            "tooltip_close": "Fermer les filtres"
+          },
+          "options": {
+            "alt": "",
+            "alt_close": "Fermer les options",
+            "alt_open": "Afficher les options",
+            "label": "Options",
+            "tooltip": "Afficher les options",
+            "tooltip_close": "Fermer les options"
+          },
+          "table": {
+            "alt": "Ouvrir la vue tabulaire",
+            "alt_close": "Fermer la vue tabulaire",
+            "label": "Vue tabulaire",
+            "title": "Vue tabulaire",
+            "tooltip": "Ouvrir la vue tabulaire",
+            "tooltip_close": "Fermer la vue tabulaire"
+          },
+          "widget": {
+            "action-close": "Fermer le widget",
+            "action-close_synthesis": "Fermer la synthèse",
+            "action-open": "Ouvrir le widget",
+            "action-open_synthesis": "Ouvrir la synthèse"
+          }
+        },
+        "warningzoom": {
+          "message": "Visible depuis le zoom {{minzoom}}"
+        }
+      },
+      "too_many_results": "Votre recherche contient trop de résultats ({{number}}), veuillez affiner votre requête ou zoomer sur une zone plus restreinte.",
+      "unfold": "Déplier"
+    }
+  }
+}

@@ -1,0 +1,183 @@
+{
+  "name": "visu-front",
+  "version": "1.2.23",
+  "private": true,
+  "dependencies": {
+    "@babel/core": "7.2.2",
+    "@blueprintjs/core": "^3.30.1",
+    "@blueprintjs/datetime": "^3.7.2",
+    "@blueprintjs/icons": "^3.3.0",
+    "@sentry/browser": "^6.17.5",
+    "@sentry/tracing": "^6.17.5",
+    "@svgr/webpack": "4.1.0",
+    "@terralego/core": "^1.28.19",
+    "@turf/bbox": "^6.0.1",
+    "@turf/center": "^6.0.1",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-eslint": "9.0.0",
+    "babel-jest": "23.6.0",
+    "babel-loader": "8.0.5",
+    "babel-plugin-named-asset-import": "^0.3.1",
+    "babel-preset-react-app": "^7.0.2",
+    "bfj": "6.1.1",
+    "bodybuilder": "^2.2.16",
+    "case-sensitive-paths-webpack-plugin": "2.2.0",
+    "classnames": "^2.2.6",
+    "css-loader": "1.0.0",
+    "debounce": "^1.2.0",
+    "dotenv": "6.0.0",
+    "dotenv-expand": "4.2.0",
+    "elasticsearch": "^15.4.1",
+    "eslint": "5.12.0",
+    "eslint-config-react-app": "^3.0.8",
+    "eslint-loader": "2.1.1",
+    "eslint-plugin-flowtype": "2.50.1",
+    "eslint-plugin-import": "2.14.0",
+    "eslint-plugin-jsx-a11y": "6.1.2",
+    "eslint-plugin-react": "7.12.4",
+    "file-loader": "2.0.0",
+    "final-form": "^4.18.7",
+    "fs-extra": "7.0.1",
+    "html-to-react": "~1.4.8",
+    "html-webpack-plugin": "4.0.0-alpha.2",
+    "i18next": "^19.7.0",
+    "i18next-browser-languagedetector": "^3.0.3",
+    "i18next-xhr-backend": "^3.1.2",
+    "identity-obj-proxy": "3.0.0",
+    "jest": "23.6.0",
+    "jest-pnp-resolver": "1.0.2",
+    "jest-resolve": "23.6.0",
+    "jest-watch-typeahead": "^0.2.1",
+    "memoize-one": "^5.0.4",
+    "memoizee": "^0.4.14",
+    "mini-css-extract-plugin": "0.5.0",
+    "node-sass": "^4.10.0",
+    "normalize.css": "^8.0.1",
+    "nunjucks": "^3.2.0",
+    "optimize-css-assets-webpack-plugin": "5.0.1",
+    "pivotql-compiler-elasticsearch": "^0.2.0",
+    "pivotql-compiler-mapboxgl": "^0.1.0",
+    "pivotql-parser-expression": "^0.2.0",
+    "pnp-webpack-plugin": "1.2.1",
+    "postcss-flexbugs-fixes": "4.1.0",
+    "postcss-loader": "3.0.0",
+    "postcss-preset-env": "6.5.0",
+    "postcss-safe-parser": "4.0.1",
+    "prop-types": "^15.7.2",
+    "qs": "^6.8.0",
+    "react": "^16.9.0",
+    "react-app-polyfill": "^0.2.2",
+    "react-ctx-connect": "^1.0.2",
+    "react-dev-utils": "^8.0.0",
+    "react-dom": "^16.9.0",
+    "react-fast-compare": "^2.0.4",
+    "react-final-form": "^6.3.5",
+    "react-helmet": "^5.2.1",
+    "react-i18next": "^11.7.2",
+    "react-router": "^5.2.0",
+    "react-router-dom": "^5.2.0",
+    "resize-observer-polyfill": "^1.5.1",
+    "resolve": "1.10.0",
+    "sass-loader": "7.1.0",
+    "style-loader": "0.23.1",
+    "terser-webpack-plugin": "1.2.2",
+    "url-loader": "1.1.2",
+    "webpack": "4.28.3",
+    "webpack-dev-server": "3.1.14",
+    "webpack-manifest-plugin": "2.0.4",
+    "workbox-webpack-plugin": "3.6.3",
+    "xlsx": "^0.14.5"
+  },
+  "devDependencies": {
+    "cypress": "^4.7.0",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.2",
+    "enzyme-to-json": "^3.4.3",
+    "eslint-config-makina": "~0.11.0",
+    "nodemon": "^2.0.21",
+    "react-test-renderer": "^16.9.0",
+    "webpack-bundle-tracker": "^1.8.1"
+  },
+  "scripts": {
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js && cp _headers.dist ./build/_headers",
+    "build-watch": "DJANGO_APP=true nodemon --watch ./src/ scripts/build.js && cp _headers.dist ./build/_headers",
+    "postbuild": "echo $npm_package_version > build/build.txt && git describe >> build/build.txt && date -R >> build/build.txt",
+    "version": "git changelog -n -t $npm_package_version && git add CHANGELOG.md",
+    "test": "node scripts/test.js",
+    "lint": "eslint src",
+    "coverage": "npm test -- --coverage",
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.js",
+      "!src/App.js",
+      "!src/config/i18n.js",
+      "!src/**/index.js"
+    ],
+    "resolver": "jest-pnp-resolver",
+    "setupFiles": [
+      "react-app-polyfill/jsdom"
+    ],
+    "setupTestFrameworkScriptFile": "<rootDir>/src/setupTests.js",
+    "testMatch": [
+      "<rootDir>/src/**/__tests__/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/src/**/?(*.)(spec|test).{js,jsx,ts,tsx}"
+    ],
+    "testEnvironment": "jsdom",
+    "testURL": "http://localhost",
+    "transform": {
+      "^.+\\.(js|jsx|ts|tsx)$": "<rootDir>/node_modules/babel-jest",
+      "^.+\\.css$": "<rootDir>/config/jest/cssTransform.js",
+      "^(?!.*\\.(js|jsx|ts|tsx|css|json)$)": "<rootDir>/config/jest/fileTransform.js"
+    },
+    "transformIgnorePatterns": [
+      "[/\\\\]node_modules[/\\\\].+\\.(js|jsx|ts|tsx)$",
+      "^.+\\.module\\.(css|sass|scss)$"
+    ],
+    "moduleNameMapper": {
+      "^react-native$": "react-native-web",
+      "^.+\\.module\\.(css|sass|scss)$": "identity-obj-proxy"
+    },
+    "moduleFileExtensions": [
+      "web.js",
+      "js",
+      "web.ts",
+      "ts",
+      "web.tsx",
+      "tsx",
+      "json",
+      "web.jsx",
+      "jsx",
+      "node"
+    ],
+    "watchPlugins": [
+      "/Users/makbvrn/Code/final-visu/TerraVisu/project/frontend/visu-front/node_modules/jest-watch-typeahead/filename.js",
+      "/Users/makbvrn/Code/final-visu/TerraVisu/project/frontend/visu-front/node_modules/jest-watch-typeahead/testname.js"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "branches": 0,
+        "functions": 0,
+        "lines": 0,
+        "statements": 0
+      }
+    }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ],
+  "babel": {
+    "presets": [
+      "react-app"
+    ]
+  }
+}

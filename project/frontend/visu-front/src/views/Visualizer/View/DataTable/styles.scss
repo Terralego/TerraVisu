@@ -1,0 +1,123 @@
+@import '../../../variables.scss';
+
+.data-table {
+  flex-shrink: 0;
+  padding: 0;
+  height: 0;
+  transition: height .2s ease-in;
+  display: flex;
+  position: relative;
+  height: 0;
+  z-index: 80;
+  will-change: height;
+
+  &--visible {
+    height: 33vh;
+  }
+
+  .component-table {
+    outline: none;
+  }
+
+  .table-container {
+    transition: transform .2s ease-in;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: 0;
+    transform: translate3d(0, 100%, 0);
+
+    &--visible {
+      transform: translate3d(0, 0, 0);
+    }
+
+    &--full.table-container--visible {
+      height: calc(100vh);
+      transform: translate3d(0, -67.25vh, 0);
+    }
+
+    &--is-resizing {
+      height: calc(100vh);
+    }
+  }
+
+  .table {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .table-header {
+    background: #F5F8FA;
+    padding: .8rem;
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    & > * {
+      width: auto;
+    }
+
+    &__title {
+      text-align: center;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    &__counter {
+      position: relative;
+      margin-left: 1rem;
+    }
+
+    &__actions {
+      position: absolute;
+      right: .6rem;
+    }
+
+    &__loading {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    &--is-loading {
+      .table-header__count {
+        visibility: hidden;
+      }
+    }
+  }
+}
+
+.table-columns-selector__toggle-all {
+  font-style: italic;
+}
+
+@media(min-width: $breakpoints-tablet) and (max-width: $breakpoints-desktop) and (orientation: landscape) {
+  .data-table .table-header {
+    padding: .8rem .5rem;
+
+    &__title {
+      min-width: 0;
+      max-width: 65%;
+
+      &--label {
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        margin: 0;
+      }
+    }
+
+    &__counter {
+      margin-left: .5rem;
+    }
+  }
+}
+
+@media(min-width: $breakpoints-phone) and (max-width: $breakpoints-tablet) and (orientation: portrait) {
+  .data-table {
+    display: none;
+  }
+}
