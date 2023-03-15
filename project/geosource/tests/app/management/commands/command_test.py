@@ -1,6 +1,5 @@
-from django.core.management.base import BaseCommand
+from project.geosource.management.commands.helpers import DSCommandSource
 
 
-class Command(BaseCommand):
-    def handle(self, *args, **options):
-        self.stdout.write("TestFooBarBar")
+class Command(DSCommandSource):
+    data_source_path = "/opt/terra-visu/project/geosource/tests/data/test.geojson"
