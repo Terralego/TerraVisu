@@ -387,7 +387,7 @@ class CommandSource(Source):
         except AttributeError:
             pass
 
-        call_command(self.command)
+        call_command(self.command, source=self.pk)
 
         self.clear_features(layer, begin_date)
 

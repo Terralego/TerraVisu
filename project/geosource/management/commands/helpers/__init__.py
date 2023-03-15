@@ -2,15 +2,15 @@ from django.contrib.gis.gdal import DataSource
 from django.core.management import BaseCommand
 from geostore.models import Feature
 
-from project.geosource.models import Field, FieldTypes
+from project.geosource.models import CommandSource, Field, FieldTypes
 
 
 class BaseCommandSource(BaseCommand):
     source = None
+    geom_type = None
 
-    def get_source(self):
-        """Should return a source instance"""
-        raise NotImplementedError
+    def get_source(self, pk):
+        return CommandSource.objects.get(pk=pk)
 
     def get_data(self):
         raise NotImplementedError
@@ -28,15 +28,23 @@ class BaseCommandSource(BaseCommand):
         """
         raise NotImplementedError
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--source",
+            type=int,
+            help="Source ID",
+        )
+
     def handle(self, *args, **options):
-        self.source = self.get_source()
+        self.source = self.get_source(options["source"])
         self.stdout.write(f"Start refresh {self.source.name}")
         layer = self.source.get_layer()
         counter = 0
         data = self.get_data()
         if data:
-            self.update_source_fields(data[0])
             for element in data:
+                if counter == 0:
+                    self.update_source_fields(element)
                 counter += 1
                 feature = self.parse_data_to_feature(element)
                 feature.layer = layer
