@@ -1,4 +1,5 @@
 from django.contrib import admin
+from geostore.models import Feature
 from geostore.models import Layer as GeostoreLayer
 
 from project.terra_layer.models import Layer, StyleImage
@@ -19,3 +20,11 @@ class LayerAdmin(admin.ModelAdmin):
 
 admin.site.register(Layer, LayerAdmin)
 admin.site.register(GeostoreLayer)
+
+
+class FeatureAdmin(admin.ModelAdmin):
+    list_display = ("id", "identifier", "layer")
+    list_filter = ("layer",)
+
+
+admin.site.register(Feature, FeatureAdmin)

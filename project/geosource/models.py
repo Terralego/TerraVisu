@@ -1,6 +1,6 @@
 import json
 import sys
-from datetime import datetime, timedelta
+from datetime import date, datetime, timedelta
 from enum import Enum, auto
 from io import BytesIO
 
@@ -56,6 +56,7 @@ class FieldTypes(Enum):
             int: cls.Integer,
             bool: cls.Boolean,
             float: cls.Float,
+            date: cls.Date,
         }
 
         return types.get(type(data), cls.Undefined)
@@ -244,7 +245,7 @@ class Field(models.Model):
         choices=FieldTypes.choices(), default=FieldTypes.Undefined.value
     )
     level = models.IntegerField(default=0)
-    sample = models.JSONField(default=list, encoder=DjangoJSONEncoder)
+    sample = models.JSONField(default=list, encoder=DjangoJSONEncoder, blank=True)
     order = models.IntegerField(default=0)
 
     def __str__(self):
@@ -371,13 +372,12 @@ class ShapefileSource(Source):
 class CommandSource(Source):
     command = models.CharField(max_length=255)
 
-    @transaction.atomic
-    def refresh_data(self):
+    def _refresh_data(self):
         layer = self.get_layer()
         begin_date = datetime.now()
 
         try:
-            # wheter we are in a celery task ?
+            # whether we are in a celery task ?
             if isinstance(sys.stdout, LoggingProxy):
                 # Hack to be able to launch command with mondrian logging
                 sys.stdout.buffer = BytesIO()
@@ -393,7 +393,7 @@ class CommandSource(Source):
 
         refresh_data_done.send_robust(sender=self.__class__, layer=layer.pk)
 
-        return {"count": None}
+        return {"count": layer.features.count()}
 
     def _get_records(self, limit=None):
         return []
