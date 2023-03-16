@@ -147,5 +147,2280 @@
       "date_changed": "2023-03-02T13:09:51.637Z",
       "description": "Refresh sources need to be refreshed"
     }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 1,
+    "fields": {
+      "slug": "airfield-15",
+      "width": 21,
+      "height": 21,
+      "x": 0,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 2,
+    "fields": {
+      "slug": "airport-15",
+      "width": 21,
+      "height": 21,
+      "x": 21,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 3,
+    "fields": {
+      "slug": "alcohol-shop-15",
+      "width": 21,
+      "height": 21,
+      "x": 0,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 4,
+    "fields": {
+      "slug": "amusement-park-15",
+      "width": 21,
+      "height": 21,
+      "x": 21,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 5,
+    "fields": {
+      "slug": "aquarium-15",
+      "width": 21,
+      "height": 21,
+      "x": 42,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 6,
+    "fields": {
+      "slug": "art-gallery-15",
+      "width": 21,
+      "height": 21,
+      "x": 63,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 7,
+    "fields": {
+      "slug": "attraction-15",
+      "width": 21,
+      "height": 21,
+      "x": 42,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 8,
+    "fields": {
+      "slug": "bakery-15",
+      "width": 21,
+      "height": 21,
+      "x": 63,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 9,
+    "fields": {
+      "slug": "bank-15",
+      "width": 21,
+      "height": 21,
+      "x": 0,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 10,
+    "fields": {
+      "slug": "bar-15",
+      "width": 21,
+      "height": 21,
+      "x": 21,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 11,
+    "fields": {
+      "slug": "beer-15",
+      "width": 21,
+      "height": 21,
+      "x": 42,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 12,
+    "fields": {
+      "slug": "bicycle-15",
+      "width": 21,
+      "height": 21,
+      "x": 63,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 13,
+    "fields": {
+      "slug": "bicycle-share-15",
+      "width": 21,
+      "height": 21,
+      "x": 0,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 14,
+    "fields": {
+      "slug": "cafe-15",
+      "width": 21,
+      "height": 21,
+      "x": 21,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 15,
+    "fields": {
+      "slug": "campsite-15",
+      "width": 21,
+      "height": 21,
+      "x": 42,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 16,
+    "fields": {
+      "slug": "car-15",
+      "width": 21,
+      "height": 21,
+      "x": 63,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 17,
+    "fields": {
+      "slug": "castle-15",
+      "width": 21,
+      "height": 21,
+      "x": 84,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 18,
+    "fields": {
+      "slug": "cemetery-15",
+      "width": 21,
+      "height": 21,
+      "x": 105,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 19,
+    "fields": {
+      "slug": "cinema-15",
+      "width": 21,
+      "height": 21,
+      "x": 126,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 20,
+    "fields": {
+      "slug": "circle-15",
+      "width": 21,
+      "height": 21,
+      "x": 147,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 21,
+    "fields": {
+      "slug": "circle-stroked-15",
+      "width": 21,
+      "height": 21,
+      "x": 84,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 22,
+    "fields": {
+      "slug": "clothing-store-15",
+      "width": 21,
+      "height": 21,
+      "x": 105,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 23,
+    "fields": {
+      "slug": "college-15",
+      "width": 21,
+      "height": 21,
+      "x": 126,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 24,
+    "fields": {
+      "slug": "dentist-15",
+      "width": 21,
+      "height": 21,
+      "x": 147,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 25,
+    "fields": {
+      "slug": "doctor-15",
+      "width": 21,
+      "height": 21,
+      "x": 84,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 26,
+    "fields": {
+      "slug": "dog-park-15",
+      "width": 21,
+      "height": 21,
+      "x": 105,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 27,
+    "fields": {
+      "slug": "drinking-water-15",
+      "width": 21,
+      "height": 21,
+      "x": 126,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 28,
+    "fields": {
+      "slug": "embassy-15",
+      "width": 21,
+      "height": 21,
+      "x": 147,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 29,
+    "fields": {
+      "slug": "entrance-15",
+      "width": 21,
+      "height": 21,
+      "x": 84,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 30,
+    "fields": {
+      "slug": "fast-food-15",
+      "width": 21,
+      "height": 21,
+      "x": 105,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 31,
+    "fields": {
+      "slug": "ferry-15",
+      "width": 21,
+      "height": 21,
+      "x": 126,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 32,
+    "fields": {
+      "slug": "fire-station-15",
+      "width": 21,
+      "height": 21,
+      "x": 147,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 33,
+    "fields": {
+      "slug": "fuel-15",
+      "width": 21,
+      "height": 21,
+      "x": 0,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 34,
+    "fields": {
+      "slug": "garden-15",
+      "width": 21,
+      "height": 21,
+      "x": 21,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 35,
+    "fields": {
+      "slug": "golf-15",
+      "width": 21,
+      "height": 21,
+      "x": 42,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 36,
+    "fields": {
+      "slug": "grocery-15",
+      "width": 21,
+      "height": 21,
+      "x": 63,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 37,
+    "fields": {
+      "slug": "harbor-15",
+      "width": 21,
+      "height": 21,
+      "x": 84,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 38,
+    "fields": {
+      "slug": "heliport-15",
+      "width": 21,
+      "height": 21,
+      "x": 105,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 39,
+    "fields": {
+      "slug": "hospital-15",
+      "width": 21,
+      "height": 21,
+      "x": 126,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 40,
+    "fields": {
+      "slug": "ice-cream-15",
+      "width": 21,
+      "height": 21,
+      "x": 147,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 41,
+    "fields": {
+      "slug": "information-15",
+      "width": 21,
+      "height": 21,
+      "x": 0,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 42,
+    "fields": {
+      "slug": "laundry-15",
+      "width": 21,
+      "height": 21,
+      "x": 21,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 43,
+    "fields": {
+      "slug": "library-15",
+      "width": 21,
+      "height": 21,
+      "x": 42,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 44,
+    "fields": {
+      "slug": "lodging-15",
+      "width": 21,
+      "height": 21,
+      "x": 63,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 45,
+    "fields": {
+      "slug": "marker-15",
+      "width": 21,
+      "height": 21,
+      "x": 84,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 46,
+    "fields": {
+      "slug": "monument-15",
+      "width": 21,
+      "height": 21,
+      "x": 105,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 47,
+    "fields": {
+      "slug": "mountain-15",
+      "width": 21,
+      "height": 21,
+      "x": 126,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 48,
+    "fields": {
+      "slug": "museum-15",
+      "width": 21,
+      "height": 21,
+      "x": 147,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 49,
+    "fields": {
+      "slug": "music-15",
+      "width": 21,
+      "height": 21,
+      "x": 0,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 50,
+    "fields": {
+      "slug": "park-15",
+      "width": 21,
+      "height": 21,
+      "x": 21,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 51,
+    "fields": {
+      "slug": "pharmacy-15",
+      "width": 21,
+      "height": 21,
+      "x": 42,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 52,
+    "fields": {
+      "slug": "picnic-site-15",
+      "width": 21,
+      "height": 21,
+      "x": 63,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 53,
+    "fields": {
+      "slug": "place-of-worship-15",
+      "width": 21,
+      "height": 21,
+      "x": 84,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 54,
+    "fields": {
+      "slug": "playground-15",
+      "width": 21,
+      "height": 21,
+      "x": 105,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 55,
+    "fields": {
+      "slug": "police-15",
+      "width": 21,
+      "height": 21,
+      "x": 126,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 56,
+    "fields": {
+      "slug": "post-15",
+      "width": 21,
+      "height": 21,
+      "x": 147,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 57,
+    "fields": {
+      "slug": "prison-15",
+      "width": 21,
+      "height": 21,
+      "x": 0,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 58,
+    "fields": {
+      "slug": "rail-light-15",
+      "width": 21,
+      "height": 21,
+      "x": 21,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 59,
+    "fields": {
+      "slug": "religious-christian-15",
+      "width": 21,
+      "height": 21,
+      "x": 42,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 60,
+    "fields": {
+      "slug": "religious-jewish-15",
+      "width": 21,
+      "height": 21,
+      "x": 63,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 61,
+    "fields": {
+      "slug": "religious-muslim-15",
+      "width": 21,
+      "height": 21,
+      "x": 84,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 62,
+    "fields": {
+      "slug": "restaurant-15",
+      "width": 21,
+      "height": 21,
+      "x": 105,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 63,
+    "fields": {
+      "slug": "rocket-15",
+      "width": 21,
+      "height": 21,
+      "x": 126,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 64,
+    "fields": {
+      "slug": "school-15",
+      "width": 21,
+      "height": 21,
+      "x": 147,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 65,
+    "fields": {
+      "slug": "shop-15",
+      "width": 21,
+      "height": 21,
+      "x": 168,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 66,
+    "fields": {
+      "slug": "square-15",
+      "width": 21,
+      "height": 21,
+      "x": 189,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 67,
+    "fields": {
+      "slug": "square-stroked-15",
+      "width": 21,
+      "height": 21,
+      "x": 210,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 68,
+    "fields": {
+      "slug": "stadium-15",
+      "width": 21,
+      "height": 21,
+      "x": 231,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 69,
+    "fields": {
+      "slug": "star-15",
+      "width": 21,
+      "height": 21,
+      "x": 252,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 70,
+    "fields": {
+      "slug": "star-stroked-15",
+      "width": 21,
+      "height": 21,
+      "x": 273,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 71,
+    "fields": {
+      "slug": "suitcase-15",
+      "width": 21,
+      "height": 21,
+      "x": 294,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 72,
+    "fields": {
+      "slug": "swimming-15",
+      "width": 21,
+      "height": 21,
+      "x": 315,
+      "y": 0,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 73,
+    "fields": {
+      "slug": "theatre-15",
+      "width": 21,
+      "height": 21,
+      "x": 168,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 74,
+    "fields": {
+      "slug": "toilet-15",
+      "width": 21,
+      "height": 21,
+      "x": 189,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 75,
+    "fields": {
+      "slug": "town-hall-15",
+      "width": 21,
+      "height": 21,
+      "x": 210,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 76,
+    "fields": {
+      "slug": "triangle-15",
+      "width": 21,
+      "height": 21,
+      "x": 231,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 77,
+    "fields": {
+      "slug": "triangle-stroked-15",
+      "width": 21,
+      "height": 21,
+      "x": 252,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 78,
+    "fields": {
+      "slug": "veterinary-15",
+      "width": 21,
+      "height": 21,
+      "x": 273,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 79,
+    "fields": {
+      "slug": "volcano-15",
+      "width": 21,
+      "height": 21,
+      "x": 294,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 80,
+    "fields": {
+      "slug": "zoo-15",
+      "width": 21,
+      "height": 21,
+      "x": 315,
+      "y": 21,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 81,
+    "fields": {
+      "slug": "building-15",
+      "width": 20,
+      "height": 20,
+      "x": 168,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 82,
+    "fields": {
+      "slug": "bus-15",
+      "width": 20,
+      "height": 20,
+      "x": 188,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 83,
+    "fields": {
+      "slug": "rail-15",
+      "width": 20,
+      "height": 20,
+      "x": 208,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 84,
+    "fields": {
+      "slug": "rail-metro-15",
+      "width": 20,
+      "height": 20,
+      "x": 228,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 85,
+    "fields": {
+      "slug": "warehouse-15",
+      "width": 20,
+      "height": 20,
+      "x": 248,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 86,
+    "fields": {
+      "slug": "airfield-11",
+      "width": 17,
+      "height": 17,
+      "x": 268,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 87,
+    "fields": {
+      "slug": "airport-11",
+      "width": 17,
+      "height": 17,
+      "x": 285,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 88,
+    "fields": {
+      "slug": "alcohol-shop-11",
+      "width": 17,
+      "height": 17,
+      "x": 302,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 89,
+    "fields": {
+      "slug": "amusement-park-11",
+      "width": 17,
+      "height": 17,
+      "x": 319,
+      "y": 42,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 90,
+    "fields": {
+      "slug": "aquarium-11",
+      "width": 17,
+      "height": 17,
+      "x": 168,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 91,
+    "fields": {
+      "slug": "art-gallery-11",
+      "width": 17,
+      "height": 17,
+      "x": 185,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 92,
+    "fields": {
+      "slug": "attraction-11",
+      "width": 17,
+      "height": 17,
+      "x": 202,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 93,
+    "fields": {
+      "slug": "bakery-11",
+      "width": 17,
+      "height": 17,
+      "x": 219,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 94,
+    "fields": {
+      "slug": "bank-11",
+      "width": 17,
+      "height": 17,
+      "x": 236,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 95,
+    "fields": {
+      "slug": "bar-11",
+      "width": 17,
+      "height": 17,
+      "x": 253,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 96,
+    "fields": {
+      "slug": "beer-11",
+      "width": 17,
+      "height": 17,
+      "x": 270,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 97,
+    "fields": {
+      "slug": "bicycle-11",
+      "width": 17,
+      "height": 17,
+      "x": 287,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 98,
+    "fields": {
+      "slug": "bicycle-share-11",
+      "width": 17,
+      "height": 17,
+      "x": 304,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 99,
+    "fields": {
+      "slug": "cafe-11",
+      "width": 17,
+      "height": 17,
+      "x": 168,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 100,
+    "fields": {
+      "slug": "campsite-11",
+      "width": 17,
+      "height": 17,
+      "x": 185,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 101,
+    "fields": {
+      "slug": "car-11",
+      "width": 17,
+      "height": 17,
+      "x": 202,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 102,
+    "fields": {
+      "slug": "castle-11",
+      "width": 17,
+      "height": 17,
+      "x": 219,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 103,
+    "fields": {
+      "slug": "cemetery-11",
+      "width": 17,
+      "height": 17,
+      "x": 236,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 104,
+    "fields": {
+      "slug": "cinema-11",
+      "width": 17,
+      "height": 17,
+      "x": 253,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 105,
+    "fields": {
+      "slug": "circle-11",
+      "width": 17,
+      "height": 17,
+      "x": 270,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 106,
+    "fields": {
+      "slug": "circle-stroked-11",
+      "width": 17,
+      "height": 17,
+      "x": 287,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 107,
+    "fields": {
+      "slug": "clothing-store-11",
+      "width": 17,
+      "height": 17,
+      "x": 304,
+      "y": 84,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 108,
+    "fields": {
+      "slug": "college-11",
+      "width": 17,
+      "height": 17,
+      "x": 168,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 109,
+    "fields": {
+      "slug": "dentist-11",
+      "width": 17,
+      "height": 17,
+      "x": 185,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 110,
+    "fields": {
+      "slug": "doctor-11",
+      "width": 17,
+      "height": 17,
+      "x": 202,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 111,
+    "fields": {
+      "slug": "dog-park-11",
+      "width": 17,
+      "height": 17,
+      "x": 219,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 112,
+    "fields": {
+      "slug": "drinking-water-11",
+      "width": 17,
+      "height": 17,
+      "x": 236,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 113,
+    "fields": {
+      "slug": "embassy-11",
+      "width": 17,
+      "height": 17,
+      "x": 253,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 114,
+    "fields": {
+      "slug": "entrance-11",
+      "width": 17,
+      "height": 17,
+      "x": 270,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 115,
+    "fields": {
+      "slug": "fast-food-11",
+      "width": 17,
+      "height": 17,
+      "x": 287,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 116,
+    "fields": {
+      "slug": "ferry-11",
+      "width": 17,
+      "height": 17,
+      "x": 304,
+      "y": 105,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 117,
+    "fields": {
+      "slug": "fire-station-11",
+      "width": 17,
+      "height": 17,
+      "x": 168,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 118,
+    "fields": {
+      "slug": "fuel-11",
+      "width": 17,
+      "height": 17,
+      "x": 185,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 119,
+    "fields": {
+      "slug": "garden-11",
+      "width": 17,
+      "height": 17,
+      "x": 202,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 120,
+    "fields": {
+      "slug": "golf-11",
+      "width": 17,
+      "height": 17,
+      "x": 219,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 121,
+    "fields": {
+      "slug": "grocery-11",
+      "width": 17,
+      "height": 17,
+      "x": 236,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 122,
+    "fields": {
+      "slug": "harbor-11",
+      "width": 17,
+      "height": 17,
+      "x": 253,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 123,
+    "fields": {
+      "slug": "heliport-11",
+      "width": 17,
+      "height": 17,
+      "x": 270,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 124,
+    "fields": {
+      "slug": "hospital-11",
+      "width": 17,
+      "height": 17,
+      "x": 287,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 125,
+    "fields": {
+      "slug": "ice-cream-11",
+      "width": 17,
+      "height": 17,
+      "x": 304,
+      "y": 126,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 126,
+    "fields": {
+      "slug": "information-11",
+      "width": 17,
+      "height": 17,
+      "x": 168,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 127,
+    "fields": {
+      "slug": "laundry-11",
+      "width": 17,
+      "height": 17,
+      "x": 185,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 128,
+    "fields": {
+      "slug": "library-11",
+      "width": 17,
+      "height": 17,
+      "x": 202,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 129,
+    "fields": {
+      "slug": "lodging-11",
+      "width": 17,
+      "height": 17,
+      "x": 219,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 130,
+    "fields": {
+      "slug": "marker-11",
+      "width": 17,
+      "height": 17,
+      "x": 236,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 131,
+    "fields": {
+      "slug": "monument-11",
+      "width": 17,
+      "height": 17,
+      "x": 253,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 132,
+    "fields": {
+      "slug": "mountain-11",
+      "width": 17,
+      "height": 17,
+      "x": 270,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 133,
+    "fields": {
+      "slug": "museum-11",
+      "width": 17,
+      "height": 17,
+      "x": 287,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 134,
+    "fields": {
+      "slug": "music-11",
+      "width": 17,
+      "height": 17,
+      "x": 304,
+      "y": 147,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 135,
+    "fields": {
+      "slug": "park-11",
+      "width": 17,
+      "height": 17,
+      "x": 0,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 136,
+    "fields": {
+      "slug": "pharmacy-11",
+      "width": 17,
+      "height": 17,
+      "x": 17,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 137,
+    "fields": {
+      "slug": "picnic-site-11",
+      "width": 17,
+      "height": 17,
+      "x": 34,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 138,
+    "fields": {
+      "slug": "place-of-worship-11",
+      "width": 17,
+      "height": 17,
+      "x": 51,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 139,
+    "fields": {
+      "slug": "playground-11",
+      "width": 17,
+      "height": 17,
+      "x": 68,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 140,
+    "fields": {
+      "slug": "police-11",
+      "width": 17,
+      "height": 17,
+      "x": 85,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 141,
+    "fields": {
+      "slug": "post-11",
+      "width": 17,
+      "height": 17,
+      "x": 102,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 142,
+    "fields": {
+      "slug": "prison-11",
+      "width": 17,
+      "height": 17,
+      "x": 119,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 143,
+    "fields": {
+      "slug": "rail-light-11",
+      "width": 17,
+      "height": 17,
+      "x": 136,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 144,
+    "fields": {
+      "slug": "religious-christian-11",
+      "width": 17,
+      "height": 17,
+      "x": 153,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 145,
+    "fields": {
+      "slug": "religious-jewish-11",
+      "width": 17,
+      "height": 17,
+      "x": 170,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 146,
+    "fields": {
+      "slug": "religious-muslim-11",
+      "width": 17,
+      "height": 17,
+      "x": 187,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 147,
+    "fields": {
+      "slug": "restaurant-11",
+      "width": 17,
+      "height": 17,
+      "x": 204,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 148,
+    "fields": {
+      "slug": "rocket-11",
+      "width": 17,
+      "height": 17,
+      "x": 221,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 149,
+    "fields": {
+      "slug": "school-11",
+      "width": 17,
+      "height": 17,
+      "x": 238,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 150,
+    "fields": {
+      "slug": "shop-11",
+      "width": 17,
+      "height": 17,
+      "x": 255,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 151,
+    "fields": {
+      "slug": "square-11",
+      "width": 17,
+      "height": 17,
+      "x": 272,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 152,
+    "fields": {
+      "slug": "square-stroked-11",
+      "width": 17,
+      "height": 17,
+      "x": 289,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 153,
+    "fields": {
+      "slug": "stadium-11",
+      "width": 17,
+      "height": 17,
+      "x": 306,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 154,
+    "fields": {
+      "slug": "star-11",
+      "width": 17,
+      "height": 17,
+      "x": 0,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 155,
+    "fields": {
+      "slug": "star-stroked-11",
+      "width": 17,
+      "height": 17,
+      "x": 17,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 156,
+    "fields": {
+      "slug": "suitcase-11",
+      "width": 17,
+      "height": 17,
+      "x": 34,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 157,
+    "fields": {
+      "slug": "swimming-11",
+      "width": 17,
+      "height": 17,
+      "x": 51,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 158,
+    "fields": {
+      "slug": "theatre-11",
+      "width": 17,
+      "height": 17,
+      "x": 68,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 159,
+    "fields": {
+      "slug": "toilet-11",
+      "width": 17,
+      "height": 17,
+      "x": 85,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 160,
+    "fields": {
+      "slug": "town-hall-11",
+      "width": 17,
+      "height": 17,
+      "x": 102,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 161,
+    "fields": {
+      "slug": "triangle-11",
+      "width": 17,
+      "height": 17,
+      "x": 119,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 162,
+    "fields": {
+      "slug": "triangle-stroked-11",
+      "width": 17,
+      "height": 17,
+      "x": 136,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 163,
+    "fields": {
+      "slug": "veterinary-11",
+      "width": 17,
+      "height": 17,
+      "x": 153,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 164,
+    "fields": {
+      "slug": "volcano-11",
+      "width": 17,
+      "height": 17,
+      "x": 170,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 165,
+    "fields": {
+      "slug": "zoo-11",
+      "width": 17,
+      "height": 17,
+      "x": 187,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 166,
+    "fields": {
+      "slug": "building-11",
+      "width": 16,
+      "height": 16,
+      "x": 204,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 167,
+    "fields": {
+      "slug": "bus-11",
+      "width": 16,
+      "height": 16,
+      "x": 220,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 168,
+    "fields": {
+      "slug": "rail-11",
+      "width": 16,
+      "height": 16,
+      "x": 236,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 169,
+    "fields": {
+      "slug": "rail-metro-11",
+      "width": 16,
+      "height": 16,
+      "x": 252,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 170,
+    "fields": {
+      "slug": "warehouse-11",
+      "width": 16,
+      "height": 16,
+      "x": 268,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 171,
+    "fields": {
+      "slug": "pem-15",
+      "width": 19,
+      "height": 15,
+      "x": 284,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 172,
+    "fields": {
+      "slug": "autoroutes",
+      "width": 13,
+      "height": 11,
+      "x": 323,
+      "y": 168,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 173,
+    "fields": {
+      "slug": "dot-11",
+      "width": 11,
+      "height": 11,
+      "x": 303,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 174,
+    "fields": {
+      "slug": "pem-11",
+      "width": 13,
+      "height": 11,
+      "x": 314,
+      "y": 185,
+      "pixel_ratio": 1,
+      "visible": true
+    }
+  },
+  {
+    "model": "visu.spritevalue",
+    "pk": 175,
+    "fields": {
+      "slug": "dot-10",
+      "width": 10,
+      "height": 10,
+      "x": 321,
+      "y": 63,
+      "pixel_ratio": 1,
+      "visible": true
+    }
   }
 ]
