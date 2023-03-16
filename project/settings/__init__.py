@@ -227,7 +227,9 @@ CONSTANCE_ADDITIONAL_FIELDS = {"image_field": ["django.forms.ImageField", {}]}
 
 CONSTANCE_CONFIG = {
     "INSTANCE_TITLE": ("TerraVisu", _("Instance title"), str),
+    "INSTANCE_CREDITS": ("Source: TerraVisu", _("Instance credits"), str),
     "INSTANCE_LOGO": ("/static_dj/img/logo.webp", _("Logo"), "image_field"),
+    "INSTANCE_LOGO_FRONTEND_URL": ("/", _("Logo frontend URL"), str),
     "INSTANCE_FAVICON": ("/static_dj/img/favicon.ico", _("Favicon"), "image_field"),
     "INSTANCE_SPLASHSCREEN": (
         "/static_dj/img/splashscreen.png",
@@ -251,7 +253,13 @@ CONSTANCE_CONFIG = {
 CONSTANCE_CONFIG_FIELDSETS = {
     "General Options": {"fields": ("INSTANCE_TITLE",)},
     "Theme Options": {
-        "fields": ("INSTANCE_LOGO", "INSTANCE_FAVICON", "INSTANCE_SPLASHSCREEN"),
+        "fields": (
+            "INSTANCE_LOGO",
+            "INSTANCE_LOGO_FRONTEND_URL",
+            "INSTANCE_FAVICON",
+            "INSTANCE_SPLASHSCREEN",
+            "INSTANCE_CREDITS",
+        ),
         "collapse": True,
     },
     "Map BBOX options": {

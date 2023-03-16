@@ -4,10 +4,13 @@ from constance import config
 from django.core.files.storage import default_storage
 from rest_framework import permissions
 from rest_framework.response import Response
+from rest_framework.reverse import reverse
 from rest_framework.views import APIView
 
 from project.accounts.serializers import UserSerializer
 from project.terra_layer.models import Scene
+from project.visu.models import ExtraMenuItem, SpriteValue
+from project.visu.serializers import ExtraMenuItemSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -56,6 +59,7 @@ class SettingsAdminView(APIView):
                     "center": [config.MAP_DEFAULT_LNG, config.MAP_DEFAULT_LAT],
                 },
                 "user": user,
+                "spriteBaseUrl": reverse("sprites", request=request),
             }
         )
 
@@ -86,15 +90,19 @@ class SettingsFrontendView(APIView):
                 # deprecated section  & front
                 "title": config.INSTANCE_TITLE,
                 "version": None,
-                "credits": "Source: TerraVisu",
+                "credits": config.INSTANCE_CREDITS,
                 "favicon": FAVICON_URL,
                 "theme": {
                     "logo": LOGO_URL,
                     "brandLogo": INSTANCE_SPLASHSCREEN,
-                    "logoUrl": "/",
+                    "logoUrl": config.INSTANCE_LOGO_FRONTEND_URL,
                     "styles": [],
                 },
-                "extraMenuItems": [],
+                "extraMenuItems": ExtraMenuItemSerializer(
+                    ExtraMenuItem.objects.all(),
+                    many=True,
+                    context={"request": request},
+                ).data,
                 "allowUserRegistration": False,
             }
         )
@@ -123,3 +131,22 @@ class EnvFrontendView(APIView):
                 "DEFAULT_VIEWNAME": default_view,
             }
         )
+
+
+class SpriteDataAPIView(APIView):
+    permission_classes = [
+        permissions.AllowAny,
+    ]
+
+    def get(self, request, *args, **kwargs):
+        data = {}
+        for sv in SpriteValue.objects.all():
+            data[sv.slug] = {
+                "width": sv.width,
+                "height": sv.height,
+                "x": sv.x,
+                "y": sv.y,
+                "pixelRatio": sv.pixel_ratio,
+                "visible": sv.visible,
+            }
+        return Response(data)
