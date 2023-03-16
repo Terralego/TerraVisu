@@ -12,11 +12,20 @@ class FunctionalPermissionSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     modules = serializers.SerializerMethodField()
+    password = serializers.CharField(write_only=True, required=False)
 
     def get_modules(self, instance):
         return list(
             set(instance.functional_permissions.values_list("module", flat=True))
         )
+
+    def save(self, **kwargs):
+        super().save()
+        if "password" in self.validated_data:
+            self.instance.set_password(self.validated_data["password"])
+            self.instance.save()
+
+        return self.instance
 
     class Meta:
         model = User
@@ -33,6 +42,7 @@ class UserSerializer(serializers.ModelSerializer):
             "user_permissions",
             "modules",
             "properties",
+            "password",
         )
 
 
