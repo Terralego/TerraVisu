@@ -34,10 +34,7 @@ class LayerESIndex(ESMixin):
         self.client.index(**record)
 
     def clean_index(self):
-        try:
-            self.client.indices.delete(index=self.layer.name, ignore=[400, 404])
-        except Exception as exc:
-            raise exc
+        self.client.indices.delete(index=self.layer.name, ignore=[400, 404])
 
     def create_index(self):
         """
@@ -51,11 +48,6 @@ class LayerESIndex(ESMixin):
         except Source.DoesNotExist:
             # If no source, we ignore it. Type will be guessed later.
             return
-
-        # # Pre create index only for source if configured
-        # if not s.settings.get("create_index"):
-        #     logger.info(f"No index pre-creation for layer {layer.name}")
-        #     return
 
         logger.info(f"Index creation for layer {self.layer.name}")
 

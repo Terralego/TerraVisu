@@ -10,7 +10,3 @@ MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)  # NOQA
 DEBUG_TOOLBAR_CONFIG = {
     "SHOW_TOOLBAR_CALLBACK": lambda x: True,
 }
-
-API_SCHEMA = True
-API_SWAGGER = True
-API_REDOC = True

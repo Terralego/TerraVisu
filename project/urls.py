@@ -1,5 +1,6 @@
 import os
 
+from constance import config
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -34,9 +35,9 @@ urlpatterns = [
     path("", include("project.visu.urls")),
 ]
 
-if settings.API_SCHEMA:
+if config.API_SCHEMA:  # pragma: no cover
     urlpatterns += [path("api/schema/", SpectacularAPIView.as_view(), name="schema")]
-    if settings.API_SWAGGER:
+    if config.API_SWAGGER:
         urlpatterns += [
             path(
                 "api/schema/swagger/",
@@ -44,7 +45,7 @@ if settings.API_SCHEMA:
                 name="swagger",
             )
         ]
-    if settings.API_REDOC:
+    if config.API_REDOC:
         urlpatterns += [
             path(
                 "api/schema/redoc/",
@@ -53,7 +54,7 @@ if settings.API_SCHEMA:
             )
         ]
 
-if "dev" in os.getenv("DJANGO_SETTINGS_MODULE"):
+if "dev" in os.getenv("DJANGO_SETTINGS_MODULE"):  # pragma: no cover
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static("admin/", document_root=settings.ADMIN_ROOT)

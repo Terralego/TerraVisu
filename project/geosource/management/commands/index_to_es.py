@@ -21,19 +21,14 @@ class Command(BaseCommand):
 
     def handle(self, *args, **options):
         self.stdout.write(self.style.SUCCESS("Indexing layers to ES..."))
-        try:
-            client = ESMixin.get_client()
-            if options["layer"] is not None:
-                qs = Layer.objects.filter(pk=options["layer"])
-            else:
-                self.stdout.write("... Indexing all layers...")
-                qs = Layer.objects.all()
-            qs = qs.prefetch_related("features")
-            for layer in qs:
-                self.stdout.write(f"... Indexing layer {layer}")
-                layer_indexation = LayerESIndex(layer, client=client)
-                layer_indexation.index()
-
-        except Exception as exc:
-            self.stdout.write(self.style.ERROR(f"Error: {exc}"))
-            raise exc
+        client = ESMixin.get_client()
+        if options["layer"] is not None:
+            qs = Layer.objects.filter(pk=options["layer"])
+        else:
+            self.stdout.write("... Indexing all layers...")
+            qs = Layer.objects.all()
+        qs = qs.prefetch_related("features")
+        for layer in qs:
+            self.stdout.write(f"... Indexing layer {layer}")
+            layer_indexation = LayerESIndex(layer, client=client)
+            layer_indexation.index()

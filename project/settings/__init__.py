@@ -248,6 +248,9 @@ CONSTANCE_CONFIG = {
     "MAP_DEFAULT_LAT": (44.0, _("Map default lat"), float),
     "VIEW_ROOT_PATH": ("view", _("Frontend view root path"), str),
     "DEFAULT_VIEW_NAME": ("", _("Frontend default view name"), str),
+    "API_SCHEMA": (False, _("API schema"), bool),
+    "API_SWAGGER": (False, _("API swagger. API_SCHEMA required."), bool),
+    "API_REDOC": (False, _("API redoc.  API_SCHEMA required."), bool),
 }
 
 CONSTANCE_CONFIG_FIELDSETS = {
@@ -287,6 +290,10 @@ CONSTANCE_CONFIG_FIELDSETS = {
         "fields": ("VIEW_ROOT_PATH", "DEFAULT_VIEW_NAME"),
         "collapse": True,
     },
+    "API options": {
+        "fields": ("API_SCHEMA", "API_SWAGGER", "API_REDOC"),
+        "collapse": True,
+    },
 }
 
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
@@ -315,9 +322,6 @@ AUTH_CLIENT_SECRET = config("OIDC_AUTH_CLIENT_SECRET", default=None)
 AUTH_SCOPE = config("OIDC_AUTH_SCOPE", default="openid", cast=Csv())
 AUTH_GET_USER_FUNCTION = "project.accounts.oidc:get_user"
 
-API_SCHEMA = config("API_SCHEMA", default=False, cast=bool)
-API_SWAGGER = config("API_SWAGGER", default=False, cast=bool)  # NEED API_SCHEMA
-API_REDOC = config("API_REDOC", default=False, cast=bool)  # NEED API_SCHEMA
 
 SENTRY_DSN = config("SENTRY_DSN", default="", cast=str)
 if SENTRY_DSN:

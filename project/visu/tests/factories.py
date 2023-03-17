@@ -1,11 +1,10 @@
-from factory import Faker
-from factory.django import DjangoModelFactory
+import factory
 
-from project.visu.models import SpriteValue
+from project.visu.models import ExtraMenuItem, SpriteValue
 
 
-class SpriteValueFactory(DjangoModelFactory):
-    slug = Faker("slug")
+class SpriteValueFactory(factory.django.DjangoModelFactory):
+    slug = factory.Faker("slug")
     x = 0
     y = 0
     height = 10
@@ -15,3 +14,12 @@ class SpriteValueFactory(DjangoModelFactory):
 
     class Meta:
         model = SpriteValue
+
+
+class ExtraMenuItemFactory(factory.django.DjangoModelFactory):
+    label = factory.Faker("sentence")
+    href = factory.Faker("url")
+    icon = factory.django.ImageField()
+
+    class Meta:
+        model = ExtraMenuItem

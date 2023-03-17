@@ -3,6 +3,7 @@ from unittest import mock
 
 from django.core.management import call_command
 from django.test import TestCase
+from geostore.models import Layer
 from rest_framework.exceptions import MethodNotAllowed
 
 from project.geosource.models import GeoJSONSource, GeometryTypes
@@ -97,3 +98,23 @@ class ResyncAllSourcesTestCase(TestCase):
             ):
                 call_command("resync_all_sources", force=True, stdout=out)
         mocked.assert_called_once()
+
+
+class IndexToESTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.layer_1 = Layer.objects.create(name="layer_1")
+        Layer.objects.create(name="layer_2")
+
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
+    def test_index_single_layer(self, mock_index):
+        mock_index.return_value = True
+        out = StringIO()
+        call_command("index_to_es", layer=self.layer_1.pk, stdout=out)
+        self.assertIn("Indexing layer layer_1", out.getvalue())
+
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
+    def test_index_all_layers(self, mock_index):
+        out = StringIO()
+        call_command("index_to_es", stdout=out)
+        self.assertIn("Indexing all layers", out.getvalue())
