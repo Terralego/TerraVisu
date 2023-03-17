@@ -7,12 +7,6 @@ class SpriteValue(models.Model):
     These sprites should be included in any Base layer view."""
 
     slug = models.SlugField(max_length=255, unique=True)
-    width = models.PositiveSmallIntegerField()
-    height = models.PositiveSmallIntegerField()
-    x = models.PositiveSmallIntegerField()
-    y = models.PositiveSmallIntegerField()
-    pixel_ratio = models.PositiveSmallIntegerField()
-    visible = models.BooleanField(default=True)
 
     def __str__(self):
         return self.slug

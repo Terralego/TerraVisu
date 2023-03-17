@@ -34,7 +34,7 @@ urlpatterns = [
     path("", include("project.visu.urls")),
 ]
 
-if settings.API_SCHEMA:
+if settings.API_SCHEMA:  # pragma: no cover
     urlpatterns += [path("api/schema/", SpectacularAPIView.as_view(), name="schema")]
     if settings.API_SWAGGER:
         urlpatterns += [
@@ -53,7 +53,7 @@ if settings.API_SCHEMA:
             )
         ]
 
-if "dev" in os.getenv("DJANGO_SETTINGS_MODULE"):
+if "dev" in os.getenv("DJANGO_SETTINGS_MODULE"):  # pragma: no cover
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     urlpatterns += static("admin/", document_root=settings.ADMIN_ROOT)

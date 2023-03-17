@@ -1,3 +1,4 @@
+from io import StringIO
 from unittest.mock import patch
 
 from django.core.management import call_command
@@ -40,5 +41,6 @@ class UpdatePostgisSourceTestCase(TestCase):
     def test_invalid_layer_does_not_call_replace_source_method(
         self, mocked_replace_source
     ):
-        call_command("update_postgis_source", 42, self.new_source.name)
+        out = StringIO()
+        call_command("update_postgis_source", 42, self.new_source.name, stdout=out)
         mocked_replace_source.assert_not_called()

@@ -141,12 +141,5 @@ class SpriteDataAPIView(APIView):
     def get(self, request, *args, **kwargs):
         data = {}
         for sv in SpriteValue.objects.all():
-            data[sv.slug] = {
-                "width": sv.width,
-                "height": sv.height,
-                "x": sv.x,
-                "y": sv.y,
-                "pixelRatio": sv.pixel_ratio,
-                "visible": sv.visible,
-            }
+            data[sv.slug] = {}
         return Response(data)

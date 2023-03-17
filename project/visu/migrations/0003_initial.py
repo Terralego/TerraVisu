@@ -24,12 +24,6 @@ class Migration(migrations.Migration):
                     ),
                 ),
                 ("slug", models.SlugField(max_length=255, unique=True)),
-                ("width", models.PositiveSmallIntegerField()),
-                ("height", models.PositiveSmallIntegerField()),
-                ("x", models.PositiveSmallIntegerField()),
-                ("y", models.PositiveSmallIntegerField()),
-                ("pixel_ratio", models.PositiveSmallIntegerField()),
-                ("visible", models.BooleanField(default=True)),
             ],
         ),
     ]
