@@ -1,6 +1,5 @@
 import os
 
-from constance import config
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -35,9 +34,9 @@ urlpatterns = [
     path("", include("project.visu.urls")),
 ]
 
-if config.API_SCHEMA:  # pragma: no cover
+if settings.API_SCHEMA:  # pragma: no cover
     urlpatterns += [path("api/schema/", SpectacularAPIView.as_view(), name="schema")]
-    if config.API_SWAGGER:
+    if settings.API_SWAGGER:
         urlpatterns += [
             path(
                 "api/schema/swagger/",
@@ -45,7 +44,7 @@ if config.API_SCHEMA:  # pragma: no cover
                 name="swagger",
             )
         ]
-    if config.API_REDOC:
+    if settings.API_REDOC:
         urlpatterns += [
             path(
                 "api/schema/redoc/",
