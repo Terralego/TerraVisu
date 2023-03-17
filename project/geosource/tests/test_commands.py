@@ -115,6 +115,7 @@ class IndexToESTestCase(TestCase):
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
     def test_index_all_layers(self, mock_index):
+        mock_index.return_value = True
         out = StringIO()
         call_command("index_to_es", stdout=out)
         self.assertIn("Indexing all layers", out.getvalue())
