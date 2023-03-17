@@ -5,12 +5,6 @@ from project.visu.models import ExtraMenuItem, SpriteValue
 
 class SpriteValueFactory(factory.django.DjangoModelFactory):
     slug = factory.Faker("slug")
-    x = 0
-    y = 0
-    height = 10
-    width = 10
-    pixel_ratio = 1
-    visible = True
 
     class Meta:
         model = SpriteValue

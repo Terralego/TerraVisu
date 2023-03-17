@@ -20,16 +20,7 @@ class SpriteDataAPIViewTestCase(APITestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
             response.data,
-            {
-                sprite_value.slug: {
-                    "height": 10,
-                    "pixelRatio": 1,
-                    "visible": True,
-                    "width": 10,
-                    "x": 0,
-                    "y": 0,
-                }
-            },
+            {sprite_value.slug: {}},
         )
 
 
