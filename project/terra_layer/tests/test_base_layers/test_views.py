@@ -1,3 +1,5 @@
+from io import StringIO
+
 from django.core.management import call_command
 from django.urls import reverse
 from mapbox_baselayer.models import MapBaseLayer
@@ -10,7 +12,8 @@ from project.accounts.tests.factories import SuperUserFactory
 class MapBaseLayerViewsSetTesCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        call_command("install_osm_baselayer")
+        out = StringIO()
+        call_command("install_osm_baselayer", stdout=out)
         cls.mapbox = MapBaseLayer.objects.create(
             name="mapbox", base_layer_type="mapbox", map_box_url="mapbox://test/"
         )

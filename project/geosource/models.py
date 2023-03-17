@@ -1,6 +1,6 @@
 import json
 import sys
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 from enum import Enum, auto
 from io import BytesIO
 
@@ -130,7 +130,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         report = {}
         with transaction.atomic():
             layer = self.get_layer()
-            begin_date = datetime.now()
+            begin_date = timezone.now()
             row_count = 0
             total = 0
 
@@ -374,7 +374,7 @@ class CommandSource(Source):
 
     def _refresh_data(self):
         layer = self.get_layer()
-        begin_date = datetime.now()
+        begin_date = timezone.now()
 
         try:
             # whether we are in a celery task ?

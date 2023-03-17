@@ -1,4 +1,5 @@
 import os
+from io import StringIO
 
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
@@ -34,26 +35,26 @@ class LayerDumpTestCase(TestCase):
         FilterField.objects.create(label="Test", field=self.field, layer=self.layer)
 
     def test_command_launch(self):
-        self.maxDiff = None
-        call_command("layer_load_dump", "-file={}".format(self.file))
+        out = StringIO()
+        call_command("layer_load_dump", "-file={}".format(self.file), stdout=out)
         self.assertEqual(Layer.objects.count(), 1)
 
     def test_command_launch_wrong_uuid(self):
-        self.maxDiff = None
+        out = StringIO()
         self.layer.uuid = "91c60192-9060-4bf6-b0de-818c5a362d88"
         self.layer.save()
-        call_command("layer_load_dump", "-file={}".format(self.file))
+        call_command("layer_load_dump", "-file={}".format(self.file), stdout=out)
         self.assertEqual(Layer.objects.count(), 2)
 
     def test_command_launch_command_error(self):
         file = os.path.join(
             "project", "terra_layer", "tests", "test_commands", "data", "wrong.json"
         )
-        self.maxDiff = None
+        out = StringIO()
         self.layer.uuid = "91c60192-9060-4bf6-b0de-818c5a362d88"
         self.layer.save()
         with self.assertRaises(CommandError) as e:
-            call_command("layer_load_dump", "-file={}".format(file))
+            call_command("layer_load_dump", "-file={}".format(file), stdout=out)
         self.assertEqual(
             str(e.exception),
             "A validation error occurred with data: "
@@ -62,7 +63,7 @@ class LayerDumpTestCase(TestCase):
         )
 
     def test_command_launch_multiple_name_found(self):
-        self.maxDiff = None
+        out = StringIO()
         self.scene.tree = [
             {"label": "layer1", "group": True, "expanded": True, "children": []},
         ]
@@ -75,7 +76,7 @@ class LayerDumpTestCase(TestCase):
             "data",
             "multiple_name.json",
         )
-        call_command("layer_load_dump", "-file={}".format(file))
+        call_command("layer_load_dump", "-file={}".format(file), stdout=out)
         self.scene.refresh_from_db()
         new_layer = Layer.objects.exclude(name="Layer_with_custom_style").get()
         self.assertEqual(

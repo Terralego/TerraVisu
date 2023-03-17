@@ -27,7 +27,6 @@ class LayerDumpTestCase(TestCase):
 
     @mock.patch("sys.stdout", new_callable=StringIO)
     def test_command_launch_without_custom_style(self, mock_sdout):
-        self.maxDiff = None
         layer = Layer.objects.create(
             source=self.source,
             name="Layer_without_custom_style",
@@ -65,12 +64,12 @@ class LayerDumpTestCase(TestCase):
         )
 
     def test_command_fail(self):
+        out = StringIO()
         with self.assertRaisesRegexp(CommandError, "Layer does not exist"):
-            call_command("layer_dump", pk=999)
+            call_command("layer_dump", pk=999, stdout=out)
 
     @mock.patch("sys.stdout", new_callable=StringIO)
     def test_command_launch(self, mock_stdout):
-        self.maxDiff = None
         layer = Layer.objects.create(
             source=self.source,
             name="Layer_with_extra_style",
@@ -115,7 +114,6 @@ class LayerDumpTestCase(TestCase):
 
     @mock.patch("sys.stdout", new_callable=StringIO)
     def test_command_launch_with_filer_field(self, mock_stdout):
-        self.maxDiff = None
         field = Field.objects.create(source=self.source, name="tutu")
 
         layer = Layer.objects.create(
