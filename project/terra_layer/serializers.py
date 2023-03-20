@@ -118,16 +118,14 @@ class LayerDetailSerializer(ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        # DEBUG
-        print("create method")
-        print("validated data", validated_data)
-        # END DEBUG
-
-        style_images = validated_data.pop("styles_images", []) if validated_data.get("style_images") else []
+        style_images = validated_data.pop("style_images", []) if validated_data.get("style_images") else []
+        print(style_images)
+        print(validated_data)
         instance = Layer.objects.create(**validated_data)
         for image_data in style_images:
-            if not image_data.get("actions") == StyleImage.CREATE:
+            if not image_data.get("action") == StyleImageSerializer.CREATE:
                 raise ValidationError({"style_images": "Invalid action for creating style image"})
+            image_data.pop("action")  # read_only field
             StyleImage.objects.create(layer=instance, **image_data)
 
         # instance = super().create(validated_data)
@@ -185,16 +183,6 @@ class LayerDetailSerializer(ModelSerializer):
     class Meta:
         model = Layer
         fields = "__all__"
-
-
-class StyleImageUpdateSerializer(StyleImageSerializer):
-    class Meta:
-        model = StyleImage
-        exclude = ("layer",)
-
-
-class LayerUpdateSerializer(LayerDetailSerializer):
-    style_images = StyleImageUpdateSerializer(many=True)
 
 
 class BaseLayerTileSerializer(serializers.ModelSerializer):
