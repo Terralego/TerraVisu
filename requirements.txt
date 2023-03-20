@@ -55,6 +55,8 @@ cligj==0.7.2
     # via fiona
 crispy-bootstrap5==0.7
     # via -r requirements.in
+cron-descriptor==1.2.35
+    # via django-celery-beat
 cryptography==39.0.1
     # via pyjwt
 deepmerge==1.1.0
@@ -77,7 +79,7 @@ django==4.1.7
     #   drf-spectacular
 django-auth-oidc @ git+https://gitlab.com/PaulFlorence/django-auth-oidc.git@fix_4
     # via -r requirements.in
-django-celery-beat==2.4.0
+django-celery-beat==2.5.0
     # via -r requirements.in
 django-celery-results==2.4.0
     # via -r requirements.in
