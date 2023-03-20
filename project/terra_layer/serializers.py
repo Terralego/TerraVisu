@@ -76,6 +76,7 @@ class StyleImageSerializer(ModelSerializer):
         (DELETE, "delete")
     )
 
+    id = serializers.IntegerField(required=False)
     action = serializers.ChoiceField(choices=ACTIONS, write_only=True, required=True)
 
     def create(self, validated_data):
@@ -119,16 +120,12 @@ class LayerDetailSerializer(ModelSerializer):
     @transaction.atomic
     def create(self, validated_data):
         style_images = validated_data.pop("style_images", []) if validated_data.get("style_images") else []
-        print(style_images)
-        print(validated_data)
-        instance = Layer.objects.create(**validated_data)
+        instance = super().create(validated_data)
         for image_data in style_images:
             if not image_data.get("action") == StyleImageSerializer.CREATE:
                 raise ValidationError({"style_images": "Invalid action for creating style image"})
             image_data.pop("action")  # read_only field
             StyleImage.objects.create(layer=instance, **image_data)
-
-        # instance = super().create(validated_data)
 
         # Update m2m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
@@ -144,15 +141,23 @@ class LayerDetailSerializer(ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        print("update method")
-        print("Instance", instance)
-        print("validated data", validated_data)
+        style_images = validated_data.pop("style_images", []) if validated_data.get("style_images") else []
         instance = super().update(instance, validated_data)
 
-        for image in instance.style_images.all():
-            if image.action == StyleImage.CREATE and not image.id:
-                image.layer = layer.id
-                image.save()
+        for image_data in style_images:
+            if image_data["action"] == StyleImageSerializer.CREATE and not image_data.get("id"):
+                image_data.pop("action")
+                StyleImage.objects.create(layer=instance.id, **image_data)
+            elif image_data["action"] == StyleImageSerializer.UPDATE and image_data.get("id"):
+                image_data.pop("action")
+                style_image_id = image_data.pop("id")
+                instance.style_images.filter(id=style_image_id).update(**image_data)
+            elif image_data["action"] == StyleImageSerializer.DELETE and image_data.get("id"):
+                instance.style_images.get(id=image_data["id"]).delete()
+            else:
+                raise ValidationError({
+                    "action": f"Invalid action \"{image_data['action']}\" for style image of id {image_data.get('id')}"
+                })
 
         # Update m1m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
