@@ -1,5 +1,7 @@
+import base64
 import io
 import json
+import tempfile
 from unittest.mock import patch
 
 from django.contrib.auth import get_user_model
@@ -830,3 +832,67 @@ class LayerViewTestCase(APITestCase):
                 }
             ],
         )
+
+    def test_create_layer_with_style_image(self):
+        user = UserModel.objects.create(email="user@test.com", password="secret")
+        perm = Permission.objects.get(name="Can manage layers")
+        user.user_permissions.add(perm)
+        source = PostGISSource.objects.create(**self.source_params)
+
+        self.client.force_authenticate(user)
+        self.assertEqual(StyleImage.objects.count(), 0)
+        request_data = {
+            "name": "test create layer",
+            "source": source.pk,
+            "style_images": [
+                {
+                    "name": "test_image.png",
+                    "file": SimpleUploadedFile(
+                        "test_image.png",
+                        b"something something",
+                        content_type="image/png",
+                    ),
+                    "action": "create",
+                }
+            ],
+        }
+        response = self.client.post(
+            reverse("layer-list"), request_data, format="multipart"
+        )
+        self.assertEqual(response.status_code, HTTP_201_CREATED, response.json())
+        self.assertEqual(StyleImage.objects.count(), 1)
+
+    # def test_style_image_creation_when_updating_layer(self):
+    #     user = UserModel.objects.create(email="user@test.com", password="secret")
+    #     perm = Permission.objects.get(name="Can manage layers")
+    #     user.user_permissions.add(perm)
+
+    #     source = PostGISSource.objects.create(**self.source_params)
+    #     layer = Layer.objects.create(
+    #         name="test_layer", source=source, group=self.layer_group
+    #     )
+
+    #     # No StyleImage created yet
+    #     self.assertEqual(StyleImage.objects.count(), 0)
+    #     self.client.force_authenticate(user)
+    #     response = self.client.patch(
+    #         reverse("layer-detail", args=[layer.pk]),
+    #         {
+    #             "name": layer.name,
+    #             "source": layer.source.pk,
+    #             "style_images": [
+    #                 {
+    #                     "name": "test_image",
+    #                     "file": io.StringIO("abcdefgh"),
+    #                     "action": "create",
+    #                 }
+    #             ],
+    #         },
+    #         format="multipart",
+    #     )
+    #     self.assertEqual(response.status_code, HTTP_200_OK, response.json())
+    #     style_images = [i.get("id") for i in response.json().get("style_images", [])]
+    #     print("style_images", style_images)
+
+    #     # StyleImage should be created
+    #     self.assertEqual(StyleImage.objects.count(), 1)
