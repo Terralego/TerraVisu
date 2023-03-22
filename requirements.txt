@@ -114,7 +114,7 @@ djangorestframework-gis==1.0
     # via django-geostore
 drf-jwt==1.19.2
     # via -r requirements.in
-drf-spectacular==0.26.0
+drf-spectacular==0.26.1
     # via -r requirements.in
 ecdsa==0.18.0
     # via python-jose
