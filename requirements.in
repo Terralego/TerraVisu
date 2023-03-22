@@ -6,6 +6,7 @@ gunicorn
 django-crispy-forms
 crispy-bootstrap5
 django-mapbox-baselayer
+django-cors-headers
 django-constance[database]
 django-filter
 elasticsearch
