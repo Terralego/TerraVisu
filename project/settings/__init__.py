@@ -330,3 +330,9 @@ if SENTRY_DSN:
         send_default_pii=config("SENTRY_SEND_DEFAULT_PII", default=True, cast=bool),
         release=f"terra-visu@{VERSION}",
     )
+
+# Override with custom settings
+try:
+    from .custom import *
+except ImportError:
+    pass
