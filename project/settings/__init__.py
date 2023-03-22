@@ -333,6 +333,6 @@ if SENTRY_DSN:
 
 # Override with custom settings
 try:
-    from .custom import *
+    from .custom import *  # NOQA
 except ImportError:
     pass
