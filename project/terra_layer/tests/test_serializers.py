@@ -1,3 +1,5 @@
+import base64
+
 from unittest.mock import MagicMock
 from django.test import TestCase
 from django.core.files import File
@@ -19,16 +21,14 @@ class LayerDetailSerializerTestCase(TestCase):
 
     def test_create_layer_with_style_image(self):
         source = Source.objects.create(name="source test")
+        image = base64.b64encode(self.small_gif)
         layer_data = {
             "name": "test_layer",
             "source": source.pk,
             "style_images": [
                 {
                     "name": "small.gif",
-                    "file": SimpleUploadedFile(
-                        "small.gif", content=self.small_gif, content_type="image/gif"
-                    ),
-                    "action": StyleImageSerializer.CREATE,
+                    "file": f"data:image/gif;base64,{image.decode('UTF-8')}",
                 },
             ],
         }
@@ -44,6 +44,7 @@ class LayerDetailSerializerTestCase(TestCase):
         source = Source.objects.create(name="source test")
         layer = Layer.objects.create(name="test layer", source=source)
         self.assertEqual(layer.style_images.count(), 0)
+        image = base64.b64encode(self.small_gif)
         layer_data = {
             "id": layer.id,
             "name": layer.name,
@@ -51,10 +52,7 @@ class LayerDetailSerializerTestCase(TestCase):
             "style_images": [
                 {
                     "name": "small.gif",
-                    "file": SimpleUploadedFile(
-                        "small.gif", content=self.small_gif, content_type="image/gif"
-                    ),
-                    "action": StyleImageSerializer.CREATE,
+                    "file": f"data:image/gif;base64,{image.decode('UTF-8')}",
                 }
             ],
         }
@@ -75,6 +73,7 @@ class LayerDetailSerializerTestCase(TestCase):
             ),
             layer=layer,
         )
+        image = base64.b64encode(self.small_gif)
         layer_data = {
             "id": layer.id,
             "name": layer.name,
@@ -83,8 +82,7 @@ class LayerDetailSerializerTestCase(TestCase):
                 {
                     "id": style_image.id,
                     "name": "really_small.gif",
-                    "file": style_image.file,
-                    "action": StyleImageSerializer.UPDATE,
+                    "file": f"data:image/gif;base64,{image.decode('UTF-8')}",
                 }
             ],
         }
@@ -111,7 +109,6 @@ class LayerDetailSerializerTestCase(TestCase):
             "style_images": [
                 {
                     "id": style_image.id,
-                    "action": StyleImageSerializer.DELETE,
                 }
             ],
         }
