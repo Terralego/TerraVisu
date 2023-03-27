@@ -106,13 +106,9 @@ class LayerDetailSerializerTestCase(TestCase):
             "id": layer.id,
             "name": layer.name,
             "source": source.id,
-            "style_images": [
-                {
-                    "id": style_image.id,
-                }
-            ],
+            "style_images": [],
         }
-        serializer = LayerDetailSerializer(layer, data=layer_data, partial=True)
+        serializer = LayerDetailSerializer(layer, data=layer_data)
         self.assertTrue(serializer.is_valid(), serializer.errors)
         serializer.save()
         self.assertFalse(StyleImage.objects.filter(id=style_image.id).exists())
