@@ -119,15 +119,11 @@ class LayerDetailSerializer(ModelSerializer):
         instance = super().update(instance, validated_data)
 
         for image_data in style_images:
-            if image_data["action"] == StyleImageSerializer.CREATE and not image_data.get("id"):
-                image_data.pop("action")
+            if not image_data.get("id"):
                 StyleImage.objects.create(layer=instance.id, **image_data)
-            elif image_data["action"] == StyleImageSerializer.UPDATE and image_data.get("id"):
-                image_data.pop("action")
+            elif image_data.get("id"):
                 style_image_id = image_data.pop("id")
                 instance.style_images.filter(id=style_image_id).update(**image_data)
-            elif image_data["action"] == StyleImageSerializer.DELETE and image_data.get("id"):
-                instance.style_images.get(id=image_data["id"]).delete()
             else:
                 raise ValidationError({
                     "action": f"Invalid action \"{image_data['action']}\" for style image of id {image_data.get('id')}"
