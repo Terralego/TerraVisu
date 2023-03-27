@@ -115,19 +115,19 @@ class LayerDetailSerializer(ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        style_images = validated_data.pop("style_images", []) if validated_data.get("style_images") else []
+        style_images = validated_data.pop("style_images", [])
         instance = super().update(instance, validated_data)
+
+        # Delete first
+        image_ids = [image["id"] for image in style_images if image.get("id")]
+        instance.style_images.exclude(id__in=image_ids).delete()
 
         for image_data in style_images:
             if not image_data.get("id"):
                 StyleImage.objects.create(layer=instance.id, **image_data)
-            elif image_data.get("id"):
+            else:
                 style_image_id = image_data.pop("id")
                 instance.style_images.filter(id=style_image_id).update(**image_data)
-            else:
-                raise ValidationError({
-                    "action": f"Invalid action \"{image_data['action']}\" for style image of id {image_data.get('id')}"
-                })
 
         # Update m1m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
