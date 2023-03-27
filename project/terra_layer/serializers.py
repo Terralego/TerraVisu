@@ -8,6 +8,7 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from rest_framework.reverse import reverse
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
+from drf_extra_fields.fields import Base64ImageField
 
 from .models import CustomStyle, FilterField, Layer, Scene, StyleImage
 
@@ -67,32 +68,8 @@ class CustomStyleSerializer(ModelSerializer):
 
 
 class StyleImageSerializer(ModelSerializer):
-    CREATE = "create"
-    UPDATE = "update"
-    DELETE = "delete"
-    ACTIONS = (
-        (CREATE, "create"),
-        (UPDATE, "update"),
-        (DELETE, "delete")
-    )
-
     id = serializers.IntegerField(required=False)
-    action = serializers.ChoiceField(choices=ACTIONS, write_only=True, required=True)
-
-    def create(self, validated_data):
-        if not validated_data["actions"] == self.CREATE:
-            raise ValidationError({'actions': 'Invalid action for creating StyleImage.'})
-        super().create(validated_data)
-
-    def update(self, instance, validated_data):
-        if not validated_data["actions"] == self.UPDATE:
-            raise ValidationError({'actions': 'Invalid action for creating StyleImage.'})
-        super().update(instance, validated_data)
-
-    def delte(self, instance):
-        if not instance.id and not self.validated_data["actions"] == self.DELETE:
-            raise ValidationError({'actions': 'Invalid action for creating StyleImage.'})
-        instance.delete()
+    file = Base64ImageField()
 
     class Meta:
         model = StyleImage
@@ -122,9 +99,6 @@ class LayerDetailSerializer(ModelSerializer):
         style_images = validated_data.pop("style_images", []) if validated_data.get("style_images") else []
         instance = super().create(validated_data)
         for image_data in style_images:
-            if not image_data.get("action") == StyleImageSerializer.CREATE:
-                raise ValidationError({"style_images": "Invalid action for creating style image"})
-            image_data.pop("action")  # read_only field
             StyleImage.objects.create(layer=instance, **image_data)
 
         # Update m2m through field
