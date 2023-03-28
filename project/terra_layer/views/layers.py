@@ -25,6 +25,7 @@ from ..serializers import (
     LayerListSerializer,
     SceneDetailSerializer,
     SceneListSerializer,
+    StyleImageSerializer,
 )
 from ..sources_serializers import SourceSerializer
 from ..utils import dict_merge, get_layer_group_cache_key
@@ -501,6 +502,9 @@ class LayerView(APIView):
             "layers": self.get_layers_list_for_layer(layer),
             "legends": layer.legends,
             "mainField": main_field,
+            "styleImages": StyleImageSerializer(
+                layer.style_images.all(), many=True
+            ).data,
             "filters": {
                 "layer": layer.source.slug,
                 "layerId": layer.id,
