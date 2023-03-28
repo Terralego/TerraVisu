@@ -21,7 +21,7 @@ Add local IPs in `pg_hba.conf` to allow connection from docker containers to you
 Install
 =======
 
-* Download `zip package <https://github.com/submarcos/TerraVisu/releases/latest/download/install.zip>`_
+* Download `zip package <https://github.com/Terralego/TerraVisu/releases/latest/download/install.zip>`_
 
 * Unzip it where you want
 
@@ -97,7 +97,7 @@ You can change port mapping by using a .env file in terra_visu directory :
 Update
 ======
 
-* Read `release notes <https://github.com/submarcos/TerraVisu/releases>`_ about bugfix, news and breaking changes.
+* Read `release notes <https://github.com/Terralego/TerraVisu/releases>`_ about bugfix, news and breaking changes.
 
 * Backup your data (database, public/media and var/ folder)
 
