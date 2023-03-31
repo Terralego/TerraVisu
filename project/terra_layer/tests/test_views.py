@@ -1,3 +1,4 @@
+import base64
 import io
 import json
 from unittest.mock import patch
@@ -31,6 +32,7 @@ from project.terra_layer.models import (
 from project.terra_layer.utils import get_layer_group_cache_key
 
 from .factories import SceneFactory
+from ...accounts.tests.factories import SuperUserFactory
 
 UserModel = get_user_model()
 
@@ -832,9 +834,7 @@ class LayerViewTestCase(APITestCase):
         )
 
     def test_create_layer_with_style_image(self):
-        user = UserModel.objects.create(email="user@test.com", password="secret")
-        perm = Permission.objects.get(name="Can manage layers")
-        user.user_permissions.add(perm)
+        user = SuperUserFactory()
         source = PostGISSource.objects.create(**self.source_params)
 
         small_gif = (
@@ -850,18 +850,11 @@ class LayerViewTestCase(APITestCase):
             "style_images": [
                 {
                     "name": "small.gif",
-                    "file": SimpleUploadedFile(
-                        "small.giff",
-                        content=small_gif,
-                        content_type="image/gif",
-                    ),
-                    "action": "create",
+                    "file": base64.b64encode(small_gif).decode("utf-8"),
                 }
             ],
         }
-        response = self.client.post(
-            reverse("layer-list"), request_data, format="multipart"
-        )
+        response = self.client.post(reverse("layer-list"), request_data)
         self.assertEqual(response.status_code, HTTP_201_CREATED, response.json())
         self.assertEqual(StyleImage.objects.count(), 1)
 
@@ -887,20 +880,13 @@ class LayerViewTestCase(APITestCase):
             reverse("layer-detail", args=[layer.pk]),
             {
                 "name": layer.name,
-                "source": layer.source.pk,
                 "style_images": [
                     {
                         "name": "test_image",
-                        "file": SimpleUploadedFile(
-                            "small.giff",
-                            content=small_gif,
-                            content_type="image/gif",
-                        ),
-                        "action": "create",
+                        "file": base64.b64encode(small_gif).decode("utf-8"),
                     }
                 ],
             },
-            format="multipart",
         )
         self.assertEqual(response.status_code, HTTP_200_OK, response.json())
         style_images = [i.get("id") for i in response.json().get("style_images", [])]
