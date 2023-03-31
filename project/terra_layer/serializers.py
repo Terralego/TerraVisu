@@ -69,12 +69,12 @@ class CustomStyleSerializer(ModelSerializer):
 
 class StyleImageSerializer(ModelSerializer):
     id = serializers.IntegerField(required=False)
-    file = Base64ImageField(required=False)
-    slug = serializers.SlugField(read_only=True)
+    data = Base64ImageField(required=False, source="file", write_only=True)
 
     class Meta:
         model = StyleImage
         exclude = ("layer",)
+        read_only_fields = ("slug", "file")
 
 
 class LayerListSerializer(ModelSerializer):
