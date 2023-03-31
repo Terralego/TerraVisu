@@ -77,9 +77,12 @@ django==4.1.7
     #   django-polymorphic
     #   django-token-tools
     #   djangorestframework
+    #   drf-extra-fields
     #   drf-jwt
     #   drf-spectacular
 django-auth-oidc @ git+https://gitlab.com/PaulFlorence/django-auth-oidc.git@fix_4
+    # via -r requirements.in
+django-autoslug==1.9.8
     # via -r requirements.in
 django-celery-beat==2.5.0
     # via -r requirements.in
@@ -111,10 +114,13 @@ djangorestframework==3.14.0
     # via
     #   django-geostore
     #   djangorestframework-gis
+    #   drf-extra-fields
     #   drf-jwt
     #   drf-spectacular
 djangorestframework-gis==1.0
     # via django-geostore
+drf-extra-fields==3.4.1
+    # via -r requirements.in
 drf-jwt==1.19.2
     # via -r requirements.in
 drf-spectacular==0.26.1

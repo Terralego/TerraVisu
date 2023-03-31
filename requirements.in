@@ -4,6 +4,7 @@ psycopg2
 pillow
 gunicorn
 django-crispy-forms
+django-autoslug
 crispy-bootstrap5
 django-mapbox-baselayer
 django-cors-headers
@@ -22,3 +23,4 @@ python-decouple
 git+https://gitlab.com/PaulFlorence/django-auth-oidc.git@fix_4#egg=django-auth-oidc
 drf-jwt
 drf-spectacular
+drf-extra-fields

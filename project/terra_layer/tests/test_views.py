@@ -1,3 +1,4 @@
+import base64
 import io
 import json
 from unittest.mock import patch
@@ -30,6 +31,7 @@ from project.terra_layer.models import (
 )
 from project.terra_layer.utils import get_layer_group_cache_key
 
+from ...accounts.tests.factories import SuperUserFactory
 from .factories import SceneFactory
 
 UserModel = get_user_model()
@@ -830,3 +832,65 @@ class LayerViewTestCase(APITestCase):
                 }
             ],
         )
+
+    def test_create_layer_with_style_image(self):
+        user = SuperUserFactory()
+        source = PostGISSource.objects.create(**self.source_params)
+
+        small_gif = (
+            b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00"
+            b"\x00\x05\x04\x04\x00\x00\x00\x2c\x00\x00\x00\x00"
+            b"\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"
+        )
+        self.client.force_authenticate(user)
+        self.assertEqual(StyleImage.objects.count(), 0)
+        request_data = {
+            "name": "test create layer",
+            "source": source.pk,
+            "style_images": [
+                {
+                    "name": "small.gif",
+                    "file": base64.b64encode(small_gif).decode("utf-8"),
+                }
+            ],
+        }
+        response = self.client.post(reverse("layer-list"), request_data)
+        self.assertEqual(response.status_code, HTTP_201_CREATED, response.json())
+        self.assertEqual(StyleImage.objects.count(), 1)
+
+    def test_style_image_creation_when_updating_layer(self):
+        user = UserModel.objects.create(email="user@test.com", password="secret")
+        perm = Permission.objects.get(name="Can manage layers")
+        user.user_permissions.add(perm)
+
+        source = PostGISSource.objects.create(**self.source_params)
+        layer = Layer.objects.create(
+            name="test_layer", source=source, group=self.layer_group
+        )
+
+        # No StyleImage created yet
+        self.assertEqual(StyleImage.objects.count(), 0)
+        self.client.force_authenticate(user)
+        small_gif = (
+            b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00"
+            b"\x00\x05\x04\x04\x00\x00\x00\x2c\x00\x00\x00\x00"
+            b"\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"
+        )
+        response = self.client.patch(
+            reverse("layer-detail", args=[layer.pk]),
+            {
+                "name": layer.name,
+                "style_images": [
+                    {
+                        "name": "test_image",
+                        "file": base64.b64encode(small_gif).decode("utf-8"),
+                    }
+                ],
+            },
+        )
+        self.assertEqual(response.status_code, HTTP_200_OK, response.json())
+        style_images = [i.get("id") for i in response.json().get("style_images", [])]
+        print("style_images", style_images)
+
+        # StyleImage should be created
+        self.assertEqual(StyleImage.objects.count(), 1)
