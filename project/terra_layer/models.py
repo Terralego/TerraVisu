@@ -1,6 +1,7 @@
 import uuid
 from hashlib import md5
 
+from autoslug import AutoSlugField
 from django.contrib.auth.models import Group
 from django.core.cache import cache
 from django.db import models, transaction
@@ -418,16 +419,11 @@ def style_image_path(instance, filename):
 
 class StyleImage(models.Model):
     name = models.CharField(max_length=255)
-    slug = models.SlugField(max_length=255, blank=True)
+    slug = AutoSlugField(populate_from="name", unique=True)
     layer = models.ForeignKey(
         Layer, related_name="style_images", on_delete=models.CASCADE
     )
     file = models.ImageField(upload_to=style_image_path)
-
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-        super().save(*args, **kwargs)
 
     class Meta:
         unique_together = (("name", "layer"),)

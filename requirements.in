@@ -4,6 +4,7 @@ psycopg2
 pillow
 gunicorn
 django-crispy-forms
+django-autoslug
 crispy-bootstrap5
 django-mapbox-baselayer
 django-cors-headers

@@ -2,13 +2,13 @@ import json
 
 from django.db import transaction
 from django.utils.translation import gettext as _
+from drf_extra_fields.fields import Base64ImageField
 from mapbox_baselayer.models import BaseLayerTile, MapBaseLayer
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from rest_framework.reverse import reverse
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
-from drf_extra_fields.fields import Base64ImageField
 
 from .models import CustomStyle, FilterField, Layer, Scene, StyleImage
 
@@ -69,7 +69,8 @@ class CustomStyleSerializer(ModelSerializer):
 
 class StyleImageSerializer(ModelSerializer):
     id = serializers.IntegerField(required=False)
-    file = Base64ImageField()
+    file = Base64ImageField(required=False)
+    slug = serializers.SlugField(read_only=True)
 
     class Meta:
         model = StyleImage
@@ -96,7 +97,11 @@ class LayerDetailSerializer(ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        style_images = validated_data.pop("style_images", []) if validated_data.get("style_images") else []
+        style_images = (
+            validated_data.pop("style_images", [])
+            if validated_data.get("style_images")
+            else []
+        )
         instance = super().create(validated_data)
         for image_data in style_images:
             StyleImage.objects.create(layer=instance, **image_data)
@@ -124,7 +129,7 @@ class LayerDetailSerializer(ModelSerializer):
 
         for image_data in style_images:
             if not image_data.get("id"):
-                StyleImage.objects.create(layer=instance.id, **image_data)
+                StyleImage.objects.create(layer=instance, **image_data)
             else:
                 style_image_id = image_data.pop("id")
                 instance.style_images.filter(id=style_image_id).update(**image_data)
