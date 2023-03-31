@@ -31,8 +31,8 @@ from project.terra_layer.models import (
 )
 from project.terra_layer.utils import get_layer_group_cache_key
 
-from .factories import SceneFactory
 from ...accounts.tests.factories import SuperUserFactory
+from .factories import SceneFactory
 
 UserModel = get_user_model()
 
