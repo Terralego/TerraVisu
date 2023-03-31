@@ -26,7 +26,7 @@ class LayerDetailSerializerTestCase(TestCase):
             "style_images": [
                 {
                     "name": "small.gif",
-                    "file": f"data:image/gif;base64,{image.decode('UTF-8')}",
+                    "data": f"data:image/gif;base64,{image.decode('UTF-8')}",
                 },
             ],
         }
@@ -50,7 +50,7 @@ class LayerDetailSerializerTestCase(TestCase):
             "style_images": [
                 {
                     "name": "small.gif",
-                    "file": f"data:image/gif;base64,{image.decode('UTF-8')}",
+                    "data": f"data:image/gif;base64,{image.decode('UTF-8')}",
                 }
             ],
         }
@@ -80,7 +80,7 @@ class LayerDetailSerializerTestCase(TestCase):
                 {
                     "id": style_image.id,
                     "name": "really_small.gif",
-                    "file": f"data:image/gif;base64,{image.decode('UTF-8')}",
+                    "data": f"data:image/gif;base64,{image.decode('UTF-8')}",
                 }
             ],
         }
