@@ -159,7 +159,7 @@ munch==2.5.0
     # via fiona
 openid-connect==0.5.0
     # via django-auth-oidc
-pillow==9.4.0
+pillow==9.5.0
     # via -r requirements.in
 prompt-toolkit==3.0.36
     # via click-repl
