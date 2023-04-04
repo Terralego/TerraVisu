@@ -2,8 +2,6 @@ import uuid
 from hashlib import md5
 
 from autoslug import AutoSlugField
-from django.contrib.auth.models import Group
-from django.core.cache import cache
 from django.db import models, transaction
 from django.utils.functional import cached_property
 from django.utils.text import slugify
@@ -15,7 +13,6 @@ from project.geosource.models import Field, Source
 
 from .schema import SCENE_LAYERTREE, JSONSchemaValidator
 from .style import generate_style_from_wizard
-from .utils import get_layer_group_cache_key
 
 
 def scene_icon_path(instance, filename):
@@ -40,6 +37,8 @@ class Scene(models.Model):
     )
     config = models.JSONField(default=dict)
     baselayer = models.ManyToManyField(MapBaseLayer)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def get_absolute_url(self):
         return reverse("scene-detail", args=[self.pk])
@@ -129,6 +128,11 @@ class Scene(models.Model):
         super().save(*args, **kwargs)
         self.tree2models()  # Generate LayerGroups according to the tree
 
+    @property
+    def layers(self):
+        """all scene layers"""
+        return Layer.objects.filter(group__view=self).order_by("group__order", "order")
+
     class Meta:
         ordering = ["order"]
 
@@ -145,6 +149,8 @@ class LayerGroup(models.Model):
     exclusive = models.BooleanField(default=False)
     selectors = models.JSONField(null=True, default=None)
     settings = models.JSONField(default=dict)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         ordering = ["order"]
@@ -153,7 +159,6 @@ class LayerGroup(models.Model):
 class Layer(models.Model):
     uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name="layers")
-
     group = models.ForeignKey(
         LayerGroup,
         on_delete=models.SET_NULL,
@@ -162,33 +167,24 @@ class Layer(models.Model):
         blank=True,
     )
     name = models.CharField(max_length=255, blank=False)
-
-    # Whether the layer is shown in tree or hidden
-    in_tree = models.BooleanField(default=True)
-
+    in_tree = models.BooleanField(
+        default=True, help_text="Whether the layer is shown in tree or hidden"
+    )
     order = models.IntegerField(default=0)
-
     description = models.TextField(blank=True)
-
-    # Contains the filter expression for source data
-    source_filter = models.TextField(blank=True)
-
+    source_filter = models.TextField(
+        blank=True, help_text="Contains the filter expression for source data"
+    )
     layer_style = models.JSONField(default=dict, blank=True)  # To be removed
     layer_style_wizard = models.JSONField(default=dict, blank=True)  # To be removed
-
     main_style = models.JSONField(default=dict, blank=True)
-
     settings = models.JSONField(default=dict, blank=True)
     active_by_default = models.BooleanField(default=False)
-
     legends = models.JSONField(default=list, blank=True)
-
     table_enable = models.BooleanField(default=False)
     table_export_enable = models.BooleanField(default=False)
-
     popup_config = models.JSONField(default=dict, blank=True)
     minisheet_config = models.JSONField(default=dict, blank=True)
-
     main_field = models.ForeignKey(
         Field,
         null=True,
@@ -196,10 +192,10 @@ class Layer(models.Model):
         related_name="is_main_of",
         blank=True,
     )
-
     interactions = models.JSONField(default=list, blank=True)
-
     fields = models.ManyToManyField(Field, through="FilterField")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     @property
     def map_style(self):
@@ -300,22 +296,6 @@ class Layer(models.Model):
                 kept_legend.append(legend)
 
             self.legends = kept_legend
-
-        # Invalidate cache for layer group
-        if self.group:
-            cache.delete(get_layer_group_cache_key(self.group.view))
-
-            # deleting cache for Groups
-            groups = self.source.settings.get("groups", [])
-            for group in Group.objects.filter(id__in=groups):
-                cache.delete(
-                    get_layer_group_cache_key(
-                        self.group.view,
-                        [
-                            group.name,
-                        ],
-                    )
-                )
 
     def __str__(self):
         return f"Layer({self.id}) - {self.name}"

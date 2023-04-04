@@ -28,7 +28,7 @@ from ..serializers import (
     StyleImageSerializer,
 )
 from ..sources_serializers import SourceSerializer
-from ..utils import dict_merge, get_layer_group_cache_key
+from ..utils import dict_merge, get_scene_tree_cache_key
 
 # Map source field data_type to format_type
 TYPE_MAP = {a: b.name.lower() for a, b in dict(FieldTypes.choices()).items()}
@@ -133,11 +133,10 @@ class LayerViewset(ModelViewSet):
         super().perform_destroy(instance)
 
 
-class LayerView(APIView):
+class SceneTreeAPIView(APIView):
     """This view generates the LayersTree used to construct the frontend"""
 
     permission_classes = ()
-    model = Layer
     EXTERNAL_SOURCES_CLASSES = [WMTSSource]
     DEFAULT_SOURCE_NAME = "terra"
     DEFAULT_SOURCE_TYPE = "vector"
@@ -172,9 +171,7 @@ class LayerView(APIView):
         self.user_groups = tiles_token_generator.get_groups_intersect(
             self.request.user, self.layergroup
         )
-        cache_key = get_layer_group_cache_key(
-            self.scene, self.user_groups.values_list("name", flat=True)
-        )
+        cache_key = get_scene_tree_cache_key(self.scene, self.user_groups)
         if update_cache:
             response = self.get_response_with_sources()
             cache.set(cache_key, response)
@@ -570,7 +567,7 @@ class LayerView(APIView):
     def layers(self):
         """List of layers of the selected scene"""
         layers = (
-            self.model.objects.filter(group__view=self.scene.pk)
+            Layer.objects.filter(group__view=self.scene.pk)
             .order_by("order")
             .select_related("source")
             .prefetch_related("extra_styles__source")

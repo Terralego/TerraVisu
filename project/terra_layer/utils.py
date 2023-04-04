@@ -1,4 +1,5 @@
 from collections.abc import Mapping
+from hashlib import md5
 
 
 def dict_merge(dct, merge_dct, add_keys=True):
@@ -15,13 +16,12 @@ def dict_merge(dct, merge_dct, add_keys=True):
     return dct
 
 
-def get_layer_group_cache_key(scene, extras=None):
-    """
-    :param scene: The scene to be cached
-    :return: The cache key
-    :rtype: string
-    """
-    if extras is None:
-        extras = []
-    extras_joined = "-".join(extras)
-    return f"terra-layer-{scene.pk}-{extras_joined}"
+def get_scene_tree_cache_key(scene, user_groups=None):
+    """Make cache ey for Scene Tree"""
+    scene_key = f"{scene.pk}-{scene.updated_at}"
+    user_groups_key = (
+        f"{user_groups.values_list('pk', flat=True)}" if user_groups else ""
+    )
+    layers_key = f"{scene.layers.values('id', 'group', 'updated_at')}"
+    cache_string = f"tree-{scene_key}-{user_groups_key}-{layers_key}"
+    return md5(cache_string.encode("utf-8")).hexdigest()

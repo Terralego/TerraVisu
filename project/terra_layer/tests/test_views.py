@@ -29,7 +29,7 @@ from project.terra_layer.models import (
     LayerGroup,
     StyleImage,
 )
-from project.terra_layer.utils import get_layer_group_cache_key
+from project.terra_layer.utils import get_scene_tree_cache_key
 
 from ...accounts.tests.factories import SuperUserFactory
 from .factories import SceneFactory
@@ -754,36 +754,35 @@ class LayerViewTestCase(APITestCase):
         group.authorized_layers.add(geo_layer)
 
         self.client.force_authenticate(self.user)
-        self.client.get(reverse("layerview", args=[self.scene.slug]))
-
-        cache_key = get_layer_group_cache_key(
-            self.scene,
-            [
-                group.name,
-            ],
-        )
-        self.assertIsNotNone(cache.get(cache_key))
+        with self.assertNumQueries(41):
+            self.client.get(reverse("layerview", args=[self.scene.slug]))
+        with self.assertNumQueries(11):
+            self.client.get(reverse("layerview", args=[self.scene.slug]))
 
         # updating layer to trigger cache reset
         layer.name = "new_name"
         layer.save()
-        self.assertIsNone(cache.get(cache_key))
+
+        with self.assertNumQueries(41):
+            self.client.get(reverse("layerview", args=[self.scene.slug]))
 
     def test_cache_cleared_after_public_layer_update(self):
         source = PostGISSource.objects.create(**self.source_params)
         layer = Layer.objects.create(
             name="public_layer", source=source, group=self.layer_group
         )
+        with self.assertNumQueries(42):
+            self.client.get(reverse("layerview", args=[self.scene.slug]))
 
-        self.client.get(reverse("layerview", args=[self.scene.slug]))
-
-        cache_key = get_layer_group_cache_key(self.scene)
-        self.assertIsNotNone(cache.get(cache_key))
+        with self.assertNumQueries(8):
+            self.client.get(reverse("layerview", args=[self.scene.slug]))
 
         # updating layer to trigger cache reset
         layer.name = "new_name"
         layer.save()
-        self.assertIsNone(cache.get(cache_key))
+        with self.assertNumQueries(34):
+            # still differences in original query number because callbacks auto create geostore layers and groups
+            self.client.get(reverse("layerview", args=[self.scene.slug]))
 
     def test_cache_updated_with_query_parameter(self):
         source = PostGISSource.objects.create(**self.source_params)
@@ -791,7 +790,7 @@ class LayerViewTestCase(APITestCase):
 
         self.client.get(reverse("layerview", args=[self.scene.slug]))
 
-        cache_key = get_layer_group_cache_key(self.scene)
+        cache_key = get_scene_tree_cache_key(self.scene)
         self.assertIsNotNone(cache.get(cache_key))
 
         response = self.client.get(
