@@ -36,7 +36,11 @@ class Scene(models.Model):
         default=list, validators=[JSONSchemaValidator(limit_value=SCENE_LAYERTREE)]
     )
     config = models.JSONField(default=dict)
-    baselayer = models.ManyToManyField(MapBaseLayer)
+    base_layers = models.ManyToManyField(
+        MapBaseLayer,
+        blank=True,
+        help_text="If no base layer defined, all base layers will be available.",
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
