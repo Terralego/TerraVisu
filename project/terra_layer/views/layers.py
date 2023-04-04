@@ -10,6 +10,7 @@ from django.http import Http404, QueryDict
 from django.urls import reverse
 from django.utils.functional import cached_property
 from geostore.tokens import tiles_token_generator
+from mapbox_baselayer.models import MapBaseLayer
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
@@ -286,12 +287,17 @@ class SceneTreeAPIView(APIView):
         }
 
         # settings are merged for now
+        map_base_layers = (
+            self.scene.base_layers.all()
+            if self.scene.base_layers.all()
+            else MapBaseLayer.objects.all()
+        )
         baselayers = [
             {
                 "label": baselayer.name,
                 "url": baselayer.url,
             }
-            for baselayer in self.scene.baselayer.all()
+            for baselayer in map_base_layers
         ]
 
         # avoid futur reference modifications
