@@ -36,10 +36,13 @@ class SceneListSerializer(ModelSerializer):
 
 class SceneDetailSerializer(ModelSerializer):
     slug = serializers.SlugField(required=False)
+    baselayer = PrimaryKeyRelatedField(
+        queryset=MapBaseLayer.objects.all(), source="base_layers", many=True
+    )  # compat with old name of m2m attribute. to fix in admin.
 
     class Meta:
         model = Scene
-        fields = "__all__"
+        exclude = ("base_layers",)
         extra_kwargs = {"baselayer": {"allow_empty": True}}
 
     def to_internal_value(self, data):
