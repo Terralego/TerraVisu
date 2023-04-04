@@ -1,6 +1,7 @@
 -c requirements.txt
 
 django-debug-toolbar
+freezegun
 flake8
 isort
 black

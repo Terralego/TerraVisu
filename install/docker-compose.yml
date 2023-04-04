@@ -2,7 +2,7 @@ version: "3.7"
 
 x-images:
   django: &django
-    image: ghcr.io/submarcos/terravisu
+    image: ghcr.io/Terralego/terravisu
     user: ${UID:-1000}:${GID:-1000}
     env_file:
       - ./conf/visu.env

@@ -1,3 +1,4 @@
+import base64
 import io
 import json
 from unittest.mock import patch
@@ -28,8 +29,9 @@ from project.terra_layer.models import (
     LayerGroup,
     StyleImage,
 )
-from project.terra_layer.utils import get_layer_group_cache_key
+from project.terra_layer.utils import get_scene_tree_cache_key
 
+from ...accounts.tests.factories import SuperUserFactory
 from .factories import SceneFactory
 
 UserModel = get_user_model()
@@ -752,36 +754,35 @@ class LayerViewTestCase(APITestCase):
         group.authorized_layers.add(geo_layer)
 
         self.client.force_authenticate(self.user)
-        self.client.get(reverse("layerview", args=[self.scene.slug]))
-
-        cache_key = get_layer_group_cache_key(
-            self.scene,
-            [
-                group.name,
-            ],
-        )
-        self.assertIsNotNone(cache.get(cache_key))
+        with self.assertNumQueries(43):
+            self.client.get(reverse("layerview", args=[self.scene.slug]))
+        with self.assertNumQueries(11):
+            self.client.get(reverse("layerview", args=[self.scene.slug]))
 
         # updating layer to trigger cache reset
         layer.name = "new_name"
         layer.save()
-        self.assertIsNone(cache.get(cache_key))
+
+        with self.assertNumQueries(43):
+            self.client.get(reverse("layerview", args=[self.scene.slug]))
 
     def test_cache_cleared_after_public_layer_update(self):
         source = PostGISSource.objects.create(**self.source_params)
         layer = Layer.objects.create(
             name="public_layer", source=source, group=self.layer_group
         )
+        with self.assertNumQueries(44):
+            self.client.get(reverse("layerview", args=[self.scene.slug]))
 
-        self.client.get(reverse("layerview", args=[self.scene.slug]))
-
-        cache_key = get_layer_group_cache_key(self.scene)
-        self.assertIsNotNone(cache.get(cache_key))
+        with self.assertNumQueries(8):
+            self.client.get(reverse("layerview", args=[self.scene.slug]))
 
         # updating layer to trigger cache reset
         layer.name = "new_name"
         layer.save()
-        self.assertIsNone(cache.get(cache_key))
+        with self.assertNumQueries(36):
+            # still differences in original query number because callbacks auto create geostore layers and groups
+            self.client.get(reverse("layerview", args=[self.scene.slug]))
 
     def test_cache_updated_with_query_parameter(self):
         source = PostGISSource.objects.create(**self.source_params)
@@ -789,7 +790,7 @@ class LayerViewTestCase(APITestCase):
 
         self.client.get(reverse("layerview", args=[self.scene.slug]))
 
-        cache_key = get_layer_group_cache_key(self.scene)
+        cache_key = get_scene_tree_cache_key(self.scene)
         self.assertIsNotNone(cache.get(cache_key))
 
         response = self.client.get(
@@ -830,3 +831,65 @@ class LayerViewTestCase(APITestCase):
                 }
             ],
         )
+
+    def test_create_layer_with_style_image(self):
+        user = SuperUserFactory()
+        source = PostGISSource.objects.create(**self.source_params)
+
+        small_gif = (
+            b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00"
+            b"\x00\x05\x04\x04\x00\x00\x00\x2c\x00\x00\x00\x00"
+            b"\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"
+        )
+        self.client.force_authenticate(user)
+        self.assertEqual(StyleImage.objects.count(), 0)
+        request_data = {
+            "name": "test create layer",
+            "source": source.pk,
+            "style_images": [
+                {
+                    "name": "small.gif",
+                    "file": base64.b64encode(small_gif).decode("utf-8"),
+                }
+            ],
+        }
+        response = self.client.post(reverse("layer-list"), request_data)
+        self.assertEqual(response.status_code, HTTP_201_CREATED, response.json())
+        self.assertEqual(StyleImage.objects.count(), 1)
+
+    def test_style_image_creation_when_updating_layer(self):
+        user = UserModel.objects.create(email="user@test.com", password="secret")
+        perm = Permission.objects.get(name="Can manage layers")
+        user.user_permissions.add(perm)
+
+        source = PostGISSource.objects.create(**self.source_params)
+        layer = Layer.objects.create(
+            name="test_layer", source=source, group=self.layer_group
+        )
+
+        # No StyleImage created yet
+        self.assertEqual(StyleImage.objects.count(), 0)
+        self.client.force_authenticate(user)
+        small_gif = (
+            b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00"
+            b"\x00\x05\x04\x04\x00\x00\x00\x2c\x00\x00\x00\x00"
+            b"\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"
+        )
+        response = self.client.patch(
+            reverse("layer-detail", args=[layer.pk]),
+            {
+                "name": layer.name,
+                "style_images": [
+                    {
+                        "name": "test_image",
+                        "file": base64.b64encode(small_gif).decode("utf-8"),
+                    }
+                ],
+            },
+        )
+        self.assertEqual(response.status_code, HTTP_200_OK, response.json())
+        style_images = [i.get("id") for i in response.json().get("style_images", [])]
+        print("style_images", style_images)
+
+        # StyleImage should be created
+        self.assertEqual(StyleImage.objects.count(), 1)

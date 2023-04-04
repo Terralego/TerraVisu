@@ -41,6 +41,7 @@ ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="", cast=Csv())
 
 # Application definition
 INSTALLED_APPS = [
+    "clearcache",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -62,6 +63,7 @@ INSTALLED_APPS = [
     "django_celery_beat",
     "constance",
     "constance.backends.database",
+    "corsheaders",
     "project.accounts",
     "project.frontend",
     "project.visu",
@@ -73,6 +75,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.locale.LocaleMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -328,3 +331,9 @@ if SENTRY_DSN:
         send_default_pii=config("SENTRY_SEND_DEFAULT_PII", default=True, cast=bool),
         release=f"terra-visu@{VERSION}",
     )
+
+# Override with custom settings
+try:
+    from .custom import *  # NOQA
+except ImportError:
+    pass

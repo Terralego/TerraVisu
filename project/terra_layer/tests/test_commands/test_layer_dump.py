@@ -2,6 +2,7 @@ import json
 from io import StringIO
 from unittest import mock
 
+import freezegun
 from django.contrib.auth import get_user_model
 from django.core.management import call_command
 from django.core.management.base import CommandError
@@ -25,19 +26,23 @@ class LayerDumpTestCase(TestCase):
             refresh=-1,
         )
 
+    @freezegun.freeze_time("2020-01-01 00:00:00")
     @mock.patch("sys.stdout", new_callable=StringIO)
     def test_command_launch_without_custom_style(self, mock_sdout):
+        self.maxDiff = None
         layer = Layer.objects.create(
             source=self.source,
             name="Layer_without_custom_style",
             uuid="91c60192-9060-4bf6-b0de-818c5a362d89",
         )
         call_command("layer_dump", pk=layer.pk)
-        self.assertEqual(
+        self.assertDictEqual(
             json.loads(mock_sdout.getvalue()),
             {
                 "fields": [],
                 "extra_styles": [],
+                "created_at": "2020-01-01T00:00:00Z",
+                "updated_at": "2020-01-01T00:00:00Z",
                 "uuid": "91c60192-9060-4bf6-b0de-818c5a362d89",
                 "name": "Layer_without_custom_style",
                 "source_filter": "",
