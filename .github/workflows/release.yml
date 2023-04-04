@@ -46,7 +46,7 @@ jobs:
       - name: Install front dependencies
         working-directory: ./front
         run: |
-          npm ci --no-audit --omit=dev
+          npm ci --no-audit --only production
 
       - name: Build front
         working-directory: ./front
