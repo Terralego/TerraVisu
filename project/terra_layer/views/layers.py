@@ -19,7 +19,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from project.geosource.models import FieldTypes, WMTSSource
 
-from ..models import FilterField, Layer, LayerGroup, Scene
+from ..models import FilterField, Layer, LayerGroup, Scene, StyleImage
 from ..permissions import LayerPermission, ScenePermission
 from ..serializers import (
     LayerDetailSerializer,
@@ -249,6 +249,14 @@ class SceneTreeAPIView(APIView):
             for url, source_id in custom_style_infos
         ]
 
+        layer_structure["styleImages"] = (
+            StyleImageSerializer(
+                StyleImage.objects.filter(layer__in=self.scene.layers),
+                many=True,
+                context={"request": self.request},
+            ).data,
+        )
+
         return layer_structure
 
     def get_map_settings(self, scene):
@@ -440,7 +448,7 @@ class SceneTreeAPIView(APIView):
     def get_group_dict(self, group):
         """Recursive method that return the tree from a LayerGroup element.
 
-        `group.settings` is injected in the group dictionnary, so any setting can be overridden.
+        `group.settings` is injected in the group dictionary, so any setting can be overridden.
 
         """
         group_content = {
@@ -507,7 +515,7 @@ class SceneTreeAPIView(APIView):
             "mainField": main_field,
             "styleImages": StyleImageSerializer(
                 layer.style_images.all(), many=True
-            ).data,
+            ).data,  # TODO: deprecate after frontend read at tree level
             "filters": {
                 "layer": layer.source.slug,
                 "layerId": layer.id,
