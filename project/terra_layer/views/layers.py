@@ -249,13 +249,11 @@ class SceneTreeAPIView(APIView):
             for url, source_id in custom_style_infos
         ]
 
-        layer_structure["styleImages"] = (
-            StyleImageSerializer(
-                StyleImage.objects.filter(layer__in=self.scene.layers),
-                many=True,
-                context={"request": self.request},
-            ).data,
-        )
+        layer_structure["styleImages"] = StyleImageSerializer(
+            StyleImage.objects.filter(layer__in=self.scene.layers),
+            many=True,
+            context={"request": self.request},
+        ).data
 
         return layer_structure
 
