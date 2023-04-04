@@ -14,6 +14,8 @@ CHANGELOG
 * Bug fixes:
   * Fix date usage in source fields and imported data
   * Fix group creation / edition in admin
+  * Fix LayerTree cache management
+  * Fix bug when no base layer defined in scene (#105)
 
 * Improvements:
   * Direct use elasticsearch connector for data indexation instead of terra-bonobo-nodes
