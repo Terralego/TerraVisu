@@ -4,4 +4,4 @@ from .extras import (  # NOQA
     GeostoreLayerGroupViewsSet,
     GeostoreLayerViewSet,
 )
-from .layers import LayerView, LayerViewset, SceneViewset  # NOQA
+from .layers import LayerViewset, SceneTreeAPIView, SceneViewset  # NOQA
