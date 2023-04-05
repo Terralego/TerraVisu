@@ -129,13 +129,16 @@ class LayerDetailSerializer(ModelSerializer):
         # Delete first
         image_ids = [image["id"] for image in style_images if image.get("id")]
         instance.style_images.exclude(id__in=image_ids).delete()
-
         for image_data in style_images:
             if not image_data.get("id"):
                 StyleImage.objects.create(layer=instance, **image_data)
             else:
                 style_image_id = image_data.pop("id")
-                instance.style_images.filter(id=style_image_id).update(**image_data)
+                style_image = instance.style_images.get(id=style_image_id)
+                style_image.name = image_data.get("name")
+                if image_data.get("file"):
+                    style_image.file = image_data.get("file")
+                style_image.save()
 
         # Update m1m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
