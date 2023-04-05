@@ -83,7 +83,7 @@ django==4.1.7
     #   drf-spectacular
 django-auth-oidc @ git+https://gitlab.com/PaulFlorence/django-auth-oidc.git@fix_4
     # via -r requirements.in
-django-autoslug==1.9.8
+django-autoslug==1.9.9
     # via -r requirements.in
 django-celery-beat==2.5.0
     # via -r requirements.in
