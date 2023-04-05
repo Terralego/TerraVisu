@@ -121,9 +121,7 @@ class LayerViewset(ModelViewSet):
     permission_classes = (LayerPermission,)
     search_fields = ["name", "settings"]
 
-    def get_serializer_class(
-        self,
-    ):
+    def get_serializer_class(self):
         if self.action in ["retrieve", "update", "create", "partial_update"]:
             return LayerDetailSerializer
         return LayerListSerializer
