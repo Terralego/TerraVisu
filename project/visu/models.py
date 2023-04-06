@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
 
 
 class SpriteValue(models.Model):
@@ -27,3 +28,7 @@ class ExtraMenuItem(models.Model):
         if not self.pk and not self.slug:
             self.slug = slugify(self.label)
         return super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = _("Extra menu item")
+        verbose_name_plural = _("Extra menu items")

@@ -1,6 +1,7 @@
 from django.contrib import admin
 from geostore.models import Feature
 from geostore.models import Layer as GeostoreLayer
+from model_clone import CloneModelAdmin
 
 from project.terra_layer.models import Layer, StyleImage
 
@@ -11,7 +12,7 @@ class StyleImageInline(admin.TabularInline):
     readonly_fields = ("slug",)
 
 
-class LayerAdmin(admin.ModelAdmin):
+class LayerAdmin(CloneModelAdmin):
     inlines = [
         StyleImageInline,
     ]

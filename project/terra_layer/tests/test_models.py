@@ -1,23 +1,12 @@
 from django.test import TestCase
 
-from project.geosource.models import PostGISSource
-from project.terra_layer.models import Layer
-
-from .factories import LayerFactory, SceneFactory
+from ...geosource.tests.factories import PostGISSourceFactory
+from .factories import LayerFactory, LayerGroupFactory, SceneFactory, StyleImageFactory
 
 
 class LayerTestCase(TestCase):
     def test_str(self):
-        source = PostGISSource.objects.create(
-            name="test",
-            db_name="test",
-            db_password="test",
-            db_host="localhost",
-            geom_type=1,
-            refresh=-1,
-        )
-        layer = Layer.objects.create(
-            source=source,
+        layer = LayerFactory(
             name="foo",
             uuid="91c60192-9060-4bf6-b0de-818c5a362d89",
         )
@@ -25,23 +14,15 @@ class LayerTestCase(TestCase):
 
     def test_scene_insert_in_tree(self):
         scene = SceneFactory()
-
-        source = PostGISSource.objects.create(
-            name="test",
-            db_name="test",
-            db_password="test",
-            db_host="localhost",
-            geom_type=1,
-            refresh=-1,
-        )
+        source = PostGISSourceFactory()
 
         # Initial value
         self.assertEqual(scene.tree, [])
 
-        layer = LayerFactory(source=source)
-        layer2 = LayerFactory(source=source)
-        layer3 = LayerFactory(source=source)
-        layer4 = LayerFactory(source=source)
+        layer = LayerFactory(source=source, name="")
+        layer2 = LayerFactory(source=source, name="")
+        layer3 = LayerFactory(source=source, name="")
+        layer4 = LayerFactory(source=source, name="")
 
         scene.insert_in_tree(layer, ["level1", "level2"])
 
@@ -144,4 +125,24 @@ class LayerTestCase(TestCase):
                     ],
                 },
             ],
+        )
+
+    def test_clone(self):
+        layer = LayerFactory(group=LayerGroupFactory())
+        style_image = StyleImageFactory(layer=layer)
+        layer.main_style = {"symbol": {"image": style_image.slug}}
+        layer.save()
+        clone = layer.make_clone()
+        # clone should have "Copy" in name
+        self.assertEqual(clone.name, f"{layer.name} (Copy)")
+        # style images and extra styles should be copied
+        self.assertEqual(clone.style_images.count(), layer.style_images.count())
+        self.assertEqual(clone.extra_styles.count(), layer.extra_styles.count())
+        # layer group should not be defined (excluded by default from any view)
+        self.assertIsNone(clone.group)
+        # style image references in styles should be updated with new ones)
+        self.assertNotEqual(
+            style_image.slug,
+            clone.main_style["symbol"]["image"],
+            clone.style_images.values_list("slug", flat=True),
         )
