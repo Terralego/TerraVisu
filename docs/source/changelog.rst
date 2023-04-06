@@ -25,8 +25,15 @@ CHANGELOG
 * Improvements:
   * Direct use elasticsearch connector for data indexation instead of terra-bonobo-nodes
   * Better layer duplication
-  * Manual usage of sprite icons
-  * Some instance configuration managed in config panel (logo / title / etc...)
+  * Some instance configuration managed in config panel (/config/)
+    * Logo
+    * Favicon
+    * Title
+    * Credits
+    * Map default configuration (extent, zoom levels, center ...)
+    * MapBox token
+    * External page links
+    * Sprite icons
 
 
 * Maintenance

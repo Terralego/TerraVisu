@@ -9,7 +9,6 @@ from django.db.models import Prefetch, Q
 from django.http import Http404, QueryDict
 from django.urls import reverse
 from django.utils.functional import cached_property
-from django.utils.translation import gettext as _
 from geostore.tokens import tiles_token_generator
 from mapbox_baselayer.models import MapBaseLayer
 from rest_framework.decorators import action
@@ -136,9 +135,7 @@ class LayerViewset(ModelViewSet):
     @action(detail=True, methods=["post"])
     def duplicate(self, request, *args, **kwargs):
         object = self.get_object()
-        clone = self.get_object().make_clone(
-            attrs={"name": f"{object.name} ({_('Copy')})"}
-        )
+        clone = object.make_clone()
         return Response(self.get_serializer(clone).data)
 
 

@@ -6,6 +6,7 @@ from autoslug import AutoSlugField
 from django.db import models, transaction
 from django.utils.functional import cached_property
 from django.utils.text import slugify
+from django.utils.translation import gettext as _
 from django.views.generic.dates import timezone_today
 from mapbox_baselayer.models import MapBaseLayer
 from model_clone import CloneMixin
@@ -306,11 +307,14 @@ class Layer(CloneMixin, models.Model):
             self.legends = kept_legend
 
     def make_clone(self, *args, **kwargs):
+        kwargs.setdefault("attrs", {"name": f"{self.name} (" + _("Copy") + ")"})
         obj = super().make_clone(*args, **kwargs)
         # fix style images references in main style
-        style_text = json.dumps(obj.main_style)
+        style_text = str(json.dumps(obj.main_style))
         for i, style_image in enumerate(self.style_images.all()):
-            style_text.replace(style_image.slug, obj.style_images.all()[i].slug)
+            style_text = style_text.replace(
+                style_image.slug, obj.style_images.all()[i].slug
+            )
         obj.main_style = json.loads(style_text)
         obj.save()
         return obj
