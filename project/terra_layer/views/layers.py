@@ -9,8 +9,10 @@ from django.db.models import Prefetch, Q
 from django.http import Http404, QueryDict
 from django.urls import reverse
 from django.utils.functional import cached_property
+from django.utils.translation import gettext as _
 from geostore.tokens import tiles_token_generator
 from mapbox_baselayer.models import MapBaseLayer
+from rest_framework.decorators import action
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.serializers import ValidationError
@@ -130,6 +132,14 @@ class LayerViewset(ModelViewSet):
         if instance.group:  # Prevent deletion of layer used in any layer tree
             raise ValidationError("Can't delete a layer linked to a scene")
         super().perform_destroy(instance)
+
+    @action(detail=True, methods=["post"])
+    def duplicate(self, request, *args, **kwargs):
+        object = self.get_object()
+        clone = self.get_object().make_clone(
+            attrs={"name": f"{object.name} ({_('Copy')})"}
+        )
+        return Response(self.get_serializer(clone).data)
 
 
 class SceneTreeAPIView(APIView):
@@ -509,9 +519,6 @@ class SceneTreeAPIView(APIView):
             "layers": self.get_layers_list_for_layer(layer),
             "legends": layer.legends,
             "mainField": main_field,
-            "styleImages": StyleImageSerializer(
-                layer.style_images.all(), many=True
-            ).data,  # TODO: deprecate after frontend read at tree level
             "filters": {
                 "layer": layer.source.slug,
                 "layerId": layer.id,

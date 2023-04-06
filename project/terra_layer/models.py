@@ -1,3 +1,4 @@
+import json
 import uuid
 from hashlib import md5
 
@@ -7,6 +8,7 @@ from django.utils.functional import cached_property
 from django.utils.text import slugify
 from django.views.generic.dates import timezone_today
 from mapbox_baselayer.models import MapBaseLayer
+from model_clone import CloneMixin
 from rest_framework.reverse import reverse
 
 from project.geosource.models import Field, Source
@@ -160,7 +162,9 @@ class LayerGroup(models.Model):
         ordering = ["order"]
 
 
-class Layer(models.Model):
+class Layer(CloneMixin, models.Model):
+    _clone_m2o_or_o2m_fields = ["style_images", "extra_styles"]
+    _clone_excluded_fields = ["group"]  # don't include clone in group / scene
     uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name="layers")
     group = models.ForeignKey(
@@ -300,6 +304,16 @@ class Layer(models.Model):
                 kept_legend.append(legend)
 
             self.legends = kept_legend
+
+    def make_clone(self, *args, **kwargs):
+        obj = super().make_clone(*args, **kwargs)
+        # fix style images references in main style
+        style_text = json.dumps(obj.main_style)
+        for i, style_image in enumerate(self.style_images.all()):
+            style_text.replace(style_image.slug, obj.style_images.all()[i].slug)
+        obj.main_style = json.loads(style_text)
+        obj.save()
+        return obj
 
     def __str__(self):
         return f"Layer({self.id}) - {self.name}"

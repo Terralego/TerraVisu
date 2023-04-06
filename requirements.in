@@ -6,6 +6,7 @@ gunicorn
 django-crispy-forms
 django-autoslug
 django-clearcache
+django-clone
 crispy-bootstrap5
 django-mapbox-baselayer
 django-cors-headers
