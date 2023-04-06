@@ -754,7 +754,7 @@ class LayerViewTestCase(APITestCase):
         group.authorized_layers.add(geo_layer)
 
         self.client.force_authenticate(self.user)
-        with self.assertNumQueries(43):
+        with self.assertNumQueries(42):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
         with self.assertNumQueries(11):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
@@ -763,7 +763,7 @@ class LayerViewTestCase(APITestCase):
         layer.name = "new_name"
         layer.save()
 
-        with self.assertNumQueries(43):
+        with self.assertNumQueries(42):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
     def test_cache_cleared_after_public_layer_update(self):
@@ -771,7 +771,7 @@ class LayerViewTestCase(APITestCase):
         layer = Layer.objects.create(
             name="public_layer", source=source, group=self.layer_group
         )
-        with self.assertNumQueries(44):
+        with self.assertNumQueries(43):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
         with self.assertNumQueries(8):
@@ -780,7 +780,7 @@ class LayerViewTestCase(APITestCase):
         # updating layer to trigger cache reset
         layer.name = "new_name"
         layer.save()
-        with self.assertNumQueries(36):
+        with self.assertNumQueries(35):
             # still differences in original query number because callbacks auto create geostore layers and groups
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
