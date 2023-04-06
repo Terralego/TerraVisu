@@ -727,7 +727,7 @@ class LayerViewSetAPITestCase(APITestCase):
     def test_viewset_duplicate(self):
         original_count = Layer.objects.count()
         response = self.client.post(reverse("layer-duplicate", args=[self.layer.pk]))
-        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.json())
         self.assertEqual(Layer.objects.count(), original_count + 1)
 
     def test_viewset_retrieve(self):

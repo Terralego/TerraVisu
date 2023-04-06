@@ -136,7 +136,7 @@ class LayerViewset(ModelViewSet):
     def duplicate(self, request, *args, **kwargs):
         object = self.get_object()
         clone = object.make_clone()
-        return Response(self.get_serializer(clone).data)
+        return Response(self.get_serializer(clone).data, status=201)
 
 
 class SceneTreeAPIView(APIView):
