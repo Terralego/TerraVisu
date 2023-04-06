@@ -3,25 +3,18 @@ import io
 import json
 from unittest.mock import patch
 
-from django.contrib.auth import get_user_model
-from django.contrib.auth.models import Group, Permission
+from django.contrib.auth.models import Group
 from django.core.cache import cache
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import RequestFactory
 from django.urls import reverse
-from geostore import GeometryTypes
 from geostore.tests.factories import LayerFactory
-from rest_framework.status import (
-    HTTP_200_OK,
-    HTTP_201_CREATED,
-    HTTP_204_NO_CONTENT,
-    HTTP_400_BAD_REQUEST,
-    HTTP_403_FORBIDDEN,
-    HTTP_404_NOT_FOUND,
-)
+from rest_framework import status
 from rest_framework.test import APITestCase
 
+from project.accounts.tests.factories import SuperUserFactory, UserFactory
 from project.geosource.models import FieldTypes, PostGISSource, Source, WMTSSource
+from project.geosource.tests.factories import PostGISSourceFactory
 from project.terra_layer.models import (
     CustomStyle,
     FilterField,
@@ -31,95 +24,23 @@ from project.terra_layer.models import (
 )
 from project.terra_layer.utils import get_scene_tree_cache_key
 
-from ...accounts.tests.factories import SuperUserFactory
-from .factories import SceneFactory
-
-UserModel = get_user_model()
+from .factories import LayerFactory as TerraLayerFactory
+from .factories import SceneFactory, StyleImageFactory
 
 
-class ModelSourceViewsetTestCase(APITestCase):
+class SceneViewsetTestCase(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = SuperUserFactory()
+        cls.scene = SceneFactory(name="test_scene")
+        cls.source = PostGISSourceFactory()
+
     def setUp(self):
-        self.default_user = UserModel.objects.get_or_create(
-            is_superuser=True, **{UserModel.USERNAME_FIELD: "testuser"}
-        )[0]
-        self.client.force_authenticate(self.default_user)
-
-        self.scene = SceneFactory(name="test_scene")
-        self.source = PostGISSource.objects.create(
-            name="test_view",
-            db_name="test",
-            db_password="test",
-            db_host="localhost",
-            geom_type=1,
-            refresh=-1,
-        )
-
-    def test_list_view(self):
-        # Create many sources and list them
-        group = LayerGroup.objects.create(view=self.scene, label="Test Group")
-
-        [Layer.objects.create(group=group, source=self.source) for x in range(5)]
-
-        response = self.client.get(reverse("layer-list"))
-        data = response.json()["results"]
-        self.assertEqual(response.status_code, HTTP_200_OK)
-
-        self.assertEqual(Layer.objects.count(), len(data))
-
-    def test_create_layer(self):
-        query = {
-            "source": self.source.pk,
-            "name": "test layer",
-            "table_export_enable": True,
-            "filter_enable": False,
-        }
-
-        response = self.client.post(reverse("layer-list"), query)
-        self.assertEqual(HTTP_201_CREATED, response.status_code)
-
-        response = response.json()
-
-        self.assertTrue(response.get("table_export_enable"))
-        self.assertFalse(response.get("filter_enable"))
-        self.assertEqual(response["view"], None)
-
-    def test_update_layer(self):
-        group = LayerGroup.objects.create(view=self.scene, label="Test Group")
-
-        field = self.source.fields.create(
-            name="test_field", label="test_label", data_type=FieldTypes.String.value
-        )
-        layer = Layer.objects.create(
-            group=group,
-            source=self.source,
-            minisheet_config={"enable": False},
-        )
-        FilterField.objects.create(
-            label="test layer fields",
-            layer=layer,
-            field=field,
-            filter_settings={},
-            filter_enable=True,
-        )
-
-        query = {
-            "source": self.source.pk,
-            "name": "test layer",
-            "minisheet_config": {"enable": True},
-            "filter_enable": True,
-        }
-
-        response = self.client.patch(reverse("layer-detail", args=[layer.pk]), query)
-
-        self.assertEqual(response.status_code, HTTP_200_OK)
-
-        response = response.json()
-        self.assertTrue(response.get("minisheet_config", {}).get("enable"))
-        self.assertEqual(response["view"], self.scene.id)
+        self.client.force_authenticate(self.user)
 
     def test_get_scene(self):
         response = self.client.get(reverse("scene-list"))
-        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         response = response.json()
         self.assertEqual(response["results"][0].get("name"), "test_scene")
 
@@ -132,7 +53,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response = response.json()
 
@@ -150,7 +71,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response = response.json()
 
@@ -163,7 +84,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         response = self.client.patch(
             reverse("scene-detail", args=[self.scene.pk]), query
         )
-        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         response = response.json()
 
@@ -175,7 +96,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         response = self.client.patch(
             reverse("scene-detail", args=[self.scene.pk]), query
         )
-        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
         response = response.json()
 
@@ -197,7 +118,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response = response.json()
 
@@ -218,7 +139,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         response = response.json()
 
@@ -247,7 +168,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         scene = response.json()
 
         response = self.client.get(reverse("layerview", args=[scene["slug"]]))
@@ -288,7 +209,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         scene = response.json()
 
         response = self.client.get(reverse("layerview", args=[scene["slug"]]))
@@ -345,7 +266,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         scene = response.json()
 
@@ -381,7 +302,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         scene = response.json()
 
@@ -417,12 +338,12 @@ class ModelSourceViewsetTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         scene = response.json()
         layer.delete()
         response = self.client.get(reverse("layerview", args=[scene["slug"]]))
-        self.assertEqual(response.status_code, HTTP_404_NOT_FOUND)
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_create_scene_with_complexe_tree(self):
         layers = [
@@ -470,7 +391,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_201_CREATED)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
 
         scene = response.json()
 
@@ -546,7 +467,7 @@ class ModelSourceViewsetTestCase(APITestCase):
             response = self.client.post(
                 reverse("scene-list"), query, format="multipart"
             )
-            self.assertEqual(response.status_code, HTTP_201_CREATED)
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
             self.assertEqual(mock_call.call_args[0], ("load_xls",))
 
             # Without file
@@ -558,7 +479,7 @@ class ModelSourceViewsetTestCase(APITestCase):
                 format="multipart",
             )
 
-            self.assertEqual(response.status_code, HTTP_200_OK)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
 
     def test_validation_error_on_scene_create(self):
         layer = Layer.objects.create(group=None, source=self.source)
@@ -579,7 +500,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         # Try to create a tree with a missing view
         query = {
@@ -589,7 +510,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
         # Try to create a tree with a wrong schema, group should be true or false
         query = {
@@ -599,7 +520,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_validation_error_on_delete_attached_layer(self):
         layer = Layer.objects.create(group=None, source=self.source)
@@ -614,7 +535,7 @@ class ModelSourceViewsetTestCase(APITestCase):
         self.client.post(reverse("scene-list"), query)
 
         response = self.client.delete(reverse("layer-detail", kwargs={"pk": layer.id}))
-        self.assertEqual(response.status_code, HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_delete_layer(self):
         layer = Layer.objects.create(
@@ -624,14 +545,12 @@ class ModelSourceViewsetTestCase(APITestCase):
         )
 
         response = self.client.delete(reverse("layer-detail", kwargs={"pk": layer.id}))
-        self.assertEqual(response.status_code, HTTP_204_NO_CONTENT)
+        self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
 
 
 class ModelSourceViewsetAnonymousTestCase(APITestCase):
     def setUp(self):
-        self.default_user = UserModel.objects.get_or_create(
-            is_superuser=False, **{UserModel.USERNAME_FIELD: "testuser"}
-        )[0]
+        self.default_user = UserFactory()
         self.client.force_authenticate(self.default_user)
 
         self.scene = SceneFactory(name="test_scene")
@@ -650,7 +569,7 @@ class ModelSourceViewsetAnonymousTestCase(APITestCase):
         [Layer.objects.create(group=group, source=self.source) for x in range(5)]
 
         response = self.client.get(reverse("layer-list"))
-        self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_create_layer_no_permission(self):
         query = {
@@ -661,7 +580,7 @@ class ModelSourceViewsetAnonymousTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("layer-list"), query)
-        self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_scene_list_no_permission(self):
         layer = Layer.objects.create(
@@ -676,7 +595,7 @@ class ModelSourceViewsetAnonymousTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_source_list_no_permission(self):
         layer = Layer.objects.create(
@@ -691,7 +610,7 @@ class ModelSourceViewsetAnonymousTestCase(APITestCase):
         }
 
         response = self.client.post(reverse("scene-list"), query)
-        self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
     def test_source_creation_no_permission(self):
         source_example = {
@@ -710,25 +629,13 @@ class ModelSourceViewsetAnonymousTestCase(APITestCase):
             {**source_example, "db_password": "test_password"},
             format="json",
         )
-        self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
-
-    def test_geostore_no_permission(self):
-        point_layer = LayerFactory(
-            name="no schema point geom", geom_type=GeometryTypes.Point
-        )
-        response = self.client.post(
-            reverse("feature-list", args=[point_layer.pk]),
-            data={"geom": "POINT(0 0)", "properties": {"toto": "ok"}},
-        )
-        self.assertEqual(response.status_code, HTTP_403_FORBIDDEN)
+        self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)
 
 
-class LayerViewTestCase(APITestCase):
+class SceneTreeAPITestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = UserModel.objects.create(
-            **{UserModel.USERNAME_FIELD: "private_user"}
-        )
+        cls.user = UserFactory()
         cls.source_params = {
             "name": "test_view",
             "db_name": "test",
@@ -797,26 +704,41 @@ class LayerViewTestCase(APITestCase):
             reverse("layerview", args=[self.scene.slug]), {"cache": "false"}
         )
 
-        self.assertEqual(response.status_code, HTTP_200_OK)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
-    def test_style_images_in_layer_detail(self):
-        user = UserModel.objects.create(email="user@test.com", password="secret")
-        perm = Permission.objects.get(name="Can manage layers")
-        user.user_permissions.add(perm)
 
-        source = PostGISSource.objects.create(**self.source_params)
-        layer = Layer.objects.create(
-            name="test_layer", source=source, group=self.layer_group
-        )
+class LayerViewSetAPITestCase(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = SuperUserFactory()
+        cls.layer = TerraLayerFactory()
+
+    def setUp(self):
+        self.client.force_authenticate(self.user)
+
+    def test_viewset_list(self):
+        """Create many layers and list them"""
+        LayerFactory.create_batch(10)
+        response = self.client.get(reverse("layer-list"))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(Layer.objects.count(), len(data["results"]))
+
+    def test_viewset_duplicate(self):
+        original_count = Layer.objects.count()
+        response = self.client.post(reverse("layer-duplicate", args=[self.layer.pk]))
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
+        self.assertEqual(Layer.objects.count(), original_count + 1)
+
+    def test_viewset_retrieve(self):
         style_image = StyleImage.objects.create(
             name="test image",
-            layer=layer,
+            layer=self.layer,
             file=SimpleUploadedFile(content=b"abcdefgh", name="test file"),
         )
 
-        self.client.force_authenticate(user)
-        response = self.client.get(reverse("layer-detail", args=[layer.pk]))
-        self.assertEqual(response.status_code, HTTP_200_OK, response.json())
+        response = self.client.get(reverse("layer-detail", args=[self.layer.pk]))
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
 
         # Needed to build the absolute url of the Image
         request = RequestFactory().get("/")
@@ -832,20 +754,63 @@ class LayerViewTestCase(APITestCase):
             ],
         )
 
-    def test_create_layer_with_style_image(self):
-        user = SuperUserFactory()
-        source = PostGISSource.objects.create(**self.source_params)
+    def test_viewset_create(self):
+        query = {
+            "source": self.layer.source_id,
+            "name": "test layer",
+            "table_export_enable": True,
+            "filter_enable": False,
+        }
 
+        response = self.client.post(reverse("layer-list"), query)
+        self.assertEqual(status.HTTP_201_CREATED, response.status_code)
+
+        response = response.json()
+
+        self.assertTrue(response.get("table_export_enable"))
+        self.assertFalse(response.get("filter_enable"))
+        self.assertEqual(response["view"], None)
+
+    def test_viewset_update(self):
+        field = self.layer.source.fields.create(
+            name="test_field", label="test_label", data_type=FieldTypes.String.value
+        )
+        layer = TerraLayerFactory(
+            source=self.layer.source,
+            minisheet_config={"enable": False},
+        )
+        FilterField.objects.create(
+            label="test layer fields",
+            layer=layer,
+            field=field,
+            filter_settings={},
+            filter_enable=True,
+        )
+
+        query = {
+            "source": self.layer.source_id,
+            "name": "test layer",
+            "minisheet_config": {"enable": True},
+            "filter_enable": True,
+        }
+
+        response = self.client.patch(reverse("layer-detail", args=[layer.pk]), query)
+
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response = response.json()
+        self.assertTrue(response.get("minisheet_config", {}).get("enable"))
+
+    def test_viewset_create_with_style_image(self):
         small_gif = (
             b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00"
             b"\x00\x05\x04\x04\x00\x00\x00\x2c\x00\x00\x00\x00"
             b"\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"
         )
-        self.client.force_authenticate(user)
         self.assertEqual(StyleImage.objects.count(), 0)
         request_data = {
             "name": "test create layer",
-            "source": source.pk,
+            "source": self.layer.source.pk,
             "style_images": [
                 {
                     "name": "small.gif",
@@ -854,42 +819,67 @@ class LayerViewTestCase(APITestCase):
             ],
         }
         response = self.client.post(reverse("layer-list"), request_data)
-        self.assertEqual(response.status_code, HTTP_201_CREATED, response.json())
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.json())
         self.assertEqual(StyleImage.objects.count(), 1)
 
-    def test_style_image_creation_when_updating_layer(self):
-        user = UserModel.objects.create(email="user@test.com", password="secret")
-        perm = Permission.objects.get(name="Can manage layers")
-        user.user_permissions.add(perm)
-
-        source = PostGISSource.objects.create(**self.source_params)
-        layer = Layer.objects.create(
-            name="test_layer", source=source, group=self.layer_group
-        )
-
+    def test_style_image_creation_when_update(self):
+        """On update on layer viewset, new style images should be created"""
         # No StyleImage created yet
         self.assertEqual(StyleImage.objects.count(), 0)
-        self.client.force_authenticate(user)
         small_gif = (
             b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00"
             b"\x00\x05\x04\x04\x00\x00\x00\x2c\x00\x00\x00\x00"
             b"\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"
         )
         response = self.client.patch(
-            reverse("layer-detail", args=[layer.pk]),
+            reverse("layer-detail", args=[self.layer.pk]),
             {
-                "name": layer.name,
                 "style_images": [
                     {
                         "name": "test_image",
-                        "file": base64.b64encode(small_gif).decode("utf-8"),
+                        "data": base64.b64encode(small_gif).decode("utf-8"),
                     }
                 ],
             },
         )
-        self.assertEqual(response.status_code, HTTP_200_OK, response.json())
-        style_images = [i.get("id") for i in response.json().get("style_images", [])]
-        print("style_images", style_images)
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
 
         # StyleImage should be created
         self.assertEqual(StyleImage.objects.count(), 1)
+
+    def test_style_image_deletion_when_update(self):
+        """On update on layer viewset, new style images should be created"""
+        # No StyleImage created yet
+        StyleImageFactory(layer=self.layer)
+
+        response = self.client.patch(
+            reverse("layer-detail", args=[self.layer.pk]),
+            {
+                "style_images": [],
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
+
+        # StyleImage should be created
+        self.assertEqual(StyleImage.objects.count(), 0)
+
+    def test_style_image_edition_when_update(self):
+        """On update on layer viewset, new style images should be created"""
+        style_image = StyleImageFactory(layer=self.layer)
+
+        response = self.client.patch(
+            reverse("layer-detail", args=[self.layer.pk]),
+            {
+                "style_images": [
+                    {
+                        "id": style_image.pk,
+                        "name": "Test2",
+                    }
+                ],
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
+
+        # StyleImage should be changed
+        self.assertEqual(StyleImage.objects.count(), 1)
+        self.assertIn("Test2", response.json().get("style_images")[0].get("name"))
