@@ -8,4 +8,4 @@ services:
 
     volumes:
       - ../..:/app
-    user: ${CURRENT_UID}:${CURRENT_GID}
+    user: ${CURRENT_UID:-1000}:${CURRENT_GID:-1000}

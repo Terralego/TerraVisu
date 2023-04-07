@@ -24,24 +24,23 @@ jobs:
         run: |
           cp db.env.dist db.env
           cp app.env.dist app.env
-          echo $UID
-          docker-compose build web
+          docker compose build web
 
       - name: Test migrations
         run: |
-          docker-compose run --user root --rm web ./manage.py migrate
+          docker compose run --user root --rm web ./manage.py migrate
 
       - name: Check migrations
         run: |
-          docker-compose run --user root --rm web ./manage.py makemigrations --check
+          docker compose run --user root --rm web ./manage.py makemigrations --check
 
       - name: Tests
         run: |
-          docker-compose run --user root --rm web coverage run ./manage.py test --settings=project.settings.tests
+          docker compose run --user root --rm web coverage run ./manage.py test --settings=project.settings.tests
 
       - name: Prepare coverage report
         run: |
-          docker-compose run --user root --rm web coverage xml
+          docker compose run --user root --rm web coverage xml
 
       - uses: codecov/codecov-action@v3
         with:
