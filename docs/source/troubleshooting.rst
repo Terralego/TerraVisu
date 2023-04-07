@@ -1,6 +1,6 @@
-===========
-Development
-===========
+===============
+Troubleshooting
+===============
 
 --------------------------------------
 Elastic search container doesn't start
@@ -13,11 +13,10 @@ max virtual memory areas vm.max_map_count [xxx] is too low, increase to at least
 
 Then you need to increase the vm.max_map_count on your host machine.
 
-..code-block:: bash
+
+..  code-block:: bash
 
     sudo nano /etc/sysctl.conf
-
-
-vm.max_map_count to 262144.
+    vm.max_map_count=262144
 
 Then reboot your machine.
