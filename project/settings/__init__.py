@@ -42,6 +42,7 @@ ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="", cast=Csv())
 # Application definition
 INSTALLED_APPS = [
     "clearcache",
+    "model_clone",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -333,7 +334,10 @@ if SENTRY_DSN:
     )
 
 # Override with custom settings
+custom_settings_file = os.getenv("CUSTOM_SETTINGS_FILE")
 try:
-    from .custom import *  # NOQA
-except ImportError:
+    with open(custom_settings_file, "r") as f:
+        print("Read custom configuration from {}".format(custom_settings_file))
+        exec(f.read())
+except:  # NOQA
     pass
