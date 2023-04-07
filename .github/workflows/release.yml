@@ -21,18 +21,31 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: recursive
+      - name: Get admin git cache key
+        run: |
+          export ADMIN_CACHE_KEY=$(git submodule status ./admin)
+
+      - name: Cache admin
+        id: cache-admin
+        uses: actions/cache@v3
+        with:
+          path: ./admin/build
+          key: admin-$ADMIN_CACHE_KEY
 
       - name: Setup node for admin
+        if: steps.cache-admin.outputs.cache-hit != 'true'
         uses: actions/setup-node@v3
         with:
           node-version-file: './admin/.nvmrc'
 
       - name: Install admin dependencies
+        if: steps.cache-admin.outputs.cache-hit != 'true'
         working-directory: ./admin
         run: |
           npm ci --legacy-peer-deps --no-audit
 
       - name: Build admin
+        if: steps.cache-admin.outputs.cache-hit != 'true'
         working-directory: ./admin
         run: |
           cp ../conf/admin.env .env
