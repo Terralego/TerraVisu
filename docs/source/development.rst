@@ -69,21 +69,32 @@ Launch stack
 Access
 ------
 
---------
 Frontend
 --------
 
 http://visu.localhost:8080
 
 
------
 Admin
 -----
 
 http://visu.localhost:8080/admin/
 
------------------------------
 Django admin (config / debug)
 -----------------------------
 
 http://visu.localhost:8080/config/
+
+
+-------
+Linting
+-------
+
+We use flake8, isort and black rules. You can run :
+
+..  code-block:: bash
+
+    make lint
+
+
+to check them
