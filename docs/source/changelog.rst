@@ -2,34 +2,36 @@
 CHANGELOG
 =========
 
-2.0.0      (XXXX-XX-XX)
+2023.4.1   (2023-04-07)
 -----------------------
 
-* New Version
+**New Version**
 
-* New Simplified Installation
+**New Simplified Installation**
 
-* New documentation
+**New documentation**
 
-* Bug fixes:
-  * Fix and allow date usage in source fields and imported data
-  * Fix group creation / edition in admin
-  * Fix LayerTree cache management
-  * Fix bug when no base layer defined in scene (#109)
+**Bug fixes:**
 
+- Fix and allow date usage in source fields and imported data
+- Fix group creation / edition in admin
+- Fix LayerTree cache management
+- Fix bug when no base layer defined in scene (#109)
 
-* New features:
-  * Use icon and patterns in point / polygon styles
+**New features:**
 
-
-* Improvements:
-  * Direct use elasticsearch connector for data indexation instead of terra-bonobo-nodes
-  * Better layer duplication
-  * Some instance configuration managed in config panel (/config/)
+- Use icon and patterns in point / polygon styles
 
 
-* Maintenance
-  * From Python 3.6 to 3.10
-  * From Django 2.2 to 4.1
-  * All python packages updated
-  * Admin node-js from 12 to 18
+**Improvements:**
+
+- Direct use elasticsearch connector for data indexation instead of terra-bonobo-nodes
+- Better layer duplication
+- Some instance configuration managed in config panel (/config/)
+
+**Maintenance**
+
+- From Python 3.6 to 3.10
+- From Django 2.2 to 4.1
+- All python packages updated
+- Admin node-js from 12 to 18
