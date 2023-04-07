@@ -23,14 +23,14 @@ jobs:
           submodules: recursive
       - name: Get admin git cache key
         run: |
-          export ADMIN_CACHE_KEY=$(git submodule status ./admin)
+          echo "ADMIN_CACHE_KEY=$(git submodule status ./admin)" >> $GITHUB_ENV
 
       - name: Cache admin
         id: cache-admin
         uses: actions/cache@v3
         with:
           path: ./admin/build
-          key: "admin-$ADMIN_CACHE_KEY"
+          key: admin-${{ env.ADMIN_CACHE_KEY }}
 
       - name: Setup node for admin
         if: steps.cache-admin.outputs.cache-hit != 'true'
