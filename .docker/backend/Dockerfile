@@ -57,7 +57,7 @@ FROM build as dev
 COPY dev-requirements.txt /opt/terra-visu/dev-requirements.txt
 RUN /opt/venv/bin/pip install --no-cache-dir --upgrade -r /opt/terra-visu/dev-requirements.txt
 COPY .docker/backend/update.sh /usr/local/bin/update.sh
-RUN /opt/venv/bin/pip install django-adminplus
+
 CMD /opt/venv/bin/python manage.py runserver 0.0.0.0:8000
 
 FROM base as prod
