@@ -10,7 +10,7 @@ Prepare stack
 
     cp db.env.dist db.env
     cp app.env.dist app.env
-    docker-compose build
+    docker compose build
 
 -------------
 Init database
@@ -18,7 +18,7 @@ Init database
 
 ..  code-block:: bash
 
-    docker-compose run --rm web ./manage.py migrate
+    docker compose run --rm web ./manage.py migrate
 
 
 -----------------
@@ -27,7 +27,7 @@ Load initial data
 
 ..  code-block:: bash
 
-    docker-compose run --rm web ./manage.py loaddata project/fixtures/initial.json
+    docker compose run --rm web ./manage.py loaddata project/fixtures/initial.json
 
 
 ---------------------
@@ -36,7 +36,24 @@ Create your superuser
 
 ..  code-block:: bash
 
-    docker-compose run --rm web ./manage.py createsuperuser
+    docker compose run --rm web ./manage.py createsuperuser
+
+-------------------------
+Prepare admin if required
+-------------------------
+
+..  code-block:: bash
+
+    make build_admin
+
+
+----------------------------
+Prepare frontend if required
+----------------------------
+
+..  code-block:: bash
+
+    make build_front
 
 
 ------------
@@ -45,19 +62,39 @@ Launch stack
 
 ..  code-block:: bash
 
-    docker-compose up
+    docker compose up
 
 
-Then go to http://visu.localhost:8080
+------
+Access
+------
+
+Frontend
+--------
+
+http://visu.localhost:8080
 
 
----------
-Use admin
----------
+Admin
+-----
+
+http://visu.localhost:8080/admin/
+
+Django admin (config / debug)
+-----------------------------
+
+http://visu.localhost:8080/config/
+
+
+-------
+Linting
+-------
+
+We use flake8, isort and black rules. You can run :
 
 ..  code-block:: bash
 
-    make build_admin
+    make lint
 
 
-Then go to http://visu.localhost:8080/admin/
+to check them

@@ -7,5 +7,5 @@ services:
     volumes:
       - ../../admin:/app
       - ../../conf/admin.env:/app/.env
-    user: ${CURRENT_UID}:${CURRENT_GID}
+    user: ${CURRENT_UID:-1000}:${CURRENT_GID:-1000}
 

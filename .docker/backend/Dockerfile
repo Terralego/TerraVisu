@@ -6,6 +6,7 @@ ENV LANG C.UTF-8
 ENV TZ UTC
 ENV POSTGRES_HOST db
 ENV POSTGRES_PORT 5432
+ENV CUSTOM_SETTINGS_FILE="/opt/terra-visu/var/conf/custom.py"
 
 RUN apt-get -y -qq update \
     && apt-get -y -qq install \

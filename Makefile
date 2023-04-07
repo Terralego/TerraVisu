@@ -10,16 +10,12 @@ export CURRENT_GID
 
 build_admin:
 	rm -rf ./public/admin
-	git submodule update --init
-	git submodule update --remote
 	docker compose -f .docker/admin/docker-compose.yml pull
 	docker compose -f .docker/admin/docker-compose.yml run --rm admin bash -c "npm ci --legacy-peer-deps && npx react-scripts --openssl-legacy-provider build"
 	mv ./admin/build ./public/admin
 	rm -rf ./admin/node_modules
 
 build_front:
-	git submodule update --init
-	git submodule update --remote
 	docker compose -f .docker/frontend/docker-compose.yml pull
 	docker compose -f .docker/frontend/docker-compose.yml build
 	docker compose -f .docker/frontend/docker-compose.yml run --rm front bash -c "npm ci && npx react-scripts build"
