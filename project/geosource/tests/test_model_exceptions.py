@@ -25,8 +25,10 @@ class MockedBytes(PropertyMock):
         raise UnicodeDecodeError("wrong")
 
 
+@patch("elasticsearch.client.IndicesClient.create")
+@patch("elasticsearch.client.IndicesClient.delete")
 class CSVSourceExceptionsTestCase(TestCase):
-    def test_csv_with_wrong_x_coord(self):
+    def test_csv_with_wrong_x_coord(self, mocked_es_delete, mocked_es_create):
         source = CSVSource.objects.create(
             file=get_file("source.csv"),
             geom_type=0,
@@ -48,7 +50,7 @@ class CSVSourceExceptionsTestCase(TestCase):
             source._get_records()
             self.assertIn(msg, source.report.get("message", []))
 
-    def test_csv_with_wrong_y_coord(self):
+    def test_csv_with_wrong_y_coord(self, mocked_es_delete, mocked_es_create):
         source = CSVSource.objects.create(
             file=get_file("source.csv"),
             geom_type=0,
@@ -70,7 +72,9 @@ class CSVSourceExceptionsTestCase(TestCase):
             source._get_records()
             self.assertIn(msg, source.report.get("message", []))
 
-    def test_invalid_csv_file_raise_value_error(self):
+    def test_invalid_csv_file_raise_value_error(
+        self, mocked_es_delete, mocked_es_create
+    ):
         source = CSVSource.objects.create(
             file=SimpleUploadedFile("not_a_csv", b"some content"),
             geom_type=0,
@@ -95,7 +99,9 @@ class CSVSourceExceptionsTestCase(TestCase):
             source._get_records()
             self.assertIn(msg, source.report.get("message", []))
 
-    def test_invalid_coordinate_format_raise_error(self):
+    def test_invalid_coordinate_format_raise_error(
+        self, mocked_es_delete, mocked_es_create
+    ):
         source = CSVSource.objects.create(
             file=get_file("source.csv"),
             geom_type=0,
@@ -118,7 +124,9 @@ class CSVSourceExceptionsTestCase(TestCase):
             "coordxy is not a valid coordinate field", source.report["message"]
         )
 
-    def test_coordinates_system_without_digit_srid_raise_value_error(self):
+    def test_coordinates_system_without_digit_srid_raise_value_error(
+        self, mocked_es_delete, mocked_es_create
+    ):
         source = CSVSource.objects.create(
             file=get_file("source.csv"),
             geom_type=0,
@@ -138,7 +146,9 @@ class CSVSourceExceptionsTestCase(TestCase):
         with self.assertRaises(ValueError):
             source._get_records()
 
-    def test_coordinates_systems_malformed_raise_index_error(self):
+    def test_coordinates_systems_malformed_raise_index_error(
+        self, mocked_es_delete, mocked_es_create
+    ):
         source = CSVSource.objects.create(
             file=get_file("source.csv"),
             geom_type=0,
@@ -158,8 +168,11 @@ class CSVSourceExceptionsTestCase(TestCase):
         with self.assertRaises(IndexError):
             source._get_records()
 
-    def test_invalid_id_field_raise_value_error_when_refreshing_data(self):
+    def test_invalid_id_field_raise_value_error_when_refreshing_data(
+        self, mocked_es_delete, mocked_es_create
+    ):
         source = CSVSource.objects.create(
+            name="csv-source",
             file=get_file("source.csv"),
             geom_type=0,
             id_field="identifier",
@@ -181,8 +194,12 @@ class CSVSourceExceptionsTestCase(TestCase):
             self.assertIn(msg, source.report.get("message", []))
 
 
+@patch("elasticsearch.client.IndicesClient.create")
+@patch("elasticsearch.client.IndicesClient.delete")
 class GeoJSONSourceExceptionsTestCase(TestCase):
-    def test_source_geojson_with_wrong_id_raise_value_error(self):
+    def test_source_geojson_with_wrong_id_raise_value_error(
+        self, mocked_es_delete, mocked_es_create
+    ):
         geodict = {
             "type": "FeatureCollection",
             "features": [
@@ -209,6 +226,8 @@ class GeoJSONSourceExceptionsTestCase(TestCase):
             self.assertIn(msg, source.report.get("message", []))
 
 
+@patch("elasticsearch.client.IndicesClient.create")
+@patch("elasticsearch.client.IndicesClient.delete")
 class PostGISSourceExceptionsTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -219,15 +238,21 @@ class PostGISSourceExceptionsTestCase(TestCase):
         )
 
     @patch("psycopg2.connect", side_effect=OperationalError("Connection error"))
-    def test_operationalerror_on_db_connect_is_reported(self, mocked_connect):
+    def test_operationalerror_on_db_connect_is_reported(
+        self, mocked_es_delete, mocked_es_create, mocked_connect
+    ):
         with self.assertRaises(OperationalError):
             self.source._db_connection()
             mocked_connect.assert_called_once()
             self.assertIn("Connection error", self.source.report.get("message", []))
 
 
+@patch("elasticsearch.client.IndicesClient.create")
+@patch("elasticsearch.client.IndicesClient.delete")
 class ShapefileSourceExceptionsTestCase(TestCase):
-    def test_wrong_id_raise_exception_on_refresh_and_get_reported(self):
+    def test_wrong_id_raise_exception_on_refresh_and_get_reported(
+        self, mocked_es_delete, mocked_es_create
+    ):
         source = ShapefileSource.objects.create(
             name="test_shapefile",
             geom_type=GeometryTypes.Point,

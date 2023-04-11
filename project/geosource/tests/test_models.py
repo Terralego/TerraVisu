@@ -103,7 +103,9 @@ class ModelSourceTestCase(TestCase):
     def test_geojsonsource_type(self):
         self.assertEqual(self.geojson_source.type, self.geojson_source.__class__)
 
-    def test_wrong_identifier_refresh(self):
+    @mock.patch("elasticsearch.client.IndicesClient.create")
+    @mock.patch("elasticsearch.client.IndicesClient.delete")
+    def test_wrong_identifier_refresh(self, mocked_es_delete, mocked_es_create):
         self.geojson_source.id_field = "wrong_identifier"
         self.geojson_source.save()
         with self.assertRaisesRegexp(Exception, "Failed to refresh data"):
@@ -234,7 +236,8 @@ class ModelCommandSourceTestCase(TestCase):
     @mock.patch("sys.stdout", new_callable=StringIO)
     def test_refresh_data(self, mocked_stdout, mock_index):
         mock_index.return_value = True
-        self.source.refresh_data()
+        with self.assertNumQueries(31):
+            self.source.refresh_data()
         self.assertIn("Start refresh", mocked_stdout.getvalue())
 
     def test_get_records(self):
@@ -289,8 +292,8 @@ class ModelCSVSourceTestCase(TestCase):
 
         records = source._get_records()
         self.assertEqual(len(records), 6, len(records))
-
-        row_count = source.refresh_data()
+        with self.assertNumQueries(54):
+            row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
@@ -311,7 +314,8 @@ class ModelCSVSourceTestCase(TestCase):
 
         records = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        row_count = source.refresh_data()
+        with self.assertNumQueries(72):
+            row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
@@ -337,7 +341,8 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        row_count = source.refresh_data()
+        with self.assertNumQueries(72):
+            row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
@@ -363,7 +368,8 @@ class ModelCSVSourceTestCase(TestCase):
             if record.get("photoEtablissement")
         ]
         self.assertEqual(len(empty_entry), 0, empty_entry)
-        row_count = source.refresh_data()
+        with self.assertNumQueries(54):
+            row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
@@ -384,8 +390,8 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-
-        row_count = source.refresh_data()
+        with self.assertNumQueries(72):
+            row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
@@ -406,7 +412,8 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records = source._get_records()
         self.assertEqual(len(records), 10, len(records))
-        row_count = source.refresh_data()
+        with self.assertNumQueries(78):
+            row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
     def test_update_fields_keep_order(self):
@@ -424,7 +431,7 @@ class ModelCSVSourceTestCase(TestCase):
         sheet = source.get_file_as_sheet()
         sheet.name_columns_by_row(0)
         colnames = [name for name in sheet.colnames if name not in ("XCOORD", "YCOORD")]
-
-        source.update_fields()
+        with self.assertNumQueries(698):
+            source.update_fields()
         fields = [f.name for f in Field.objects.filter(source=source)]
         self.assertTrue(fields == colnames)
