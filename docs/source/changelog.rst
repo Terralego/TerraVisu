@@ -2,8 +2,12 @@
 CHANGELOG
 =========
 
-2023.4.2b1     (XXXX-XX-XX)
+2023.4.2       (2023-04-11)
 ---------------------------
+
+**New features:**
+
+- Allow using style images patterns in polygon advanced styles
 
 
 2023.4.1       (2023-04-07)
