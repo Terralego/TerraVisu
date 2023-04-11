@@ -116,9 +116,9 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     def refresh_data(self):
         layer = self.get_layer()
         try:
-            response = self._refresh_data()
             es_index = LayerESIndex(layer)
             es_index.index()
+            response = self._refresh_data(es_index)
             return response
         finally:
             self.last_refresh = timezone.now()
@@ -128,28 +128,33 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                 layer=layer.pk,
             )
 
-    def _refresh_data(self):
+    def _refresh_data(self, es_index=None):
         report = {}
-        with transaction.atomic():
-            layer = self.get_layer()
-            begin_date = timezone.now()
-            row_count = 0
-            total = 0
 
-            for i, row in enumerate(self._get_records()):
-                total += 1
-                geometry = row.pop(self.SOURCE_GEOM_ATTRIBUTE)
+        layer = self.get_layer()
+        begin_date = timezone.now()
+        row_count = 0
+        total = 0
+        for i, row in enumerate(self._get_records()):
+            total += 1
+            geometry = row.pop(self.SOURCE_GEOM_ATTRIBUTE)
+            try:
+                identifier = row[self.id_field]
+            except KeyError:
+                msg = "Can't find identifier field for this record"
+                report["status"] = "Warning"
+                report.setdefault("message", []).append(msg)
+                report.setdefault("lines", {}).setdefault(f"{i}", []).append(msg)
+                continue
+            with transaction.atomic(savepoint=False):
                 try:
-                    identifier = row[self.id_field]
-                except KeyError:
-                    msg = "Can't find identifier field for this record"
-                    report["status"] = "Warning"
-                    report.setdefault("message", []).append(msg)
-                    report.setdefault("lines", {}).setdefault(f"{i}", []).append(msg)
-                    continue
-                self.update_feature(layer, identifier, geometry, row)
-                row_count += 1
-            self.clear_features(layer, begin_date)
+                    feature = self.update_feature(layer, identifier, geometry, row)
+                    if es_index and feature:
+                        es_index.index_feature(layer, feature)
+                except Exception:
+                    pass
+            row_count += 1
+        self.clear_features(layer, begin_date)
 
         self.report = report
         if not row_count:
@@ -374,7 +379,7 @@ class ShapefileSource(Source):
 class CommandSource(Source):
     command = models.CharField(max_length=255)
 
-    def _refresh_data(self):
+    def _refresh_data(self, es_index=None):
         layer = self.get_layer()
         begin_date = timezone.now()
 
