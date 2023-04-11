@@ -7,6 +7,7 @@ from io import BytesIO
 import fiona
 import psycopg2
 import pyexcel
+from autoslug import AutoSlugField
 from celery.result import AsyncResult
 from celery.utils.log import LoggingProxy
 from django.conf import settings
@@ -65,7 +66,7 @@ class FieldTypes(Enum):
 class Source(PolymorphicModel, CeleryCallMethodsMixin):
     name = models.CharField(max_length=255, unique=True)
     credit = models.TextField(blank=True)
-    slug = models.SlugField(max_length=255, unique=True)
+    slug = AutoSlugField(unique=True, populate_from="name")
     description = models.TextField(blank=True)
 
     id_field = models.CharField(max_length=255, default="id")
