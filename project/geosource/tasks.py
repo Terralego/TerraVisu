@@ -50,7 +50,7 @@ def run_model_object_method(self, app, model, pk, method, success_state=states.S
 
     except Model.DoesNotExist:
         set_failure_state(
-            self, method, f"{Model}'s object with pk {pk} doesn't exist", obj
+            self, method, f"{Model}'s object with pk {pk} doesn't exist", None
         )
 
     except AttributeError as e:
