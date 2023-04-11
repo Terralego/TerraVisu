@@ -29,7 +29,7 @@ class Scene(models.Model):
     """
 
     name = models.CharField(max_length=255, unique=True)
-    slug = models.SlugField(max_length=255, unique=True)
+    slug = AutoSlugField(unique=True, populate_from="name")
     category = models.CharField(max_length=255, default="map")
     custom_icon = models.ImageField(
         max_length=255, upload_to=scene_icon_path, null=True, default=None
@@ -129,9 +129,6 @@ class Scene(models.Model):
         self.save()
 
     def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-
         super().save(*args, **kwargs)
         self.tree2models()  # Generate LayerGroups according to the tree
 
