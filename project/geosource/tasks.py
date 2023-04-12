@@ -42,11 +42,12 @@ def run_model_object_method(self, app, model, pk, method, success_state=states.S
 
         self.update_state(state=success_state, meta=state)
         if obj and hasattr(obj, "report"):
-            text = ""
-            for key, value in state.items():
-                text += f"{key}: {value},"
-            obj.report["lines"] = text
-            obj.save(update_fields=["report"])
+            if not obj.report:
+                text = ""
+                for key, value in state.items():
+                    text += f"{key}: {value},"
+                obj.report["lines"] = text
+                obj.save(update_fields=["report"])
 
     except Model.DoesNotExist:
         set_failure_state(

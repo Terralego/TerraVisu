@@ -168,7 +168,7 @@ class CSVSourceExceptionsTestCase(TestCase):
         with self.assertRaises(IndexError):
             source._get_records()
 
-    def test_invalid_id_field_raise_value_error_when_refreshing_data(
+    def test_invalid_id_field_report_message_when_refreshing_data(
         self, mocked_es_delete, mocked_es_create
     ):
         source = CSVSource.objects.create(
@@ -189,15 +189,14 @@ class CSVSourceExceptionsTestCase(TestCase):
             },
         )
         msg = "Can't find identifier field for this record"
-        with self.assertRaisesMessage(Exception, "Failed to refresh data"):
-            source.refresh_data()
-            self.assertIn(msg, source.report.get("message", []))
+        source.refresh_data()
+        self.assertIn(msg, source.report.get("message", []))
 
 
 @patch("elasticsearch.client.IndicesClient.create")
 @patch("elasticsearch.client.IndicesClient.delete")
 class GeoJSONSourceExceptionsTestCase(TestCase):
-    def test_source_geojson_with_wrong_id_raise_value_error(
+    def test_source_geojson_with_wrong_id_report_message(
         self, mocked_es_delete, mocked_es_create
     ):
         geodict = {
@@ -221,9 +220,8 @@ class GeoJSONSourceExceptionsTestCase(TestCase):
             id_field="gid",  # wrong id field
         )
         msg = "Can't find identifier field for this record"
-        with self.assertRaisesMessage(Exception, "Failed to refresh data"):
-            source.refresh_data()
-            self.assertIn(msg, source.report.get("message", []))
+        source.refresh_data()
+        self.assertIn(msg, source.report.get("message", []))
 
 
 @patch("elasticsearch.client.IndicesClient.create")
@@ -250,7 +248,7 @@ class PostGISSourceExceptionsTestCase(TestCase):
 @patch("elasticsearch.client.IndicesClient.create")
 @patch("elasticsearch.client.IndicesClient.delete")
 class ShapefileSourceExceptionsTestCase(TestCase):
-    def test_wrong_id_raise_exception_on_refresh_and_get_reported(
+    def test_wrong_id_report_message_on_refresh_and_get_reported(
         self, mocked_es_delete, mocked_es_create
     ):
         source = ShapefileSource.objects.create(
@@ -260,6 +258,5 @@ class ShapefileSourceExceptionsTestCase(TestCase):
             id_field="wrongid",
         )
         msg = "Can't find identifier field for this record"
-        with self.assertRaisesMessage(Exception, "Failed to refresh data"):
-            source.refresh_data()
-            self.assertIn(msg, source.report.get("message", []))
+        source.refresh_data()
+        self.assertIn(msg, source.report.get("message", []))

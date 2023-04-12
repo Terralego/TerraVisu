@@ -140,31 +140,40 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             geometry = row.pop(self.SOURCE_GEOM_ATTRIBUTE)
             try:
                 identifier = row[self.id_field]
-            except KeyError:
-                msg = "Can't find identifier field for this record"
-                report["status"] = "Warning"
-                report.setdefault("message", []).append(msg)
-                report.setdefault("lines", {}).setdefault(f"{i}", []).append(msg)
-                continue
-            with transaction.atomic(savepoint=False):
+                sid = transaction.savepoint()
                 try:
                     feature = self.update_feature(layer, identifier, geometry, row)
                     if es_index and feature:
                         es_index.index_feature(layer, feature)
-                except Exception:
-                    pass
+                    transaction.savepoint_commit(sid)
+                except Exception as exc:
+                    transaction.savepoint_rollback(sid)
+                    msg = "An error occured on feature(s)"
+                    report["status"] = "Warning"
+                    report.setdefault("message", []).append(msg)
+                    report.setdefault("lines", {})[
+                        f"Error on row n°{i} {self.id_field} : {identifier}"
+                    ] = str(exc)
+                    continue
+            except KeyError:
+                msg = "Can't find identifier field for this record"
+                report["status"] = "Warning"
+                report.setdefault("message", []).append(msg)
+                report.setdefault("lines", {})[i] = msg
+                continue
             row_count += 1
         self.clear_features(layer, begin_date)
 
         self.report = report
-        if not row_count:
-            self.report["status"] = "Error"
-            self.save(update_fields=["report"])
-            raise Exception("Failed to refresh data")
+        if not self.report:
+            if not row_count:
+                self.report["status"] = "Error"
+                self.save(update_fields=["report"])
+                raise Exception("Failed to refresh data")
 
-        if row_count == total:
-            self.report["status"] = "SUCCESS"
-            self.save(update_fields=["report"])
+            if row_count == total:
+                self.report["status"] = "SUCCESS"
+                self.save(update_fields=["report"])
         return {"count": row_count, "total": total}
 
     @transaction.atomic

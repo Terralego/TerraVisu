@@ -12,6 +12,7 @@ from project.geosource.tests.helpers import get_file
 
 @mock.patch("elasticsearch.client.IndicesClient.create")
 @mock.patch("elasticsearch.client.IndicesClient.delete")
+@mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
 class TaskTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
@@ -23,7 +24,9 @@ class TaskTestCase(TestCase):
         )
         cls.element.groups.add(cls.group)
 
-    def test_task_refresh_data_method(self, mocked_es_delete, mocked_es_create):
+    def test_task_refresh_data_method(
+        self, mocked_index_feature, mocked_es_delete, mocked_es_create
+    ):
         run_model_object_method.apply(
             (
                 self.element._meta.app_label,
@@ -38,7 +41,7 @@ class TaskTestCase(TestCase):
         self.assertEqual(Layer.objects.first().authorized_groups.first().name, "Group")
 
     def test_task_refresh_data_method_wrong_pk(
-        self, mocked_es_delete, mocked_es_create
+        self, mocked_index_feature, mocked_es_delete, mocked_es_create
     ):
         logging.disable(logging.WARNING)
         run_model_object_method.apply(
@@ -51,7 +54,9 @@ class TaskTestCase(TestCase):
         )
         self.assertEqual(Layer.objects.count(), 0)
 
-    def test_task_wrong_method(self, mocked_es_delete, mocked_es_create):
+    def test_task_wrong_method(
+        self, mocked_index_feature, mocked_es_delete, mocked_es_create
+    ):
         logging.disable(logging.ERROR)
         run_model_object_method.apply(
             (
@@ -65,7 +70,7 @@ class TaskTestCase(TestCase):
 
     @mock.patch("project.geosource.models.Source.objects")
     def test_task_good_method_error(
-        self, mocked_es_delete, mocked_es_create, mock_source
+        self, mock_source, mocked_index_feature, mocked_es_delete, mocked_es_create
     ):
         mock_source.get.side_effect = ValueError
         logging.disable(logging.ERROR)

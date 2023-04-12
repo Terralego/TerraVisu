@@ -108,8 +108,9 @@ class ModelSourceTestCase(TestCase):
     def test_wrong_identifier_refresh(self, mocked_es_delete, mocked_es_create):
         self.geojson_source.id_field = "wrong_identifier"
         self.geojson_source.save()
-        with self.assertRaisesRegexp(Exception, "Failed to refresh data"):
-            self.geojson_source.refresh_data()
+        self.geojson_source.refresh_data()
+        msg = "Can't find identifier field for this record"
+        self.assertIn(msg, self.geojson_source.report.get("message", []))
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
     def test_delete(self, mock_index):
@@ -276,9 +277,13 @@ class ModelCSVSourceTestCase(TestCase):
         }
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
-    def test_get_records_with_two_columns_coordinates(self, mock_index):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
+    def test_get_records_with_two_columns_coordinates(
+        self, mock_index_feature, mock_index
+    ):
         mock_index.return_value = True
         source = CSVSource.objects.create(
+            name="source",
             file=get_file("source.csv"),
             geom_type=GeometryTypes.Point,
             id_field="ID",
@@ -292,14 +297,18 @@ class ModelCSVSourceTestCase(TestCase):
 
         records = source._get_records()
         self.assertEqual(len(records), 6, len(records))
-        with self.assertNumQueries(54):
+        with self.assertNumQueries(66):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
-    def test_get_records_with_one_column_coordinates(self, mock_index):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
+    def test_get_records_with_one_column_coordinates(
+        self, mock_index_feature, mock_index
+    ):
         mock_index.return_value = True
         source = CSVSource.objects.create(
+            name="source_xy",
             file=get_file("source_xy.csv"),
             geom_type=GeometryTypes.Point,
             id_field="ID",
@@ -314,12 +323,15 @@ class ModelCSVSourceTestCase(TestCase):
 
         records = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(72):
+        with self.assertNumQueries(90):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
-    def test_get_records_with_decimal_separator_as_comma(self, mock_index):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
+    def test_get_records_with_decimal_separator_as_comma(
+        self, mock_index_feature, mock_index
+    ):
         mock_index.return_value = True
         source = CSVSource.objects.create(
             name="csv-source",
@@ -341,14 +353,18 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(72):
+        with self.assertNumQueries(90):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
-    def test_get_records_with_nulled_columns_ignored(self, mock_index):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
+    def test_get_records_with_nulled_columns_ignored(
+        self, mock_index_feature, mock_index
+    ):
         mock_index.return_value = True
         source = CSVSource.objects.create(
+            name="source",
             file=get_file("source.csv"),
             geom_type=GeometryTypes.Point,
             id_field="ID",
@@ -368,14 +384,18 @@ class ModelCSVSourceTestCase(TestCase):
             if record.get("photoEtablissement")
         ]
         self.assertEqual(len(empty_entry), 0, empty_entry)
-        with self.assertNumQueries(54):
+        with self.assertNumQueries(66):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
-    def test_get_records_with_no_header_and_yx_csv(self, mock_index):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
+    def test_get_records_with_no_header_and_yx_csv(
+        self, mock_index_feature, mock_index
+    ):
         mock_index.return_value = True
         source = CSVSource.objects.create(
+            name="source_xy_noheader",
             file=get_file("source_xy_noheader.csv"),
             geom_type=GeometryTypes.Point,
             id_field="1",
@@ -390,14 +410,18 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(72):
+        with self.assertNumQueries(90):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
-    def test_get_records_with_no_header_and_two_columns_csv(self, mock_index):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
+    def test_get_records_with_no_header_and_two_columns_csv(
+        self, mock_index_feature, mock_index
+    ):
         mock_index.return_value = True
         source = CSVSource.objects.create(
+            name="source_noheader",
             file=get_file("source_noheader.csv"),
             geom_type=0,
             id_field="2",
@@ -412,12 +436,13 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records = source._get_records()
         self.assertEqual(len(records), 10, len(records))
-        with self.assertNumQueries(78):
+        with self.assertNumQueries(98):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
     def test_update_fields_keep_order(self):
         source = CSVSource.objects.create(
+            name="source",
             file=get_file("source.csv"),
             geom_type=GeometryTypes.Point,
             id_field="ID",
