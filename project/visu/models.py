@@ -20,6 +20,14 @@ class ExtraMenuItem(models.Model):
     slug = models.SlugField(max_length=255, unique=True, blank=True)
     href = models.CharField(max_length=255)
     icon = models.ImageField(upload_to="extra_menu_items/")
+    limit_to_groups = models.ManyToManyField(
+        "auth.Group",
+        blank=True,
+        related_name="extra_menu_items",
+        help_text=_(
+            "If defined, this extra menu item is only displayed to theses groups members."
+        ),
+    )
 
     def __str__(self):
         return self.label

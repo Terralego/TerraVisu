@@ -2,6 +2,7 @@ import logging
 
 from constance import config
 from django.core.files.storage import default_storage
+from django.db.models import Q
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -84,6 +85,10 @@ class SettingsFrontendView(APIView):
             FAVICON_URL = config.INSTANCE_FAVICON
         else:
             FAVICON_URL = default_storage.url(config.INSTANCE_FAVICON)
+        extra_menu_items_filters = Q(limit_to_groups__isnull=True)
+        if request.user.is_authenticated:
+            extra_menu_items_filters |= Q(limit_to_groups__in=request.user.groups.all())
+        extra_menu_items = ExtraMenuItem.objects.filter(extra_menu_items_filters)
 
         return Response(
             {
@@ -99,7 +104,7 @@ class SettingsFrontendView(APIView):
                     "styles": [],
                 },
                 "extraMenuItems": ExtraMenuItemSerializer(
-                    ExtraMenuItem.objects.all(),
+                    extra_menu_items,
                     many=True,
                     context={"request": request},
                 ).data,
