@@ -1,9 +1,13 @@
 from constance.test import override_config
+from django.contrib.auth.models import Group
+from django.test import RequestFactory
 from rest_framework.reverse import reverse_lazy
 from rest_framework.test import APITestCase
 
+from project.accounts.tests.factories import UserFactory
 from project.terra_layer.tests.factories import SceneFactory
-from project.visu.tests.factories import SpriteValueFactory
+from project.visu.serializers import ExtraMenuItemSerializer
+from project.visu.tests.factories import ExtraMenuItemFactory, SpriteValueFactory
 
 
 class SpriteDataAPIViewTestCase(APITestCase):
@@ -76,6 +80,66 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "version": None,
             },
         )
+
+    def test_no_extra_menu_items(self):
+        """With no extra menu item, array is empty"""
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["extraMenuItems"], [])
+
+    def test_extra_menu_items_unauthenticated_without_groups(self):
+        """Only extra menu items without group limit should be returned for unauthenticated users."""
+        # add extra menu item with no group limit
+        extra_menu_for_all = ExtraMenuItemFactory()
+        # add extra menu item with group limit
+        group = Group.objects.create(name="test")
+        extra_menu = ExtraMenuItemFactory()
+        extra_menu.limit_to_groups.add(group)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+
+        self.assertListEqual(
+            response.data["extraMenuItems"],
+            ExtraMenuItemSerializer(
+                [extra_menu_for_all],
+                many=True,
+                context={"request": RequestFactory().get("/")},
+            ).data,
+        )
+
+    def test_extra_menu_items_authenticated_without_groups(self):
+        self.maxDiff = None
+        user = UserFactory()
+        self.client.force_authenticate(user)
+        # add extra menu item with no group limit
+        extra_menu_for_all = ExtraMenuItemFactory()
+        # add extra menu item with group limit
+        group_user = Group.objects.create(name="test")
+        group_user.user_set.add(user)
+        groupwithout_user = Group.objects.create(name="test2")
+        extra_menu_for_group_user = ExtraMenuItemFactory()
+        extra_menu_for_group_user.limit_to_groups.add(group_user)
+        extra_menu_for_other_group = ExtraMenuItemFactory()
+        extra_menu_for_other_group.limit_to_groups.add(groupwithout_user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertListEqual(
+            sorted(response.data["extraMenuItems"], key=lambda x: x["id"]),
+            sorted(
+                ExtraMenuItemSerializer(
+                    [extra_menu_for_all, extra_menu_for_group_user],
+                    many=True,
+                    context={"request": RequestFactory().get("/")},
+                ).data,
+                key=lambda x: x["id"],
+            ),
+        )
+
+    def test_extra_menu_items_authenticated_with_groups(self):
+        # self.client.force_login(self.user)
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data["extraMenuItems"], [])
 
 
 class AdminSettingsApiView(APITestCase):

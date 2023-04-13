@@ -2,6 +2,14 @@
 CHANGELOG
 =========
 
+XXXX.XX.XX
+----------
+
+**Improvements:**
+
+- Allow to set group access to extra menu items
+
+
 2023.4.2       (2023-04-11)
 ---------------------------
 
