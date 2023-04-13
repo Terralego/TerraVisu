@@ -10,6 +10,7 @@ ENV CUSTOM_SETTINGS_FILE="/opt/terra-visu/var/conf/custom.py"
 
 RUN apt-get -y -qq update \
     && apt-get -y -qq install \
+    ca-certificates \
     python3 \
     libpq5 \
     binutils \
