@@ -2,20 +2,13 @@
 CHANGELOG
 =========
 
-XXXX.XX.XX
-----------
-
-**Improvements:**
-
-- Include basic certificates in docker image
-
-
 2023.4.3       (2023-04-13)
 ---------------------------
 
 **Improvements:**
 
 - Allow to set group access to extra menu items
+- Include basic certificates in docker image
 
 
 2023.4.2       (2023-04-11)
