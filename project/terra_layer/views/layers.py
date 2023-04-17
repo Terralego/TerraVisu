@@ -49,7 +49,6 @@ class SceneViewset(ModelViewSet):
 
     def get_queryset(self):
         qs = Scene.get_user_scenes(self.request.user)
-        raise Exception(self.request.user, qs)
         return qs
 
     def check_layer_status(self, view_id, current_node):

@@ -251,7 +251,6 @@ CONSTANCE_CONFIG = {
     "MAP_DEFAULT_LNG": (2.0, _("Map default lng"), float),
     "MAP_DEFAULT_LAT": (44.0, _("Map default lat"), float),
     "VIEW_ROOT_PATH": ("view", _("Frontend view root path"), str),
-    "DEFAULT_VIEW_NAME": ("", _("Frontend default view name"), str),
 }
 
 CONSTANCE_CONFIG_FIELDSETS = {
@@ -288,7 +287,7 @@ CONSTANCE_CONFIG_FIELDSETS = {
         "collapse": True,
     },
     "Frontend options": {
-        "fields": ("VIEW_ROOT_PATH", "DEFAULT_VIEW_NAME"),
+        "fields": ("VIEW_ROOT_PATH",),
         "collapse": True,
     },
 }
