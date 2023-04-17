@@ -1,6 +1,5 @@
 import logging
 
-from django.contrib.auth.models import Group
 from django.contrib.gis.geos import GEOSGeometry
 from geostore.models import Layer, LayerGroup
 
@@ -16,7 +15,7 @@ def layer_callback(geosource):
 
     layer, _ = Layer.objects.get_or_create(name=geosource.slug, defaults=defaults)
 
-    layer_groups = Group.objects.filter(pk__in=geosource.settings.get("groups", []))
+    layer_groups = geosource.groups.all()
 
     if set(layer.authorized_groups.all()) != set(layer_groups):
         layer.authorized_groups.set(layer_groups)
@@ -32,7 +31,10 @@ def feature_callback(geosource, layer, identifier, geometry, attributes):
     # Force converting geometry to 4326 projection
     try:
         geom = GEOSGeometry(geometry)
-        geom.transform(4326)
+        if not geom.srid:
+            geom.srid = 4326
+        elif geom.srid != 4326:
+            geom.transform(4326)
         return layer.features.update_or_create(
             identifier=identifier, defaults={"properties": attributes, "geom": geom}
         )[0]

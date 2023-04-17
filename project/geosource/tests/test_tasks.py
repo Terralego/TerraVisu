@@ -18,8 +18,8 @@ class TaskTestCase(TestCase):
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
-            settings={"groups": [cls.group.pk]},
         )
+        cls.element.groups.add(cls.group)
 
     def test_task_refresh_data_method(self):
         run_model_object_method.apply(

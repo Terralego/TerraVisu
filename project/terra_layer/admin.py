@@ -3,7 +3,7 @@ from geostore.models import Feature
 from geostore.models import Layer as GeostoreLayer
 from model_clone import CloneModelAdmin
 
-from project.terra_layer.models import Layer, StyleImage
+from project.terra_layer.models import Layer, Scene, StyleImage
 
 
 class StyleImageInline(admin.TabularInline):
@@ -29,3 +29,4 @@ class FeatureAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Feature, FeatureAdmin)
+admin.site.register(Scene)
