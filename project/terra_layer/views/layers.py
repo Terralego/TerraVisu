@@ -21,6 +21,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from project.geosource.models import FieldTypes, WMTSSource
 
+from ..filters import SceneFilterSet
 from ..models import FilterField, Layer, LayerGroup, Scene, StyleImage
 from ..permissions import LayerPermission, ScenePermission
 from ..serializers import (
@@ -40,16 +41,14 @@ logger = logging.getLogger(__name__)
 
 
 class SceneViewset(ModelViewSet):
+    queryset = Scene.objects.all()
     permission_classes = (ScenePermission,)
+    filterset_class = SceneFilterSet
 
     def get_serializer_class(self):
         if self.action in ["retrieve", "update", "create", "partial_update"]:
             return SceneDetailSerializer
         return SceneListSerializer
-
-    def get_queryset(self):
-        qs = Scene.get_user_scenes(self.request.user)
-        return qs
 
     def check_layer_status(self, view_id, current_node):
         """

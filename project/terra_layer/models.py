@@ -36,7 +36,8 @@ class Scene(models.Model):
     )
     order = models.PositiveSmallIntegerField(default=0, db_index=True)
     tree = models.JSONField(
-        default=list, validators=[JSONSchemaValidator(limit_value=SCENE_LAYERTREE)]
+        default=list,
+        validators=[JSONSchemaValidator(limit_value=SCENE_LAYERTREE)],
     )
     config = models.JSONField(default=dict)
     base_layers = models.ManyToManyField(

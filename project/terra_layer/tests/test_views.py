@@ -20,6 +20,7 @@ from project.terra_layer.models import (
     FilterField,
     Layer,
     LayerGroup,
+    Scene,
     StyleImage,
 )
 from project.terra_layer.utils import get_scene_tree_cache_key
@@ -98,7 +99,11 @@ class SceneViewsetTestCase(APITestCase):
         response = self.client.patch(
             reverse("scene-detail", args=[self.scene.pk]), query
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_200_OK,
+            Scene.objects.values("id", "name", "slug", "tree"),
+        )
 
         response = response.json()
 

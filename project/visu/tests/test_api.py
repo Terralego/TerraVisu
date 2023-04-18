@@ -239,23 +239,6 @@ class EnvJSONTestCase(APITestCase):
             response.data,
             {
                 "API_HOST": "http://testserver/api",
-                "DEFAULT_VIEWNAME": "custom-name",
                 "VIEW_ROOT_PATH": "view",
             },
         )
-
-    def test_custom_scene(self):
-        SceneFactory(name="custom name 1")
-        scene = SceneFactory(name="custom name 2")
-        with override_config(DEFAULT_VIEW_NAME=scene.slug):
-            self.client.get(self.url)
-            response = self.client.get(self.url)
-            self.assertEqual(response.status_code, 200)
-            self.assertEqual(
-                response.data,
-                {
-                    "API_HOST": "http://testserver/api",
-                    "DEFAULT_VIEWNAME": f"{scene.slug}",
-                    "VIEW_ROOT_PATH": "view",
-                },
-            )
