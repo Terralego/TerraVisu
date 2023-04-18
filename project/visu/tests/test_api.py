@@ -5,10 +5,7 @@ from rest_framework.reverse import reverse_lazy
 from rest_framework.test import APITestCase
 
 from project.accounts.tests.factories import UserFactory
-from project.terra_layer.tests.factories import (
-    LayerFactory,
-    LayerGroupFactory,
-)
+from project.terra_layer.tests.factories import LayerFactory, LayerGroupFactory
 from project.visu.serializers import ExtraMenuItemSerializer
 from project.visu.tests.factories import ExtraMenuItemFactory, SpriteValueFactory
 
