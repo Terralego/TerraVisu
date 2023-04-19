@@ -31,9 +31,7 @@ def feature_callback(geosource, layer, identifier, geometry, attributes):
     # Force converting geometry to 4326 projection
     try:
         geom = GEOSGeometry(geometry)
-        if not geom.srid:
-            geom.srid = 4326
-        elif geom.srid != 4326:
+        if geom.srid != 4326:
             geom.transform(4326)
         return layer.features.update_or_create(
             identifier=identifier, defaults={"properties": attributes, "geom": geom}
