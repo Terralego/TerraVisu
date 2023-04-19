@@ -1,3 +1,4 @@
+import logging
 import tempfile
 from copy import deepcopy
 from urllib.parse import unquote
@@ -20,6 +21,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from project.geosource.models import FieldTypes, WMTSSource
 
+from ..filters import SceneFilterSet
 from ..models import FilterField, Layer, LayerGroup, Scene, StyleImage
 from ..permissions import LayerPermission, ScenePermission
 from ..serializers import (
@@ -35,15 +37,15 @@ from ..utils import dict_merge, get_scene_tree_cache_key
 # Map source field data_type to format_type
 TYPE_MAP = {a: b.name.lower() for a, b in dict(FieldTypes.choices()).items()}
 
+logger = logging.getLogger(__name__)
+
 
 class SceneViewset(ModelViewSet):
-    model = Scene
     queryset = Scene.objects.all()
     permission_classes = (ScenePermission,)
+    filterset_class = SceneFilterSet
 
-    def get_serializer_class(
-        self,
-    ):
+    def get_serializer_class(self):
         if self.action in ["retrieve", "update", "create", "partial_update"]:
             return SceneDetailSerializer
         return SceneListSerializer
@@ -67,7 +69,7 @@ class SceneViewset(ModelViewSet):
                     )
 
                 # Is layer owned by another scene ?
-                if layer.group and layer.group.view.id != view_id:
+                if layer.group and layer.group.view_id != view_id:
                     raise ValidationError(
                         f"Layer {item['geolayer']} can't be stolen from another scene"
                     )

@@ -17,8 +17,8 @@ class GeostoreCallBacksTestCase(TestCase):
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
-            settings={"groups": [group.pk]},
         )
+        source.groups.add(group)
         layer = geostore_callbacks.layer_callback(source)
         self.assertEqual(layer.authorized_groups.first().name, "Group")
 
@@ -28,8 +28,8 @@ class GeostoreCallBacksTestCase(TestCase):
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
-            settings={"groups": [group.pk]},
         )
+        source.groups.add(group)
         layer = Layer.objects.create(name="test")
         feature = geostore_callbacks.feature_callback(
             source, layer, "id", GEOSGeometry("POINT (0 0)", srid=3857), {}
@@ -45,8 +45,8 @@ class GeostoreCallBacksTestCase(TestCase):
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
-            settings={"groups": [group.pk]},
         )
+        source.groups.add(group)
         layer = Layer.objects.create(name="test")
         with mock.patch(
             "project.geosource.geostore_callbacks.logger.warning",
@@ -67,8 +67,8 @@ class GeostoreCallBacksTestCase(TestCase):
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
-            settings={"groups": [group.pk]},
         )
+        source.groups.add(group)
         layer = Layer.objects.create(name="test")
         Feature.objects.create(layer=layer, geom=GEOSGeometry("POINT (0 0)"))
         geostore_callbacks.clear_features(source, layer, layer.updated_at)
@@ -79,8 +79,8 @@ class GeostoreCallBacksTestCase(TestCase):
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
-            settings={"groups": [group.pk]},
         )
+        source.groups.add(group)
         layer = Layer.objects.create(name="test")
         Feature.objects.create(layer=layer, geom=GEOSGeometry("POINT (0 0)"))
         geostore_callbacks.delete_layer(source)

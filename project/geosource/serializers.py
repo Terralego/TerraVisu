@@ -358,7 +358,7 @@ class CSVSourceSerializer(FileSourceSerializer):
 
     def to_internal_value(self, data):
         validated_data = super().to_internal_value(data)
-        # settings does not exist if no group is specifed at creation
+        # settings does not exist if no group is specified at creation
         settings = validated_data.get("settings", {})
         settings.update(
             {

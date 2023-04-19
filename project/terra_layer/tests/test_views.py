@@ -20,6 +20,7 @@ from project.terra_layer.models import (
     FilterField,
     Layer,
     LayerGroup,
+    Scene,
     StyleImage,
 )
 from project.terra_layer.utils import get_scene_tree_cache_key
@@ -34,6 +35,8 @@ class SceneViewsetTestCase(APITestCase):
         cls.user = SuperUserFactory()
         cls.scene = SceneFactory(name="test_scene")
         cls.source = PostGISSourceFactory()
+        cls.layer_group = LayerGroup.objects.create(label="test_group", view=cls.scene)
+        cls.layer = TerraLayerFactory(group=cls.layer_group, source=cls.source)
 
     def setUp(self):
         self.client.force_authenticate(self.user)
@@ -96,7 +99,11 @@ class SceneViewsetTestCase(APITestCase):
         response = self.client.patch(
             reverse("scene-detail", args=[self.scene.pk]), query
         )
-        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.status_code,
+            status.HTTP_200_OK,
+            Scene.objects.values("id", "name", "slug", "tree"),
+        )
 
         response = response.json()
 
@@ -661,16 +668,16 @@ class SceneTreeAPITestCase(APITestCase):
         group.authorized_layers.add(geo_layer)
 
         self.client.force_authenticate(self.user)
-        with self.assertNumQueries(42):
+        with self.assertNumQueries(43):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
-        with self.assertNumQueries(11):
+        with self.assertNumQueries(10):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
         # updating layer to trigger cache reset
         layer.name = "new_name"
         layer.save()
 
-        with self.assertNumQueries(42):
+        with self.assertNumQueries(41):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
     def test_cache_cleared_after_public_layer_update(self):
@@ -678,16 +685,16 @@ class SceneTreeAPITestCase(APITestCase):
         layer = Layer.objects.create(
             name="public_layer", source=source, group=self.layer_group
         )
-        with self.assertNumQueries(43):
+        with self.assertNumQueries(45):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
-        with self.assertNumQueries(8):
+        with self.assertNumQueries(9):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
         # updating layer to trigger cache reset
         layer.name = "new_name"
         layer.save()
-        with self.assertNumQueries(35):
+        with self.assertNumQueries(37):
             # still differences in original query number because callbacks auto create geostore layers and groups
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 

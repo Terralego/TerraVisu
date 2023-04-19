@@ -8,6 +8,8 @@ XXXX.XX.XX
 **Improvements:**
 
 - Improve admin to define polygons patterns
+- Filter frontend with non empty views
+- Default view is now the first ordered for an user (authenticated or not)
 
 
 2023.4.3       (2023-04-13)

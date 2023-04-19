@@ -10,6 +10,7 @@ import pyexcel
 from celery.result import AsyncResult
 from celery.utils.log import LoggingProxy
 from django.conf import settings
+from django.contrib.auth.models import Group
 from django.contrib.gis.gdal.error import GDALException
 from django.contrib.gis.geos import GEOSGeometry
 from django.core.management import call_command
@@ -74,6 +75,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     )
 
     settings = models.JSONField(default=dict, blank=True)
+    groups = models.ManyToManyField(Group, blank=True, related_name="geosources")
     report = models.JSONField(default=dict, blank=True, encoder=DjangoJSONEncoder)
 
     task_id = models.CharField(null=True, max_length=255, blank=True)

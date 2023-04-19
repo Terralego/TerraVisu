@@ -5,7 +5,7 @@ from rest_framework.reverse import reverse_lazy
 from rest_framework.test import APITestCase
 
 from project.accounts.tests.factories import UserFactory
-from project.terra_layer.tests.factories import SceneFactory
+from project.terra_layer.tests.factories import LayerFactory, LayerGroupFactory
 from project.visu.serializers import ExtraMenuItemSerializer
 from project.visu.tests.factories import ExtraMenuItemFactory, SpriteValueFactory
 
@@ -231,31 +231,16 @@ class EnvJSONTestCase(APITestCase):
             self.client.get(self.url)
 
     def test_default_values(self):
-        SceneFactory(name="custom name")
+        layer_group = LayerGroupFactory(label="custom name")
+        LayerFactory(name="custom name", group=layer_group)
         self.client.get(self.url)
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
+        self.assertDictEqual(
             response.data,
             {
                 "API_HOST": "http://testserver/api",
-                "DEFAULT_VIEWNAME": "custom-name",
                 "VIEW_ROOT_PATH": "view",
+                "DEFAULT_VIEWNAME": layer_group.view.slug,
             },
         )
-
-    def test_custom_scene(self):
-        SceneFactory(name="custom name 1")
-        scene = SceneFactory(name="custom name 2")
-        with override_config(DEFAULT_VIEW_NAME=scene.slug):
-            self.client.get(self.url)
-            response = self.client.get(self.url)
-            self.assertEqual(response.status_code, 200)
-            self.assertEqual(
-                response.data,
-                {
-                    "API_HOST": "http://testserver/api",
-                    "DEFAULT_VIEWNAME": f"{scene.slug}",
-                    "VIEW_ROOT_PATH": "view",
-                },
-            )

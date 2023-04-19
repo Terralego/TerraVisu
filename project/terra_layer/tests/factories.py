@@ -5,10 +5,11 @@ from ..models import Layer, LayerGroup, Scene, StyleImage
 
 
 class SceneFactory(factory.django.DjangoModelFactory):
+    name = factory.Faker("name")
+    custom_icon = factory.django.ImageField()
+
     class Meta:
         model = Scene
-
-    custom_icon = factory.django.ImageField()
 
 
 class LayerGroupFactory(factory.django.DjangoModelFactory):

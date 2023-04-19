@@ -119,15 +119,11 @@ class EnvFrontendView(APIView):
     ]
 
     def get(self, request, *args, **kwargs):
-        default_view = config.DEFAULT_VIEW_NAME
-        if not config.DEFAULT_VIEW_NAME:
-            logger.warning(
-                "No default scene define in /config/. Trying to find first scene with layers..."
-            )
-            scene = Scene.objects.first()
-            if not scene:
-                raise Exception("You should defined a scene with at least one layer")
-            default_view = scene.slug
+        default_scene = Scene.objects.get_user_scenes(request.user).first()
+
+        if not default_scene:
+            raise Exception("You should defined a scene with at least one layer")
+        default_view = default_scene.slug
 
         return Response(
             {

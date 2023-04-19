@@ -4,14 +4,8 @@ from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
 
-from project.geosource.views import SourceModelViewset
-
-from ..permissions import ReadOnly, SourcePermission
+from ..permissions import ReadOnly
 from ..serializers import MapBaseLayerSerializer
-
-
-class GeoSourceModelViewset(SourceModelViewset):
-    permission_classes = (SourcePermission,)
 
 
 class GeostoreLayerViewSet(LayerViewSet):
