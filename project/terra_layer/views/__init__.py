@@ -1,5 +1,4 @@
 from .extras import (  # NOQA
-    GeoSourceModelViewset,
     GeostoreFeatureViewSet,
     GeostoreLayerGroupViewsSet,
     GeostoreLayerViewSet,

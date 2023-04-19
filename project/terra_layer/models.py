@@ -151,24 +151,6 @@ class Scene(models.Model):
         """all scene layers"""
         return Layer.objects.filter(group__view=self).order_by("group__order", "order")
 
-    @classmethod
-    def get_user_scenes(cls, user):
-        """Return all scenes that the user can access"""
-        pks = []
-        for scene in cls.objects.all():
-            scene_layers = scene.layers.select_related("source")
-            for layer in scene_layers:
-                groups = layer.source.groups.all()
-                if len(groups) == 0:
-                    pks.append(scene.pk)
-                elif user.is_authenticated:
-                    if (
-                        user.has_terra_perm("can_manage_layers")
-                        or groups.intersection(user.groups.all()).exists()
-                    ):
-                        pks.append(scene.pk)
-        return cls.objects.filter(pk__in=pks)
-
     class Meta:
         ordering = ["order"]
 
