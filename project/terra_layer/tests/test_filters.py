@@ -17,7 +17,7 @@ class SceneFilterSetTestCase(TestCase):
         self.assertEqual(qs.count(), 0)
 
     def test_filter_viewer_false(self):
-        data = {"viewer": True}
+        data = {"viewer": False}
         qs = self.filterset(data=data, request=self.request).qs
         self.assertEqual(qs.count(), 0)
 
