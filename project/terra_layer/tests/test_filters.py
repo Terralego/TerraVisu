@@ -1,5 +1,5 @@
 from django.contrib.auth.models import AnonymousUser
-from django.test import TestCase, RequestFactory
+from django.test import RequestFactory, TestCase
 
 from project.terra_layer.filters import SceneFilterSet
 
@@ -12,12 +12,12 @@ class SceneFilterSetTestCase(TestCase):
         cls.request.user = AnonymousUser()
 
     def test_filter_viewer_true(self):
-        data = {'viewer': True}
+        data = {"viewer": True}
         qs = self.filterset(data=data, request=self.request).qs
         self.assertEqual(qs.count(), 0)
 
     def test_filter_viewer_false(self):
-        data = {'viewer': True}
+        data = {"viewer": True}
         qs = self.filterset(data=data, request=self.request).qs
         self.assertEqual(qs.count(), 0)
 
