@@ -7,7 +7,7 @@ from project.terra_layer.models import Scene
 class SceneFilterSet(FilterSet):
     def filter_user_scenes(self, queryset, name, value):
         if value:
-            return Scene.get_user_scenes(self.request.user)
+            return Scene.objects.get_user_scenes(self.request.user)
         return queryset
 
     viewer = django_filters.BooleanFilter(

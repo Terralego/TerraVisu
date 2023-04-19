@@ -4,6 +4,7 @@ from hashlib import md5
 
 from autoslug import AutoSlugField
 from django.db import models, transaction
+from django.db.models import TextChoices
 from django.utils.functional import cached_property
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
@@ -14,6 +15,7 @@ from rest_framework.reverse import reverse
 
 from project.geosource.models import Field, Source
 
+from .managers import SceneManager
 from .schema import SCENE_LAYERTREE, JSONSchemaValidator
 from .style import generate_style_from_wizard
 
@@ -28,9 +30,15 @@ class Scene(models.Model):
     It's also a main menu entry.
     """
 
+    class SceneCategories(TextChoices):
+        MAP = "map", _("Map")
+        STORY = "story", _("Story")
+
     name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
-    category = models.CharField(max_length=255, default="map")
+    category = models.CharField(
+        choices=SceneCategories.choices, max_length=255, default=SceneCategories.MAP
+    )
     custom_icon = models.ImageField(
         max_length=255, upload_to=scene_icon_path, null=True, default=None
     )
@@ -47,6 +55,8 @@ class Scene(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+
+    objects = SceneManager()
 
     def get_absolute_url(self):
         return reverse("scene-detail", args=[self.pk])
