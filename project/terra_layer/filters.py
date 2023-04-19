@@ -15,9 +15,6 @@ class SceneFilterSet(FilterSet):
         method="filter_user_scenes",
     )
 
-    def get_user_scene_ids(self, user):
-        return Scene.objects.get_user_scene_ids(user)
-
     class Meta:
         model = Scene
         fields = ["viewer"]
