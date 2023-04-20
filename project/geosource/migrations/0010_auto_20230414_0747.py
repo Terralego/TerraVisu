@@ -14,7 +14,7 @@ def migrate_groups(apps, schema_editor):
             )  # cas where group is null
             for group_id in defined_groups:
                 try:
-                    group = Group.objects.get(name=group_id)
+                    group = Group.objects.get(id=group_id)
                     source.groups.add(group)
                 except Group.DoesNotExist:
                     pass
