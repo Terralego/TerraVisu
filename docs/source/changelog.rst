@@ -5,6 +5,10 @@ CHANGELOG
 2023.4.5+dev   (XXXX-XX-XX)
 ---------------------------
 
+**Improvements:**
+
+- Layer duplication in admin improved and now made by backend duplication
+
 
 2023.4.5       (2023-04-20)
 ---------------------------
