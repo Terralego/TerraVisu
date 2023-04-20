@@ -215,6 +215,8 @@ class PostGISSourceSerializer(SourceSerializer):
         connect to the Pg server and executing the query
         """
         try:
+            if self.instance and not data.get("db_password"):
+                data["db_password"] = self.instance.db_password
             self._first_record(data)
         except Exception:
             raise ValidationError("Connection informations or query are not valid")
