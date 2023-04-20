@@ -2,6 +2,18 @@
 CHANGELOG
 =========
 
+2023.4.5       (2023-04-20)
+---------------------------
+
+**Improvements:**
+
+- Disable autocomplete / autofill on PostGIS source form in admin
+
+**Bugfix**
+
+- Allow PostGIS source form edition in admin without retype password
+
+
 2023.4.4       (2023-04-19)
 ---------------------------
 
@@ -10,11 +22,6 @@ CHANGELOG
 - Improve admin to define polygons patterns
 - Filter frontend with non empty views
 - Default view is now the first ordered for an user (authenticated or not)
-- Disable autocomplete / autofill on PostGIS source form in admin
-
-**Bugfix**
-
-- Allow PostGIS source form edition in admin without retype password
 
 
 2023.4.3       (2023-04-13)
