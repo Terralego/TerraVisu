@@ -2,8 +2,12 @@
 CHANGELOG
 =========
 
-2023.4.6+dev   (XXXX-XX-XX)
+2023.4.7       (2023-04-21)
 ---------------------------
+
+**Bugfix**
+
+- Fix layer duplication and notification in admin
 
 
 2023.4.6       (2023-04-20)
