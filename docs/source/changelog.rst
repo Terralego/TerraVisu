@@ -5,6 +5,10 @@ CHANGELOG
 2023.4.7+dev   (XXXX-XX-XX)
 ---------------------------
 
+**Bugfix**
+
+- Fix permission management on source list in admin
+
 
 2023.4.7       (2023-04-21)
 ---------------------------
