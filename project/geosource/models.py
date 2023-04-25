@@ -140,8 +140,8 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             geometry = row.pop(self.SOURCE_GEOM_ATTRIBUTE)
             try:
                 identifier = row[self.id_field]
-                sid = transaction.savepoint()
                 try:
+                    sid = transaction.savepoint()
                     feature = self.update_feature(layer, identifier, geometry, row)
                     if es_index and feature:
                         es_index.index_feature(layer, feature)
