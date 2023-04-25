@@ -168,6 +168,26 @@ class CSVSourceExceptionsTestCase(TestCase):
         with self.assertRaises(IndexError):
             source._get_records()
 
+    def test_source_empty_csv(self, mocked_es_delete, mocked_es_create):
+        source = CSVSource.objects.create(
+            file=get_file("source_empty.csv"),
+            geom_type=0,
+            id_field="ID",
+            settings={
+                "encoding": "UTF-8",
+                "coordinate_reference_system": "EPSG_4326",  # Wrong on purpose
+                "char_delimiter": "doublequote",
+                "field_separator": "semicolon",
+                "decimal_separator": "point",
+                "use_header": True,
+                "coordinates_field": "two_columns",
+                "longitude_field": "XCOORD",
+                "latitude_field": "YCOORD",
+            },
+        )
+        with self.assertRaisesRegex(Exception, "Failed to refresh data"):
+            source.refresh_data()
+
     def test_invalid_id_field_report_message_when_refreshing_data(
         self, mocked_es_delete, mocked_es_create
     ):
