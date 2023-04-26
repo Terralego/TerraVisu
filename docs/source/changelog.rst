@@ -2,6 +2,18 @@
 CHANGELOG
 =========
 
+2023.4.9       (2023-04-26)
+---------------------------
+
+**Bugfix**
+
+- Prevent deleted style key in admin to keep null value
+
+**Improvements:**
+
+- Increase style categorization from 20 to 100 element max in admin layer style.
+
+
 2023.4.8       (2023-04-24)
 ---------------------------
 
