@@ -66,7 +66,6 @@ INSTALLED_APPS = [
     "constance.backends.database",
     "corsheaders",
     "project.accounts",
-    "project.frontend",
     "project.visu",
     "project.geosource",
     "project.terra_layer",
