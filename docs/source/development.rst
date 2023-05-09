@@ -98,3 +98,20 @@ We use flake8, isort and black rules. You can run :
 
 
 to check them
+
+------------
+Modification
+------------
+
+- Each modification should be done in a Pull request correctly named and labeled (dependencies, bug, enhancement, ...) with a changelog entry.
+
+---------------
+Release process
+---------------
+
+- Changelog should be up to date
+- assign version number in project/VERSION and docs/source/changelog.rst with date (version in the form YYYY.MM.XX where YYYY is the year, MM the month, XX the release number in the month.)
+- Use Release fonction in github to create a release with the same name as the version number
+- Use release notes button to generate release notes
+- CI publish a new docker image.
+- Back to dev by adding "+dev" to project/VERSION and new changelog section with XXXX-XX-XX date and version
