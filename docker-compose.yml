@@ -66,21 +66,6 @@ services:
       - web
       - redis
 
-  frontend:
-    build:
-      context: .
-      dockerfile: .docker/frontend/Dockerfile
-    volumes:
-      - ./project/frontend:/app/project/frontend
-      - ./webpack.config.js:/app/webpack.config.js
-      - ./package.json:/app/package.json
-      - ./package-lock.json:/app/package-lock.json
-      - ./.eslintrc.js:/app/.eslintrc.js
-      - ./.babelrc:/app/.babelrc
-    depends_on:
-      - web
-      - elasticsearch
-
   nginx:
     image: nginx:latest
     ports:
