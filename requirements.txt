@@ -90,7 +90,7 @@ django-autoslug==1.9.9
     # via -r requirements.in
 django-celery-beat==2.5.0
     # via -r requirements.in
-django-celery-results==2.5.0
+django-celery-results==2.5.1
     # via -r requirements.in
 django-clearcache==1.2.1
     # via -r requirements.in
