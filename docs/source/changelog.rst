@@ -2,9 +2,16 @@
 CHANGELOG
 =========
 
-XXXX.X.X       (XXXX-XX-XX)
+2023.5.1       (2023-05-17)
 ---------------------------
 
+**Bugfix**
+
+- Fix style image already loaded in frontend
+
+**Improvements:**
+
+- Layer legend title is not required anymore
 
 
 2023.5.0       (2023-05-10)
