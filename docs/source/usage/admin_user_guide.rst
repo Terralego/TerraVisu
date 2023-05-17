@@ -2,16 +2,16 @@
 Manuel d'utilisation du back office de la plateforme TerraVisu 
 ==============================================================
 
-.. image :: ../images/admin/admin_accueil.png
 
-Le Back Office : objectif et définition
-=======================================
+Le Back Office 
+==============
 
 Ce manuel décrit les procédures pour accéder et gérer les différentes fonctionnalités de la plateforme TerraVisu.
 
 Le back-office de TerraVisu permet en quelques clics de gérer des utilisateurs, d’importer une source de données géographiques, de créer et personnaliser une couche, puis de visualiser le résultat sur une carte.
 
-Résumé des fonctionnalités :
+**Résumé des fonctionnalités :**
+
 * Gérer les sources de données géographiques 
 * Gérer les couches
 * Configurer des fonds de cartes
@@ -38,36 +38,37 @@ Page d'accès à l'outil d’administration
 
 Une fois connecté, vous arrivez sur l’écran d’accueil de l’outil d’administration.
 L’outil est composé de trois modules :
-* Utilisateurs, permet de gérer les utilisateurs de l’application
-* Visualiseur, permet de créer les cartes
-* Fonds de carte, permet de configurer les fonds de carte
+
+* **Utilisateurs**, permet de gérer les utilisateurs de l’application
+* **Visualiseur**, permet de créer les cartes
+* **Fonds de carte**, permet de configurer les fonds de carte
 
 .. image :: ../images/admin/admin_accueil.png
 
-Gestion des utilisateurs
-========================
+Module de gestion des utilisateurs
+==================================
 
 Liste des utilisateurs
 ----------------------
 
-Pour afficher l’ensemble des utilisateurs cliquez sur « Liste des utilisateurs ». 
+Pour afficher l’ensemble des utilisateurs cliquez sur « **Liste des utilisateurs** ». 
 Vous arrivez sur une page présentant la liste de tous les utilisateurs existants.
 
-Le module « Utilisateurs » de TerraVisu permet de gérer les permissions d'accès des utilisateurs et des groupes d’utilisateurs aux différents éléments du visualiseur cartographique.
+Le module « **Utilisateurs** » de TerraVisu permet de gérer les permissions d'accès des utilisateurs et des groupes d’utilisateurs aux différents éléments du visualiseur cartographique.
 
 .. image :: ../images/admin/admin_utilisateurs.png
 
-Vous avez la possibilité d’exporter la liste des utilisateurs au format CSV en cliquant sur le bouton « EXPORTER ».
+Vous avez la possibilité d’exporter la liste des utilisateurs au format CSV en cliquant sur le bouton « **EXPORTER** ».
 
 Créer un nouvel utilisateur
 ---------------------------
 
 Les conditions permettant de créer un nouvel utilisateur est d’être soi-même super-utilisateur.
 
-Pour ajouter un nouvel utilisateur cliquez sur le bouton « CRÉER ».
-Les informations à renseigner sont à minima le nom, le prénom, l’adresse mail, le mot de passe.
-Si vous activez l’option « Superutilisateur » l’utilisateur pourra à son tour créer de nouveaux utilisateurs.
-Si vous activez l’option « Actif » l’utilisateur pourra se connecter dès que son compte sera créé, sinon, il devra attendre que celui ci devienne actif.
+Pour ajouter un nouvel utilisateur cliquez sur le bouton « **CRÉER** ».
+Les informations à renseigner sont à minima le **nom**, le **prénom**, l’**adresse mail**, le **mot de passe**.
+Si vous activez l’option « **Superutilisateur** » l’utilisateur pourra à son tour créer de nouveaux utilisateurs.
+Si vous activez l’option « **Actif** » l’utilisateur pourra se connecter dès que son compte sera créé, sinon, il devra attendre que celui ci devienne actif.
 
 Vous pouvez intégrer l’utilisateur à un ou plusieurs groupes. 
 
@@ -81,22 +82,24 @@ Liste des groupes d'utilisateurs
 --------------------------------
 
 Les groupes d’utilisateurs permettent de gérer des permissions à différents niveaux de l’application.
-Les permissions sont les suivantes :
+
+**Les permissions sont les suivantes :**
+
 * L’administration de fonds de carte
 * La gestion des sources de données 
 * La gestion des couches 
 * La gestion des groupes d’utilisateurs 
 * La gestion des utilisateurs 
 
-Pour afficher l’ensemble des groupes cliquez sur « Liste des groupes d’utilisateurs». 
+Pour afficher l’ensemble des groupes cliquez sur « **Liste des groupes d’utilisateurs** ». 
 Vous arrivez sur une page présentant la liste de tous les groupes existants.
 
 Créer un nouveau groupe d'utilisateurs
 --------------------------------------
 
-Pour ajouter un nouveau groupe cliquez sur le bouton « CRÉER ».
+Pour ajouter un nouveau groupe cliquez sur le bouton « **CRÉER** ».
 
-Les informations à renseigner lors de la création d’un nouveau groupe sont à minima le nom, les utilisateurs affectés, les permissions.
+Les informations à renseigner lors de la création d’un nouveau groupe sont à minima le **nom**, les **utilisateurs affectés**, les **permissions**.
 
 
 .. image :: ../images/admin/admin_groupe_ajout.png
@@ -105,8 +108,10 @@ Les informations à renseigner lors de la création d’un nouveau groupe sont �
 Le module Visualiseur
 =====================
 
-Le module «Visualiseur» de TerraVisu permet de gérer les données de l’application et le paramétrage de leur(s) représentation(s).
+Le module « **Visualiseur** » de TerraVisu permet de gérer les données de l’application et le paramétrage de leur(s) représentation(s).
+
 Il comporte trois entrées :
+
 * Les sources de données
 * Les couches
 * Les vues
@@ -116,7 +121,7 @@ Liste des sources de données
 
 Afin de configurer une visualisation, l’utilisateur doit créer les différentes sources de données en adéquation avec le projet si elles n’existent pas déjà. 
 
-Pour afficher l’ensemble des sources de données cliquez sur « Liste des sources de données». 
+Pour afficher l’ensemble des sources de données cliquez sur « **Liste des sources de données** ». 
 Vous arrivez sur une page présentant la liste de toutes les sources de données déclarées.
 
 .. image :: ../images/admin/admin_sources.png
@@ -126,8 +131,9 @@ Pour retrouver plus facilement une source de données dans la liste, vous avez l
 Créer une source de données
 ---------------------------
 
-Pour ajouter une nouvelle source, cliquez sur le bouton « CRÉER ».
+Pour ajouter une nouvelle source, cliquez sur le bouton « **CRÉER** ».
 Les types de sources de données supportés actuellement par l’application sont :
+
 * GeoJSON
 * ESRI Shapefile
 * Requêtes PostGIS
@@ -136,6 +142,7 @@ Les types de sources de données supportés actuellement par l’application son
 
 A noter qu’une fois la source de données enregistrée il n’est pas possible de modifier son type. 
 Les types de géométries supportés par l’application sont :
+
 * Point
 * Linestring
 * Polygon
@@ -146,45 +153,45 @@ Les types de géométries supportés par l’application sont :
 
 Lors de la déclaration de la source, il est possible d’ajouter un ou plusieurs groupes d’utilisateurs, De cette façon, seuls les utilisateurs faisant partie des groupes affectés à la source seront en mesure de visualiser les données.
 
-*/!\ Le nom d’une source de données doit être unique, si ce n’est pas le cas l’enregistrement échouera.*
+⚠️ *Le nom d’une source de données doit être unique, si ce n’est pas le cas l’enregistrement échouera.*
 
-**Import de fichiers**
+* **Import de fichiers**
 
 Une source de données peut être créé par l’import d’un fichier GeoJSON, ESRI Shapefile ou CSV en uploadant le fichier. 
 
-* Import de fichier GeoJSON ou Shapefile
+* **Import de fichier GeoJSON ou Shapefile**
 
 Les informations à renseigner à minima, lors de la création d’une nouvelle source GeoJSON ou Shapefile sont le nom, le type de données, le type de la géométrie et le champ de l’identifiant unique.
 
 .. image :: ../images/admin/admin_source_creation_geojson.png
 
-* Import de fichier CSV
+* **Import de fichier CSV**
 
 Pour intégrer un fichier CSV, il faut que celui-ci comporte des coordonnées géographiques, dans une ou deux colonnes. 
 
-Les informations à renseigner à minima lors de la création d’une nouvelle source CSV sont le nom, le ou les champs de coordonnées, le système de coordonnées, le champ de l’identifiant unique, le séparateur de champ, le séparateur de texte, le séparateur décimal pour les coordonnées et le nombre de lignes à ignorer.
+Les informations à renseigner à minima lors de la création d’une nouvelle source CSV sont le nom, le ou les **champs de coordonnées**, le **système de coordonnées**, le **champ de l’identifiant unique**, le **séparateur de champ**, le **séparateur de texte**, le **séparateur décimal pour les coordonnées** et le **nombre de lignes à ignorer**.
 
 .. image :: ../images/admin/admin_source_creation_csv.png
 
-L’ option « Entête à la première ligne » activée permet de conserver les entêtes de colonnes qui se trouvent à la première ligne du fichier CSV. 
+L’ option « **Entête à la première ligne** » activée permet de conserver les entêtes de colonnes qui se trouvent à la première ligne du fichier CSV. 
 
-Si l’option « Ignorer les colonnes à null » est activée, toutes les colonnes vides ne seront pas conservées.
+Si l’option « **Ignorer les colonnes à null** » est activée, toutes les colonnes vides ne seront pas conservées.
 
-* Import via une requête SQL PostGIS
+* **Import via une requête SQL PostGIS**
 
-Les informations à renseigner à minima lors de la création d’une nouvelle source PostGIS sont le nom, le type de géométrie, les paramètres de connexion à la base de données (hôte, port, nom bdd, nom utilisateur, mot de passe utilisateur), requête SQL, champ de géométrie, champ de l’identifiant unique.
+Les informations à renseigner à minima lors de la création d’une nouvelle source PostGIS sont le **nom**, le **type de géométrie**, les **paramètres de connexion à la base de données** (hôte, port, nom bdd, nom utilisateur, mot de passe utilisateur), **requête SQL**, **champ de géométrie**, **champ de l’identifiant unique**.
 Il est possible de définir la fréquence de mise à jour automatique de la source (toutes les heures, quotidiennement…). La requête peut ainsi être exécutée régulièrement afin de mettre à jour les données avec le contenu de la base.
 
 .. image :: ../images/admin/admin_source_creation_postgis.png
 
-Bon à savoir : si une source de données dont la fréquence de mise à jour a été paramétrée sur « Quotidienne », le déclenchement de la synchronisation ne se fera pas exactement 24h après. L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde toutes les 25 mn s’il y a des changements) +date de fin de la dernière mise à jour. Il peut donc y avoir un delta de 24h et 25mn au minimum entre chaque mise à jour de source de données. Ce delta peut se rajouter d'autant plus s'il y a des mise à jour manuelles.
+**Bon à savoir** : si une source de données dont la fréquence de mise à jour a été paramétrée sur « Quotidienne », le déclenchement de la synchronisation ne se fera pas exactement 24h après. L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde toutes les 25 mn s’il y a des changements) +date de fin de la dernière mise à jour. Il peut donc y avoir un delta de 24h et 25mn au minimum entre chaque mise à jour de source de données. Ce delta peut se rajouter d'autant plus s'il y a des mise à jour manuelles.
 
-*/!\ Attention à ne pas terminer la requête par un point virgule.*
+⚠️ *Attention à ne pas terminer la requête par un point virgule.*
 
-* Import via un flux WMS/WMTS
+* **Import via un flux WMS/WMTS**
 
 Les flux WMS/WMTS sont des protocoles de communication qui permettent d’obtenir des cartes de données géoréférencées à partir de différents serveurs de données (IGN, BRGM, etc.). 
-Les informations à renseigner à minima lors de la création d’une nouvelle source WMS/WMTS  sont le nom et l’adresse.
+Les informations à renseigner à minima lors de la création d’une nouvelle source WMS/WMTS  sont le **nom** et l’**adresse**.
 Il est possible de renseigner les niveaux de zoom min et max auxquels les images du flux seront affichées dans le visualiseur cartographique.
 
 .. image :: ../images/admin/admin_source_creation_wms.png
@@ -193,24 +200,28 @@ Enregistrer une source de données
 ---------------------------------
 
 Au moment de l’enregistrement de la source, les champs attributaires sont automatiquement déterminés et renseignés et trois onglets sont créés :
-* DÉFINITION contient les informations principales de la source
-* DONNÉES contient la liste de tous les champs attributaires 
-* RAPPORT D’IMPORTATION permet de remonter les éventuelles erreurs rencontrées lors de l’enregistrement
+
+* **DÉFINITION** contient les informations principales de la source
+* **DONNÉES** contient la liste de tous les champs attributaires 
+* **RAPPORT** D’IMPORTATION permet de remonter les éventuelles erreurs rencontrées lors de l’enregistrement
 
 Une fois la source enregistrée, revenez à la liste. 
 La colonne « Statut » indique l’état actuel de la source de données.
+
 * NEED SYNC : le statut de la source nouvellement créé , cela signifie que la source a besoin d’être synchronisée pour être utilisée. Cliquez d’abord sur la source pour éditer son statut, puis sur « Actualiser les données ». Une fois revenu à la liste des source, vous pourrez constater que le statut est devenu « SUCCESS ».  
-* SUCCESS : la source de données a bien été créé et vient d’être synchronisée avec succès.
+* DON'T NEED : ce statut ne concerne que les sources WMS/WMTS car celles ci n'ont pas besoin d'être raffraichies.
+* SUCCESS : la source de données a bien été créé et vient d’être synchronisée avec succès.
 * PENDING : la source de données a bien été créé et son état de synchronisation est stable.
-* FAILURE : la source de données n’a pas été correctement créé ou mise à jour. Il y a un problème dans les paramètres renseignés. Voir le détail dans l’onglet « RAPPORT D’IMPORTATION ».
+* FAILURE : la source de données n’a pas été correctement créé ou mise à jour. Il y a un problème dans les paramètres renseignés. Voir le détail dans l’onglet « **RAPPORT D’IMPORTATION** ».
 
 Modifier une source de données
 ------------------------------
 
-L’onglet «DONNÉES» contient l’ensemble des champs attributaires de la source. 
+L’onglet « **DONNÉES** » contient l’ensemble des champs attributaires de la source. 
 L’outil détecte automatiquement les types de chaque champ mais il peut arriver qu’il soit mal reconnu. Dans ce cas là, il est possible de le modifier dans la liste du type de chaque champ.
 
 Les types gérés par l’application sont les suivants :
+
 * String
 * Integer
 * Float
@@ -231,16 +242,16 @@ Supprimer une source de données
 
 Pouvoir supprimer une source de données nécessite de s’assurer qu’elle n’est pas utilisée par aucune couche. Si ce n’est pas le cas, la suppression ne pourra pas être effectuée.
 Pour supprimer une source, vous avez deux façons de procéder :
-* dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton « SUPPRIMER »
-* dans la liste, cochez la source et cliquez sur le bouton « SUPPRIMER »
+* dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton « **SUPPRIMER** »
+* dans la liste, cochez la source et cliquez sur le bouton « **SUPPRIMER** »
 
-*/!\ Toute suppression est définitive.*
+⚠️ *Toute suppression est définitive.*
 
 Liste des couches
 -----------------
 
 Une fois les sources de données déclarées, l’utilisateur peut créer les couches qui en découlent. 
-Pour afficher l’ensemble des couches cliquez sur « Liste des couches». 
+Pour afficher l’ensemble des couches cliquez sur « **Liste des couches** ». 
 
 .. image :: ../images/admin/admin_couche_liste.png
 
@@ -250,6 +261,7 @@ Créer une couche
 ----------------
 
 La configuration des couches permet de personnaliser de manière très approfondie les possibilités d’interaction au sein d’une couche :
+
 * La fonction de recherche
 * La représentation cartographique
 * La légende associée aux styles cartographiques affichés
@@ -259,20 +271,20 @@ La configuration des couches permet de personnaliser de manière très approfond
 * La gestion de la table attributaire
 * La gestion d’un outil de synthèse
       
-Pour créer une nouvelle couche, cliquez sur le bouton « CRÉER ».
+Pour créer une nouvelle couche, cliquez sur le bouton « **CRÉER** ».
 Une page s’ouvre avec différents onglets à renseigner.
 
 **Onglet Définition**
 
-Les informations à renseigner à minima lors de la définition de la couche sont le nom et la source de données.
-Le nommage de la couche se fait dans la premier onglet. A la différence des sources qui doivent avoir des noms uniques, il n’est pas interdit d’avoir plusieurs couches avec le même nom.
+Les informations à renseigner à minima lors de la définition de la couche sont le **nom** et la **source de données**.
+Le nommage de la couche se fait dans le premier onglet. A la différence des sources qui doivent avoir des noms uniques, il n’est pas interdit d’avoir plusieurs couches avec le même nom.
 
 Il faut ensuite sélectionner une source de données dans la liste. Chaque couche est associée à une source. 
 Il est possible de filtrer une source de donnés directement lors de la configuration de la couche.
-Le champ principal permet d’activer la fonction de recherche dans le visualiseur qui retournera les résultats en fonction de ce champ. 
+Le **champ principal** permet d’activer la fonction de recherche dans le visualiseur qui retournera les résultats en fonction de ce champ. 
 
-Si l’option « Affichée par défaut » est activée, la couche sera activée de base dans le visualiseur cartographique.
-Enfin, la partie Description est destinée aux couches qui seront intégrées dans une vue de type Storytelling. Pour le moment la description est rédigée uniquement en langage HTML.
+Si l’option « **Affichée par défaut** » est activée, la couche sera activée de base dans le visualiseur cartographique.
+Enfin, la partie « **Description** » est destinée aux couches qui seront intégrées dans une vue de type Storytelling. Pour le moment la description est rédigée uniquement en langage HTML.
 A ce stade, il est possible d’enregistrer la couche telle quelle et de l’afficher dans le visualiseur cartographique. Une représentation par défaut est appliquée à la couche, ce qui permet de la visualiser.
 
 .. image :: ../images/admin/admin_couche_definition.png
@@ -280,7 +292,7 @@ A ce stade, il est possible d’enregistrer la couche telle quelle et de l’aff
 **Filtrage de source**
 
 L’intérêt principal du filtrage de source est qu’il permet de créer de multiple couches à partir de la même source de données. 
-Le langage de filtrage, Pivot QL, est très proche du SQL et une aide    permet d’obtenir des exemples avec des cas de figures parlants. 
+Le langage de filtrage, Pivot QL, est très proche du `SQL <https://fr.wikipedia.org/wiki/Structured_Query_Language>`_ et une aide ℹ️ permet d’obtenir des exemples avec des cas de figures parlants. 
 Pour aider à l’écriture de la requête de filtrage, il peut être intéressant de consulter la liste des champs disponibles afin de ne pas faire d’erreur de nommage. 
 
 .. image :: ../images/admin/admin_couche_definition_filtrage1.png
@@ -299,14 +311,15 @@ Le filtre appliqué à la source de données dans la couche est immédiatement r
 La conception du style permet de donner du sens à une carte en transmettant une information qui doit être la plus efficace et compréhensible possible.
 
 Parmi les nombreux styles que l’on peut réaliser, voici les plus courants :
-* Des styles simples sans analyse : polygones, lignes, points
-* Des analyses paramétrées permettant de représenter une variable en particulier :
-* Cartes choroplèthes (analyse discrète)
-* Carte thématiques (catégorisation)
-* Points avec cercles proportionnels (analyse continue)
-* Point avec iconographie (catégorisation)
-* Affichage de texte
-* Des analyses bivariées permettant de représenter deux variables en même temps en faisant varier deux caractéristiques du style de la même représentation géographique.
+
+* Des **styles simples** sans analyse : polygones, lignes, points
+* Des **analyses paramétrées** permettant de représenter une variable en particulier :
+  * Cartes choroplèthes (analyse discrète)
+  * Carte thématiques (catégorisation)
+  * Points avec cercles proportionnels (analyse continue)
+  * Point avec iconographie (catégorisation)
+  * Affichage de texte
+* Des **analyses bivariées** permettant de représenter deux variables en même temps en faisant varier deux caractéristiques du style de la même représentation géographique.
 * Des représentations mettant en jeux plusieurs couches (polygone + centroide par exemple) du type couche principale + couche de décoration.
 * Des représentations différentes en fonction du niveau de zoom
 
@@ -328,6 +341,7 @@ Les curseur de la plage de visibilité permettent de définir des niveaux de zoo
 **Style avec une analyse**
 
 Voici les étapes permettant la création d’une analyse :
+
 * Choix du type de représentation
 * Polygone
 * Ligne
@@ -335,58 +349,71 @@ Voici les étapes permettant la création d’une analyse :
 * Cercle
 * Icône
 * Texte
-* Choix de la caractéristique à faire varier
-  * Couleur fond
-  * Couleur contour
-  * Diamètre
-  * Épaisseur
-  * Couleur texte
-  * Taille texte
-  * etc.
+
+* Choix du de la caractéristique à faire varier
+
+   * Couleur fond
+   * Couleur contour
+   * Diamètre
+   * Épaisseur
+   * Couleur texte
+   * Taille texte
+   * etc.
+   
 * Choix de la variable à représenter
+
 * Choix du type d’analyse
+
 * Si variable de type String/Foat/Integer 
-  * Discrétisation (méthodes Jenks, Quantiles, Intervalles égaux)
-  * Interpolation
-  * Catégorisation
+
+   * Discrétisation (méthodes Jenks, Quantiles, Intervalles égaux)
+   * Interpolation
+   * Catégorisation
+   
 * Si variable de type String
-  * Catégorisation
 
-Afin de ne pas égarer l’utilisateur dans les nombreux choix du type de représentation, ce dernier sera restreint en fonction du type géométrique de la source de données utilisée par la couche. Par exemple, à une source de type Polygon sera proposé uniquement les types de représentation Polygone, Ligne, Extrusion.
+   * Catégorisation
 
-Le choix de la caractéristique à faire varier découlera automatiquement du type de représentation choisi précédemment. Par exemple, pour une représentation Polygone, les caractéristiques à faire varier seront Couleur du polygone et Couleur du contour. Il est à noter que toutes les caractéristiques ne sont pas variables car n’apportant pas d’intérêt : par exemple l’épaisseur du contour de la représentation Cercle n’est pas variable, uniquement fixe.
+Afin de ne pas égarer l’utilisateur dans les nombreux choix du **type de représentation**, ce dernier sera restreint en fonction du type géométrique de la source de données utilisée par la couche. Par exemple, à une source de type **Polygon** sera proposé uniquement les types de représentation **Polygone**, **Ligne**, **Extrusion**.
 
-Le choix de la variable à représenter se fait à l’aide d’une liste déroulante. La variable se présente ainsi : le label (éditable), le nom de la variable, le type. Le type de la variable choisie (String, Integer, Float..) conditionne les possibilités du type d’analyse.
+Le choix de la **caractéristique** à faire varier découlera automatiquement du type de représentation choisi précédemment. Par exemple, pour une **représentation Polygone**, les caractéristiques à faire varier seront **Couleur du polygone** et **Couleur du contour**. Il est à noter que **toutes les caractéristiques ne sont pas variables** car n’apportant pas d’intérêt : par exemple l’épaisseur du contour de la représentation Cercle n’est pas variable, uniquement fixe.
 
-Le choix du type d’analyse constitue la dernière étape. Le type d’analyse Interpolation n’est disponible que pour faire varier les caractéristiques Diamètre ou Épaisseur, c’est à dire une taille.
+Le choix de la **variable à représenter** se fait à l’aide d’une liste déroulante. La variable se présente ainsi : le label (éditable), le nom de la variable, le type. Le **type de la variable choisie (String, Integer, Float..) conditionne les possibilités du type d’analyse**.
 
-Lors de la conception d’un style avec une analyse, il est possible d’activer l’option Générer la légende associée pour que la légende soit exactement conforme au style représenté.
+Le choix du type d’analyse constitue la dernière étape. Le **type d’analyse Interpolation** n’est disponible que pour faire varier les caractéristiques **Diamètre** ou **Épaisseur**, c’est à dire une taille.
+
+Lors de la conception d’un style avec une analyse, il est possible d’activer l’option « **Générer la légende associée** » pour que la légende soit exactement conforme au style représenté.
 
 .. image :: ../images/admin/admin_couche_style_assistant.png
 
 **Ajouter un style secondaire**
 
 Une couche peut utiliser plusieurs styles. Le style principal utilise les données de la source utilisée par la couche, en revanche, le style secondaire peut faire appel à une source de données différente. 
+
 Le style secondaire doit être vu comme un élément de décoration sur la carte. De cette manière, aucune interaction ne sera possible avec les données du style secondaire (info-bulle, mini-fiche, filtre, etc.)
+
 Exemple concret : Dans le cas d’une carte des communes, il pourra être intéressant de rajouter les étiquettes des noms au centre des communes. Pour se faire, on aura besoin de créer un style secondaire faisant appel à la source de données des centroides des communes pour pouvoir ajouter les étiquettes.
 
 .. image :: ../images/admin/admin_couche_style_secondaire.png
 
 **Style sans assistant**
 
-Il est possible d’aller plus loin dans la conception d’un style en désactivant le mode assistant. Ce mode s’adresse à des utilisateurs développeurs car il faut rédiger le code en JSON, en suivant la spécification Mapbox.
+Il est possible d’aller plus loin dans la conception d’un style en désactivant le mode assistant. Ce mode s’adresse à des utilisateurs développeurs car il faut rédiger le code en JSON, en suivant la spécification `Mapbox <https://docs.mapbox.com/mapbox-gl-js/style-spec/>`_.
 
 .. image :: ../images/admin/admin_couche_style_sansassistant.png
 
 **Onglet Légende**
 
 La légende est un des éléments essentiels de la carte. Elle doit être claire, facilement compréhensible et doit s’adapter aux éléments affichés sur la carte. 
+
 Voici les typologies de légende :
+
     • Légende avec carrés pour représenter des polygones
     • Légende avec cercles pour représenter des points
     • Légende avec lignes pour représenter les lignes
 
 On peut faire varier :
+
     • La couleur de fond pour les carrés et le cercles
     • La couleur de la ligne pour les carrés, les cercles et les lignes
     • La taille pour les carrés et les cercles
@@ -394,11 +421,11 @@ On peut faire varier :
 
 .. image :: ../images/admin/admin_couche_legende.png
 
-Si elle est générée depuis l’onglet Style, alors elle se met en lien automatiquement avec le style de la couche et prend en compte la typologie de géométrie affichée.
+Si elle est générée depuis l’onglet **Style**, alors elle se met en lien automatiquement avec le style de la couche et prend en compte la typologie de géométrie affichée.
 
 Il n’est pas possible de modifier une légende qui a été générée. Seuls le titre et le pied de légende sont éditables.
 
-Si la légende générée ne vous convient pas, il faut désactiver l’option « Générer la légende associée » dans l’onglet Style pour la caractéristique concernée (exemple Couleur du polygone). De cette façon, vous pourrez créer manuellement la légende souhaitée.
+Si la légende générée ne vous convient pas, il faut désactiver l’option « **Générer la légende associée** » dans l’onglet **Style** pour la caractéristique concernée (exemple Couleur du polygone). De cette façon, vous pourrez créer manuellement la légende souhaitée.
 
 .. image :: ../images/admin/admin_couche_legendegeneree.png
 
@@ -417,7 +444,7 @@ En cas de valeur nulle sur un champ, il est possible de définir une valeur par 
 .. image :: ../images/admin/admin_couche_pophover_nonexpert.png
 
 Lorsque le label d’un champ est renommé à un endroit de l’application, il est renommé partout ailleurs.
-Le « Mode expert » permet d’aller plus loin dans le paramétrage de l’info-bulle en codant le contenu en Nunjucks. Le code est généré à partir de ce qui existe dans le mode avec assistant, en revanche l’inverse n’est pas vrai. C’est à dire que le mode avec assistant n’est pas synchronisé avec le « Mode expert ».
+Le « **Mode expert** » permet d’aller plus loin dans le paramétrage de l’info-bulle en codant le contenu en `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_. Le code est généré à partir de ce qui existe dans le mode avec assistant, en revanche l’inverse n’est pas vrai. C’est à dire que le mode avec assistant n’est pas synchronisé avec le « **Mode expert** ».
 Ce mode avancé s’adresse à des utilisateurs développeurs. Il peut être intéressant de l’utiliser pour définir des conditions if ou elseif.
 
 .. image :: ../images/admin/admin_couche_pophover_expert.png
@@ -429,7 +456,7 @@ La mini-fiche n’est pas active par défaut.
 
 .. image :: ../images/admin/admin_couche_minifiche.png
 
-La mini-fiche fonctionne sur le même principe que celui de la fenêtre au survol. Si le champ principal a été définit dans l’onglet Définition, alors ce dernier sera aussi utilisé comme titre de la mini-fiche.
+La mini-fiche fonctionne sur le même principe que celui de la fenêtre au survol. Si le champ principal a été définit dans l’onglet **Définition**, alors ce dernier sera aussi utilisé comme titre de la mini-fiche.
 Il est possible de sélectionner une couleur de surbrillance pour les objets cliqués sur la carte au moment de l’affichage de la mini-fiche.
 En cas de valeur nulle sur un champ, il est possible de définir une valeur par défaut. 
 De même, l’outil permet de rajouter du texte en préfixe et suffixe de la valeur du champ choisi.
@@ -438,7 +465,7 @@ A la différence de l’info-bulle, l’utilisateur peut ajouter des titres de s
 .. image :: ../images/admin/admin_couche_minifiche_nonexpert.png
 
 Lorsque le label d’un champ est renommé à un endroit de l’application, il est renommé partout ailleurs.
-Le « Mode expert » permet d’aller plus loin dans le paramétrage de la fiche en codant le contenu en Nunjucks. Le code est généré à partir de ce qui existe dans le mode avec assistant, en revanche l’inverse n’est pas vrai. C’est à dire que le mode avec assistant n’est pas synchronisé avec le « Mode expert ».
+Le « **Mode expert** » permet d’aller plus loin dans le paramétrage de la fiche en codant le contenu en `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_. Le code est généré à partir de ce qui existe dans le mode avec assistant, en revanche l’inverse n’est pas vrai. C’est à dire que le mode avec assistant n’est pas synchronisé avec le « **Mode expert** ».
 Ce mode avancé s’adresse à des utilisateurs développeurs. Il peut être intéressant de l’utiliser pour ajouter du texte coloré, des liens hypertexte ou des images.
 
 .. image :: ../images/admin/admin_couche_minifiche_expert.png
@@ -450,13 +477,15 @@ L’outil de filtre n’est pas actif par défaut.
 
 .. image :: ../images/admin/admin_couche_filtre.png
 
-Pour ajouter un filtre sur la couche cliquez sur « AJOUTER ». 
+Pour ajouter un filtre sur la couche cliquez sur « **AJOUTER** ». 
 Plusieurs types de filtrage sont disponibles en fonction des types de champs :
+
 * Une seule valeur (texte)
 * Plusieurs valeurs (texte)
 * Une étendue de valeurs (numérique ou date)
 
 Au niveau de l’affichage, il est possible de choisir:
+
 * Aucune valeur
 * Toutes les valeurs disponibles pour le champ
 * Une liste de valeurs
@@ -483,7 +512,7 @@ Il est possible de remonter/descendre les champs dans l’ordre souhaité.
 L’outil de widget permet de récapituler dans un tableau dynamique des indicateurs utiles à l'analyse de la couche.
 Sur le visualiseur cartographique, lors du zoom sur la carte, la synthèse se réactualise en fonction des éléments qui se trouvent dans l'emprise spatiale.
 
-La configuration de l’outil de widget s’adresse à des utilisateurs développeurs car il requiert l’écriture en JSON avec dans la clé "template" une chaîne de caractère contenant le code en Nunjucks du format de données attendu.
+La configuration de l’outil de widget s’adresse à des utilisateurs développeurs car il requiert l’écriture en `JSON <https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/JSON>`_ avec dans la clé "template" une chaîne de caractère contenant le code en `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_ du format de données attendu.
 
 .. image :: ../images/admin/admin_couche_widget.png
 
@@ -494,10 +523,11 @@ Pour modifier une couche existante, cliquez sur la couche dans la liste et effec
 **Supprimer une couche**
 Pouvoir supprimer une source de données nécessite de s’assurer qu’elle n’est utilisée dans aucun vue. Si ce n’est pas le cas, la suppression ne pourra pas être effectuée.
 Pour supprimer une couche, vous avez deux façons de procéder :
-    • dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton « SUPPRIMER »
-    • dans la liste, cochez la couche et cliquez sur le bouton « SUPPRIMER »
 
-/!\ Toute suppression est définitive. 
+    • dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton « **SUPPRIMER** »
+    • dans la liste, cochez la couche et cliquez sur le bouton « **SUPPRIMER** »
+
+⚠️  *Toute suppression est définitive.*
 
 Liste des vues
 --------------
@@ -505,7 +535,7 @@ Liste des vues
 La configuration des menus d’accès aux couches de données s’appelle les vues.
 Il s’agit de la dernière étape à réaliser (après la création de la source, puis création de la couche) pour visualiser ses données.
 
-Pour afficher l’ensemble des vues cliquez sur « Liste des vues». 
+Pour afficher l’ensemble des vues cliquez sur « **Liste des vues** ». 
 Vous arrivez sur une page présentant la liste de toutes les vues déclarées.
 
 .. image :: ../images/admin/admin_vue_liste.png
@@ -513,32 +543,38 @@ Vous arrivez sur une page présentant la liste de toutes les vues déclarées.
 Créer une vue
 -------------
 
-Pour ajouter une nouvelle vue cliquez sur le bouton « CRÉER ».
+Pour ajouter une nouvelle vue cliquez sur le bouton « **CRÉER** ».
 Les informations à renseigner à minima lors de la création d’une nouvelle vue sont le nom, le type de vue, le classement et l’arbre des couches.
+
 Il existe deux types de vues :
-* Carte : les couches sont affichés dans une arborescence composée de groupes
-* Storytelling : les couches sont affichés à droite d’une description (analyse de carte, chiffre clés..) et l’utilisateur  les fait défiler dans l’ordre dans lesquelles elles sont ordonnées dans l’arbre des couches.
+
+* **Carte** : les couches sont affichés dans une arborescence composée de groupes
+* **Storytelling** : les couches sont affichés à droite d’une description (analyse de carte, chiffre clés..) et l’utilisateur  les fait défiler dans l’ordre dans lesquelles elles sont ordonnées dans l’arbre des couches.
 
 Le classement permet d’affecter à la vue une position par rapport aux autres (exemple : 1ere position, deuxième position..). Il est possible de créer autant de vues que nécessaire mais il ne peut pas y avoir plus de 10 vues affichées dans le visualiseur cartographique.
 
 Il est possible de définir une emprise géographique différente de l’emprise par défaut du visualiseur cartographique (exemple : Centre ville de Thionville). Pour cela, il suffit de dessiner la zone à afficher à l’aide de l’outil de dessin.
-S’il a définit au préalable des fonds de carte dans le module Liste des fonds de carte, l’utilisateur peut choisir de les utiliser dans une vue. Si il ne le fait pas, c’est le fond de carte par défaut (Mapbox Monochrome Light) qui sera utilisé.
+
+S’il a définit au préalable des fonds de carte dans le module **Liste des fonds de carte**, l’utilisateur peut choisir de les utiliser dans une vue. Si il ne le fait pas, c’est le fond de carte par défaut (Mapbox Monochrome Light) qui sera utilisé.
+
 Une icône par défaut est appliquée à la vue si l’utilisateur ne lui en choisis pas. Sa couleur est blanche afin que l’icône se démarque bien sur le menu des vues dans le visualiseur cartographique. Le format supporté par l’outil est le png.  
 
 **Arbre des couches**
 
 Une couche appartient obligatoirement à un groupe.
 
-Pour ajouter un groupe cliquez sur le bouton « CRÉER  UN GROUPE».
-Pour ajouter une couche à un groupe cliquez sur le « + » et choisissez la dans la liste.
+Pour ajouter un groupe cliquez sur le bouton « **CRÉER  UN GROUPE**».
+Pour ajouter une couche à un groupe cliquez sur le « **+** » et choisissez la dans la liste.
 Vous pouvez construire votre arbre en ajoutant, déplaçant, imbriquant les éléments. 
-A partir d’un groupe, en cliquant sur les trois petits points verticaux vous avez la possibilité de :
-** Ajouter une couche
-** Ajouter un sous-groupe
-** Paramétrer le mode de sélection des couches (exclusif/inclusif)
-** Supprimer un groupe
 
-/!\ Une couche ne peut être ajoutée qu’à une seule vue à la fois.
+A partir d’un groupe, en cliquant sur les trois petits points verticaux vous avez la possibilité de :
+
+* Ajouter une couche
+* Ajouter un sous-groupe
+* Paramétrer le mode de sélection des couches (exclusif/inclusif)
+* Supprimer un groupe
+
+⚠️  *Une couche ne peut être ajoutée qu’à une seule vue à la fois.*
 
 .. image :: ../images/admin/admin_vue.png
 
@@ -547,26 +583,29 @@ L’enregistrement de la vue aura pour effet immédiat de rajouter automatiqueme
 Pour modifier une vue existante, cliquez sur la vue dans la liste et effectuez vos changements.
 
 **Supprimer une vue**
-Pour supprimer une vue, vous avez deux façons de procéder :
-* dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton « SUPPRIMER »
-* dans la liste, cochez la vue et cliquez sur le bouton « SUPPRIMER »
 
-/!\ Toute suppression est définitive. 
+Pour supprimer une vue, vous avez deux façons de procéder :
+
+* dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton « **SUPPRIMER** »
+* dans la liste, cochez la vue et cliquez sur le bouton « **SUPPRIMER** »
+
+⚠️ *Toute suppression est définitive.* 
 
 Fonds de carte
 ==============
 
-Le module «Fonds de carte» de TerraVisu  permet à l’utilisateur de définir ses fonds de cartes sur lesquels viendront se superposer les couches de données cartographiques de l’application. L’utilisateur peut par exemple ainsi basculer d’un fond de plan cartographique à une photographie aérienne pour avoir un meilleur aperçu de la réalité physique du territoire d’étude.
+Le module « **Fonds de carte** » de TerraVisu  permet à l’utilisateur de définir ses fonds de cartes sur lesquels viendront se superposer les couches de données cartographiques de l’application. L’utilisateur peut par exemple ainsi basculer d’un fond de plan cartographique à une photographie aérienne pour avoir un meilleur aperçu de la réalité physique du territoire d’étude.
 
 
 Liste des fonds de carte
 ------------------------
 
 Trois types de fonds de cartes peuvent être définis :
-    • Raster
-    • Vectoriel
-    • Mapbox
-Pour afficher l’ensemble des fonds de carte cliquez sur « Liste des fonds de carte». 
+
+  * Raster
+  * Vectoriel
+  * Mapbox
+Pour afficher l’ensemble des fonds de carte cliquez sur « **Liste des fonds de carte**». 
 Vous arrivez sur une page présentant la liste de tous les fonds de carte existants.
 
 .. image :: ../images/admin/admin_fondscarte.png
@@ -574,8 +613,9 @@ Vous arrivez sur une page présentant la liste de tous les fonds de carte exista
 Créer un nouveau fond de carte
 ------------------------------
 
-Pour ajouter un nouveau fond de carte cliquez sur le bouton « CRÉER ».
+Pour ajouter un nouveau fond de carte cliquez sur le bouton « **CRÉER** ».
 Les informations à renseigner à minima lors de la création d’un nouveau fond de carte sont le nom, le type et l’URL.
+
 La taille des tuiles est modifiable mais elle est définie par défaut sur la valeur 256. Le curseur de l’amplitude du zoom permet de choisir à quel niveau de zoom les tuiles du fond de carte s’afficheront dans le visualiseur.
 
 Une fois les fonds de plan ajoutés, l’utilisateur peut les choisir de les utiliser dans les vues qu’il veut.
@@ -591,7 +631,8 @@ Supprimer un fond de carte
 --------------------------
 
 Pour supprimer fond de carte, vous avez deux façons de procéder :
-    • dans la liste, cliquez sur le fond de carte et en bas de la page cliquez sur le bouton « SUPPRIMER »
-    • dans la liste, cochez le fond de carte et cliquez sur le bouton « SUPPRIMER »
 
-/!\ Toute suppression est définitive. 
+  * dans la liste, cliquez sur le fond de carte et en bas de la page cliquez sur le bouton « **SUPPRIMER** »
+  * dans la liste, cochez le fond de carte et cliquez sur le bouton « **SUPPRIMER** »
+
+⚠️  *Toute suppression est définitive.* 
