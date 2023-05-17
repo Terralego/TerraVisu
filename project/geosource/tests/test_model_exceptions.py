@@ -121,7 +121,7 @@ class CSVSourceExceptionsTestCase(TestCase):
         )
         source._get_records()
         self.assertIn(
-            "coordxy is not a valid coordinate field", source.report["message"]
+            "coordxy is not a valid coordinate field", source.report.errors
         )
 
     def test_coordinates_system_without_digit_srid_raise_value_error(
@@ -168,6 +168,7 @@ class CSVSourceExceptionsTestCase(TestCase):
         with self.assertRaises(IndexError):
             source._get_records()
 
+    # TODO: Move to test_models.py instead, since no exception is raised anymore
     def test_source_empty_csv(self, mocked_es_delete, mocked_es_create):
         source = CSVSource.objects.create(
             file=get_file("source_empty.csv"),
@@ -185,8 +186,9 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "latitude_field": "YCOORD",
             },
         )
-        with self.assertRaisesRegex(Exception, "Failed to refresh data"):
-            source.refresh_data()
+        # with self.assertRaisesRegex(Exception, "Failed to refresh data"):
+        source.refresh_data()
+        self.assertIn("Failed to refresh data", source.report.message)
 
     def test_invalid_id_field_report_message_when_refreshing_data(
         self, mocked_es_delete, mocked_es_create
@@ -208,9 +210,9 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "latitude_field": "YCOORD",
             },
         )
-        msg = "Can't find identifier field for this record"
+        msg = "Line 0: Can't find identifier field for this record"
         source.refresh_data()
-        self.assertIn(msg, source.report.get("message", []))
+        self.assertIn(msg, source.report.errors)
 
 
 @patch("elasticsearch.client.IndicesClient.create")
@@ -239,9 +241,9 @@ class GeoJSONSourceExceptionsTestCase(TestCase):
             file=SimpleUploadedFile("geojson", bytes(geojson, encoding="UTF-8")),
             id_field="gid",  # wrong id field
         )
-        msg = "Can't find identifier field for this record"
+        msg = "Line 0: Can't find identifier field for this record"
         source.refresh_data()
-        self.assertIn(msg, source.report.get("message", []))
+        self.assertIn(msg, source.report.errors)
 
 
 @patch("elasticsearch.client.IndicesClient.create")
@@ -262,7 +264,7 @@ class PostGISSourceExceptionsTestCase(TestCase):
         with self.assertRaises(OperationalError):
             self.source._db_connection()
             mocked_connect.assert_called_once()
-            self.assertIn("Connection error", self.source.report.get("message", []))
+            self.assertIn("Connection error", self.source.report.message)
 
 
 @patch("elasticsearch.client.IndicesClient.create")
@@ -277,6 +279,6 @@ class ShapefileSourceExceptionsTestCase(TestCase):
             file=get_file("test.zip"),
             id_field="wrongid",
         )
-        msg = "Can't find identifier field for this record"
+        msg = "Line 0: Can't find identifier field for this record"
         source.refresh_data()
-        self.assertIn(msg, source.report.get("message", []))
+        self.assertIn(msg, source.report.errors)

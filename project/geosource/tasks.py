@@ -23,8 +23,8 @@ def set_failure_state(task, method, message, instance=None):
         text = ""
         for key, value in state["meta"].items():
             text += f"{key}: {value},"
-        instance.report["lines"] = text
-        instance.save(update_fields=["report"])
+        instance.report.message = text
+        instance.report.save()
 
 
 @shared_task(bind=True)
@@ -46,8 +46,8 @@ def run_model_object_method(self, app, model, pk, method, success_state=states.S
                 text = ""
                 for key, value in state.items():
                     text += f"{key}: {value},"
-                obj.report["lines"] = text
-                obj.save(update_fields=["report"])
+                obj.report.message = text
+                obj.report.save()
 
     except Model.DoesNotExist:
         set_failure_state(

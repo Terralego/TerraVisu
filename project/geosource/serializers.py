@@ -20,6 +20,7 @@ from .models import (
     ShapefileSource,
     Source,
     WMTSSource,
+    SourceReporting,
 )
 
 
@@ -101,10 +102,19 @@ class FieldSerializer(serializers.ModelSerializer):
         read_only_fields = ("name", "sample", "source")
 
 
+class SourceReportingSerializer(serializers.ModelSerializer):
+    status = serializers.CharField(source="get_status_display")
+
+    class Meta:
+        fields = "__all__"
+        model = SourceReporting
+
+
 class SourceSerializer(PolymorphicModelSerializer):
     fields = FieldSerializer(many=True, required=False)
     status = serializers.SerializerMethodField()
     slug = serializers.SlugField(max_length=255, read_only=True)
+    report = SourceReportingSerializer(read_only=True)
 
     class Meta:
         fields = "__all__"
@@ -159,6 +169,7 @@ class SourceListSerializer(serializers.ModelSerializer):
             "status",
             "name",
             "geom_type",
+            "report",
         )
 
     def get__type(self, instance):

@@ -63,6 +63,39 @@ class FieldTypes(Enum):
         return types.get(type(data), cls.Undefined)
 
 
+class SourceReporting(models.Model):
+    SUCCESS = "0"
+    ERROR = "1"
+    WARNING = "2"
+    SOURCE_STATUS = (
+        (SUCCESS, "Success"),
+        (ERROR, "Error"),
+        (WARNING, "Warning"),
+    )
+    status = models.CharField(choices=SOURCE_STATUS, max_length=10, null=True)
+    message = models.CharField(max_length=255, default="")
+    started = models.DateTimeField(null=True)
+    ended = models.DateTimeField(null=True)
+    added_lines = models.PositiveIntegerField(default=0)
+    deleted_lines = models.PositiveIntegerField(default=0)
+    modified_lines = models.PositiveIntegerField(default=0)
+    errors = models.JSONField(default=list)
+
+    def save(self, *args, **kwargs):
+        self.ended = timezone.now()
+        return super().save(*args, **kwargs)
+
+    def reset(self):
+        self.status = None
+        self.message = ""
+        self.started = timezone.now()
+        self.ended = None
+        self.added_lines = 0
+        self.deleted_lines = 0
+        self.modified_lines = 0
+        self.errors = []
+
+
 class Source(PolymorphicModel, CeleryCallMethodsMixin):
     name = models.CharField(max_length=255, unique=True)
     credit = models.TextField(blank=True)
@@ -76,7 +109,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
 
     settings = models.JSONField(default=dict, blank=True)
     groups = models.ManyToManyField(Group, blank=True, related_name="geosources")
-    report = models.JSONField(default=dict, blank=True, encoder=DjangoJSONEncoder)
+    report = models.ForeignKey(SourceReporting, on_delete=models.PROTECT, null=True)
 
     task_id = models.CharField(null=True, max_length=255, blank=True)
     task_date = models.DateTimeField(null=True, blank=True)
@@ -129,7 +162,10 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             )
 
     def _refresh_data(self, es_index=None):
-        report = {}
+        if not self.report:
+            self.report = SourceReporting(source=self.id, started=timezone.now())
+        else:
+            self.report.reset()
 
         layer = self.get_layer()
         begin_date = timezone.now()
@@ -149,31 +185,27 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                 except Exception as exc:
                     transaction.savepoint_rollback(sid)
                     msg = "An error occured on feature(s)"
-                    report["status"] = "Warning"
-                    report.setdefault("message", []).append(msg)
-                    report.setdefault("lines", {})[
-                        f"Error on row n°{i} {self.id_field} : {identifier}"
-                    ] = str(exc)
+                    self.report.status = SourceReporting.WARNING
+                    self.report.errors.append(f"Row n°{i}: {msg}. {self.id_field} - {identifier}")
                     continue
             except KeyError:
                 msg = "Can't find identifier field for this record"
-                report["status"] = "Warning"
-                report.setdefault("message", []).append(msg)
-                report.setdefault("lines", {})[i] = msg
+                self.report.status = SourceReporting.WARNING
+                self.report.errors.append(f"Line {i}: {msg}")
                 continue
             row_count += 1
+        self.report.added_lines = row_count
         self.clear_features(layer, begin_date)
 
-        self.report = report
-        if not self.report:
-            if not row_count:
-                self.report["status"] = "Error"
-                self.save(update_fields=["report"])
-                raise Exception("Failed to refresh data")
-
-            if row_count == total:
-                self.report["status"] = "SUCCESS"
-                self.save(update_fields=["report"])
+        if not row_count:
+            self.report.status = SourceReporting.ERROR
+            self.report.message = "Failed to refresh data"
+        elif row_count == total:
+            self.report.status = SourceReporting.SUCCESS
+        else:
+            self.report.status = SourceReporting.WARNING
+            self.report.deleted_lines = total - row_count
+        self.report.save()
         return {"count": row_count, "total": total}
 
     @transaction.atomic
@@ -211,11 +243,11 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                             value = value.decode()
                         except (UnicodeDecodeError, AttributeError):
                             msg = f"{field_name} couldn't be decoded for source {self.name}"
-                            self.report["status"] = "Warning"
-                            self.report.setdefault("lines", {}).setdefault(
-                                f"{i}", []
-                            ).append(msg)
-                            self.save()
+                            if not self.report:
+                                self.report = SourceReporting(source=self.id, started=timezone.now())
+                            self.report.status = SourceReporting.WARNING
+                            self.report.errors.append(msg)
+                            self.report.save()
                             continue
 
                     fields[field_name].sample.append(value)
@@ -302,9 +334,11 @@ class PostGISSource(Source):
                 dbname=self.db_name,
             )
         except psycopg2.errors.OperationalError as err:
-            self.report["status"] = "Error"
-            self.report.setdefault("message", []).append(err.args[0])
-            self.save()
+            if not self.report:
+                self.report = SourceReporting(source=self.id, started=timezone.now())
+            self.report.status = SourceReporting.ERROR
+            self.report.errors.append(err.args[0])
+            self.report.save()
             raise
         return conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
@@ -330,12 +364,19 @@ class GeoJSONSource(Source):
             return json.load(self.file)
         except json.JSONDecodeError:
             msg = "Source's GeoJSON file is not valid"
-            self.report["status"] = "Error"
-            self.report.setdefault("message", []).append(msg)
-            self.save()
+            if not self.report:
+                self.report = SourceReporting(source=self.id, started=timezone.now())
+            self.report.status = SourceReporting.ERROR
+            self.report.message = msg
+            self.report.save()
             raise
 
     def _get_records(self, limit=None):
+        if not self.id:
+            self.report = SourceReporting()
+        elif not self.report:
+            self.report = SourceReporting(source=self.id)
+
         geojson = self.get_file_as_dict()
 
         limit = limit if limit else len(geojson["features"])
@@ -353,11 +394,12 @@ class GeoJSONSource(Source):
                 )
             except (ValueError, GDALException):
                 msg = "The record geometry seems invalid."
-                self.report["status"] = "Warning"
-                self.report.setdefault("line", {}).setdefault(f"{i}", []).append(msg)
-                self.save()
-                raise ValueError(msg)
-
+                self.report.status = SourceReporting.WARNING
+                self.report.errors.append(f"Line {i}: {msg}")
+                self.report.deleted_lines += 1
+            else:
+                self.report.added_lines += 1
+        self.report.save()
         return records
 
 
@@ -457,13 +499,20 @@ class CSVSource(Source):
         # Exception is raised if no parser found
         except (pyexcel.exceptions.FileTypeNotSupported, Exception) as err:
             msg = "Provided CSV file is invalid"
-            self.report["status"] = "Error"
-            self.report.setdefault("message", []).append(msg)
-            self.save()
+            if not self.report:
+                self.report = SourceReporting(source=self.id)
+            self.report.status = SourceReporting.ERROR
+            self.report.message = msg
+            self.report.save()
             err.args = (msg,)  # new message for the user
             raise
 
     def _get_records(self, limit=None):
+        if not self.id:
+            self.report = SourceReporting()
+        elif not self.report:
+            self.report = SourceReporting(source=self.id)
+
         sheet = self.get_file_as_sheet()
         if self.settings.get("use_header"):
             sheet.name_columns_by_row(0)
@@ -515,19 +564,17 @@ class CSVSource(Source):
                 )
             except (ValueError, GDALException):
                 msg = f"One of source's record has invalid geometry: Point({x} {y}) srid={srid}"
-                self.report["status"] = "Warning"
-                self.report.setdefault("message", []).append(msg)
-                self.save()
-                # raise ValueError(msg)
+                self.report.status = SourceReporting.WARNING
+                self.report.errors.append(f"Line {i}: {msg}")
                 continue
             row_count += 1
         if not row_count:
-            self.report["status"] = "Error"
-            self.report.setdefault("message", []).append(
-                "No record could be imported, check the report"
-            )
+            self.report.status = SourceReporting.ERROR
+            self.report.message = "No record could be imported, check the report"
         elif row_count == total:
-            self.report["status"] = "SUCCESS"
+            self.report.status = SourceReporting.SUCCESS
+        if self.id:
+            self.report.save()
         return records
 
     def _extract_coordinates(self, row, colnames, fields):
@@ -542,9 +589,11 @@ class CSVSource(Source):
                 )
             except ValueError as err:
                 msg = f"{field} is not a valid coordinate field"
-                self.report["status"] = "Warning"
-                self.report.setdefault("message", []).append(msg)
-                self.save()
+                if not self.report:
+                    self.report = SourceReporting(source=self.id)
+                self.report.status = SourceReporting.WARNING
+                self.report.errors.append(msg)
+                self.report.save()
                 err.args = (msg,)
                 raise
             c = row[field_index]
@@ -600,9 +649,10 @@ class CSVSource(Source):
             return int(coordinate_reference_system.split("_")[1])
         except (IndexError, ValueError) as err:
             msg = f"Invalid SRID: {coordinate_reference_system}"
-            self.report["status"] = "Error"
-            self.report.setdefault("message", []).append(msg)
-            self.save()
+            self.report.status = SourceReporting.ERROR
+            self.report.message = msg
+            # self.report.setdefault("message", []).append(msg)
+            self.report.save()
             err.args = (msg,)
             raise
 

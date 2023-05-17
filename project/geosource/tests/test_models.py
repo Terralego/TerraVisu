@@ -109,8 +109,8 @@ class ModelSourceTestCase(TestCase):
         self.geojson_source.id_field = "wrong_identifier"
         self.geojson_source.save()
         self.geojson_source.refresh_data()
-        msg = "Can't find identifier field for this record"
-        self.assertIn(msg, self.geojson_source.report.get("message", []))
+        msg = "Line 0: Can't find identifier field for this record"
+        self.assertIn(msg, self.geojson_source.report.errors)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
     def test_delete(self, mock_index):
@@ -205,11 +205,11 @@ class ModelGeoJSONSourceTestCase(TestCase):
             file=get_file("bad_geom.geojson"),
         )
 
-        with self.assertRaises(ValueError) as m:
-            source._get_records(1)
-        self.assertEqual(
-            "The record geometry seems invalid.",
-            str(m.exception),
+#        with self.assertRaises(ValueError) as m:
+        source._get_records(1)
+        self.assertIn(
+            "Line 0: The record geometry seems invalid.",
+            source.report.errors,
         )
 
 
@@ -297,7 +297,7 @@ class ModelCSVSourceTestCase(TestCase):
 
         records = source._get_records()
         self.assertEqual(len(records), 6, len(records))
-        with self.assertNumQueries(68):
+        with self.assertNumQueries(69):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -323,7 +323,7 @@ class ModelCSVSourceTestCase(TestCase):
 
         records = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(92):
+        with self.assertNumQueries(93):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -353,7 +353,7 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(92):
+        with self.assertNumQueries(93):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -384,7 +384,7 @@ class ModelCSVSourceTestCase(TestCase):
             if record.get("photoEtablissement")
         ]
         self.assertEqual(len(empty_entry), 0, empty_entry)
-        with self.assertNumQueries(68):
+        with self.assertNumQueries(69):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -410,7 +410,7 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(92):
+        with self.assertNumQueries(93):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -436,7 +436,7 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records = source._get_records()
         self.assertEqual(len(records), 10, len(records))
-        with self.assertNumQueries(100):
+        with self.assertNumQueries(101):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -456,7 +456,7 @@ class ModelCSVSourceTestCase(TestCase):
         sheet = source.get_file_as_sheet()
         sheet.name_columns_by_row(0)
         colnames = [name for name in sheet.colnames if name not in ("XCOORD", "YCOORD")]
-        with self.assertNumQueries(698):
+        with self.assertNumQueries(699):
             source.update_fields()
         fields = [f.name for f in Field.objects.filter(source=source)]
         self.assertTrue(fields == colnames)
