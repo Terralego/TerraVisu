@@ -19,6 +19,31 @@ Welcome to TerraVisu's documentation!
    troubleshooting
    changelog
 
+.. toctree::
+    :caption: User manual
+    :maxdepth: 2
+
+    usage/admin_user_guide.rst
+    usage/user_guide.rst
+
+
+.. toctree::
+    :caption: Contribute
+    :maxdepth: 2
+
+    CONTRIBUTING
+    contribute/development
+    contribute/translating
+    contribute/documentation
+    contribute/design
+
+.. toctree::
+    :caption: Others
+    :maxdepth: 2
+
+    authors
+    changelog
+
 
 Indices and tables
 ==================
@@ -26,3 +51,4 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
