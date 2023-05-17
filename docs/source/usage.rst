@@ -14,6 +14,8 @@ Configure instance settings
 Sources, layers and views
 -------------------------
 
+This document describes the procedures for accessing and managing the various functionalities of the platform TerraVisu admin
+
 * Need to have required privileges
 
 * Go to /admin/
