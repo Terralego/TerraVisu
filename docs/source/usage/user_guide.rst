@@ -132,7 +132,7 @@ La table attributaire de **TerraVisu** comprend de nombreuses fonctionnalités t
 * Afficher le nombre de lignes du tableau
 * Trier les données selon une colonne
 * Filtrer les données par l'emprise de la carte
-*Comparer jusqu'à trois lignes
+* Comparer jusqu'à trois lignes
 * Exporter les données au format CSV et Excel
 * Afficher/masquer des colonnes
 * Agrandir la table
