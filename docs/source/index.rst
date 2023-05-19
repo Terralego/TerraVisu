@@ -12,12 +12,12 @@ Welcome to TerraVisu's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   install
-   configuration
-   usage
-   development
-   troubleshooting
-   changelog
+   install.rst
+   configuration.rst
+   usage.rst
+   development.rst
+   troubleshooting.rst
+   changelog.rst
 
 .. toctree::
     :caption: User manual
@@ -31,18 +31,18 @@ Welcome to TerraVisu's documentation!
     :caption: Contribute
     :maxdepth: 2
 
-    CONTRIBUTING
-    contribute/development
-    contribute/translating
-    contribute/documentation
-    contribute/design
+    CONTRIBUTING.rst
+    contribute/development.rst
+    contribute/translating.rst
+    contribute/documentation.rst
+    contribute/design.rst
 
 .. toctree::
     :caption: Others
     :maxdepth: 2
 
-    authors
-    changelog
+    authors.rst
+    changelog.rst
 
 
 Indices and tables
