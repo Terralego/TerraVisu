@@ -200,10 +200,11 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                 self.report.errors.append(f"Line {i}: {msg}")
                 continue
             row_count += 1
-        self.clear_features(layer, begin_date)
+        deleted, _ = self.clear_features(layer, begin_date)
 
         self.report.added_lines  = added_rows
         self.report.modified_lines = modified_rows
+        self.report.deleted_lines = deleted
         if not row_count:
             self.report.status = SourceReporting.ERROR
             self.report.message = "Failed to refresh data"
@@ -211,7 +212,6 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             self.report.status = SourceReporting.SUCCESS
         else:
             self.report.status = SourceReporting.WARNING
-            self.report.deleted_lines = total - row_count
         self.report.save()
         return {"count": row_count, "total": total}
 
