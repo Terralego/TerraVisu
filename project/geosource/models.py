@@ -170,6 +170,8 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         layer = self.get_layer()
         begin_date = timezone.now()
         row_count = 0
+        added_rows = 0
+        modified_rows = 0
         total = 0
         for i, row in enumerate(self._get_records()):
             total += 1
@@ -178,10 +180,14 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                 identifier = row[self.id_field]
                 try:
                     sid = transaction.savepoint()
-                    feature = self.update_feature(layer, identifier, geometry, row)
+                    feature, created = self.update_feature(layer, identifier, geometry, row)
                     if es_index and feature:
                         es_index.index_feature(layer, feature)
                     transaction.savepoint_commit(sid)
+                    if created:
+                        added_rows += 1
+                    else:
+                        modified_rows += 1
                 except Exception as exc:
                     transaction.savepoint_rollback(sid)
                     msg = "An error occured on feature(s)"
@@ -194,9 +200,10 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                 self.report.errors.append(f"Line {i}: {msg}")
                 continue
             row_count += 1
-        self.report.added_lines = row_count
         self.clear_features(layer, begin_date)
 
+        self.report.added_lines  = added_rows
+        self.report.modified_lines = modified_rows
         if not row_count:
             self.report.status = SourceReporting.ERROR
             self.report.message = "Failed to refresh data"

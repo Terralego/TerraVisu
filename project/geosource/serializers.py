@@ -160,6 +160,7 @@ class SourceSerializer(PolymorphicModelSerializer):
 class SourceListSerializer(serializers.ModelSerializer):
     _type = serializers.SerializerMethodField()
     status = serializers.SerializerMethodField()
+    report = SourceReportingSerializer(read_only=True)
 
     class Meta:
         model = Source

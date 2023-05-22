@@ -31,7 +31,7 @@ class GeostoreCallBacksTestCase(TestCase):
         )
         source.groups.add(group)
         layer = Layer.objects.create(name="test")
-        feature = geostore_callbacks.feature_callback(
+        feature, _ = geostore_callbacks.feature_callback(
             source, layer, "id", GEOSGeometry("POINT (0 0)", srid=3857), {}
         )
         self.assertEqual(feature.geom.srid, 4326)
