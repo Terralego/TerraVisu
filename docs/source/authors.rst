@@ -2,8 +2,6 @@
 Authors
 =======
 
-Makina Corpus
--------------
 
 * Jean-Etienne Castagnede
 * Jérémie Pardou
@@ -16,6 +14,7 @@ Makina Corpus
 * Timothée de Montety
 * Marine Faucher
 
-.. image:: http://depot.makina-corpus.org/public/logo.gif
+.. image:: https://geotrek.fr/assets/img/logo_makina.svg
     :target: http://www.makina-corpus.com
 
+.. image:: https://geotrek.fr/assets/img/logo_autonomens-h120m.png
