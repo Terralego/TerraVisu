@@ -19,8 +19,8 @@ from .models import (
     PostGISSource,
     ShapefileSource,
     Source,
-    WMTSSource,
     SourceReporting,
+    WMTSSource,
 )
 
 

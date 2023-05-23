@@ -205,7 +205,7 @@ class ModelGeoJSONSourceTestCase(TestCase):
             file=get_file("bad_geom.geojson"),
         )
 
-#        with self.assertRaises(ValueError) as m:
+        #        with self.assertRaises(ValueError) as m:
         source._get_records(1)
         self.assertIn(
             "Line 0: The record geometry seems invalid.",

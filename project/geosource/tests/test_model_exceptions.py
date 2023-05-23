@@ -120,9 +120,7 @@ class CSVSourceExceptionsTestCase(TestCase):
             },
         )
         source._get_records()
-        self.assertIn(
-            "coordxy is not a valid coordinate field", source.report.errors
-        )
+        self.assertIn("coordxy is not a valid coordinate field", source.report.errors)
 
     def test_coordinates_system_without_digit_srid_raise_value_error(
         self, mocked_es_delete, mocked_es_create

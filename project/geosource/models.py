@@ -180,7 +180,9 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                 identifier = row[self.id_field]
                 try:
                     sid = transaction.savepoint()
-                    feature, created = self.update_feature(layer, identifier, geometry, row)
+                    feature, created = self.update_feature(
+                        layer, identifier, geometry, row
+                    )
                     if es_index and feature:
                         es_index.index_feature(layer, feature)
                     transaction.savepoint_commit(sid)
@@ -188,11 +190,13 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                         added_rows += 1
                     else:
                         modified_rows += 1
-                except Exception as exc:
+                except Exception:
                     transaction.savepoint_rollback(sid)
                     msg = "An error occured on feature(s)"
                     self.report.status = SourceReporting.WARNING
-                    self.report.errors.append(f"Row n°{i}: {msg}. {self.id_field} - {identifier}")
+                    self.report.errors.append(
+                        f"Row n°{i}: {msg}. {self.id_field} - {identifier}"
+                    )
                     continue
             except KeyError:
                 msg = "Can't find identifier field for this record"
@@ -202,7 +206,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             row_count += 1
         deleted, _ = self.clear_features(layer, begin_date)
 
-        self.report.added_lines  = added_rows
+        self.report.added_lines = added_rows
         self.report.modified_lines = modified_rows
         self.report.deleted_lines = deleted
         if not row_count:
@@ -251,7 +255,9 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                         except (UnicodeDecodeError, AttributeError):
                             msg = f"{field_name} couldn't be decoded for source {self.name}"
                             if not self.report:
-                                self.report = SourceReporting(source=self.id, started=timezone.now())
+                                self.report = SourceReporting(
+                                    source=self.id, started=timezone.now()
+                                )
                             self.report.status = SourceReporting.WARNING
                             self.report.errors.append(msg)
                             self.report.save()
