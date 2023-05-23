@@ -24,7 +24,6 @@ Definition of done
 * Settings have default value in ``project/settings/__init__.py``
 * Installation instructions and documentation are up-to-date
 
-
 ::
 
    find geotrek | xargs egrep -n -i '(TODO|XXX|temporary|FIXME)'
