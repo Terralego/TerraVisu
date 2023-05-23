@@ -28,7 +28,6 @@ Definition of done
 
    find geotrek | xargs egrep -n -i '(TODO|XXX|temporary|FIXME)'
 
-
 Release
 -------
 
