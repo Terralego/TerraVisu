@@ -15,7 +15,6 @@ Welcome to TerraVisu's documentation!
    install.rst
    configuration.rst
    troubleshooting.rst
-   changelog.rst
 
 .. toctree::
     :caption: User manual
