@@ -13,7 +13,6 @@ Makina Corpus
 * Pauline Millet
 * Florian Sommariva
 * Benjamin Marguin
-* Jean-Etienne Castagnede
 * Timothée de Montety
 * Marine Faucher
 
