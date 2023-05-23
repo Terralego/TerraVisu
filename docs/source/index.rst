@@ -15,7 +15,6 @@ Welcome to TerraVisu's documentation!
    install.rst
    configuration.rst
    usage.rst
-   development.rst
    troubleshooting.rst
    changelog.rst
 

@@ -31,7 +31,7 @@ Le chemin d’accès au back-office d’un visualiseur cartographique TerraVisu 
 
 Une fois en possession des identifiants, vous pouvez les renseigner dans la page d’authentification.
 
-.. image :: ../images/admin/admin_authentification.png
+.. image :: ../_static/images/admin/admin_authentification.png
 
 Page d'accès à l'outil d’administration
 ---------------------------------------
@@ -43,7 +43,7 @@ L’outil est composé de trois modules :
 * **Visualiseur**, permet de créer les cartes
 * **Fonds de carte**, permet de configurer les fonds de carte
 
-.. image :: ../images/admin/admin_accueil.png
+.. image :: ../_static/images/admin/admin_accueil.png
 
 Module de gestion des utilisateurs
 ==================================
@@ -56,7 +56,7 @@ Vous arrivez sur une page présentant la liste de tous les utilisateurs existant
 
 Le module « **Utilisateurs** » de TerraVisu permet de gérer les permissions d'accès des utilisateurs et des groupes d’utilisateurs aux différents éléments du visualiseur cartographique.
 
-.. image :: ../images/admin/admin_utilisateurs.png
+.. image :: ../_static/images/admin/admin_utilisateurs.png
 
 Vous avez la possibilité d’exporter la liste des utilisateurs au format CSV en cliquant sur le bouton « **EXPORTER** ».
 
@@ -78,7 +78,7 @@ Il est possible de rajouter des informations supplémentaires comme la fonction,
 
 Si l'utilisateur perd son mot de passe, il faut recréer un compte utilisateur.
 
-.. image :: ../images/admin/admin_utilisateurs_ajout.png
+.. image :: ../_static/images/admin/admin_utilisateurs_ajout.png
 
 Liste des groupes d'utilisateurs
 --------------------------------
@@ -104,7 +104,7 @@ Pour ajouter un nouveau groupe cliquez sur le bouton « **CRÉER** ».
 Les informations à renseigner lors de la création d’un nouveau groupe sont à minima le **nom**, les **utilisateurs affectés**, les **permissions**.
 
 
-.. image :: ../images/admin/admin_groupe_ajout.png
+.. image :: ../_static/images/admin/admin_groupe_ajout.png
 
 
 Le module Visualiseur
@@ -127,7 +127,7 @@ Pour afficher l’ensemble des sources de données cliquez sur « **Liste des s
 
 Vous arrivez sur une page présentant la liste de toutes les sources de données déclarées.
 
-.. image :: ../images/admin/admin_sources.png
+.. image :: ../_static/images/admin/admin_sources.png
 
 Pour retrouver plus facilement une source de données dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par type de données ou par type de géométrie.
 
@@ -168,7 +168,7 @@ Une source de données peut être créé par l’import d’un fichier GeoJSON, 
 
 Les informations à renseigner à minima, lors de la création d’une nouvelle source GeoJSON ou Shapefile sont le nom, le type de données, le type de la géométrie et le champ de l’identifiant unique.
 
-.. image :: ../images/admin/admin_source_creation_geojson.png
+.. image :: ../_static/images/admin/admin_source_creation_geojson.png
 
 * **Import de fichier CSV**
 
@@ -176,7 +176,7 @@ Pour intégrer un fichier CSV, il faut que celui-ci comporte des coordonnées g�
 
 Les informations à renseigner à minima lors de la création d’une nouvelle source CSV sont le **nom**, le ou les **champs de coordonnées**, le **système de coordonnées**, le **champ de l’identifiant unique**, le **séparateur de champ**, le **séparateur de texte**, le **séparateur décimal pour les coordonnées** et le **nombre de lignes à ignorer**.
 
-.. image :: ../images/admin/admin_source_creation_csv.png
+.. image :: ../_static/images/admin/admin_source_creation_csv.png
 
 L’ option « **Entête à la première ligne** » activée permet de conserver les entêtes de colonnes qui se trouvent à la première ligne du fichier CSV. 
 
@@ -188,7 +188,7 @@ Les informations à renseigner à minima lors de la création d’une nouvelle s
 
 Il est possible de définir la fréquence de mise à jour automatique de la source (toutes les heures, quotidiennement…). La requête peut ainsi être exécutée régulièrement afin de mettre à jour les données avec le contenu de la base.
 
-.. image :: ../images/admin/admin_source_creation_postgis.png
+.. image :: ../_static/images/admin/admin_source_creation_postgis.png
 
 **Bon à savoir** : si une source de données dont la fréquence de mise à jour a été paramétrée sur « Quotidienne », le déclenchement de la synchronisation ne se fera pas exactement 24h après. 
 L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde toutes les 25 mn s’il y a des changements) +date de fin de la dernière mise à jour. Il peut donc y avoir un delta de 24h et 25mn au minimum entre chaque mise à jour de source de données. Ce delta peut se rajouter d'autant plus s'il y a des mise à jour manuelles.
@@ -203,7 +203,7 @@ Les informations à renseigner à minima lors de la création d’une nouvelle s
 
 Il est possible de renseigner les niveaux de zoom min et max auxquels les images du flux seront affichées dans le visualiseur cartographique.
 
-.. image :: ../images/admin/admin_source_creation_wms.png
+.. image :: ../_static/images/admin/admin_source_creation_wms.png
 
 Enregistrer une source de données
 ---------------------------------
@@ -245,7 +245,7 @@ Un extrait des valeurs pour chaque champ est fournit afin d’avoir un aperçu d
 
 Le libellé de chaque champ est modifiable de façon à le rendre plus lisible qu’une variable brut. Celui-ci sera utilisé lors de la configuration des couches.
 
-.. image :: ../images/admin/admin_source_modification.png
+.. image :: ../_static/images/admin/admin_source_modification.png
 
 Dupliquer une source de données
 -------------------------------
@@ -278,7 +278,7 @@ Une fois les sources de données déclarées, l’utilisateur peut créer les co
 
 Pour afficher l’ensemble des couches cliquez sur « **Liste des couches** ». 
 
-.. image :: ../images/admin/admin_couche_liste.png
+.. image :: ../_static/images/admin/admin_couche_liste.png
 
 Pour retrouver plus facilement une couche dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par source de données, vue, affichée par défaut(oui/non), table attributaire affichée(oui/non), fenêtre au survol(oui/non), mini-fiche (oui/non).
 
@@ -318,7 +318,7 @@ Enfin, la partie « **Description** » est destinée aux couches qui seront int�
 
 A ce stade, il est possible d’enregistrer la couche telle quelle et de l’afficher dans le visualiseur cartographique. Une représentation par défaut est appliquée à la couche, ce qui permet de la visualiser.
 
-.. image :: ../images/admin/admin_couche_definition.png
+.. image :: ../_static/images/admin/admin_couche_definition.png
 
 **Filtrage de source**
 
@@ -328,13 +328,13 @@ Le langage de filtrage, Pivot QL, est très proche du `SQL <https://fr.wikipedia
 
 Pour aider à l’écriture de la requête de filtrage, il peut être intéressant de consulter la liste des champs disponibles afin de ne pas faire d’erreur de nommage. 
 
-.. image :: ../images/admin/admin_couche_definition_filtrage1.png
+.. image :: ../_static/images/admin/admin_couche_definition_filtrage1.png
 
 Pour finir, si la requête est syntaxiquement incorrecte ou qu’un nom de champ est mal orthographié alors un  message d’erreur vient avertir l’utilisateur.
 
 Le nombre d’éléments retournés par le filtre est une aide précieuse pour savoir si la requête est bonne.
 
-.. image :: ../images/admin/admin_couche_definition_filtrage2.png
+.. image :: ../_static/images/admin/admin_couche_definition_filtrage2.png
 
 Le filtre appliqué à la source de données dans la couche est immédiatement répercuté dans la fenêtre de filtre côté interface du visualiseur cartographique. 
 
@@ -344,13 +344,13 @@ Il est possible d'afficher ses propres icones sur une couche.
 
 Pour cela il suffit de cliquer sur le bouton « **AJOUTER** », d'importer son image (png/jpeg) et de la nommer dans le champ « Nom ». 
 
-.. image :: ../images/admin/admin_couche_icone.png
+.. image :: ../_static/images/admin/admin_couche_icone.png
 
 Il est possible de modifier la couleur de fond de l'image en utilisant l'outil « **COMPOSER** ». Pour cela il est nécessaire que l'image ait été enregistrée au préalable afin qu'elle soit disponible dans la liste. 
 
 Pour enregistrer l'image, enregistrez la couche.
 
-.. image :: ../images/admin/admin_couche_icone_bleue.png
+.. image :: ../_static/images/admin/admin_couche_icone_bleue.png
 
 **Onglet STYLE**
 
@@ -385,13 +385,13 @@ Il est possible de modifier les couleurs par défaut en cliquant sur le carré c
 
 Pour renseigner une valeur numérique (exemple le Diamètre pour une représentation Cercle), il suffit de cliquer sur la zone concernée et d’inscrire une valeur.
 
-.. image :: ../images/admin/admin_couche_style.png
+.. image :: ../_static/images/admin/admin_couche_style.png
 
 Les curseur de la plage de visibilité permettent de définir des niveaux de zoom d’apparition/disparition d’un style sur la carte (exemple : on affiche des zones du zoom 0 jusqu’au zoom 13 et à partir du zoom 13 on affiche des icônes).
 
 Pour utiliser une icône existante dans un style simple, sélectionnez la représentation « Icône » et choisissez l'image que vous avez enregistré dans l'onglet « **ICÔNES** ».
 
-.. image :: ../images/admin/admin_couche_style_icone.png
+.. image :: ../_static/images/admin/admin_couche_style_icone.png
 
 **Style avec une analyse**
 
@@ -440,7 +440,7 @@ Le choix du type d’analyse constitue la dernière étape. Le **type d’analys
 
 Lors de la conception d’un style avec une analyse, il est possible d’activer l’option « **Générer la légende associée** » pour que la légende soit exactement conforme au style représenté.
 
-.. image :: ../images/admin/admin_couche_style_assistant.png
+.. image :: ../_static/images/admin/admin_couche_style_assistant.png
 
 **Ajouter un style secondaire**
 
@@ -450,13 +450,13 @@ Le style secondaire doit être vu comme un élément de décoration sur la carte
 
 Exemple concret : Dans le cas d’une carte des communes, il pourra être intéressant de rajouter les étiquettes des noms au centre des communes. Pour se faire, on aura besoin de créer un style secondaire faisant appel à la source de données des centroides des communes pour pouvoir ajouter les étiquettes.
 
-.. image :: ../images/admin/admin_couche_style_secondaire.png
+.. image :: ../_static/images/admin/admin_couche_style_secondaire.png
 
 **Style sans assistant**
 
 Il est possible d’aller plus loin dans la conception d’un style en désactivant le mode assistant. Ce mode s’adresse à des utilisateurs développeurs car il faut rédiger le code en JSON, en suivant la spécification `Mapbox <https://docs.mapbox.com/mapbox-gl-js/style-spec/>`_.
 
-.. image :: ../images/admin/admin_couche_style_sansassistant.png
+.. image :: ../_static/images/admin/admin_couche_style_sansassistant.png
 
 **Onglet Légendes**
 
@@ -475,7 +475,7 @@ On peut faire varier :
 * La taille pour les carrés et les cercles
 * L’épaisseur de ligne pour les carrés, les cercles et les lignes
 
-.. image :: ../images/admin/admin_couche_legende.png
+.. image :: ../_static/images/admin/admin_couche_legende.png
 
 Si elle est générée depuis l’onglet **Style**, alors elle se met en lien automatiquement avec le style de la couche et prend en compte la typologie de géométrie affichée.
 
@@ -483,14 +483,14 @@ Il n’est pas possible de modifier une légende qui a été générée. Seuls l
 
 Si la légende générée ne vous convient pas, il faut désactiver l’option « **Générer la légende associée** » dans l’onglet **Style** pour la caractéristique concernée (exemple Couleur du polygone). De cette façon, vous pourrez créer manuellement la légende souhaitée.
 
-.. image :: ../images/admin/admin_couche_legendegeneree.png
+.. image :: ../_static/images/admin/admin_couche_legendegeneree.png
 
 **Onglet FENÊTRE AU SURVOL**
 
 La fenêtre au survol ou info-bulle est un message contextuel apparaissant en surimpression au survol de la souris sur les éléments de la couche. Le contenu du message s’adapte dynamiquement en fonction de l’objet survolé. 
 Celle-ci n’est pas active par défaut.
 
-.. image :: ../images/admin/admin_couche_pophover.png
+.. image :: ../_static/images/admin/admin_couche_pophover.png
 
 Une fois activée, la configuration de la fenêtre est facilitée grâce à un assistant qui permet d’ajouter les éléments de contenus et de définir une plage de zoom.
 
@@ -498,7 +498,7 @@ Si le champ principal a été définit dans l’onglet Définition, alors ce der
 
 En cas de valeur nulle sur un champ, il est possible de définir une valeur par défaut. De même, l’outil permet de rajouter du texte en préfixe et suffixe de la valeur du champ choisi. 
 
-.. image :: ../images/admin/admin_couche_pophover_nonexpert.png
+.. image :: ../_static/images/admin/admin_couche_pophover_nonexpert.png
 
 Lorsque le label d’un champ est renommé à un endroit de l’application, il est renommé partout ailleurs.
 
@@ -508,7 +508,7 @@ Le code est généré à partir de ce qui existe dans le mode avec assistant, en
 
 Ce mode avancé s’adresse à des utilisateurs développeurs. Il peut être intéressant de l’utiliser pour définir des conditions if ou elseif.
 
-.. image :: ../images/admin/admin_couche_pophover_expert.png
+.. image :: ../_static/images/admin/admin_couche_pophover_expert.png
 
 **Onglet MINI-FICHE**
 
@@ -516,7 +516,7 @@ La mini-fiche est une fiche structurée présentant des informations associées 
 
 La mini-fiche n’est pas active par défaut. 
 
-.. image :: ../images/admin/admin_couche_minifiche.png
+.. image :: ../_static/images/admin/admin_couche_minifiche.png
 
 La mini-fiche fonctionne sur le même principe que celui de la fenêtre au survol. Si le champ principal a été définit dans l’onglet **Définition**, alors ce dernier sera aussi utilisé comme titre de la mini-fiche.
 
@@ -528,7 +528,7 @@ De même, l’outil permet de rajouter du texte en préfixe et suffixe de la val
 
 A la différence de l’info-bulle, l’utilisateur peut ajouter des titres de section pour structurer les parties de la fiche.
 
-.. image :: ../images/admin/admin_couche_minifiche_nonexpert.png
+.. image :: ../_static/images/admin/admin_couche_minifiche_nonexpert.png
 
 Lorsque le label d’un champ est renommé à un endroit de l’application, il est renommé partout ailleurs.
 
@@ -538,7 +538,7 @@ Le code est généré à partir de ce qui existe dans le mode avec assistant, en
 
 Ce mode avancé s’adresse à des utilisateurs développeurs. Il peut être intéressant de l’utiliser pour ajouter du texte coloré, des liens hypertexte ou des images.
 
-.. image :: ../images/admin/admin_couche_minifiche_expert.png
+.. image :: ../_static/images/admin/admin_couche_minifiche_expert.png
 
 **Onglet FILTRE**
 
@@ -546,7 +546,7 @@ L’outil de filtre permet de restreindre les éléments sur la carte en fonctio
 
 L’outil de filtre n’est pas actif par défaut. 
 
-.. image :: ../images/admin/admin_couche_filtre.png
+.. image :: ../_static/images/admin/admin_couche_filtre.png
 
 Pour ajouter un filtre sur la couche cliquez sur « **AJOUTER** ». 
 
@@ -562,7 +562,7 @@ Au niveau de l’affichage, il est possible de choisir:
 * Toutes les valeurs disponibles pour le champ
 * Une liste de valeurs
 
-.. image :: ../images/admin/admin_couche_filtreactive.png
+.. image :: ../_static/images/admin/admin_couche_filtreactive.png
 
 Il est possible de remonter/descendre les filtres dans l’ordre souhaité.
 
@@ -570,13 +570,13 @@ Il est possible de remonter/descendre les filtres dans l’ordre souhaité.
 
 La table attributaire permet d’avoir une vision tabulaire des données de la couche. Elle n’est pas activée par défaut.
 
-.. image :: ../images/admin/admin_couche_table.png
+.. image :: ../_static/images/admin/admin_couche_table.png
 
 Une fois la table activée, l’utilisateur peut configurer l’affichage des champs et autoriser leur export au format xlsx.
 
 Il est possible de remonter/descendre les champs dans l’ordre souhaité.
 
-.. image :: ../images/admin/admin_couche_tableactivee.png
+.. image :: ../_static/images/admin/admin_couche_tableactivee.png
 
 
 **Onglet WIDGET**
@@ -587,7 +587,7 @@ Sur le visualiseur cartographique, lors du zoom sur la carte, la synthèse se r�
 
 La configuration de l’outil de widget s’adresse à des utilisateurs développeurs car il requiert l’écriture en `JSON <https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/JSON>`_ avec dans la clé "template" une chaîne de caractère contenant le code en `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_ du format de données attendu.
 
-.. image :: ../images/admin/admin_couche_widget.png
+.. image :: ../_static/images/admin/admin_couche_widget.png
 
 **Modifier une couche**
 
@@ -630,7 +630,7 @@ Pour afficher l’ensemble des vues cliquez sur « **Liste des vues** ».
 
 Vous arrivez sur une page présentant la liste de toutes les vues déclarées.
 
-.. image :: ../images/admin/admin_vue_liste.png
+.. image :: ../_static/images/admin/admin_vue_liste.png
 
 Créer une vue
 -------------
@@ -671,7 +671,7 @@ A partir d’un groupe, en cliquant sur les trois petits points verticaux vous a
 
 ⚠️  *Une couche ne peut être ajoutée qu’à une seule vue à la fois.*
 
-.. image :: ../images/admin/admin_vue.png
+.. image :: ../_static/images/admin/admin_vue.png
 
 L’enregistrement de la vue aura pour effet immédiat de rajouter automatiquement l’ensemble des éléments de l’arbre des couches dans le visualiseur cartographique.
 
@@ -707,7 +707,7 @@ Pour afficher l’ensemble des fonds de carte cliquez sur « **Liste des fonds 
 
 Vous arrivez sur une page présentant la liste de tous les fonds de carte existants.
 
-.. image :: ../images/admin/admin_fondscarte.png
+.. image :: ../_static/images/admin/admin_fondscarte.png
 
 Créer un nouveau fond de carte
 ------------------------------
@@ -720,7 +720,7 @@ La taille des tuiles est modifiable mais elle est définie par défaut sur la va
 
 Une fois les fonds de plan ajoutés, l’utilisateur peut les choisir de les utiliser dans les vues qu’il veut.
 
-.. image :: ../images/admin/admin_fondscarte_modification.png
+.. image :: ../_static/images/admin/admin_fondscarte_modification.png
 
 Modifier un fond de carte
 -------------------------
