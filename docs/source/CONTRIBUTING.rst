@@ -21,7 +21,7 @@ Definition of done
 * ``docs/changelog.rst`` is up-to-date
 * An explicit unit-test covers the bugfix or the new feature.
 * Unit-tests total coverage is above or at least equal with previous commits. Patch coverage is 100% on new lines.
-* Settings have default value in ``settings/base.py``
+* Settings have default value in ``project/settings/__init__.py``
 * Installation instructions and documentation are up-to-date
 
 Check TODO in the source tree:
