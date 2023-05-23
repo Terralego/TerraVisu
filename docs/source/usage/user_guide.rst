@@ -34,7 +34,7 @@ L'interface cartographique est décomposée en deux parties :
 
 **Exemple du TerraVisu déployé pour la Région Sud**
 
-.. image :: ../images/visu/visu_interfacecarto.png
+.. image :: ../_static/images/visu/visu_interfacecarto.png
 
 Plusieurs fonds de cartes sont disponibles par défaut et vos propres fonds de carte peuvent être ajoutés.
 
@@ -57,7 +57,7 @@ Au niveau de la couche de données, vous pouvez ainsi activez les fonctionnalit�
 * Zoomer sur l'étendue spatiale de la couche de données
 * Changer l'opacité de la couche
 
-.. image :: ../images/visu/visu_interfacecarto_couche.png
+.. image :: ../_static/images/visu/visu_interfacecarto_couche.png
 
 L'interface géographique se met automatiquement à jour selon les fonctionnalités activées.
 
@@ -70,7 +70,7 @@ Les éléments qui ne correspondent pas au filtre sont cachés et la carte est a
 
 **Exemple de filtres disponibles**
 
-.. image :: ../images/visu/visu_filtre.png
+.. image :: ../_static/images/visu/visu_filtre.png
 
 Les filtres peuvent prendre plusieurs formes (case à cocher, intervalle de valeurs, curseur, recherche, etc.) et sont paramétrables dans l'outil d'administration.
 
@@ -81,7 +81,7 @@ Les informations relatives aux données sont présentées dans une fiche à gauc
 
 **Exemple de fiche descriptive pour une station du métro toulousain**
 
-.. image :: ../images/visu/visu_minifiche.png
+.. image :: ../_static/images/visu/visu_minifiche.png
 
 Depuis l'outil d'administration, vous pouvez personnaliser la fiche de manière avancée, en y intégrant du texte, des images ou des graphiques pour améliorer le rendu visuel. 
 
@@ -96,7 +96,7 @@ Une information résumée de la donnée, sous la forme d'une infobulle, est disp
 
 **Exemple d'infobulle au clic sur une station de métro toulousain**
 
-.. image :: ../images/visu/visu_infobulle.png
+.. image :: ../_static/images/visu/visu_infobulle.png
 
 Le contenu de l'infobulle est entièrement personnalisable dans l'outil d'administration et peut comprendre toutes les information que vous souhaitez.
 
@@ -107,7 +107,7 @@ Le widget permet de récapituler dans un tableau dynamique, des indicateurs util
 
 **Exemple d'un widget du TerraVisu de SCoT en action**
 
-.. image :: ../images/visu/visu_widget.png
+.. image :: ../_static/images/visu/visu_widget.png
 
 Les données à afficher dans le widget sont définies par l’utilisateur dans l'outil d'administration.
 
@@ -118,7 +118,7 @@ Quand les couches affichées ont des légendes, celles-ci s'affichent sur la par
 
 **Exemple de type légende disponible**
 
-.. image :: ../images/visu/visu_legende.png
+.. image :: ../_static/images/visu/visu_legende.png
 
 La configuration de la légende s’effectue depuis l'outil administration.
 
@@ -139,7 +139,7 @@ La table attributaire de **TerraVisu** comprend de nombreuses fonctionnalités t
 
 **Exemple d'une table attributaire du TerraVisu Sud Éco Foncier**
 
-.. image :: ../images/visu/visu_table.png
+.. image :: ../_static/images/visu/visu_table.png
 
 Une fois la table exportée, vous pouvez travailler vos données avec votre tableur habituel et créer des graphiques, des tableaux dynamiques croisés, etc., depuis votre ordinateur.
 
@@ -150,7 +150,7 @@ Cet outil permet de zoomer sur l'étendue spatiale d'une couche activée. Le zoo
 
 **Exemple d'un zoom pour le TerraVisu de SeineYonne**
 
-.. image :: ../images/visu/visu_zoomemprise.png
+.. image :: ../_static/images/visu/visu_zoomemprise.png
 
 La table attributaire et le widget sont automatiquement mis à jour en fonction du zoom.
 
@@ -169,7 +169,7 @@ Les outils de navigation
 
 **Barre de navigation à gauche sur la carte**
 
-.. image :: ../images/visu/visu_outilnavigation.png
+.. image :: ../_static/images/visu/visu_outilnavigation.png
 
 Quelques uns de ces outils de navigation sont détaillés ci-après.
 
@@ -180,7 +180,7 @@ La recherche globale permet à la fois d'effectuer une recherche de lieux ou d'a
 
 **Exemple de recherche pour le TerraVisu de SeineYonne**
 
-.. image :: ../images/visu/visu_recherche.png
+.. image :: ../_static/images/visu/visu_recherche.png
 
 L'impression de la carte au format PDF
 --------------------------------------
@@ -188,7 +188,7 @@ L'impression de la carte au format PDF
 La carte affichée à l'écran peut être imprimée en format PDF selon les deux dispositions (portait ou paysage).
 
 **Exemple de la procédure d'impression**
-.. image :: ../images/visu/visu_impression.png
+.. image :: ../_static/images/visu/visu_impression.png
 
 
 La visualisation en Storytelling
@@ -200,4 +200,4 @@ Cette fonctionnalité peut servir à la communication ou de manuel d'utilisation
 
 **Exemple du storytelling de Carto Collectivités**
 
-.. image :: ../images/visu/visu_storytelling.png
+.. image :: ../_static/images/visu/visu_storytelling.png
