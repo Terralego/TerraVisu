@@ -409,9 +409,6 @@ class GeoJSONSource(Source):
                 msg = "The record geometry seems invalid."
                 self.report.status = SourceReporting.WARNING
                 self.report.errors.append(f"Line {i}: {msg}")
-                self.report.deleted_lines += 1
-            else:
-                self.report.added_lines += 1
         self.report.save()
         return records
 

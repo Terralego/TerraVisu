@@ -14,6 +14,7 @@ from project.geosource.models import (
     PostGISSource,
     ShapefileSource,
     Source,
+    SourceReporting,
     WMTSSource,
 )
 from project.geosource.tests.helpers import get_file
@@ -460,3 +461,62 @@ class ModelCSVSourceTestCase(TestCase):
             source.update_fields()
         fields = [f.name for f in Field.objects.filter(source=source)]
         self.assertTrue(fields == colnames)
+
+
+class SourceReportingTestCase(TestCase):
+    def setUp(self):
+        self.source = GeoJSONSource.objects.create(
+            name="test-geojson",
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
+        )
+
+    def tearDown(self):
+        self.source.delete()
+
+    @mock.patch("elasticsearch.client.IndicesClient.create")
+    @mock.patch("elasticsearch.client.IndicesClient.delete")
+    def test_source_refresh_data_create_reporting(self, mock_es_create, mock_es_delete):
+        self.source.refresh_data()
+        self.assertIsNotNone(self.source.report)
+
+    @mock.patch("elasticsearch.client.IndicesClient.create")
+    @mock.patch("elasticsearch.client.IndicesClient.delete")
+    def test_added_lines_are_reported(self, mock_es_create, mock_es_delete):
+        self.source.refresh_data()
+        self.assertEqual(self.source.report.added_lines, 1)
+
+    @mock.patch("elasticsearch.client.IndicesClient.create")
+    @mock.patch("elasticsearch.client.IndicesClient.delete")
+    def test_deleted_lines_are_reported(self, mock_es_create, mock_es_delete):
+        self.source.refresh_data()
+        self.source.file = get_file("bad_geom.geojson")
+        self.source.save()
+        self.source.refresh_data()
+        self.assertEqual(self.source.report.deleted_lines, 1)
+
+    @mock.patch("elasticsearch.client.IndicesClient.create")
+    @mock.patch("elasticsearch.client.IndicesClient.delete")
+    def test_modified_lines_are_reported(self, mock_es_create, mock_es_delete):
+        self.source.refresh_data()
+        self.source.file = get_file("test_2.geojson")
+        self.source.save()
+        self.source.refresh_data()
+        self.assertEqual(self.source.report.modified_lines, 1)
+
+    def test_reset_method(self):
+        report = SourceReporting.objects.create(
+            status=SourceReporting.SUCCESS,
+            message="Some report message",
+            added_lines=42,
+            modified_lines=42,
+            deleted_lines=42,
+            errors=["error 1", "error 2", "error 3"],
+        )
+        report.reset()
+        self.assertIsNone(report.status)
+        self.assertEqual(report.message, "")
+        self.assertEqual(report.added_lines, 0)
+        self.assertEqual(report.modified_lines, 0)
+        self.assertEqual(report.deleted_lines, 0)
+        self.assertEqual(report.errors, [])
