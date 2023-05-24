@@ -3,6 +3,7 @@ import logging
 from celery import shared_task, states
 from celery.exceptions import Ignore
 from django.apps import apps
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
@@ -24,7 +25,8 @@ def set_failure_state(task, method, message, instance=None):
         for key, value in state["meta"].items():
             text += f"{key}: {value},"
         instance.report.message = text
-        instance.report.save()
+        instance.report.ended = timezone.now()
+        instance.report.save(update_fields=["ended", "message"])
 
 
 @shared_task(bind=True)
@@ -47,7 +49,8 @@ def run_model_object_method(self, app, model, pk, method, success_state=states.S
                 for key, value in state.items():
                     text += f"{key}: {value},"
                 obj.report.message = text
-                obj.report.save()
+                obj.report.ended = timezone.now()
+                obj.report.save(update_fields=["message", "ended"])
 
     except Model.DoesNotExist:
         set_failure_state(

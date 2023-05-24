@@ -78,10 +78,6 @@ class SourceReporting(models.Model):
     modified_lines = models.PositiveIntegerField(default=0)
     errors = models.JSONField(default=list)
 
-    def save(self, *args, **kwargs):
-        self.ended = timezone.now()
-        return super().save(*args, **kwargs)
-
     def reset(self):
         self.status = None
         self.message = ""
