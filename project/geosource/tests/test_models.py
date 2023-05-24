@@ -506,7 +506,7 @@ class SourceReportingTestCase(TestCase):
 
     def test_reset_method(self):
         report = SourceReporting.objects.create(
-            status=SourceReporting.SUCCESS,
+            status=SourceReporting.Status.SUCCESS.value,
             message="Some report message",
             added_lines=42,
             modified_lines=42,
