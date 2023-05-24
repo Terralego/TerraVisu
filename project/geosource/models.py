@@ -65,7 +65,7 @@ class FieldTypes(Enum):
 
 class SourceReporting(models.Model):
     class Status(models.TextChoices):
-        SUCCESS = "0", "Sucess"
+        SUCCESS = "0", "Success"
         ERROR = "1", "Error"
         WARNING = "2", "Warning"
 
