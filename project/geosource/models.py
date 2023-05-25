@@ -64,10 +64,11 @@ class FieldTypes(Enum):
 
 
 class SourceReporting(models.Model):
-    class Status(models.TextChoices):
-        SUCCESS = "0", "Success"
-        ERROR = "1", "Error"
-        WARNING = "2", "Warning"
+    class Status(models.IntegerChoices):
+        SUCCESS = 0, "Success"
+        ERROR = 1, "Error"
+        WARNING = 2, "Warning"
+        PENDING = 3, "Pending"
 
     status = models.CharField(choices=Status.choices, max_length=10, null=True)
     message = models.CharField(max_length=255, default="")
@@ -156,7 +157,9 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
 
     def _refresh_data(self, es_index=None):
         if not self.report:
-            self.report = SourceReporting(started=timezone.now())
+            self.report = SourceReporting(
+                started=timezone.now(), status=SourceReporting.Status.PENDING.value
+            )
         else:
             self.report.reset()
 
@@ -379,7 +382,9 @@ class GeoJSONSource(Source):
 
     def _get_records(self, limit=None):
         if not self.report:
-            self.report = SourceReporting(started=timezone.now())
+            self.report = SourceReporting(
+                started=timezone.now(), status=SourceReporting.Status.PENDING.value
+            )
 
         geojson = self.get_file_as_dict()
 
