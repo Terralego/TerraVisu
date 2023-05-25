@@ -482,13 +482,21 @@ class SourceReportingTestCase(TestCase):
 
     @mock.patch("elasticsearch.client.IndicesClient.create")
     @mock.patch("elasticsearch.client.IndicesClient.delete")
-    def test_added_lines_are_reported(self, mock_es_create, mock_es_delete):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
+    def test_added_lines_are_reported(
+        self, mock_es_create, mock_es_delete, mock_es_index, mock_es_index_feature
+    ):
         self.source.refresh_data()
         self.assertEqual(self.source.report.added_lines, 1)
 
     @mock.patch("elasticsearch.client.IndicesClient.create")
     @mock.patch("elasticsearch.client.IndicesClient.delete")
-    def test_deleted_lines_are_reported(self, mock_es_create, mock_es_delete):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
+    def test_deleted_lines_are_reported(
+        self, mock_es_create, mock_es_delete, mock_es_index, mock_es_index_feature
+    ):
         self.source.refresh_data()
         self.source.file = get_file("bad_geom.geojson")
         self.source.save()
@@ -497,7 +505,11 @@ class SourceReportingTestCase(TestCase):
 
     @mock.patch("elasticsearch.client.IndicesClient.create")
     @mock.patch("elasticsearch.client.IndicesClient.delete")
-    def test_modified_lines_are_reported(self, mock_es_create, mock_es_delete):
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
+    def test_modified_lines_are_reported(
+        self, mock_es_create, mock_es_delete, mock_es_index, mock_es_index_feature
+    ):
         self.source.refresh_data()
         self.source.file = get_file("test_2.geojson")
         self.source.save()
