@@ -102,7 +102,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
 
     settings = models.JSONField(default=dict, blank=True)
     groups = models.ManyToManyField(Group, blank=True, related_name="geosources")
-    report = models.ForeignKey(SourceReporting, on_delete=models.SET_NULL, null=True)
+    report = models.OneToOneField(SourceReporting, on_delete=models.SET_NULL, null=True)
 
     task_id = models.CharField(null=True, max_length=255, blank=True)
     task_date = models.DateTimeField(null=True, blank=True)
@@ -156,7 +156,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
 
     def _refresh_data(self, es_index=None):
         if not self.report:
-            self.report = SourceReporting(source=self.id, started=timezone.now())
+            self.report = SourceReporting(started=timezone.now())
         else:
             self.report.reset()
 
@@ -209,7 +209,9 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             self.report.status = SourceReporting.Status.SUCCESS.value
         else:
             self.report.status = SourceReporting.Status.WARNING.value
-        self.report.save()
+        if self.id:
+            self.report.ended = timezone.now()
+            self.report.save()
         return {"count": row_count, "total": total}
 
     @transaction.atomic
@@ -248,9 +250,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                         except (UnicodeDecodeError, AttributeError):
                             msg = f"{field_name} couldn't be decoded for source {self.name}"
                             if not self.report:
-                                self.report = SourceReporting(
-                                    source=self.id, started=timezone.now()
-                                )
+                                self.report = SourceReporting(started=timezone.now())
                             self.report.status = SourceReporting.Status.WARNING.value
                             self.report.errors.append(msg)
                             self.report.save()
@@ -341,7 +341,7 @@ class PostGISSource(Source):
             )
         except psycopg2.errors.OperationalError as err:
             if not self.report:
-                self.report = SourceReporting(source=self.id, started=timezone.now())
+                self.report = SourceReporting(started=timezone.now())
             self.report.status = SourceReporting.Status.ERROR.value
             self.report.errors.append(err.args[0])
             self.report.save()
@@ -371,17 +371,15 @@ class GeoJSONSource(Source):
         except json.JSONDecodeError:
             msg = "Source's GeoJSON file is not valid"
             if not self.report:
-                self.report = SourceReporting(source=self.id, started=timezone.now())
+                self.report = SourceReporting(started=timezone.now())
             self.report.status = SourceReporting.Status.ERROR.value
             self.report.message = msg
             self.report.save()
             raise
 
     def _get_records(self, limit=None):
-        if not self.id:
-            self.report = SourceReporting()
-        elif not self.report:
-            self.report = SourceReporting(source=self.id)
+        if not self.report:
+            self.report = SourceReporting(started=timezone.now())
 
         geojson = self.get_file_as_dict()
 
@@ -402,7 +400,9 @@ class GeoJSONSource(Source):
                 msg = "The record geometry seems invalid."
                 self.report.status = SourceReporting.Status.WARNING.value
                 self.report.errors.append(f"Line {i}: {msg}")
-        self.report.save()
+        if self.id:
+            self.report.ended = timezone.now()
+            self.report.save()
         return records
 
 
@@ -503,7 +503,7 @@ class CSVSource(Source):
         except (pyexcel.exceptions.FileTypeNotSupported, Exception) as err:
             msg = "Provided CSV file is invalid"
             if not self.report:
-                self.report = SourceReporting(source=self.id)
+                self.report = SourceReporting(started=timezone.now())
             self.report.status = SourceReporting.Status.ERROR.value
             self.report.message = msg
             self.report.save()
@@ -511,10 +511,9 @@ class CSVSource(Source):
             raise
 
     def _get_records(self, limit=None):
-        if not self.id:
-            self.report = SourceReporting()
-        elif not self.report:
-            self.report = SourceReporting(source=self.id)
+        # _get_records is used in the serializer to validate data
+        if not self.id or not self.report:
+            self.report = SourceReporting(started=timezone.now())
 
         sheet = self.get_file_as_sheet()
         if self.settings.get("use_header"):
@@ -593,7 +592,7 @@ class CSVSource(Source):
             except ValueError as err:
                 msg = f"{field} is not a valid coordinate field"
                 if not self.report:
-                    self.report = SourceReporting(source=self.id)
+                    self.report = SourceReporting(started=timezone.now())
                 self.report.status = SourceReporting.Status.WARNING.value
                 self.report.errors.append(msg)
                 self.report.save()
