@@ -2,6 +2,14 @@
 CHANGELOG
 =========
 
+2023.5.3       (2023-05-25)
+---------------------------
+
+**Improvements:**
+
+- Allow customization by providing var/conf/{static | templates} folders tu override and adding custom files
+
+
 2023.5.2       (2023-05-17)
 ---------------------------
 
