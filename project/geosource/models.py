@@ -70,7 +70,7 @@ class SourceReporting(models.Model):
         WARNING = 2, "Warning"
         PENDING = 3, "Pending"
 
-    status = models.CharField(choices=Status.choices, max_length=10, null=True)
+    status = models.PositiveIntegerField(choices=Status.choices, null=True)
     message = models.CharField(max_length=255, default="")
     started = models.DateTimeField(null=True)
     ended = models.DateTimeField(null=True)

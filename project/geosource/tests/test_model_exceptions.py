@@ -2,6 +2,7 @@ import json
 from unittest.mock import PropertyMock, patch
 
 import pyexcel
+from django.contrib.gis.gdal.error import GDALException
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from psycopg2 import OperationalError
@@ -12,6 +13,7 @@ from project.geosource.models import (
     GeometryTypes,
     PostGISSource,
     ShapefileSource,
+    SourceReporting,
 )
 from project.geosource.tests.helpers import get_file
 
@@ -48,6 +50,7 @@ class CSVSourceExceptionsTestCase(TestCase):
         msg = "X is not a valid coordinate field"
         with self.assertRaisesMessage(ValueError, msg):
             source._get_records()
+            self.assertEqual(source.report.status, SourceReporting.Status.Warning.value)
             self.assertIn(msg, source.report.get("message", []))
 
     def test_csv_with_wrong_y_coord(self, mocked_es_delete, mocked_es_create):
@@ -93,10 +96,12 @@ class CSVSourceExceptionsTestCase(TestCase):
         )
         # assert pyexcel exception
         msg = "Provided CSV file is invalid"
+        self.assertIsNone(source.report)
         with self.assertRaisesMessage(
             (pyexcel.exceptions.FileTypeNotSupported, Exception), msg
         ):
             source._get_records()
+            self.assertIsInstance(source.report, SourceReporting)
             self.assertIn(msg, source.report.get("message", []))
 
     def test_invalid_coordinate_format_raise_error(
@@ -211,6 +216,57 @@ class CSVSourceExceptionsTestCase(TestCase):
         msg = "Line 0: Can't find identifier field for this record"
         source.refresh_data()
         self.assertIn(msg, source.report.errors)
+
+    @patch("project.geosource.models.GEOSGeometry", side_effect=GDALException())
+    def test_gdal_exception_set_report_to_warning(
+        self, mocked_es_create, mocked_es_delete, mock_geos
+    ):
+        source = CSVSource.objects.create(
+            name="csv-source",
+            file=get_file("source.csv"),
+            geom_type=0,
+            id_field="identifier",
+            settings={
+                "encoding": "UTF-8",
+                "coordinate_reference_system": "EPSG_4326",  # Wrong on purpose
+                "char_delimiter": "doublequote",
+                "field_separator": "semicolon",
+                "decimal_separator": "point",
+                "use_header": True,
+                "coordinates_field": "two_columns",
+                "longitude_field": "XCOORD",
+                "latitude_field": "YCOORD",
+            },
+        )
+        source._get_records()
+        msg = "Line 0: One of source's record has invalid geometry: Point(930077.50743 6922202.67316) srid=4326"
+        self.assertIn(msg, source.report.errors)
+
+    @patch("project.geosource.models.pyexcel.get_sheet", side_effect=Exception())
+    def test_get_file_as_sheet_exception_create_new_reported_if_none(
+        self, mocked_es_create, mocked_es_delete, mocked_pyexcel
+    ):
+        source = CSVSource.objects.create(
+            name="csv-source",
+            file=get_file("source.csv"),
+            geom_type=0,
+            id_field="identifier",
+            settings={
+                "encoding": "UTF-8",
+                "coordinate_reference_system": "EPSG_4326",  # Wrong on purpose
+                "char_delimiter": "doublequote",
+                "field_separator": "semicolon",
+                "decimal_separator": "point",
+                "use_header": True,
+                "coordinates_field": "two_columns",
+                "longitude_field": "XCOORD",
+                "latitude_field": "YCOORD",
+            },
+        )
+        self.assertIsNone(source.report)
+        with self.assertRaises(Exception):
+            self.get_file_as_sheet()
+            self.assertIsInstance(source.report, SourceReporting)
 
 
 @patch("elasticsearch.client.IndicesClient.create")

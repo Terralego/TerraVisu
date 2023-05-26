@@ -2,6 +2,7 @@ import json
 from io import StringIO
 from unittest import mock
 
+from django.contrib.gis.geos.point import Point
 from django.test import TestCase
 from geostore.models import Layer
 
@@ -462,6 +463,24 @@ class ModelCSVSourceTestCase(TestCase):
         fields = [f.name for f in Field.objects.filter(source=source)]
         self.assertTrue(fields == colnames)
 
+    def tesst_get_file_as_sheet_create_report_if_none_exists(self):
+        source = CSVSource.objects.create(
+            name="source-csv",
+            file=get_file("source.csv"),
+            geom_type=GeometryTypes.Point,
+            id_field="ID",
+            settings={
+                **self.base_settings,
+                "coordinates_field": "two_columns",
+                "longitude_field": "XCOORD",
+                "latitude_field": "YCOORD",
+            },
+        )
+        self.assertIsNone(source.report)
+        source.get_file_as_sheet()
+        self.assertIsInstance(self.report, SourceReporting)
+        self.assertIsNotNone(self.report.id)
+
 
 class SourceReportingTestCase(TestCase):
     def setUp(self):
@@ -532,3 +551,26 @@ class SourceReportingTestCase(TestCase):
         self.assertEqual(report.modified_lines, 0)
         self.assertEqual(report.deleted_lines, 0)
         self.assertEqual(report.errors, [])
+
+    @mock.patch("elasticsearch.client.IndicesClient.create")
+    @mock.patch("elasticsearch.client.IndicesClient.delete")
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
+    def test_partial_refresh_trigger_warning(
+        self, mock_es_create, mock_es_delete, mock_es_index, mock_es_index_feature
+    ):
+        """Calling refresh_data on a source with some row containing error should lead
+        to have less row being refresh than the total row count (partial refresh).
+        The report Status shoule be WARNING"""
+
+        # Mocking _get_records to return some incorret row
+        mocked_rows = [
+            {"_geom_": Point(2, 42, srid=4326), "id": 1, "test": 5},
+            {"_geom_": "wrong geom"},
+        ]
+        self.source._get_records = mock.MagicMock(return_value=mocked_rows)
+        self.source.refresh_data()
+        self.assertEqual(
+            self.source.report.status,
+            SourceReporting.Status.WARNING.value,
+        )

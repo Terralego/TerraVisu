@@ -57,9 +57,11 @@ class GeostoreCallBacksTestCase(TestCase):
                 "One record was ignored from source, because of "
                 "invalid geometry: {'property': 'Hola'}",
             ):
-                geostore_callbacks.feature_callback(
+                feature, created = geostore_callbacks.feature_callback(
                     source, layer, "id", "Not a Point", {"property": "Hola"}
                 )
+                self.assertIsNon(feature)
+                self.assertIsNon(created)
 
     def test_clean_features(self):
         group = Group.objects.create(name="Group")
