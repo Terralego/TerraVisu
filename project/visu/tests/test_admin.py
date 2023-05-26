@@ -12,5 +12,5 @@ class AdminTestCase(TestCase):
         self.client.force_login(self.user)
 
     def test_admin_access(self):
-        response = self.client.get("/admin/")
+        response = self.client.get("/config/")
         self.assertEqual(response.status_code, 200)
