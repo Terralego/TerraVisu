@@ -12,6 +12,10 @@ class SpriteValue(models.Model):
     def __str__(self):
         return self.slug
 
+    class Meta:
+        verbose_name = _("Sprite icon")
+        verbose_name_plural = _("Sprite icons")
+
 
 class ExtraMenuItem(models.Model):
     """Extra menu items included in frontend."""
