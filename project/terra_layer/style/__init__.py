@@ -38,6 +38,7 @@ def get_paint_or_layout(field):
         "text-field",
         "text-font",
         "text-size",
+        "icon-allow-overlap",
         "text-allow-overlap",
         "fill-sort-key",
         "line-sort-key",
