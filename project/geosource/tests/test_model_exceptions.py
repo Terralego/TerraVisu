@@ -243,7 +243,7 @@ class CSVSourceExceptionsTestCase(TestCase):
         self.assertIn(msg, source.report.errors)
 
     @patch("project.geosource.models.pyexcel.get_sheet", side_effect=Exception())
-    def test_get_file_as_sheet_exception_create_new_reported_if_none(
+    def test_get_file_as_sheet_exception_create_new_report_if_none(
         self, mocked_es_create, mocked_es_delete, mocked_pyexcel
     ):
         source = CSVSource.objects.create(
@@ -265,7 +265,24 @@ class CSVSourceExceptionsTestCase(TestCase):
         )
         self.assertIsNone(source.report)
         with self.assertRaises(Exception):
-            self.get_file_as_sheet()
+            source.get_file_as_sheet()
+            self.assertIsInstance(source.report, SourceReporting)
+
+    def test_valueerror_raised_in_extract_coordinate_create_report_if_none(
+        self, mocked_es_create, mocked_es_delete
+    ):
+        source = CSVSource.objects.create(
+            name="csv-source",
+            file=get_file("source.csv"),
+            geom_type=0,
+            id_field="identifier",
+        )
+        self.assertIsNone(source.report)
+        with self.assertRaises(ValueError):
+            # put some nonsens data to trigger ValueError raise
+            source._extract_coordinates(
+                ["a", "b", "c"], [1, 2, 3], ["foo", "bar", "foobar"]
+            )
             self.assertIsInstance(source.report, SourceReporting)
 
 
