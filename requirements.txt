@@ -127,7 +127,7 @@ djangorestframework==3.14.0
     #   drf-spectacular
 djangorestframework-gis==1.0
     # via django-geostore
-drf-extra-fields==3.4.1
+drf-extra-fields==3.5.0
     # via -r requirements.in
 drf-jwt==1.19.2
     # via -r requirements.in
@@ -139,6 +139,8 @@ elastic-transport==8.4.0
     # via elasticsearch
 elasticsearch==8.7.0
     # via -r requirements.in
+filetype==1.2.0
+    # via drf-extra-fields
 fiona==1.8.22
     # via
     #   -r requirements.in
