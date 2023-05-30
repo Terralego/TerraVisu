@@ -2,8 +2,16 @@
 CHANGELOG
 =========
 
-XXXX.X.X       (XXXX-XX-XX)
+XXXX-XX-XX     (XXXX-XX-XX)
 ---------------------------
+
+
+2023.5.4       (2023-05-30)
+---------------------------
+
+**Improvements:**
+
+- Allow icon_allow_overlap in layer admin style definition
 
 
 2023.5.3       (2023-05-25)
