@@ -23,6 +23,7 @@ router.register(r"permissions", FunctionalPermissionViewSet, basename="permissio
 
 
 urlpatterns = [
+    path("grappelli/", include("grappelli.urls")),  # grappelli URLS
     path("config/clearcache/", include("clearcache.urls")),
     path("config/", admin.site.urls),
     path("oidc/", include("django_auth_oidc.urls")),

@@ -1,4 +1,5 @@
 django==4.1.*
+django-grappelli
 django-geostore
 psycopg2
 pillow

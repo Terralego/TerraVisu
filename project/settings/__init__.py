@@ -41,6 +41,8 @@ ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="", cast=Csv())
 
 # Application definition
 INSTALLED_APPS = [
+    "grappelli.dashboard",
+    "grappelli",
     "clearcache",
     "model_clone",
     "django.contrib.admin",
@@ -325,6 +327,9 @@ AUTH_GET_USER_FUNCTION = "project.accounts.oidc:get_user"
 API_SCHEMA = config("API_SCHEMA", default=False, cast=bool)
 API_SWAGGER = config("API_SWAGGER", default=False, cast=bool)  # NEED API_SCHEMA
 API_REDOC = config("API_REDOC", default=False, cast=bool)  # NEED API_SCHEMA
+
+GRAPPELLI_ADMIN_TITLE = "TerraVisu: Configuration"
+GRAPPELLI_INDEX_DASHBOARD = "project.config_dashboard.CustomIndexDashboard"
 
 SENTRY_DSN = config("SENTRY_DSN", default="", cast=str)
 if SENTRY_DSN:

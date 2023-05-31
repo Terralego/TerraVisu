@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-13 13:07+0000\n"
+"POT-Creation-Date: 2023-05-26 12:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,6 +17,9 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+msgid "Configuration panel / Debug"
+msgstr "Panneau de configuration / Debug"
 
 msgid "Is able to create, delete, update users"
 msgstr "Peut créer, supprimer, mettre à jour des utilisateurs"
@@ -75,6 +78,21 @@ msgstr "Mot de passe oublié ?"
 
 msgid "OIDC connect"
 msgstr "Connexion via OIDC"
+
+msgid "Instance customization"
+msgstr "Personnalisation de l'instance"
+
+msgid "Administration"
+msgstr ""
+
+msgid "Applications"
+msgstr ""
+
+msgid "Celery"
+msgstr "Tâches asynchrones (Celery)"
+
+msgid "Recent actions"
+msgstr "Actions récentes"
 
 msgid "URL"
 msgstr ""
@@ -160,8 +178,11 @@ msgstr "Latitude par défaut du centre de la carte"
 msgid "Frontend view root path"
 msgstr "Chemin de la vue racine de l'application"
 
-msgid "Frontend default view name"
-msgstr "Chemin de la vue racine de l'application"
+msgid "Map"
+msgstr ""
+
+msgid "Story"
+msgstr ""
 
 msgid "Copy"
 msgstr "Copie"
@@ -180,9 +201,17 @@ msgstr ""
 "'map_box_url' ne doit pas être saisi pour les fonds de plan raster et "
 "vecteur."
 
+msgid "Sprite icon"
+msgstr "Icône de 'sprite'"
+
+msgid "Sprite icons"
+msgstr "Icônes de 'sprite'"
+
 msgid ""
 "If defined, this extra menu item is only displayed to theses groups members."
-msgstr "Si définie, cette entrée de menu est affichée uniquement aux membres de ces groupes."
+msgstr ""
+"Si définie, cette entrée de menu est affichée uniquement aux membres de ces "
+"groupes."
 
 msgid "Extra menu item"
 msgstr "Entrée de menu supplémentaire"
