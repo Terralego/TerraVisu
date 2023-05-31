@@ -91,6 +91,13 @@ class SourceReporting(models.Model):
 
 
 class Source(PolymorphicModel, CeleryCallMethodsMixin):
+    class Status(models.IntegerChoices):
+        PENDING = 0, "Pending"
+        DONE = 1, "Done"
+        NOT_NEEDED = 2, "Not needed"
+
+        __empty__ = "Need sync"
+
     name = models.CharField(max_length=255, unique=True)
     credit = models.TextField(blank=True)
     slug = models.SlugField(max_length=255, unique=True)
@@ -110,6 +117,9 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     last_refresh = models.DateTimeField(default=timezone.now)
+    status = models.PositiveIntegerField(
+        choices=Status.choices, null=True, max_length=20
+    )
 
     SOURCE_GEOM_ATTRIBUTE = "_geom_"
     MAX_SAMPLE_DATA = 5
@@ -141,6 +151,10 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         return next_run < now
 
     def refresh_data(self):
+        if self.status != self.Status.PENDING.value:
+            self.status = self.Status.PENDING.value
+            self.save()
+
         layer = self.get_layer()
         try:
             es_index = LayerESIndex(layer)
@@ -149,6 +163,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             return response
         finally:
             self.last_refresh = timezone.now()
+            self.status = self.Status.DONE.value
             self.save()
             refresh_data_done.send_robust(
                 sender=self.__class__,
@@ -208,7 +223,12 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         if not row_count:
             self.report.status = SourceReporting.Status.ERROR.value
             self.report.message = "Failed to refresh data"
-        elif row_count == total:
+        # Pending is added at the start of a refresh, so if not pending, it has to be Warning or Error
+        # From _get_records(), called earlier
+        elif (
+            row_count == total
+            and self.report.status == SourceReporting.Status.PENDING.value
+        ):
             self.report.status = SourceReporting.Status.SUCCESS.value
         else:
             self.report.status = SourceReporting.Status.WARNING.value

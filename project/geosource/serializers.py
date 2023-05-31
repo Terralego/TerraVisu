@@ -119,6 +119,7 @@ class SourceSerializer(PolymorphicModelSerializer):
     class Meta:
         fields = "__all__"
         model = Source
+        extras = {"read_only": {"status": True}}
 
     def _update_fields(self, source):
         if source.run_sync_method("update_fields", success_state="NEED_SYNC").result:
@@ -154,7 +155,8 @@ class SourceSerializer(PolymorphicModelSerializer):
         return source
 
     def get_status(self, instance):
-        return instance.get_status()
+        # return instance.get_status()
+        return instance.get_status_display()
 
 
 class SourceListSerializer(serializers.ModelSerializer):
@@ -172,12 +174,14 @@ class SourceListSerializer(serializers.ModelSerializer):
             "geom_type",
             "report",
         )
+        # extras = {"read_only": {"status"}}
 
     def get__type(self, instance):
         return instance.__class__.__name__
 
     def get_status(self, instance):
-        return instance.get_status()
+        return instance.get_status_display()
+        # return instance.get_status()
 
 
 class PostGISSourceSerializer(SourceSerializer):
