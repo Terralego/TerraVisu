@@ -14,3 +14,7 @@ class UserModelTestCase(TestCase):
     def test_inactive_user_has_no_permissions(self):
         user = UserFactory(is_active=False)
         self.assertEqual(0, user.functional_permissions.count())
+
+    def test_get_jwt_token(self):
+        user = SuperUserFactory()
+        self.assertIsNotNone(user.get_jwt_token())

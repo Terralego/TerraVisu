@@ -172,6 +172,7 @@ class AdminSettingsApiView(APITestCase):
                     "center": [2.0, 44.0],
                 },
                 "user": None,
+                "token": None,
                 "spriteBaseUrl": "http://testserver/api/sprites",
             },
         )
@@ -216,6 +217,7 @@ class AdminSettingsApiView(APITestCase):
                     "center": [1.0, 48.0],
                 },
                 "user": None,
+                "token": None,
                 "spriteBaseUrl": "http://testserver/api/sprites",
             },
         )

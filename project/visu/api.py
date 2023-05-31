@@ -25,7 +25,7 @@ class SettingsAdminView(APIView):
         user = (
             UserSerializer(request.user).data if request.user.is_authenticated else None
         )
-        from django.core.files.storage import default_storage
+        token = request.user.get_jwt_token() if user else None
 
         if config.INSTANCE_LOGO.startswith("/"):
             LOGO_URL = config.INSTANCE_LOGO
@@ -60,6 +60,7 @@ class SettingsAdminView(APIView):
                     "center": [config.MAP_DEFAULT_LNG, config.MAP_DEFAULT_LAT],
                 },
                 "user": user,
+                "token": token,
                 "spriteBaseUrl": reverse("sprites", request=request),
             }
         )

@@ -5,6 +5,10 @@ CHANGELOG
 XXXX-XX-XX     (XXXX-XX-XX)
 ---------------------------
 
+**Improvements:**
+
+- Implement JWT token generation to authenticate through sessions
+
 
 2023.5.4       (2023-05-30)
 ---------------------------
