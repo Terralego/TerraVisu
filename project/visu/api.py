@@ -7,7 +7,6 @@ from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
-from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from project.accounts.serializers import UserSerializer
 from project.terra_layer.models import Scene
