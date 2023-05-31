@@ -5,6 +5,7 @@ from django.contrib.auth.models import Permission, PermissionsMixin, _user_has_p
 from django.db import models
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from project.accounts.managers import UserManager
 
@@ -57,6 +58,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         if self.is_superuser:
             return True
         return _user_has_perm(self, f"{self._meta.app_label}.{codename}", None)
+
+    def get_jwt_token(self):
+        payload = JSONWebTokenAuthentication.jwt_create_payload(self)
+        return JSONWebTokenAuthentication.jwt_encode_payload(payload)
 
 
 class FunctionalPermission(Permission):

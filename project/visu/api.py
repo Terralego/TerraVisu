@@ -7,6 +7,7 @@ from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
+from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from project.accounts.serializers import UserSerializer
 from project.terra_layer.models import Scene
@@ -25,7 +26,10 @@ class SettingsAdminView(APIView):
         user = (
             UserSerializer(request.user).data if request.user.is_authenticated else None
         )
-        from django.core.files.storage import default_storage
+        token = None
+
+        if user:
+            token = request.user.get_jwt_token()
 
         if config.INSTANCE_LOGO.startswith("/"):
             LOGO_URL = config.INSTANCE_LOGO
@@ -60,6 +64,7 @@ class SettingsAdminView(APIView):
                     "center": [config.MAP_DEFAULT_LNG, config.MAP_DEFAULT_LAT],
                 },
                 "user": user,
+                "token": token,
                 "spriteBaseUrl": reverse("sprites", request=request),
             }
         )
