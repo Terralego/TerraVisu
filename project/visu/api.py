@@ -25,10 +25,7 @@ class SettingsAdminView(APIView):
         user = (
             UserSerializer(request.user).data if request.user.is_authenticated else None
         )
-        token = None
-
-        if user:
-            token = request.user.get_jwt_token()
+        token = request.user.get_jwt_token() if user else None
 
         if config.INSTANCE_LOGO.startswith("/"):
             LOGO_URL = config.INSTANCE_LOGO
