@@ -23,7 +23,7 @@ django-polymorphic
 fiona
 pyexcel
 python-decouple
-git+https://gitlab.com/PaulFlorence/django-auth-oidc.git@fix_4#egg=django-auth-oidc
+git+https://github.com/Terralego/django-auth-oidc.git@master#egg=django-auth-oidc
 drf-jwt
 drf-spectacular
 drf-extra-fields
