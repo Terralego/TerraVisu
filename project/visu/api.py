@@ -91,6 +91,8 @@ class SettingsFrontendView(APIView):
             extra_menu_items_filters |= Q(limit_to_groups__in=request.user.groups.all())
         extra_menu_items = ExtraMenuItem.objects.filter(extra_menu_items_filters)
 
+        user = UserSerializer(request.user).data if request.user.is_authenticated else None
+        token = request.user.get_jwt_token() if user else None
         return Response(
             {
                 # deprecated section  & front
@@ -110,7 +112,10 @@ class SettingsFrontendView(APIView):
                     context={"request": request},
                 ).data,
                 "allowUserRegistration": False,
+                "user": user,
+                "token": token,
             }
+
         )
 
 
