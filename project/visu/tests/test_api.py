@@ -39,6 +39,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
             {
                 "allowUserRegistration": False,
                 "credits": "Source: TerraVisu",
+                "ssoAuth": {},
                 "extraMenuItems": [],
                 "favicon": "/static_dj/img/favicon.ico",
                 "theme": {
@@ -71,6 +72,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "allowUserRegistration": False,
                 "credits": "My Credits",
                 "extraMenuItems": [],
+                "ssoAuth": {},
                 "favicon": "/media/favicon.ico",
                 "theme": {
                     "brandLogo": "/media/splashscreen.png",
@@ -156,6 +158,7 @@ class AdminSettingsApiView(APITestCase):
             response.data,
             {
                 "title": "TerraVisu",
+                "ssoAuth": {},
                 "theme": {
                     "logo": {
                         "src": "/static_dj/img/logo.webp",
@@ -201,6 +204,7 @@ class AdminSettingsApiView(APITestCase):
             response.data,
             {
                 "title": "TerraTest",
+                "ssoAuth": {},
                 "theme": {
                     "logo": {
                         "src": "/media/logo.png",
