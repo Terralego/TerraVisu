@@ -2,6 +2,15 @@
 CHANGELOG
 =========
 
+
+2023.5.6       (2023-06-01)
+---------------------------
+
+**Improvements:**
+
+- Provide user and initial token in both frontend and admin settings API
+
+
 2023.5.5       (2023-05-31)
 ---------------------------
 
