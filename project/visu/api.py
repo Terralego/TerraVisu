@@ -1,6 +1,7 @@
 import logging
 
 from constance import config
+from django.conf import settings
 from django.core.files.storage import default_storage
 from django.db.models import Q
 from rest_framework import permissions
@@ -26,6 +27,12 @@ class SettingsAdminView(APIView):
             UserSerializer(request.user).data if request.user.is_authenticated else None
         )
         token = request.user.get_jwt_token() if user else None
+        sso_auth = {}
+        if settings.OIDC_ENABLE_LOGIN:
+            sso_auth = {
+                "loginUrl": reverse("login"),
+                "logoutUrl": reverse("logout"),
+            }
 
         if config.INSTANCE_LOGO.startswith("/"):
             LOGO_URL = config.INSTANCE_LOGO
@@ -61,6 +68,7 @@ class SettingsAdminView(APIView):
                 },
                 "user": user,
                 "token": token,
+                "ssoAuth": sso_auth,
                 "spriteBaseUrl": reverse("sprites", request=request),
             }
         )
@@ -76,6 +84,13 @@ class SettingsFrontendView(APIView):
             LOGO_URL = config.INSTANCE_LOGO
         else:
             LOGO_URL = default_storage.url(config.INSTANCE_LOGO)
+
+        sso_auth = {}
+        if settings.OIDC_ENABLE_LOGIN:
+            sso_auth = {
+                "loginUrl": reverse("login"),
+                "logoutUrl": reverse("logout"),
+            }
 
         if config.INSTANCE_SPLASHSCREEN.startswith("/"):
             INSTANCE_SPLASHSCREEN = config.INSTANCE_SPLASHSCREEN
@@ -116,6 +131,7 @@ class SettingsFrontendView(APIView):
                 "allowUserRegistration": False,
                 "user": user,
                 "token": token,
+                "ssoAuth": sso_auth,
             }
         )
 

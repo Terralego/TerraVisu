@@ -5,6 +5,10 @@ CHANGELOG
 XXXX-XX-XX     (XXXX-XX-XX)
 ---------------------------
 
+**Improvements:**
+
+- Provide login and logout urls in API settings in case of SSO authentification enabled
+
 
 2023.5.6       (2023-06-01)
 ---------------------------
