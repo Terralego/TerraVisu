@@ -30,7 +30,7 @@ class SettingsAdminView(APIView):
         sso_auth = {}
         if settings.OIDC_ENABLE_LOGIN:
             sso_auth = {
-                "loginUrl": reverse("login"),
+                "loginUrl": reverse("login_dispatcher"),
                 "logoutUrl": reverse("logout"),
             }
 
@@ -88,7 +88,7 @@ class SettingsFrontendView(APIView):
         sso_auth = {}
         if settings.OIDC_ENABLE_LOGIN:
             sso_auth = {
-                "loginUrl": reverse("login"),
+                "loginUrl": reverse("login_dispatcher"),
                 "logoutUrl": reverse("logout"),
             }
 
