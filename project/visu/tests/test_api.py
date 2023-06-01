@@ -48,6 +48,8 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                     "styles": [],
                 },
                 "title": "TerraVisu",
+                "token": None,
+                "user": None,
                 "version": None,
             },
         )
@@ -77,6 +79,8 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                     "styles": [],
                 },
                 "title": "My Title",
+                "token": None,
+                "user": None,
                 "version": None,
             },
         )
