@@ -2,20 +2,13 @@
 CHANGELOG
 =========
 
-XXXX-XX-XX     (XXXX-XX-XX)
----------------------------
-
-**Improvements:**
-
-- Provide login and logout urls in API settings in case of SSO authentification enabled
-
-
-2023.5.6       (2023-06-01)
+2023.6.1       (2023-06-01)
 ---------------------------
 
 **Improvements:**
 
 - Provide user and initial token in both frontend and admin settings API
+- Provide login and logout urls in API settings in case of SSO authentification enabled
 
 
 2023.5.5       (2023-05-31)
