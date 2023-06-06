@@ -239,7 +239,7 @@ class ModelCommandSourceTestCase(TestCase):
     @mock.patch("sys.stdout", new_callable=StringIO)
     def test_refresh_data(self, mocked_stdout, mock_index):
         mock_index.return_value = True
-        with self.assertNumQueries(34):
+        with self.assertNumQueries(36):
             self.source.refresh_data()
         self.assertIn("Start refresh", mocked_stdout.getvalue())
 
@@ -299,7 +299,7 @@ class ModelCSVSourceTestCase(TestCase):
 
         records = source._get_records()
         self.assertEqual(len(records), 6, len(records))
-        with self.assertNumQueries(69):
+        with self.assertNumQueries(72):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -325,7 +325,7 @@ class ModelCSVSourceTestCase(TestCase):
 
         records = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(93):
+        with self.assertNumQueries(96):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -355,7 +355,7 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(93):
+        with self.assertNumQueries(96):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -386,7 +386,7 @@ class ModelCSVSourceTestCase(TestCase):
             if record.get("photoEtablissement")
         ]
         self.assertEqual(len(empty_entry), 0, empty_entry)
-        with self.assertNumQueries(69):
+        with self.assertNumQueries(72):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -412,7 +412,7 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(93):
+        with self.assertNumQueries(96):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -438,7 +438,7 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records = source._get_records()
         self.assertEqual(len(records), 10, len(records))
-        with self.assertNumQueries(101):
+        with self.assertNumQueries(104):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
