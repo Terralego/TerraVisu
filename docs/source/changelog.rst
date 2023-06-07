@@ -2,6 +2,18 @@
 CHANGELOG
 =========
 
+2023.6.2       (2023-06-07)
+---------------------------
+
+**New feature**
+
+- Complete OIDC login feature in frontend and admin
+
+**Improvements:**
+
+- In admin layer style, ability to choose if icon style overlaps or not
+
+
 2023.6.1       (2023-06-01)
 ---------------------------
 
