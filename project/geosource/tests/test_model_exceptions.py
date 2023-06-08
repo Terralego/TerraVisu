@@ -9,6 +9,7 @@ from psycopg2 import OperationalError
 
 from project.geosource.models import (
     CSVSource,
+    CSVSourceException,
     GeoJSONSource,
     GeometryTypes,
     PostGISSource,
@@ -47,11 +48,8 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "latitude_field": "YCOORDS",
             },
         )
-        msg = "X is not a valid coordinate field"
-        with self.assertRaisesMessage(ValueError, msg):
-            source._get_records()
-            self.assertEqual(source.report.status, SourceReporting.Status.Warning.value)
-            self.assertIn(msg, source.report.get("message", []))
+        _, errors = source._get_records()
+        self.assertIn("Sheet row 0 - X is not a valid coordinate field", errors)
 
     def test_csv_with_wrong_y_coord(self, mocked_es_delete, mocked_es_create):
         source = CSVSource.objects.create(
@@ -70,10 +68,8 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "latitude_field": "Y",  # Wrong on purpose
             },
         )
-        msg = "Y is not a valid coordinate field"
-        with self.assertRaisesMessage(ValueError, msg):
-            source._get_records()
-            self.assertIn(msg, source.report.get("message", []))
+        _, errors = source._get_records()
+        self.assertIn("Sheet row 0 - Y is not a valid coordinate field", errors)
 
     def test_invalid_csv_file_raise_value_error(
         self, mocked_es_delete, mocked_es_create
@@ -104,7 +100,7 @@ class CSVSourceExceptionsTestCase(TestCase):
             self.assertIsInstance(source.report, SourceReporting)
             self.assertIn(msg, source.report.get("message", []))
 
-    def test_invalid_coordinate_format_raise_error(
+    def test_invalid_coordinate_format_error_handle(
         self, mocked_es_delete, mocked_es_create
     ):
         source = CSVSource.objects.create(
@@ -124,8 +120,8 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "coordinates_field_count": "xy",
             },
         )
-        source._get_records()
-        self.assertIn("coordxy is not a valid coordinate field", source.report.errors)
+        _, errors = source._get_records()
+        self.assertIn("Sheet row 0 - coordxy is not a valid coordinate field", errors)
 
     def test_coordinates_system_without_digit_srid_raise_value_error(
         self, mocked_es_delete, mocked_es_create
@@ -146,7 +142,7 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "latitude_field": "YCOORD",
             },
         )
-        with self.assertRaises(ValueError):
+        with self.assertRaisesMessage(CSVSourceException, "Invalid SRID: EPSG_SRID"):
             source._get_records()
 
     def test_coordinates_systems_malformed_raise_index_error(
@@ -168,7 +164,7 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "latitude_field": "YCOORD",
             },
         )
-        with self.assertRaises(IndexError):
+        with self.assertRaisesMessage(CSVSourceException, "Invalid SRID: 4326"):
             source._get_records()
 
     # TODO: Move to test_models.py instead, since no exception is raised anymore
@@ -238,9 +234,9 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "latitude_field": "YCOORD",
             },
         )
-        source._get_records()
-        msg = "Line 0: One of source's record has invalid geometry: Point(930077.50743 6922202.67316) srid=4326"
-        self.assertIn(msg, source.report.errors)
+        _, errors = source._get_records()
+        msg = "Sheet row 0 - One of source's record has invalid geometry: Point(930077.50743 6922202.67316) srid=4326"
+        self.assertIn(msg, errors)
 
     @patch("project.geosource.models.pyexcel.get_sheet", side_effect=Exception())
     def test_get_file_as_sheet_exception_create_new_report_if_none(
@@ -278,7 +274,7 @@ class CSVSourceExceptionsTestCase(TestCase):
             id_field="identifier",
         )
         self.assertIsNone(source.report)
-        with self.assertRaises(ValueError):
+        with self.assertRaises(CSVSourceException):
             # put some nonsens data to trigger ValueError raise
             source._extract_coordinates(
                 ["a", "b", "c"], [1, 2, 3], ["foo", "bar", "foobar"]

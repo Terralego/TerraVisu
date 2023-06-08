@@ -285,7 +285,7 @@ class GeoJSONSourceSerializer(FileSourceSerializer):
         except TypeError:
             return  # file field is empty in update no get_records
         try:
-            records = instance._get_records(1)
+            records, errors = instance._get_records(1)
         except Exception as err:
             raise ValidationError(err.args[0])
 
@@ -439,7 +439,7 @@ class CSVSourceSerializer(FileSourceSerializer):
         # create an instance without saving data
         instance = self.Meta.model(**data_copy)
         try:
-            records = instance._get_records(1)
+            records, errors = instance._get_records(1)
         except (ValueError, GDALException) as err:
             raise ValidationError(err.args[0])
 

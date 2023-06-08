@@ -208,10 +208,10 @@ class ModelGeoJSONSourceTestCase(TestCase):
         )
 
         #        with self.assertRaises(ValueError) as m:
-        source._get_records(1)
+        records, errors = source._get_records(1)
         self.assertIn(
-            "Line 0: The record geometry seems invalid.",
-            source.report.errors,
+            "The record geometry seems invalid for feature 1.",
+            errors,
         )
 
 
@@ -223,7 +223,7 @@ class ModelShapeFileSourceTestCase(TestCase):
             file=get_file("test.zip"),
         )
 
-        records = source._get_records(1)
+        records, errors = source._get_records(1)
         self.assertEqual(records[0]["NOM"], "Trifouilli-les-Oies")
         self.assertEqual(records[0]["Insee"], 99999)
         self.assertEqual(records[0]["_geom_"].geom_typeid, GeometryTypes.Polygon)
@@ -244,7 +244,7 @@ class ModelCommandSourceTestCase(TestCase):
         self.assertIn("Start refresh", mocked_stdout.getvalue())
 
     def test_get_records(self):
-        self.assertEqual([], self.source._get_records())
+        self.assertEqual([None, None], self.source._get_records())
 
 
 class ModelWMTSSourceTestCase(TestCase):
@@ -257,7 +257,7 @@ class ModelWMTSSourceTestCase(TestCase):
         )
 
     def test_get_records(self):
-        self.assertEqual([], self.source._get_records())
+        self.assertEqual([None, None], self.source._get_records())
 
     def test_get_status(self):
         self.assertEqual({"state": "DONT_NEED"}, self.source.get_status())
@@ -297,9 +297,9 @@ class ModelCSVSourceTestCase(TestCase):
             },
         )
 
-        records = source._get_records()
+        records, errors = source._get_records()
         self.assertEqual(len(records), 6, len(records))
-        with self.assertNumQueries(72):
+        with self.assertNumQueries(70):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -323,9 +323,9 @@ class ModelCSVSourceTestCase(TestCase):
             },
         )
 
-        records = source._get_records()
+        records, errors = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(96):
+        with self.assertNumQueries(94):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -353,9 +353,9 @@ class ModelCSVSourceTestCase(TestCase):
                 "coordinates_field_count": "xy",
             },
         )
-        records = source._get_records()
+        records, errors = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(96):
+        with self.assertNumQueries(94):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -378,7 +378,7 @@ class ModelCSVSourceTestCase(TestCase):
                 "latitude_field": "YCOORD",
             },
         )
-        records = source._get_records()
+        records, errors = source._get_records()
         # this entry as an empty column and should not be in records
         empty_entry = [
             record.get("photoEtablissement")
@@ -386,7 +386,7 @@ class ModelCSVSourceTestCase(TestCase):
             if record.get("photoEtablissement")
         ]
         self.assertEqual(len(empty_entry), 0, empty_entry)
-        with self.assertNumQueries(72):
+        with self.assertNumQueries(70):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -410,9 +410,9 @@ class ModelCSVSourceTestCase(TestCase):
                 "coordinates_field_count": "yx",
             },
         )
-        records = source._get_records()
+        records, errors = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(96):
+        with self.assertNumQueries(94):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -436,9 +436,9 @@ class ModelCSVSourceTestCase(TestCase):
                 "longitude_field": "0",
             },
         )
-        records = source._get_records()
+        records, errors = source._get_records()
         self.assertEqual(len(records), 10, len(records))
-        with self.assertNumQueries(104):
+        with self.assertNumQueries(102):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -458,7 +458,7 @@ class ModelCSVSourceTestCase(TestCase):
         sheet = source.get_file_as_sheet()
         sheet.name_columns_by_row(0)
         colnames = [name for name in sheet.colnames if name not in ("XCOORD", "YCOORD")]
-        with self.assertNumQueries(699):
+        with self.assertNumQueries(698):
             source.update_fields()
         fields = [f.name for f in Field.objects.filter(source=source)]
         self.assertTrue(fields == colnames)
@@ -564,13 +564,17 @@ class SourceReportingTestCase(TestCase):
         The report Status shoule be WARNING"""
 
         # Mocking _get_records to return some incorret row
-        mocked_rows = [
-            {"_geom_": Point(2, 42, srid=4326), "id": 1, "test": 5},
-            {"_geom_": "wrong geom"},
-        ]
+        mocked_rows = (
+            [
+                {"_geom_": Point(2, 42, srid=4326), "id": 1, "test": 5},
+                {"_geom_": "wrong geom"},
+            ],
+            [],
+        )
         self.source._get_records = mock.MagicMock(return_value=mocked_rows)
         self.source.refresh_data()
         self.assertEqual(
             self.source.report.status,
             SourceReporting.Status.WARNING.value,
+            self.source.report.get_status_display(),
         )
