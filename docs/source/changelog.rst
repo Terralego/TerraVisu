@@ -8,6 +8,7 @@ XXXX.X.X       (XXXX-XX-XX)
 **Bugfix**
 
 - Fix instance config panel with new dashboard
+- Fix user login state after an SSO login in frontend
 
 
 2023.6.2       (2023-06-07)
