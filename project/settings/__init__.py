@@ -41,13 +41,15 @@ ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="", cast=Csv())
 
 # Application definition
 INSTALLED_APPS = [
+    "django.contrib.contenttypes",
+    "constance",
+    "constance.backends.database",  # constance: after contenttypes and before grappelli
     "grappelli.dashboard",
     "grappelli",
     "clearcache",
     "model_clone",
     "django.contrib.admin",
     "django.contrib.auth",
-    "django.contrib.contenttypes",
     "django.contrib.gis",
     "django.contrib.sessions",
     "django.contrib.messages",
@@ -64,8 +66,6 @@ INSTALLED_APPS = [
     "django_filters",
     "django_celery_results",
     "django_celery_beat",
-    "constance",
-    "constance.backends.database",
     "corsheaders",
     "project.accounts",
     "project.visu",
