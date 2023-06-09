@@ -216,10 +216,10 @@ class AdminSettingsApiView(APITestCase):
             {
                 "title": "TerraTest",
                 "ssoAuth": {
-                    "defaultButtonText": "Login via internal",
+                    "defaultButtonText": "",
                     "loginUrl": "/api/auth/login/",
                     "logoutUrl": "/accounts/logout/",
-                    "ssoButtonText": "Login via SSO",
+                    "ssoButtonText": "",
                 },
                 "theme": {
                     "logo": {
