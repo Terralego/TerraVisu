@@ -1,6 +1,6 @@
 from constance.test import override_config
 from django.contrib.auth.models import Group
-from django.test import RequestFactory
+from django.test import RequestFactory, override_settings
 from rest_framework.reverse import reverse_lazy
 from rest_framework.test import APITestCase
 
@@ -62,7 +62,10 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
         INSTANCE_LOGO="logo.webp",
         INSTANCE_SPLASHSCREEN="splashscreen.png",
         INSTANCE_FAVICON="favicon.ico",
+        OPENID_SSO_LOGIN_BUTTON_TEXT="Login via SSO",
+        OPENID_DEFAULT_LOGIN_BUTTON_TEXT="Login via internal",
     )
+    @override_settings(OIDC_ENABLE_LOGIN=True)
     def test_custom(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
@@ -72,7 +75,12 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "allowUserRegistration": False,
                 "credits": "My Credits",
                 "extraMenuItems": [],
-                "ssoAuth": {},
+                "ssoAuth": {
+                    "defaultButtonText": "Login via internal",
+                    "loginUrl": "/api/auth/login/",
+                    "logoutUrl": "/accounts/logout/",
+                    "ssoButtonText": "Login via SSO",
+                },
                 "favicon": "http://testserver/media/favicon.ico",
                 "theme": {
                     "brandLogo": "http://testserver/media/splashscreen.png",
@@ -197,6 +205,7 @@ class AdminSettingsApiView(APITestCase):
         MAP_DEFAULT_LAT=48.0,
         MAP_DEFAULT_ZOOM=6.0,
     )
+    @override_settings(OIDC_ENABLE_LOGIN=True)
     def test_custom(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
@@ -204,7 +213,12 @@ class AdminSettingsApiView(APITestCase):
             response.data,
             {
                 "title": "TerraTest",
-                "ssoAuth": {},
+                "ssoAuth": {
+                    "defaultButtonText": "Login via internal",
+                    "loginUrl": "/api/auth/login/",
+                    "logoutUrl": "/accounts/logout/",
+                    "ssoButtonText": "Login via SSO",
+                },
                 "theme": {
                     "logo": {
                         "src": "http://testserver/media/logo.png",
