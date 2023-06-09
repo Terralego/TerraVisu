@@ -257,6 +257,12 @@ CONSTANCE_CONFIG = {
     "MAP_DEFAULT_LNG": (2.0, _("Map default lng"), float),
     "MAP_DEFAULT_LAT": (44.0, _("Map default lat"), float),
     "VIEW_ROOT_PATH": ("view", _("Frontend view root path"), str),
+    "OPENID_SSO_LOGIN_BUTTON_TEXT": ("", _("OpenID: SSO login button text"), str),
+    "OPENID_DEFAULT_LOGIN_BUTTON_TEXT": (
+        "",
+        _("OpenID: Default login button text"),
+        str,
+    ),
 }
 
 CONSTANCE_CONFIG_FIELDSETS = {
@@ -293,7 +299,11 @@ CONSTANCE_CONFIG_FIELDSETS = {
         "collapse": True,
     },
     "Frontend options": {
-        "fields": ("VIEW_ROOT_PATH",),
+        "fields": (
+            "VIEW_ROOT_PATH",
+            "OPENID_SSO_LOGIN_BUTTON_TEXT",
+            "OPENID_DEFAULT_LOGIN_BUTTON_TEXT",
+        ),
         "collapse": True,
     },
 }

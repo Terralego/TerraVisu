@@ -2,6 +2,14 @@
 CHANGELOG
 =========
 
+XXXX.X.X       (2023-06-09)
+---------------------------
+
+**Improvements:**
+
+- Ability to define default text for SSO and internal login buttons in frontend and admin
+
+
 2023.6.3       (2023-06-08)
 ---------------------------
 

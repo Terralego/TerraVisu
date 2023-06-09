@@ -1,6 +1,6 @@
 from constance.test import override_config
 from django.contrib.auth.models import Group
-from django.test import RequestFactory
+from django.test import RequestFactory, override_settings
 from rest_framework.reverse import reverse_lazy
 from rest_framework.test import APITestCase
 
@@ -41,10 +41,10 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "credits": "Source: TerraVisu",
                 "ssoAuth": {},
                 "extraMenuItems": [],
-                "favicon": "/static_dj/img/favicon.ico",
+                "favicon": "http://testserver/static_dj/img/favicon.ico",
                 "theme": {
-                    "brandLogo": "/static_dj/img/splashscreen.png",
-                    "logo": "/static_dj/img/logo.webp",
+                    "brandLogo": "http://testserver/static_dj/img/splashscreen.png",
+                    "logo": "http://testserver/static_dj/img/logo.webp",
                     "logoUrl": "/",
                     "styles": [],
                 },
@@ -62,8 +62,12 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
         INSTANCE_LOGO="logo.webp",
         INSTANCE_SPLASHSCREEN="splashscreen.png",
         INSTANCE_FAVICON="favicon.ico",
+        OPENID_SSO_LOGIN_BUTTON_TEXT="Login via SSO",
+        OPENID_DEFAULT_LOGIN_BUTTON_TEXT="Login via internal",
     )
+    @override_settings(OIDC_ENABLE_LOGIN=True)
     def test_custom(self):
+        self.maxDiff = None
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -72,11 +76,16 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "allowUserRegistration": False,
                 "credits": "My Credits",
                 "extraMenuItems": [],
-                "ssoAuth": {},
-                "favicon": "/media/favicon.ico",
+                "ssoAuth": {
+                    "defaultButtonText": "Login via internal",
+                    "loginUrl": "/api/auth/login/",
+                    "logoutUrl": "/accounts/logout/",
+                    "ssoButtonText": "Login via SSO",
+                },
+                "favicon": "http://testserver/media/favicon.ico",
                 "theme": {
-                    "brandLogo": "/media/splashscreen.png",
-                    "logo": "/media/logo.webp",
+                    "brandLogo": "http://testserver/media/splashscreen.png",
+                    "logo": "http://testserver/media/logo.webp",
                     "logoUrl": "https://example.com",
                     "styles": [],
                 },
@@ -161,10 +170,10 @@ class AdminSettingsApiView(APITestCase):
                 "ssoAuth": {},
                 "theme": {
                     "logo": {
-                        "src": "/static_dj/img/logo.webp",
+                        "src": "http://testserver/static_dj/img/logo.webp",
                         "alt": "Logo",
                     },
-                    "favicon": "/static_dj/img/favicon.ico",
+                    "favicon": "http://testserver/static_dj/img/favicon.ico",
                     "heading": "<h2>Administration</h2>",
                 },
                 "map": {
@@ -197,20 +206,27 @@ class AdminSettingsApiView(APITestCase):
         MAP_DEFAULT_LAT=48.0,
         MAP_DEFAULT_ZOOM=6.0,
     )
+    @override_settings(OIDC_ENABLE_LOGIN=True)
     def test_custom(self):
+        self.maxDiff = None
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
+        self.assertDictEqual(
             response.data,
             {
                 "title": "TerraTest",
-                "ssoAuth": {},
+                "ssoAuth": {
+                    "defaultButtonText": "",
+                    "loginUrl": "/api/auth/login/",
+                    "logoutUrl": "/accounts/logout/",
+                    "ssoButtonText": "",
+                },
                 "theme": {
                     "logo": {
-                        "src": "/media/logo.png",
+                        "src": "http://testserver/media/logo.png",
                         "alt": "Logo",
                     },
-                    "favicon": "/media/favicon.ico",
+                    "favicon": "http://testserver/media/favicon.ico",
                     "heading": "<h2>Administration</h2>",
                 },
                 "map": {

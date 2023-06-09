@@ -17,42 +17,66 @@ from project.visu.serializers import ExtraMenuItemSerializer
 logger = logging.getLogger(__name__)
 
 
-class SettingsAdminView(APIView):
-    permission_classes = [
-        permissions.AllowAny,
-    ]
-
-    def get(self, request, *args, **kwargs):
-        user = (
-            UserSerializer(request.user).data if request.user.is_authenticated else None
-        )
-        token = request.user.get_jwt_token() if user else None
-        sso_auth = {}
-        if settings.OIDC_ENABLE_LOGIN:
-            sso_auth = {
-                "loginUrl": reverse("login_dispatcher"),
-                "logoutUrl": reverse("logout"),
-            }
-
+class CommonSettings:
+    def get_logo_url(self):
         if config.INSTANCE_LOGO.startswith("/"):
             LOGO_URL = config.INSTANCE_LOGO
         else:
             LOGO_URL = default_storage.url(config.INSTANCE_LOGO)
 
+        return self.request.build_absolute_uri(LOGO_URL)
+
+    def get_favicon_url(self):
         if config.INSTANCE_FAVICON.startswith("/"):
             FAVICON_URL = config.INSTANCE_FAVICON
         else:
             FAVICON_URL = default_storage.url(config.INSTANCE_FAVICON)
+        return self.request.build_absolute_uri(FAVICON_URL)
+
+    def get_splashcreen_url(self):
+        if config.INSTANCE_SPLASHSCREEN.startswith("/"):
+            SPLASHSCREEN_URL = config.INSTANCE_SPLASHSCREEN
+        else:
+            SPLASHSCREEN_URL = default_storage.url(config.INSTANCE_SPLASHSCREEN)
+        return self.request.build_absolute_uri(SPLASHSCREEN_URL)
+
+    def get_user_token_data(self):
+        user = (
+            UserSerializer(self.request.user).data
+            if self.request.user.is_authenticated
+            else None
+        )
+        token = self.request.user.get_jwt_token() if user else None
+        return user, token
+
+    def get_sso_auth_config(self):
+        if settings.OIDC_ENABLE_LOGIN:
+            return {
+                "loginUrl": reverse("login_dispatcher"),
+                "logoutUrl": reverse("logout"),
+                "ssoButtonText": config.OPENID_SSO_LOGIN_BUTTON_TEXT,
+                "defaultButtonText": config.OPENID_DEFAULT_LOGIN_BUTTON_TEXT,
+            }
+        return {}
+
+
+class SettingsAdminView(CommonSettings, APIView):
+    permission_classes = [
+        permissions.AllowAny,
+    ]
+
+    def get(self, request, *args, **kwargs):
+        user, token = self.get_user_token_data()
 
         return Response(
             {
                 "title": config.INSTANCE_TITLE,
                 "theme": {
                     "logo": {
-                        "src": LOGO_URL,
+                        "src": self.get_logo_url(),
                         "alt": "Logo",
                     },
-                    "favicon": FAVICON_URL,
+                    "favicon": self.get_favicon_url(),
                     "heading": "<h2>Administration</h2>",
                 },
                 "map": {
@@ -68,58 +92,34 @@ class SettingsAdminView(APIView):
                 },
                 "user": user,
                 "token": token,
-                "ssoAuth": sso_auth,
+                "ssoAuth": self.get_sso_auth_config(),
                 "spriteBaseUrl": reverse("sprites", request=request),
             }
         )
 
 
-class SettingsFrontendView(APIView):
+class SettingsFrontendView(CommonSettings, APIView):
     permission_classes = [
         permissions.AllowAny,
     ]
 
     def get(self, request, *args, **kwargs):
-        if config.INSTANCE_LOGO.startswith("/"):
-            LOGO_URL = config.INSTANCE_LOGO
-        else:
-            LOGO_URL = default_storage.url(config.INSTANCE_LOGO)
-
-        sso_auth = {}
-        if settings.OIDC_ENABLE_LOGIN:
-            sso_auth = {
-                "loginUrl": reverse("login_dispatcher"),
-                "logoutUrl": reverse("logout"),
-            }
-
-        if config.INSTANCE_SPLASHSCREEN.startswith("/"):
-            INSTANCE_SPLASHSCREEN = config.INSTANCE_SPLASHSCREEN
-        else:
-            INSTANCE_SPLASHSCREEN = default_storage.url(config.INSTANCE_SPLASHSCREEN)
-
-        if config.INSTANCE_FAVICON.startswith("/"):
-            FAVICON_URL = config.INSTANCE_FAVICON
-        else:
-            FAVICON_URL = default_storage.url(config.INSTANCE_FAVICON)
         extra_menu_items_filters = Q(limit_to_groups__isnull=True)
         if request.user.is_authenticated:
             extra_menu_items_filters |= Q(limit_to_groups__in=request.user.groups.all())
         extra_menu_items = ExtraMenuItem.objects.filter(extra_menu_items_filters)
 
-        user = (
-            UserSerializer(request.user).data if request.user.is_authenticated else None
-        )
-        token = request.user.get_jwt_token() if user else None
+        user, token = self.get_user_token_data()
         return Response(
             {
                 # deprecated section  & front
                 "title": config.INSTANCE_TITLE,
                 "version": None,
                 "credits": config.INSTANCE_CREDITS,
-                "favicon": FAVICON_URL,
+                "favicon": self.get_favicon_url(),
                 "theme": {
-                    "logo": LOGO_URL,
-                    "brandLogo": INSTANCE_SPLASHSCREEN,
+                    "logo": self.get_logo_url(),
+                    "brandLogo": self.get_splashcreen_url(),
                     "logoUrl": config.INSTANCE_LOGO_FRONTEND_URL,
                     "styles": [],
                 },
@@ -131,7 +131,7 @@ class SettingsFrontendView(APIView):
                 "allowUserRegistration": False,
                 "user": user,
                 "token": token,
-                "ssoAuth": sso_auth,
+                "ssoAuth": self.get_sso_auth_config(),
             }
         )
 
