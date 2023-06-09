@@ -267,22 +267,3 @@ class MapBaseLayerSerializer(serializers.ModelSerializer):
             "tiles",
             "tilejson_url",
         )
-
-
-class PublicMapBaseLayerSerializer(serializers.ModelSerializer):
-    """Serializer used to provide quick select list in default public settings API endpoint"""
-
-    tilejson_url = serializers.SerializerMethodField()
-
-    def get_tilejson_url(self, instance):
-        """
-        Provide generated tilejson or mapbox url along base layer type
-        """
-        if instance.base_layer_type != "mapbox":
-            return reverse("baselayer-tilejson", args=(instance.pk,))
-        else:
-            return instance.map_box_url
-
-    class Meta:
-        model = MapBaseLayer
-        fields = ("id", "order", "name", "slug", "tilejson_url")
