@@ -41,10 +41,10 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "credits": "Source: TerraVisu",
                 "ssoAuth": {},
                 "extraMenuItems": [],
-                "favicon": "/static_dj/img/favicon.ico",
+                "favicon": "http://testserver/static_dj/img/favicon.ico",
                 "theme": {
-                    "brandLogo": "/static_dj/img/splashscreen.png",
-                    "logo": "/static_dj/img/logo.webp",
+                    "brandLogo": "http://testserver/static_dj/img/splashscreen.png",
+                    "logo": "http://testserver/static_dj/img/logo.webp",
                     "logoUrl": "/",
                     "styles": [],
                 },
@@ -73,10 +73,10 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "credits": "My Credits",
                 "extraMenuItems": [],
                 "ssoAuth": {},
-                "favicon": "/media/favicon.ico",
+                "favicon": "http://testserver/media/favicon.ico",
                 "theme": {
-                    "brandLogo": "/media/splashscreen.png",
-                    "logo": "/media/logo.webp",
+                    "brandLogo": "http://testserver/media/splashscreen.png",
+                    "logo": "http://testserver/media/logo.webp",
                     "logoUrl": "https://example.com",
                     "styles": [],
                 },
@@ -161,10 +161,10 @@ class AdminSettingsApiView(APITestCase):
                 "ssoAuth": {},
                 "theme": {
                     "logo": {
-                        "src": "/static_dj/img/logo.webp",
+                        "src": "http://testserver/static_dj/img/logo.webp",
                         "alt": "Logo",
                     },
-                    "favicon": "/static_dj/img/favicon.ico",
+                    "favicon": "http://testserver/static_dj/img/favicon.ico",
                     "heading": "<h2>Administration</h2>",
                 },
                 "map": {
@@ -200,17 +200,17 @@ class AdminSettingsApiView(APITestCase):
     def test_custom(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
+        self.assertDictEqual(
             response.data,
             {
                 "title": "TerraTest",
                 "ssoAuth": {},
                 "theme": {
                     "logo": {
-                        "src": "/media/logo.png",
+                        "src": "http://testserver/media/logo.png",
                         "alt": "Logo",
                     },
-                    "favicon": "/media/favicon.ico",
+                    "favicon": "http://testserver/media/favicon.ico",
                     "heading": "<h2>Administration</h2>",
                 },
                 "map": {
