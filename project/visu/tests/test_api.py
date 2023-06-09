@@ -67,6 +67,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
     )
     @override_settings(OIDC_ENABLE_LOGIN=True)
     def test_custom(self):
+        self.maxDiff = None
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -207,6 +208,7 @@ class AdminSettingsApiView(APITestCase):
     )
     @override_settings(OIDC_ENABLE_LOGIN=True)
     def test_custom(self):
+        self.maxDiff = None
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertDictEqual(
