@@ -228,7 +228,7 @@ six==1.16.0
     #   fiona
     #   munch
     #   python-dateutil
-sqlparse==0.4.3
+sqlparse==0.4.4
     # via django
 texttable==1.6.7
     # via pyexcel
