@@ -87,6 +87,24 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract metadata (tags, labels) for Docker dev
+        id: meta-dev
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-dev
+
+      - name: Build and push Docker image dev
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: .docker/backend/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          push: true
+          tags: ${{ steps.meta-dev.outputs.tags }}
+          labels: ${{ steps.meta-dev.outputs.labels }}
+          target: dev
+
       - name: Extract metadata (tags, labels) for Docker
         id: meta
         uses: docker/metadata-action@v4
@@ -104,25 +122,6 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           target: prod
-
-      - name: Extract metadata (tags, labels) for Docker dev
-        id: meta-dev
-        uses: docker/metadata-action@v4
-        with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-dev
-
-      - name: Build and push Docker image dev
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: .docker/backend/Dockerfile
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-          build: false
-          push: true
-          tags: ${{ steps.meta-dev.outputs.tags }}
-          labels: ${{ steps.meta-dev.outputs.labels }}
-          target: dev
 
   attach_install_release:
     runs-on: ubuntu-latest
