@@ -1,33 +1,33 @@
 ==============================================================
-Manuel d'utilisation du back office de la plateforme TerraVisu 
+Manuel d'utilisation de l'outil d'administration de la plateforme TerraVisu 
 ==============================================================
 
 
-Le Back Office 
+L'outil d'administration
 ==============
 
-Cette documentation décrit les procédures pour accéder et gérer les différentes fonctionnalités de la plateforme TerraVisu.
+Cette documentation décrit les procédures pour l'activation et la gestion des différentes fonctionnalités de la plateforme TerraVisu.
 
-Le back-office de TerraVisu permet en quelques clics de gérer des utilisateurs, d’importer une source de données géographiques, de créer et personnaliser une couche, puis de visualiser le résultat sur une carte.
+L'outil d'administration de TerraVisu permet en quelques clics de gérer des utilisateurs, d’importer différentes sources de données géographiques, de créer et personnaliser ses cartes.
 
 **Résumé des fonctionnalités :**
 
 * Gérer les sources de données géographiques 
-* Gérer les couches
 * Configurer des fonds de cartes
-* Créer des visualisation personnelles 
+* Créer des visualisation privées 
 * Créer des visualisation publiques 
-* Créer des analyses personnelles 
+* Créer des analyses privées 
 * Créer des analyses publiques 
 * Créer des scénarios interactifs
+* Organiser les visualisations et analyses présentes dans l'application
 
-L'authentification au back-office
+L'authentification à l'outil d'administration
 =================================
 
 Procédure d’authentification
 ----------------------------
 
-Le chemin d’accès au back-office d’un visualiseur cartographique TerraVisu est toujours constitué de l’URL du visualiseur suivis de « /admin ».
+Le chemin d’accès à l'outil d'administration d’une application TerraVisu est toujours constitué de l’URL du visualiseur suivis de « /admin ».
 
 Une fois en possession des identifiants, vous pouvez les renseigner dans la page d’authentification.
 
