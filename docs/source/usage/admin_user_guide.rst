@@ -63,12 +63,12 @@ Vous avez la possibilité d’exporter la liste des utilisateurs au format CSV e
 Créer un nouvel utilisateur
 ---------------------------
 
-Les conditions permettant de créer un nouvel utilisateur est d’être soi-même super-utilisateur.
+Seuls les **super-utilisateurs** sont autorisés à créer de nouveaux utilisateurs. 
 
 Pour ajouter un nouvel utilisateur cliquez sur le bouton « **CRÉER** ».
 Les informations à renseigner sont à minima le **nom**, le **prénom**, l’**adresse mail**, le **mot de passe**.
 
-Si vous activez l’option « **Superutilisateur** » l’utilisateur pourra à son tour créer de nouveaux utilisateurs.
+Si vous activez l’option « **Super-utilisateur** » l’utilisateur pourra à son tour créer de nouveaux utilisateurs.
 
 Si vous activez l’option « **Actif** » l’utilisateur pourra se connecter dès que son compte sera créé, sinon, il devra attendre que celui ci devienne actif.
 
@@ -76,7 +76,7 @@ Vous pouvez intégrer l’utilisateur à un ou plusieurs groupes.
 
 Il est possible de rajouter des informations supplémentaires comme la fonction, l’organisme de rattachement ou encore l’adresse. 
 
-Si l'utilisateur perd son mot de passe, il faut recréer un compte utilisateur.
+Si l'utilisateur perd son mot de passe, il faut supprimer son compte et lui en créer un nouveau.
 
 .. image :: ../_static/images/admin/admin_utilisateurs_ajout.png
 
@@ -89,7 +89,7 @@ Les groupes d’utilisateurs permettent de gérer des permissions à différents
 
 * L’administration de fonds de carte
 * La gestion des sources de données 
-* La gestion des couches 
+* La gestion des couches cartographiques
 * La gestion des groupes d’utilisateurs 
 * La gestion des utilisateurs 
 
@@ -138,37 +138,41 @@ Pour ajouter une nouvelle source, cliquez sur le bouton « **CRÉER** ».
 
 Les types de sources de données supportés actuellement par l’application sont :
 
-* GeoJSON
-* ESRI Shapefile
-* Requêtes PostGIS
-* CSV avec des coordonnées géographiques
-* Flux WMS/WMTS
+* les fichiers GeoJSON ;
+* les fichiers Shapefile ;
+* les requêtes PostGIS ;
+* les fichiers CSV contenant des coordonnées géographiques ;
+* les flux WMS/WMTS.
 
-A noter qu’une fois la source de données enregistrée il n’est pas possible de modifier son type. 
+A noter qu’une fois la source de données enregistrée, il n’est pas possible de modifier son type. 
 
-Les types de géométries supportés par l’application sont :
+Les types de géométries supportés par l’application sont les suivants :
 
-* Point
-* Linestring
-* Polygon
-* MultiPoint
-* MultiLinestring
-* MultiPolygon
-* GeometryCollection
+* *Point*
+* *Linestring*
+* *Polygon*
+* *MultiPoint*
+* *MultiLinestring*
+* *MultiPolygon*
+* *GeometryCollection*
 
 Lors de la déclaration de la source, il est possible d’ajouter un ou plusieurs groupes d’utilisateurs, De cette façon, seuls les utilisateurs faisant partie des groupes affectés à la source seront en mesure de visualiser les données.
 
 ⚠️ *Le nom d’une source de données doit être unique, si ce n’est pas le cas l’enregistrement échouera.*
 
+⚠️ *Toutes les données intégrées à l’application doivent a minima posséder un champ d’identifiant unique et une géométrie dont les coordonnées sont en WGS84 (epsg:4326).*
+
 * **Import de fichiers**
 
-Une source de données peut être créé par l’import d’un fichier GeoJSON, ESRI Shapefile ou CSV en uploadant le fichier. 
+Une source de données peut être créée par l’import d’un fichier GeoJSON, Shapefile ou CSV en déposant le fichier dans l'interface. 
 
 * **Import de fichier GeoJSON ou Shapefile**
 
 Les informations à renseigner à minima, lors de la création d’une nouvelle source GeoJSON ou Shapefile sont le nom, le type de données, le type de la géométrie et le champ de l’identifiant unique.
 
 .. image :: ../_static/images/admin/admin_source_creation_geojson.png
+
+⚠️ *Les fichiers Shapefile doivent être fournis sous la forme d’une archive zippée contenant l’ensemble des fichiers (.shp, .prj, .shx, .dbf, etc).*
 
 * **Import de fichier CSV**
 
@@ -182,7 +186,7 @@ L’ option « **Entête à la première ligne** » activée permet de conserver
 
 Si l’option « **Ignorer les colonnes à null** » est activée, toutes les colonnes vides ne seront pas conservées.
 
-* **Import via une requête SQL PostGIS**
+* **Requête vers une base de données PostGIS**
 
 Les informations à renseigner à minima lors de la création d’une nouvelle source PostGIS sont le **nom**, le **type de géométrie**, les **paramètres de connexion à la base de données** (hôte, port, nom bdd, nom utilisateur, mot de passe utilisateur), **requête SQL**, **champ de géométrie**, **champ de l’identifiant unique**.
 
@@ -194,6 +198,17 @@ Il est possible de définir la fréquence de mise à jour automatique de la sour
 L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde toutes les 25 mn s’il y a des changements) +date de fin de la dernière mise à jour. Il peut donc y avoir un delta de 24h et 25mn au minimum entre chaque mise à jour de source de données. Ce delta peut se rajouter d'autant plus s'il y a des mise à jour manuelles.
 
 ⚠️ *Attention à ne pas terminer la requête par un point virgule.*
+
++------------------------+
+| Géométries invalides   | 
++========================+
+| Seules des géométries valides peuvent être importées dans l’application TerraVisu.
+Avec PostGis, il est possible de corriger des géométries invalides avec les fonctions suivantes :
+    * `ST_MakeValid(geom)`
+    * `ST_Buffer(geom, 0)`
+    * `ST_SimplifyPreserveTopology(geom, tolerance)` | 
++--------------------------------------------------+
+
 
 * **Import via un flux WMS/WMTS**
 
@@ -232,14 +247,14 @@ L’outil détecte automatiquement les types de chaque champ mais il peut arrive
 
 Les types gérés par l’application sont les suivants :
 
-* String
-* Integer
-* Float
-* Boolean
-* Undefined
-* Date
+* *String*
+* *Integer*
+* *Float*
+* *Boolean*
+* *Undefined*
+* *Date*
 
-Lorsqu’un champ a le type « Undefined », cela signifie que l’outil n’a pas réussit à l’identifier. A ce moment là il faut lui assigner le bon type dans la liste déroulante.
+Lorsqu’un champ est de **type « Undefined »**, cela signifie que l’outil n’a pas réussit à l’identifier. A ce moment là il faut lui assigner le bon type dans la liste déroulante.
 
 Un extrait des valeurs pour chaque champ est fournit afin d’avoir un aperçu des données.
 
@@ -340,7 +355,7 @@ Le filtre appliqué à la source de données dans la couche est immédiatement r
 
 **Onglet ICÔNES**
 
-Il est possible d'afficher ses propres icones sur une couche. 
+Il est possible d'afficher ses propres pictogrammes sur une couche. 
 
 Pour cela il suffit de cliquer sur le bouton « **AJOUTER** », d'importer son image (png/jpeg) et de la nommer dans le champ « Nom ». 
 
@@ -351,6 +366,7 @@ Il est possible de modifier la couleur de fond de l'image en utilisant l'outil �
 Pour enregistrer l'image, enregistrez la couche.
 
 .. image :: ../_static/images/admin/admin_couche_icone_bleue.png
+
 
 **Onglet STYLE**
 
@@ -392,6 +408,31 @@ Les curseur de la plage de visibilité permettent de définir des niveaux de zoo
 Pour utiliser une icône existante dans un style simple, sélectionnez la représentation « Icône » et choisissez l'image que vous avez enregistré dans l'onglet « **ICÔNES** ».
 
 .. image :: ../_static/images/admin/admin_couche_style_icone.png
+
+**Style avec motif**
+
+Il est possible d’utiliser des motifs au lieu des couleurs pour remplir un polygone.
+
+    1. Création d’un motif
+       La première étape est de créer le motif, dans l’onglet ICÔNES. 
+       Pour cela, il est nécessaire d’importer une image servant de base au motif (le motif est idéalement blanc et de taille 28 x 28 pixels). L’import d’image se fait via le bouton UPLOAD. 
+       Il est ensuite possible de colorer l’image précédemment importée dans l’application. Le bouton COMPOSE permet ce choix de couleur à appliquer sur le motif.
+ 
+    2. Utilisation d’un motif
+       Actuellement les motifs ne sont pas gérés par l’assistant de style.
+       Il est nécessaire de désactiver l’assistant pour utiliser les motifs via du code Mapbox.
+
+      Exemple :
+      .. code-block::
+        {
+          "type": "fill",
+          "paint": {
+            "fill-pattern": "hachures-bleu"
+          },
+          "maxzoom": 24,
+          "minzoom": 0
+        }
+
 
 **Style avec une analyse**
 
