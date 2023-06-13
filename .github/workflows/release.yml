@@ -104,13 +104,13 @@ jobs:
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
 
-      - name: Extract metadata (tags, labels) for Docker builder
-        id: meta-builder
+      - name: Extract metadata (tags, labels) for Docker dev
+        id: meta-dev
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-builder
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-dev
 
-      - name: Build and push Docker image builder
+      - name: Build and push Docker image dev
         uses: docker/build-push-action@v4
         with:
           context: .
@@ -118,8 +118,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           push: true
-          tags: ${{ steps.meta-builder.outputs.tags }}
-          labels: ${{ steps.meta-builder.outputs.labels }}
+          tags: ${{ steps.meta-dev.outputs.tags }}
+          labels: ${{ steps.meta-dev.outputs.labels }}
           target: dev
 
   attach_install_release:
