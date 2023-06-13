@@ -96,9 +96,29 @@ jobs:
         with:
           context: .
           file: .docker/backend/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Extract metadata (tags, labels) for Docker builder
+        id: meta
+        uses: docker/metadata-action@v4
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}-builder
+
+      - name: Build and push Docker image builder
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: .docker/backend/Dockerfile
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          target: dev
 
   attach_install_release:
     runs-on: ubuntu-latest
