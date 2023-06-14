@@ -2,13 +2,16 @@
 CHANGELOG
 =========
 
-XXXX.X.X       (XXXX-XX-XX)
+2023.6.5       (2023-06-14)
 ---------------------------
 
 **Improvements:**
 
 - Customize info menu content in config dashboard
-- Allow geosource to be filtered on the name from default react-admin filter
+
+**Bugfix**
+
+- Use an autocomplete widget t oselect source in layer definition in admin (Not limited to 100 elements anymore)
 
 
 2023.6.4       (2023-06-09)
