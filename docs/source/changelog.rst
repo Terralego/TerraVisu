@@ -2,7 +2,7 @@
 CHANGELOG
 =========
 
-2023.6.5       (2023-06-14)
+XXXX.X.X       (XXXX-XX-XX)
 ---------------------------
 
 **Improvements:**
@@ -11,7 +11,15 @@ CHANGELOG
 
 **Bugfix**
 
-- Use an autocomplete widget t oselect source in layer definition in admin (Not limited to 100 elements anymore)
+- Fix restricted menus not showing after login
+
+
+2023.6.5       (2023-06-14)
+---------------------------
+
+**Bugfix**
+
+- Use an autocomplete widget to select source in layer definition in admin (Not limited to 100 elements anymore)
 
 
 2023.6.4       (2023-06-09)
