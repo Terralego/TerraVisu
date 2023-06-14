@@ -14,9 +14,9 @@ attrs==22.2.0
     # via
     #   fiona
     #   jsonschema
-billiard==3.6.4.0
+billiard==4.1.0
     # via celery
-celery==5.2.7
+celery==5.3.0
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -161,7 +161,7 @@ jsonschema==4.17.3
     # via
     #   django-geostore
     #   drf-spectacular
-kombu==5.2.4
+kombu==5.3.0
     # via celery
 lml==0.1.0
     # via
@@ -198,14 +198,15 @@ pyrsistent==0.19.3
 python-crontab==2.7.1
     # via django-celery-beat
 python-dateutil==2.8.2
-    # via python-crontab
+    # via
+    #   celery
+    #   python-crontab
 python-decouple==3.8
     # via -r requirements.in
 python-jose==3.3.0
     # via openid-connect
 pytz==2023.3
     # via
-    #   celery
     #   django-timezone-field
     #   djangorestframework
 pyyaml==6.0
@@ -235,7 +236,9 @@ sqlparse==0.4.4
 texttable==1.6.7
     # via pyexcel
 tzdata==2023.3
-    # via django-celery-beat
+    # via
+    #   celery
+    #   django-celery-beat
 uritemplate==4.1.1
     # via drf-spectacular
 urllib3==1.26.15
