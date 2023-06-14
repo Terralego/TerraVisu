@@ -308,7 +308,9 @@ class SceneTreeAPIView(APIView):
         baselayers = [
             {
                 "label": baselayer.name,
-                "url": baselayer.url,
+                "url": self.request.build_absolute_uri(baselayer.url)
+                if baselayer.base_layer_type != "mapbox"
+                else baselayer.url,
             }
             for baselayer in map_base_layers
         ]
