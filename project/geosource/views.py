@@ -4,6 +4,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from .filtersets import SourceFilterSet
 from .models import Source
 from .parsers import NestedMultipartJSONParser
 from .permissions import SourcePermission
@@ -20,10 +21,7 @@ class SourceModelViewset(ModelViewSet):
         "id",
         "slug",
     )
-    filterset_fields = (
-        "polymorphic_ctype",
-        "geom_type",
-    )
+    filterset_class = SourceFilterSet
     search_fields = ["name"]
 
     def get_serializer_class(self):

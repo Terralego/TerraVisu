@@ -383,3 +383,22 @@ class ModelSourceViewsetTestCase(APITestCase):
                 ),
             )
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_q_params_filter_source_on_name(self):
+        GeoJSONSource.objects.create(
+            name="source 1",
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
+        )
+        source_2 = GeoJSONSource.objects.create(
+            name="source 2",
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
+        )
+
+        response = self.client.get(reverse("geosource:geosource-list"), {"q": "2"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        data = response.json()
+        self.assertEqual(len(data["results"]), 1)
+        self.assertEqual(data["results"][0]["id"], source_2.id)
