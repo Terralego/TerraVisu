@@ -27,3 +27,4 @@ git+https://github.com/Terralego/django-auth-oidc.git@master#egg=django-auth-oid
 drf-jwt
 drf-spectacular
 drf-extra-fields
+django-tinymce

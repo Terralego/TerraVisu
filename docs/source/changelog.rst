@@ -2,6 +2,14 @@
 CHANGELOG
 =========
 
+XXXX.X.X       (XXXX-XX-XX)
+---------------------------
+
+**Improvements:**
+
+- Customize info menu content in config dashboard
+
+
 2023.6.4       (2023-06-09)
 ---------------------------
 

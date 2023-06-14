@@ -6,6 +6,7 @@ from rest_framework.test import APITestCase
 
 from project.accounts.tests.factories import UserFactory
 from project.terra_layer.tests.factories import LayerFactory, LayerGroupFactory
+from project.visu.api import CommonSettings
 from project.visu.serializers import ExtraMenuItemSerializer
 from project.visu.tests.factories import ExtraMenuItemFactory, SpriteValueFactory
 
@@ -32,6 +33,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
     url = reverse_lazy("settings-frontend")
 
     def test_default_values(self):
+        self.maxDiff = None
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
@@ -42,6 +44,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "ssoAuth": {},
                 "extraMenuItems": [],
                 "favicon": "http://testserver/static_dj/img/favicon.ico",
+                "infoContent": CommonSettings().get_info_content(),
                 "theme": {
                     "brandLogo": "http://testserver/static_dj/img/splashscreen.png",
                     "logo": "http://testserver/static_dj/img/logo.webp",
@@ -64,6 +67,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
         INSTANCE_FAVICON="favicon.ico",
         OPENID_SSO_LOGIN_BUTTON_TEXT="Login via SSO",
         OPENID_DEFAULT_LOGIN_BUTTON_TEXT="Login via internal",
+        INSTANCE_INFO_CONTENT="<b>This is my info content</b>",
     )
     @override_settings(OIDC_ENABLE_LOGIN=True)
     def test_custom(self):
@@ -83,6 +87,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                     "ssoButtonText": "Login via SSO",
                 },
                 "favicon": "http://testserver/media/favicon.ico",
+                "infoContent": "<b>This is my info content</b>",
                 "theme": {
                     "brandLogo": "http://testserver/media/splashscreen.png",
                     "logo": "http://testserver/media/logo.webp",

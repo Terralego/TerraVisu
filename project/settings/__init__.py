@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     "constance.backends.database",  # constance: after contenttypes and before grappelli
     "grappelli.dashboard",
     "grappelli",
+    "tinymce",
     "clearcache",
     "model_clone",
     "django.contrib.admin",
@@ -233,8 +234,13 @@ ES_URL = config("ES_URL", default="http://elasticsearch:9200", cast=str)
 SESSION_ENGINE = "django.contrib.sessions.backends.file"
 SESSION_FILE_PATH = VAR_DIR / "cache" / "sessions"
 
-CONSTANCE_ADDITIONAL_FIELDS = {"image_field": ["django.forms.ImageField", {}]}
-
+CONSTANCE_ADDITIONAL_FIELDS = {
+    "image_field": ["django.forms.ImageField", {}],
+    "tinymce_field": [
+        "django.forms.CharField",
+        {"widget": "tinymce.widgets.TinyMCE", "required": False},
+    ],
+}
 CONSTANCE_CONFIG = {
     "INSTANCE_TITLE": ("TerraVisu", _("Instance title"), str),
     "INSTANCE_CREDITS": ("Source: TerraVisu", _("Instance credits"), str),
@@ -263,6 +269,11 @@ CONSTANCE_CONFIG = {
         _("OpenID: Default login button text"),
         str,
     ),
+    "INSTANCE_INFO_CONTENT": (
+        "",
+        _("Content of info tab in frontend"),
+        "tinymce_field",
+    ),
 }
 
 CONSTANCE_CONFIG_FIELDSETS = {
@@ -274,6 +285,7 @@ CONSTANCE_CONFIG_FIELDSETS = {
             "INSTANCE_FAVICON",
             "INSTANCE_SPLASHSCREEN",
             "INSTANCE_CREDITS",
+            "INSTANCE_INFO_CONTENT",
         ),
         "collapse": True,
     },
