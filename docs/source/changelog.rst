@@ -8,6 +8,7 @@ XXXX.X.X       (XXXX-XX-XX)
 **Improvements:**
 
 - Customize info menu content in config dashboard
+- Allow geosource to be filtered on the name from default react-admin filter
 
 
 2023.6.4       (2023-06-09)
