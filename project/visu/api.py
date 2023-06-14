@@ -71,6 +71,7 @@ class CommonSettings:
             <br/>
             <br/>
             <a href="https://github.com/Terralego/TerraVisu">Github</a>
+            <br/>
             <a href="https://terravisu.readthedocs.io/en/stable/">Documentation</a>
             """.strip().replace(
                 "\n", ""
