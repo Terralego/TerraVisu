@@ -118,6 +118,8 @@ django-polymorphic==3.1.0
     # via -r requirements.in
 django-timezone-field==5.0
     # via django-celery-beat
+django-tinymce==3.6.1
+    # via -r requirements.in
 django-token-tools==0.2.0
     # via django-geostore
 djangorestframework==3.14.0

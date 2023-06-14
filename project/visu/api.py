@@ -4,6 +4,7 @@ from constance import config
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.db.models import Q
+from django.utils.timezone import now
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
@@ -58,6 +59,23 @@ class CommonSettings:
                 "defaultButtonText": config.OPENID_DEFAULT_LOGIN_BUTTON_TEXT,
             }
         return {}
+
+    def get_info_content(self):
+        content = config.INSTANCE_INFO_CONTENT
+        if not content:
+            return f"""
+            <b>TerraVisu</b> {settings.VERSION}
+            <br/>
+            <br/>
+            &copy; 2017 - {now().year} Makina Corpus / Autonomens
+            <br/>
+            <br/>
+            <a href="https://github.com/Terralego/TerraVisu">Github</a>
+            <a href="https://terravisu.readthedocs.io/en/stable/">Documentation</a>
+            """.strip().replace(
+                "\n", ""
+            )
+        return content
 
 
 class SettingsAdminView(CommonSettings, APIView):
@@ -128,6 +146,7 @@ class SettingsFrontendView(CommonSettings, APIView):
                     many=True,
                     context={"request": request},
                 ).data,
+                "infoContent": self.get_info_content(),
                 "allowUserRegistration": False,
                 "user": user,
                 "token": token,
