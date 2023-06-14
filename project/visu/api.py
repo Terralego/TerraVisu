@@ -4,6 +4,7 @@ from constance import config
 from django.conf import settings
 from django.core.files.storage import default_storage
 from django.db.models import Q
+from django.template.loader import render_to_string
 from django.utils.timezone import now
 from rest_framework import permissions
 from rest_framework.response import Response
@@ -63,20 +64,9 @@ class CommonSettings:
     def get_info_content(self):
         content = config.INSTANCE_INFO_CONTENT
         if not content:
-            return f"""
-            <img src="https://raw.githubusercontent.com/Terralego/TerraVisu/master/docs/source/_static/logo_color.png" style="display: block; margin: auto; max-width: 400px;">
-            <br/>
-            version {settings.VERSION}
-            <br/>
-            <br/>
-            <b>&copy; 2017 - {now().year} Makina Corpus / Autonomens</b>
-            <br/>
-            <br/>
-            <a href="https://github.com/Terralego/TerraVisu"><img src="https://shields.io/badge/GitHub-Code-black?logo=github&style=for-the-badge" /></a>
-            <br/>
-            <a href="https://terravisu.readthedocs.io/en/{settings.VERSION}/">https://shields.io/badge/RTD-Documentation-blue?logo=readthedocs&style=for-the-badge</a>
-            """.strip().replace(
-                "\n", ""
+            return render_to_string(
+                "visu/info_menu_content.html",
+                {"version": settings.VERSION, "year": now().year},
             )
         return content
 
