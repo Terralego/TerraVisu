@@ -2,6 +2,15 @@
 CHANGELOG
 =========
 
+
+XXXX.X.X       (XXXX-XX-XX)
+---------------------------
+
+**Bugfix**
+
+- Fix upper white ribbon in responsive view
+
+
 2023.6.6       (2023-06-14)
 ---------------------------
 
