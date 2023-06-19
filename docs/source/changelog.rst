@@ -2,6 +2,13 @@
 CHANGELOG
 =========
 
+XXXX.X.X       (XXXX-XX-XX)
+---------------------------
+
+**Improvements:**
+
+- Split default info content template in multiple blocks to enhance customization
+
 
 2023.6.7       (2023-06-19)
 ---------------------------
