@@ -10,6 +10,7 @@ XXXX.X.X       (XXXX-XX-XX)
 
 - Fix upper white ribbon in responsive view
 - Use autocomplete field for source in layer secondary style and list filter
+- Fix map PDF export
 
 
 2023.6.6       (2023-06-14)
