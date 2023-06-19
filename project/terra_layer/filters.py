@@ -1,7 +1,7 @@
 import django_filters
 from django_filters.rest_framework import FilterSet
 
-from project.terra_layer.models import Scene
+from project.terra_layer.models import Layer, Scene
 
 
 class SceneFilterSet(FilterSet):
@@ -18,3 +18,9 @@ class SceneFilterSet(FilterSet):
     class Meta:
         model = Scene
         fields = ["viewer"]
+
+
+class LayerFilterSet(FilterSet):
+    class Meta:
+        model = Layer
+        fields = ["source", "group", "active_by_default", "in_tree", "table_enable"]

@@ -21,7 +21,7 @@ from rest_framework.viewsets import ModelViewSet
 
 from project.geosource.models import FieldTypes, WMTSSource
 
-from ..filters import SceneFilterSet
+from ..filters import LayerFilterSet, SceneFilterSet
 from ..models import FilterField, Layer, LayerGroup, Scene, StyleImage
 from ..permissions import LayerPermission, ScenePermission
 from ..serializers import (
@@ -114,13 +114,7 @@ class LayerViewset(ModelViewSet):
         "order",
         "in_tree",
     )
-    filter_fields = (
-        "source",
-        "group",
-        "active_by_default",
-        "in_tree",
-        "table_enable",
-    )
+    filterset_class = LayerFilterSet
     permission_classes = (LayerPermission,)
     search_fields = ["name", "settings"]
 
