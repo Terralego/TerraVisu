@@ -1,13 +1,17 @@
 {% load static %}
+
+{% block logo %}
 <img src="{% static 'visu/img/logo_color.png' %}"
      style="display: block; margin: auto; max-width: 400px;">
+{% endblock %}
 <br/>
-version <b><a href="https://github.com/Terralego/TerraVisu/releases/tag/{{ version }}" target="_blank" referrerpolicy="no-referrer">{{ version }}</a></b>
+{% block version_text %}version{% endblock %} <b><a href="https://github.com/Terralego/TerraVisu/releases/tag/{{ version }}" target="_blank" referrerpolicy="no-referrer">{{ version }}</a></b>
 <br/>
 <br/>
 <b>&copy; 2017 - {{ year }} Makina Corpus / Autonomens</b>
 <br/>
 <br/>
+{% block links %}
 <a href="https://github.com/Terralego/TerraVisu" target="_blank" referrerpolicy="no-referrer">
     <img src="https://shields.io/badge/GitHub-Code-black?logo=github&style=for-the-badge" />
 </a>
@@ -15,3 +19,4 @@ version <b><a href="https://github.com/Terralego/TerraVisu/releases/tag/{{ versi
 <a href="https://terravisu.readthedocs.io/en/{{ version }}/" target="_blank" referrerpolicy="no-referrer">
     <img src="https://shields.io/badge/RTD-Documentation-blue?logo=readthedocs&style=for-the-badge" />
 </a>
+{% endblock %}
