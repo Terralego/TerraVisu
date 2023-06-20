@@ -213,6 +213,7 @@ class Layer(CloneMixin, models.Model):
         blank=True,
     )
     interactions = models.JSONField(default=list, blank=True)
+    advanced_style = models.JSONField(default=dict, blank=True)
     fields = models.ManyToManyField(Field, through="FilterField")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

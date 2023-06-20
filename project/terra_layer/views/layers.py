@@ -22,7 +22,7 @@ from rest_framework.viewsets import ModelViewSet
 from project.geosource.models import FieldTypes, WMTSSource
 
 from ..filters import LayerFilterSet, SceneFilterSet
-from ..models import FilterField, Layer, LayerGroup, Scene, StyleImage
+from ..models import CustomStyle, FilterField, Layer, LayerGroup, Scene, StyleImage
 from ..permissions import LayerPermission, ScenePermission
 from ..serializers import (
     LayerDetailSerializer,
@@ -327,9 +327,19 @@ class SceneTreeAPIView(APIView):
         return layer_structure
 
     def get_map_layers(self):
-        """Return sources informations using serializer from sources_serializers module"""
+        """Return sources information using serializer from sources_serializers module"""
         map_layers = []
-        for layer in self.layers.filter(source__slug__in=self.authorized_sources):
+        for layer in self.layers.filter(
+            source__slug__in=self.authorized_sources
+        ).prefetch_related(
+            Prefetch(
+                "extra_styles",
+                queryset=CustomStyle.objects.filter(
+                    source__slug__in=self.authorized_sources
+                ),
+                to_attr="authorized_extra_styles",
+            )
+        ):
             map_layers += [
                 dict(
                     **SourceSerializer.get_object_serializer(layer).data,
@@ -340,9 +350,7 @@ class SceneTreeAPIView(APIView):
                         **SourceSerializer.get_object_serializer(cs).data,
                         layerId=layer.id,
                     )
-                    for cs in layer.extra_styles.filter(
-                        source__slug__in=self.authorized_sources
-                    )
+                    for cs in layer.authorized_extra_styles
                 ],
             ]
         return map_layers

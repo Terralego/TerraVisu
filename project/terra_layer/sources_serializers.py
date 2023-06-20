@@ -34,6 +34,9 @@ class SourceSerializer(serializers.BaseSerializer):
             "id": obj.layer_identifier,
             "source": DEFAULT_SOURCE_NAME,
             "source-layer": self.source_object.slug,
+            "advanced_style": obj.advanced_style
+            if hasattr(obj, "advanced_style")
+            else {},  # custom style has no advanced styles
         }
 
     class Meta:

@@ -41,6 +41,7 @@ class LayerDumpTestCase(TestCase):
             {
                 "fields": [],
                 "extra_styles": [],
+                "advanced_style": {},
                 "created_at": "2020-01-01T00:00:00Z",
                 "updated_at": "2020-01-01T00:00:00Z",
                 "uuid": "91c60192-9060-4bf6-b0de-818c5a362d89",
