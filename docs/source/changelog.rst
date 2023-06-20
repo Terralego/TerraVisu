@@ -5,6 +5,10 @@ CHANGELOG
 XXXX.X.X       (XXXX-XX-XX)
 ---------------------------
 
+**New features:**
+
+- Allow to define and display pie charts in layer style
+
 **Improvements:**
 
 - Split default info content template in multiple blocks to enhance customization

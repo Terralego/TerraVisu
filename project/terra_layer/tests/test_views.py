@@ -181,7 +181,7 @@ class SceneViewsetTestCase(APITestCase):
         response = self.client.get(reverse("layerview", args=[scene["slug"]]))
 
         json_response = response.json()
-        self.assertEqual(
+        self.assertListEqual(
             json_response["map"]["customStyle"]["layers"],
             [
                 {
@@ -189,6 +189,7 @@ class SceneViewsetTestCase(APITestCase):
                     "layerId": 1,
                     "source": "terra_0",
                     "source-layer": "test_view_2",
+                    "advanced_style": {},
                 }
             ],
         )
