@@ -214,14 +214,14 @@ TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
     "height": 500,
     "plugins": "advlist,autolink,lists,link,image,charmap,print,preview,anchor,"
-               "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,paste,"
-               "code,help,wordcount,textcolor",
+    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,paste,"
+    "code,help,wordcount,textcolor",
     "toolbar": "undo redo | formatselect | "
-               "bold italic forecolor backcolor | link image media | alignleft aligncenter "
-               "alignright alignjustify | bullist numlist outdent indent | "
-               "removeformat | code | wordcount | help",
-    'width': '95%',
-    'resize': "both",
+    "bold italic forecolor backcolor | link image media | alignleft aligncenter "
+    "alignright alignjustify | bullist numlist outdent indent | "
+    "removeformat | code | wordcount | help",
+    "width": "95%",
+    "resize": "both",
 }
 
 JWT_AUTH = {
