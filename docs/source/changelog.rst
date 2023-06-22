@@ -2,6 +2,13 @@
 CHANGELOG
 =========
 
+2023.6.10      (2023-06-22)
+---------------------------
+
+**Improvements:**
+
+- Add more options to info content editor in config dashboard
+
 
 2023.6.9       (2023-06-21)
 ---------------------------

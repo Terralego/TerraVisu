@@ -160,7 +160,9 @@ VAR_DIR = PROJECT_DIR / "var"
 STATIC_URL = "static_dj/"
 STATIC_ROOT = PROJECT_DIR / "public" / "static_dj"
 
-STATICFILES_DIRS = (PROJECT_DIR / "var" / "conf" / "static",)
+STATICFILES_DIRS = [
+    PROJECT_DIR / "var" / "conf" / "static",
+]
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = PROJECT_DIR / "public" / "media"
@@ -208,6 +210,19 @@ REST_FRAMEWORK = {
     ),
 }
 
+TINYMCE_DEFAULT_CONFIG = {
+    "theme": "silver",
+    "height": 500,
+    "plugins": "advlist,autolink,lists,link,image,charmap,print,preview,anchor,"
+    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,paste,"
+    "code,help,wordcount,textcolor",
+    "toolbar": "undo redo | formatselect | "
+    "bold italic forecolor backcolor | link image media | alignleft aligncenter "
+    "alignright alignjustify | bullist numlist outdent indent | "
+    "removeformat | code | wordcount | help",
+    "width": "95%",
+    "resize": "both",
+}
 
 JWT_AUTH = {
     "JWT_PAYLOAD_HANDLER": "project.accounts.jwt_payload.terra_payload_handler",
