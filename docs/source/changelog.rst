@@ -6,6 +6,10 @@ CHANGELOG
 2023.6.11      (2023-06-23)
 ---------------------------
 
+**New features:**
+
+- Map visualization with circular diagrams
+
 **Bugfix**
 
 - Fix info content overflow if height taller than window
