@@ -2,6 +2,13 @@
 CHANGELOG
 =========
 
+XXXX.X.X       (XXXX-XX-XX)
+---------------------------
+
+**Bugfix**
+
+- Fix unauthenticated access to Source API endpoint exception
+
 
 2023.6.11      (2023-06-23)
 ---------------------------

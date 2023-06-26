@@ -22,7 +22,7 @@ from project.geosource.tests.helpers import get_file
 UserModel = get_user_model()
 
 
-class ModelSourceViewsetTestCase(APITestCase):
+class SourceViewsetTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.default_user = UserModel.objects.create(
@@ -62,7 +62,7 @@ class ModelSourceViewsetTestCase(APITestCase):
             response.json(),
         )
 
-    def test_list_view(self):
+    def test_list_view_authenticated(self):
         # Create many sources and list them
         [
             PostGISSource.objects.create(
@@ -75,6 +75,12 @@ class ModelSourceViewsetTestCase(APITestCase):
         data = response.json()["results"]
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(Source.objects.count(), len(data))
+
+    def test_list_view_anonymous(self):
+        """Should handle 401"""
+        self.client.logout()
+        response = self.client.get(reverse("geosource:geosource-list"))
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
 
     def test_refresh_view_fail(self):
         with patch(
