@@ -7,7 +7,8 @@ XXXX.X.X       (XXXX-XX-XX)
 
 **Bugfix**
 
-- Fix unauthenticated access to Source API endpoint exception
+- Fix unauthenticated access to Source API endpoint exception.
+- Legend title, content and box width are fixed
 
 
 2023.6.11      (2023-06-23)
