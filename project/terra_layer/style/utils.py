@@ -10,6 +10,7 @@ style_type_2_legend_shape = {
     "circle": "circle",
     "symbol": "symbol",
     "line": "line",
+    "piechart": "circle",
 }
 
 stroke_color_props = ["line_color", "stroke_color", "outline_color"]
