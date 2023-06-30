@@ -2,6 +2,19 @@
 CHANGELOG
 =========
 
+2023.6.13      (2023-06-30)
+---------------------------
+
+**Bugfix**
+
+- Fix content overflow in storytelling
+
+
+**Improvements:**
+
+- Pie charts legend definition
+
+
 2023.6.12      (2023-06-27)
 ---------------------------
 
