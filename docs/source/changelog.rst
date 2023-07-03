@@ -7,7 +7,7 @@ CHANGELOG
 
 **Improvements:**
 
-- Pie charts legend definition
+- Pie charts improvements
 
 
 2023.6.13      (2023-06-30)
