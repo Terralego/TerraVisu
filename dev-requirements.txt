@@ -72,7 +72,7 @@ packaging==23.0
     #   sphinx
 pathspec==0.11.0
     # via black
-pip-tools==6.13.0
+pip-tools==6.14.0
     # via -r dev-requirements.in
 platformdirs==3.0.0
     # via black
@@ -128,6 +128,7 @@ tomli==2.0.1
     # via
     #   black
     #   build
+    #   pip-tools
     #   pyproject-hooks
 urllib3==1.26.15
     # via
