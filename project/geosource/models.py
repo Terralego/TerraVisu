@@ -18,7 +18,7 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models, transaction
 from django.utils import timezone
 from django.utils.text import slugify
-from django.utils.translation import gettext_lazy as _
+from django.utils.translation import gettext, gettext_lazy as _
 from geostore import GeometryTypes
 from polymorphic.models import PolymorphicModel
 from psycopg2 import sql
@@ -229,13 +229,13 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         self.report.deleted_lines = deleted
         if not row_count:
             self.report.status = SourceReporting.Status.ERROR.value
-            self.report.message = "Failed to refresh data"
+            self.report.message = gettext("Failed to refresh data")
         elif row_count == total:
             self.report.status = SourceReporting.Status.SUCCESS.value
-            self.report.message = "Source refreshed successfully"
+            self.report.message = gettext("Source refreshed successfully")
         else:
             self.report.status = SourceReporting.Status.WARNING.value
-            self.report.message = "Source refreshed partially"
+            self.report.message = gettext("Source refreshed partially")
         if self.id:
             self.report.ended = timezone.now()
             self.report.save()
