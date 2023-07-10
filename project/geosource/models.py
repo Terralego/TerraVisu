@@ -131,7 +131,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     updated_at = models.DateTimeField(auto_now=True)
     last_refresh = models.DateTimeField(default=timezone.now)
     status = models.PositiveIntegerField(
-        choices=Status.choices, null=True, max_length=20
+        choices=Status.choices, null=True
     )
 
     SOURCE_GEOM_ATTRIBUTE = "_geom_"
