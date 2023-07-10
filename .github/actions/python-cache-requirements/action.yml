@@ -16,3 +16,4 @@ runs:
         cache: 'pip'
     - run: |
         pip install -r ${{ inputs.requirements }}
+      shell: bash
