@@ -21,7 +21,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/python-cache-requirements
         with:
-          cache-key: pip-dev-${{ hashFiles('**/dev-requirements.txt', '.python-version') }}
+          requirements: dev-requirements.txt
 
       - name: Install flake8
         run: |
@@ -38,7 +38,7 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/python-cache-requirements
         with:
-          cache-key: pip-dev-${{ hashFiles('**/dev-requirements.txt', '.python-version') }}
+          requirements: dev-requirements.txt
       - name: Install dependencies
         run: |
           pip3 install -c dev-requirements.txt isort
@@ -54,7 +54,8 @@ jobs:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/python-cache-requirements
         with:
-          cache-key: pip-dev-${{ hashFiles('**/dev-requirements.txt', '.python-version') }}
+          requirements: dev-requirements.txt
+
       - name: Install dependencies
         run: |
           pip3 install -c dev-requirements.txt black

@@ -1,14 +1,11 @@
 name: 'Python requirements - get or set in cache'
 description: 'Get pip cache from cache else generate it'
 inputs:
-  cache-key:
+  requirements:
     description: 'Cache key to use'
     required: true
-    default: pip-${{ hashFiles('**/dev-requirements.txt') }}
-  cache-path:
-    description: 'Cache pah to use'
-    required: true
-    default: ~/.cache/pip
+    default: requirements.txt
+
 runs:
   using: "composite"
   steps:
@@ -16,9 +13,6 @@ runs:
     - uses: actions/setup-python@v4
       with:
         python-version-file: .python-version
-    - name: Cache pip
-      id: cache-node-modules
-      uses: actions/cache@v3
-      with:
-        path: ${{ inputs.cache-path }}
-        key: ${{ inputs.cache-key }}
+        cache: 'pip'
+    - run: |
+        pip install -r ${{ inputs.requirements }}
