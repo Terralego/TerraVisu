@@ -13,6 +13,9 @@ runs:
   using: "composite"
   steps:
     - uses: actions/checkout@v3
+    - uses: actions/setup-python@v4
+      with:
+        python-version-file: .python-version
     - name: Cache pip
       id: cache-node-modules
       uses: actions/cache@v3

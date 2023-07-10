@@ -17,9 +17,6 @@ jobs:
   flake8:
     name: Flake8 check
     runs-on: ubuntu-latest
-    container:
-      image: python:3.10
-
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/python-cache-requirements
