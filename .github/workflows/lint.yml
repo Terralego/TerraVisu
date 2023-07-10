@@ -15,7 +15,7 @@ env:
 
 jobs:
   flake8:
-    name: Python code styling
+    name: Flake8 check
     runs-on: ubuntu-latest
     container:
       image: python:3.10
@@ -35,7 +35,7 @@ jobs:
           flake8 project
 
   isort:
-    name: Python code import sorting
+    name: iSort check
     runs-on: ubuntu-latest
     container:
       image: python:3.10
@@ -53,7 +53,7 @@ jobs:
           isort -c project
 
   black:
-    name: Black checking
+    name: Black check
     runs-on: ubuntu-latest
     container:
       image: python:3.10
