@@ -18,7 +18,8 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models, transaction
 from django.utils import timezone
 from django.utils.text import slugify
-from django.utils.translation import gettext, gettext_lazy as _
+from django.utils.translation import gettext
+from django.utils.translation import gettext_lazy as _
 from geostore import GeometryTypes
 from polymorphic.models import PolymorphicModel
 from psycopg2 import sql
