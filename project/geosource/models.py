@@ -18,12 +18,14 @@ from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models, transaction
 from django.utils import timezone
 from django.utils.text import slugify
+from django.utils.translation import gettext_lazy as _
 from geostore import GeometryTypes
 from polymorphic.models import PolymorphicModel
 from psycopg2 import sql
 
 from .callbacks import get_attr_from_path
 from .elasticsearch.index import LayerESIndex
+from .exceptions import CSVSourceException, SourceException
 from .fields import LongURLField
 from .mixins import CeleryCallMethodsMixin
 from .signals import refresh_data_done
@@ -63,27 +65,14 @@ class FieldTypes(Enum):
         return types.get(type(data), cls.Undefined)
 
 
-class SourceException(Exception):
-    """Generic source exception to be catched by the generic Source Model"""
-
-    def __init__(self, message):
-        self.message = message
-
-
-class CSVSourceException(SourceException):
-    """CSVSource exception raised by the CSVSource model"""
-
-    pass
-
-
 class SourceReporting(models.Model):
     class Status(models.IntegerChoices):
-        SUCCESS = 0, "Success"
-        ERROR = 1, "Error"
-        WARNING = 2, "Warning"
+        SUCCESS = 0, _("Success")
+        ERROR = 1, _("Error")
+        WARNING = 2, _("Warning")
         PENDING = 3, _("Pending")
 
-    status = models.PositiveIntegerField(choices=Status.choices, null=True)
+    status = models.PositiveSmallIntegerField(choices=Status.choices, null=True)
     message = models.CharField(max_length=255, default="")
     started = models.DateTimeField(null=True)
     ended = models.DateTimeField(null=True)
@@ -105,11 +94,11 @@ class SourceReporting(models.Model):
 
 class Source(PolymorphicModel, CeleryCallMethodsMixin):
     class Status(models.IntegerChoices):
-        PENDING = 0, "Pending"
-        DONE = 1, "Done"
+        PENDING = 0, _("Pending")
+        DONE = 1, _("Done")
         NOT_NEEDED = 2, _("Not needed")
 
-        __empty__ = "Need sync"
+        __empty__ = _("Need sync")
 
     name = models.CharField(max_length=255, unique=True)
     credit = models.TextField(blank=True)
@@ -130,9 +119,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     last_refresh = models.DateTimeField(default=timezone.now)
-    status = models.PositiveIntegerField(
-        choices=Status.choices, null=True
-    )
+    status = models.PositiveSmallIntegerField(choices=Status.choices, null=True)
 
     SOURCE_GEOM_ATTRIBUTE = "_geom_"
     MAX_SAMPLE_DATA = 5

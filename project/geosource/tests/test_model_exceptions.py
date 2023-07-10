@@ -7,9 +7,9 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from psycopg2 import OperationalError
 
+from project.geosource.exceptions import CSVSourceException
 from project.geosource.models import (
     CSVSource,
-    CSVSourceException,
     GeoJSONSource,
     GeometryTypes,
     PostGISSource,
