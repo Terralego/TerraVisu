@@ -181,7 +181,6 @@ class SourceListSerializer(serializers.ModelSerializer):
 
     def get_status(self, instance):
         return instance.get_status_display()
-        # return instance.get_status()
 
 
 class PostGISSourceSerializer(SourceSerializer):
