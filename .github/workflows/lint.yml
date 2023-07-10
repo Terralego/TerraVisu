@@ -34,9 +34,6 @@ jobs:
   isort:
     name: iSort check
     runs-on: ubuntu-latest
-    container:
-      image: python:3.10
-
     steps:
       - uses: actions/checkout@v3
       - uses: ./.github/actions/python-cache-requirements
@@ -52,8 +49,6 @@ jobs:
   black:
     name: Black check
     runs-on: ubuntu-latest
-    container:
-      image: python:3.10
 
     steps:
       - uses: actions/checkout@v3
