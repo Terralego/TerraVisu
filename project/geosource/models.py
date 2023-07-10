@@ -81,7 +81,7 @@ class SourceReporting(models.Model):
         SUCCESS = 0, "Success"
         ERROR = 1, "Error"
         WARNING = 2, "Warning"
-        PENDING = 3, "Pending"
+        PENDING = 3, _("Pending")
 
     status = models.PositiveIntegerField(choices=Status.choices, null=True)
     message = models.CharField(max_length=255, default="")
