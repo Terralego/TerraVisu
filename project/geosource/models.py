@@ -107,7 +107,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     class Status(models.IntegerChoices):
         PENDING = 0, "Pending"
         DONE = 1, "Done"
-        NOT_NEEDED = 2, "Not needed"
+        NOT_NEEDED = 2, _("Not needed")
 
         __empty__ = "Need sync"
 
