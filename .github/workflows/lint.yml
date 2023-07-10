@@ -22,9 +22,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Install dependencies
+      - uses: ./.github/actions/python-cache-requirements
+        with:
+          key: pip-dev-${{ hashFiles('**/dev-requirements.txt', '.python-version) }}
+
+      - name: Install flake8
         run: |
-          pip3 install flake8
+          pip3 install -c dev-requirements.txt flake8
 
       - name: Flake8
         run: |
@@ -38,10 +42,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - uses: ./.github/actions/python-cache-requirements
+        with:
+          key: pip-dev-${{ hashFiles('**/dev-requirements.txt', '.python-version) }}
       - name: Install dependencies
         run: |
-          pip3 install isort
-
+          pip3 install -c dev-requirements.txt isort
       - name: Isort
         run: |
           isort -c project
@@ -54,9 +60,12 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+      - uses: ./.github/actions/python-cache-requirements
+        with:
+          key: pip-dev-${{ hashFiles('**/dev-requirements.txt', '.python-version) }}
       - name: Install dependencies
         run: |
-          pip3 install black
+          pip3 install -c dev-requirements.txt black
 
       - name: Black
         run: |
