@@ -2,6 +2,18 @@
 CHANGELOG
 =========
 
+
+2023.7.1       (2023-07-11)
+---------------------------
+
+**Improvements:**
+
+- Enable legends for WMTS layers.
+- Piecharts are now clickable.
+- Piecharts are disabled in extra styles.
+- Icons can now be categorized in layer admin.
+
+
 2023.7.0       (2023-07-03)
 ---------------------------
 
