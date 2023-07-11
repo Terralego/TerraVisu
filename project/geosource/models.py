@@ -393,7 +393,7 @@ class PostGISSource(Source):
 
         cursor.execute(sql.SQL(query).format(*attrs))
 
-        return cursor
+        return (cursor, [])
 
 
 class GeoJSONSource(Source):
