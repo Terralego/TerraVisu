@@ -299,7 +299,7 @@ class ModelCSVSourceTestCase(TestCase):
 
         records, errors = source._get_records()
         self.assertEqual(len(records), 6, len(records))
-        with self.assertNumQueries(70):
+        with self.assertNumQueries(71):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -325,7 +325,7 @@ class ModelCSVSourceTestCase(TestCase):
 
         records, errors = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(94):
+        with self.assertNumQueries(95):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -355,7 +355,7 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records, errors = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(94):
+        with self.assertNumQueries(95):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -386,7 +386,7 @@ class ModelCSVSourceTestCase(TestCase):
             if record.get("photoEtablissement")
         ]
         self.assertEqual(len(empty_entry), 0, empty_entry)
-        with self.assertNumQueries(70):
+        with self.assertNumQueries(71):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -412,7 +412,7 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records, errors = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(94):
+        with self.assertNumQueries(95):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -438,7 +438,7 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records, errors = source._get_records()
         self.assertEqual(len(records), 10, len(records))
-        with self.assertNumQueries(102):
+        with self.assertNumQueries(103):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
