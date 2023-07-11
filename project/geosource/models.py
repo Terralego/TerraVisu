@@ -184,6 +184,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             )
         else:
             self.report.reset()
+            self.report.save()
 
         layer = self.get_layer()
         begin_date = timezone.now()
