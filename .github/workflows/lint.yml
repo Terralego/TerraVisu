@@ -15,48 +15,50 @@ env:
 
 jobs:
   flake8:
-    name: Python code styling
+    name: Flake8 check
     runs-on: ubuntu-latest
-    container:
-      image: python:3.10
-
     steps:
       - uses: actions/checkout@v3
-      - name: Install dependencies
+      - uses: ./.github/actions/python-cache-requirements
+        with:
+          requirements: dev-requirements.txt
+
+      - name: Install flake8
         run: |
-          pip3 install flake8
+          pip3 install -c dev-requirements.txt flake8
 
       - name: Flake8
         run: |
           flake8 project
 
   isort:
-    name: Python code import sorting
+    name: iSort check
     runs-on: ubuntu-latest
-    container:
-      image: python:3.10
-
     steps:
       - uses: actions/checkout@v3
+      - uses: ./.github/actions/python-cache-requirements
+        with:
+          requirements: dev-requirements.txt
       - name: Install dependencies
         run: |
-          pip3 install isort
-
+          pip3 install -c dev-requirements.txt isort
       - name: Isort
         run: |
           isort -c project
 
   black:
-    name: Black checking
+    name: Black check
     runs-on: ubuntu-latest
-    container:
-      image: python:3.10
 
     steps:
       - uses: actions/checkout@v3
+      - uses: ./.github/actions/python-cache-requirements
+        with:
+          requirements: dev-requirements.txt
+
       - name: Install dependencies
         run: |
-          pip3 install black
+          pip3 install -c dev-requirements.txt black
 
       - name: Black
         run: |
