@@ -179,7 +179,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
 
     def _refresh_data(self, es_index=None):
         if not self.report:
-            self.report = SourceReporting(
+            self.report = SourceReporting.objects.create(
                 started=timezone.now(), status=SourceReporting.Status.PENDING.value
             )
         else:
