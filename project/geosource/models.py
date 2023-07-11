@@ -192,7 +192,12 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         added_rows = 0
         modified_rows = 0
         total = 0
-        records, records_errors = self._get_records()
+        try:
+            records, records_errors = self._get_records()
+        except Exception as exc:
+            # Possible Uncatched exception (i.e ValueError, Integer Error)
+            raise SourceException(exc.args)
+
         self.report.errors += records_errors
         for i, row in enumerate(records):
             total += 1
