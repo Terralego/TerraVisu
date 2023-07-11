@@ -56,7 +56,16 @@ class Migration(migrations.Migration):
                 null=True,
             ),
         ),
-        migrations.AlterField(
+        migrations.RemoveField(
+            model_name="source",
+            name="report",
+            field=models.OneToOneField(
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                to="geosource.sourcereporting",
+            ),
+        ),
+        migrations.AddField(
             model_name="source",
             name="report",
             field=models.OneToOneField(
