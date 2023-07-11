@@ -628,7 +628,9 @@ class CSVSource(Source):
                 # some fools use a reversed cartesian coordinates system (╯°□°)╯︵ ┻━┻
                 x, y = coords[0].split(sep) if is_xy else coords[0].split(sep)[::-1]
             except ValueError:
-                raise CSVSourceException(f"Cannot split coordinate \"{coords[0]}\" with separator \"{sep}\"")
+                raise CSVSourceException(
+                    f'Cannot split coordinate "{coords[0]}" with separator "{sep}"'
+                )
 
         # correct formated decimal is required for GEOSGeometry
         if not self.settings["decimal_separator"] == "point":
