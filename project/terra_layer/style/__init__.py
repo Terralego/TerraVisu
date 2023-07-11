@@ -25,6 +25,7 @@ def field_2_variation_type(field):
         or "opacity" in field
         or "intensity" in field
         or "size" in field
+        or "image" in field
     ):
         return "value"
     if "radius" in field:
