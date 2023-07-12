@@ -237,7 +237,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         if not row_count:
             self.report.status = SourceReporting.Status.ERROR.value
             self.report.message = gettext("Failed to refresh data")
-        elif row_count == total:
+        elif row_count == total and len(self.report.errors) == 0:
             self.report.status = SourceReporting.Status.SUCCESS.value
             self.report.message = gettext("Source refreshed successfully")
         else:
