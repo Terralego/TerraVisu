@@ -95,11 +95,9 @@ class SourceReporting(models.Model):
 
 class Source(PolymorphicModel, CeleryCallMethodsMixin):
     class Status(models.IntegerChoices):
-        PENDING = 0, _("Pending")
-        DONE = 1, _("Done")
-        NOT_NEEDED = 2, _("Not needed")
-
-        __empty__ = _("Need sync")
+        NEED_SYNC = 0, _("Need sync")
+        PENDING = 1, _("Pending")
+        DONE = 2, _("Done")
 
     name = models.CharField(max_length=255, unique=True)
     credit = models.TextField(blank=True)
@@ -120,7 +118,9 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     last_refresh = models.DateTimeField(default=timezone.now)
-    status = models.PositiveSmallIntegerField(choices=Status.choices, null=True)
+    status = models.PositiveSmallIntegerField(
+        choices=Status.choices, default=Status.NEED_SYNC
+    )
 
     SOURCE_GEOM_ATTRIBUTE = "_geom_"
     MAX_SAMPLE_DATA = 5
@@ -324,6 +324,10 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     def type(self):
         return self.__class__
 
+    @property
+    def refresh_status(self):
+        return self.status
+
 
 class Field(models.Model):
     source = models.ForeignKey(Source, related_name="fields", on_delete=models.CASCADE)
@@ -496,6 +500,10 @@ class WMTSSource(Source):
     maxzoom = models.IntegerField(null=True)
     tile_size = models.IntegerField()
     url = LongURLField()
+
+    @property
+    def refresh_status(self):
+        return None
 
     def get_status(self):
         return {"state": "DONT_NEED"}

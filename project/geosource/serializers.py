@@ -155,14 +155,13 @@ class SourceSerializer(PolymorphicModelSerializer):
         return source
 
     def get_status(self, instance):
-        # return instance.get_status()
         return instance.get_status_display()
 
 
 class SourceListSerializer(serializers.ModelSerializer):
     _type = serializers.SerializerMethodField()
-    status = serializers.SerializerMethodField()
     report = SourceReportingSerializer(read_only=True)
+    status = serializers.SerializerMethodField()
 
     class Meta:
         model = Source
@@ -174,13 +173,12 @@ class SourceListSerializer(serializers.ModelSerializer):
             "geom_type",
             "report",
         )
-        # extras = {"read_only": {"status"}}
 
     def get__type(self, instance):
         return instance.__class__.__name__
 
     def get_status(self, instance):
-        return instance.get_status_display()
+        return instance.refresh_status
 
 
 class PostGISSourceSerializer(SourceSerializer):
@@ -324,6 +322,7 @@ class WMTSSourceSerialize(SourceSerializer):
         min_value=0, max_value=24, allow_null=True, default=24
     )
     geom_type = serializers.CharField(required=False, allow_null=True, default=None)
+    status = serializers.SerializerMethodField()
 
     class Meta:
         model = WMTSSource
@@ -345,6 +344,9 @@ class WMTSSourceSerialize(SourceSerializer):
             raise ValidationError("Can't reach specified tile server. Check your url.")
 
         return super().validate(data)
+
+    def get_status(self, instance):
+        return instance.get_status().get("state")
 
 
 class CSVSourceSerializer(FileSourceSerializer):
