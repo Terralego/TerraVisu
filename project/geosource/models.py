@@ -26,7 +26,7 @@ from psycopg2 import sql
 
 from .callbacks import get_attr_from_path
 from .elasticsearch.index import LayerESIndex
-from .exceptions import CSVSourceException, SourceException
+from .exceptions import CSVSourceException, GeoJSONSourceException, SourceException
 from .fields import LongURLField
 from .mixins import CeleryCallMethodsMixin
 from .signals import refresh_data_done
@@ -80,6 +80,7 @@ class SourceReporting(models.Model):
     added_lines = models.PositiveIntegerField(default=0)
     deleted_lines = models.PositiveIntegerField(default=0)
     modified_lines = models.PositiveIntegerField(default=0)
+    total = models.PositiveIntegerField(default=0)
     errors = models.JSONField(default=list)
 
     def reset(self):
@@ -90,6 +91,7 @@ class SourceReporting(models.Model):
         self.added_lines = 0
         self.deleted_lines = 0
         self.modified_lines = 0
+        self.total = 0
         self.errors = []
 
 
@@ -184,6 +186,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             )
         else:
             self.report.reset()
+            self.report.status = SourceReporting.Status.PENDING.value
             self.report.save()
 
         layer = self.get_layer()
@@ -216,16 +219,13 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                         added_rows += 1
                     else:
                         modified_rows += 1
-                except Exception:
+                except Exception as exc:
                     transaction.savepoint_rollback(sid)
-                    msg = "An error occured on feature(s)"
-                    self.report.errors.append(
-                        f"Row n°{i}: {msg}. {self.id_field} - {identifier}"
-                    )
+                    self.report.errors.append(f"{self.id_field} - {identifier}: {exc}")
                     continue
             except KeyError:
                 self.report.errors.append(
-                    f"Line {i}: Can't find identifier field for this record"
+                    f"Line {i} - Can't find identifier '{self.id_field}'"
                 )
                 continue
             row_count += 1
@@ -234,6 +234,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         self.report.added_lines = added_rows
         self.report.modified_lines = modified_rows
         self.report.deleted_lines = deleted
+        self.report.total = row_count
         if not row_count:
             self.report.status = SourceReporting.Status.ERROR.value
             self.report.message = gettext("Failed to refresh data")
@@ -282,12 +283,6 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                         try:
                             value = value.decode()
                         except (UnicodeDecodeError, AttributeError):
-                            msg = f"{field_name} couldn't be decoded for source {self.name}"
-                            if not self.report:
-                                self.report = SourceReporting(started=timezone.now())
-                            self.report.status = SourceReporting.Status.WARNING.value
-                            self.report.errors.append(msg)
-                            self.report.save()
                             continue
 
                     fields[field_name].sample.append(value)
@@ -407,13 +402,7 @@ class GeoJSONSource(Source):
         try:
             return json.load(self.file)
         except json.JSONDecodeError:
-            msg = "Source's GeoJSON file is not valid"
-            if not self.report:
-                self.report = SourceReporting(started=timezone.now())
-            self.report.status = SourceReporting.Status.ERROR.value
-            self.report.message = msg
-            self.report.save()
-            raise
+            raise GeoJSONSourceException("Source's GeoJSON file is not valid")
 
     def _get_records(self, limit=None):
         geojson = self.get_file_as_dict()
@@ -432,10 +421,9 @@ class GeoJSONSource(Source):
                         **record["properties"],
                     }
                 )
-            except (ValueError, GDALException):
+            except (ValueError, GDALException) as exc:
                 feature_id = record.get("properties", {}).get("id", i)
-                msg = f"The record geometry seems invalid for feature {feature_id}."
-                errors.append(msg)
+                errors.append(f"Feature id {feature_id}: {exc}")
         return (records, errors)
 
 
@@ -539,15 +527,8 @@ class CSVSource(Source):
                 quotechar=quotechar,
             )
         # Exception is raised if no parser found
-        except (pyexcel.exceptions.FileTypeNotSupported, Exception) as err:
-            msg = "Provided CSV file is invalid"
-            if not self.report:
-                self.report = SourceReporting(started=timezone.now())
-            self.report.status = SourceReporting.Status.ERROR.value
-            self.report.message = msg
-            self.report.save()
-            err.args = (msg,)  # new message for the user
-            raise
+        except (pyexcel.exceptions.FileTypeNotSupported, Exception):
+            raise CSVSourceException("Provided CSV file is invalid")
 
     def _get_records(self, limit=None):
         sheet = self.get_file_as_sheet()

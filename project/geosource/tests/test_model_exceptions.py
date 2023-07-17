@@ -209,7 +209,7 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "latitude_field": "YCOORD",
             },
         )
-        msg = "Line 0: Can't find identifier field for this record"
+        msg = "Line 0 - Can't find identifier 'identifier'"
         source.refresh_data()
         self.assertIn(msg, source.report.errors)
 
@@ -308,7 +308,7 @@ class GeoJSONSourceExceptionsTestCase(TestCase):
             file=SimpleUploadedFile("geojson", bytes(geojson, encoding="UTF-8")),
             id_field="gid",  # wrong id field
         )
-        msg = "Line 0: Can't find identifier field for this record"
+        msg = "Line 0 - Can't find identifier 'gid'"
         source.refresh_data()
         self.assertIn(msg, source.report.errors)
 
@@ -346,6 +346,6 @@ class ShapefileSourceExceptionsTestCase(TestCase):
             file=get_file("test.zip"),
             id_field="wrongid",
         )
-        msg = "Line 0: Can't find identifier field for this record"
+        msg = "Line 0 - Can't find identifier 'wrongid'"
         source.refresh_data()
         self.assertIn(msg, source.report.errors)

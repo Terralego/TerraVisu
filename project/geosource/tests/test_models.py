@@ -1,4 +1,3 @@
-import json
 from io import StringIO
 from unittest import mock
 
@@ -6,6 +5,7 @@ from django.contrib.gis.geos.point import Point
 from django.test import TestCase
 from geostore.models import Layer
 
+from project.geosource.exceptions import GeoJSONSourceException
 from project.geosource.models import (
     CommandSource,
     CSVSource,
@@ -111,7 +111,7 @@ class ModelSourceTestCase(TestCase):
         self.geojson_source.id_field = "wrong_identifier"
         self.geojson_source.save()
         self.geojson_source.refresh_data()
-        msg = "Line 0: Can't find identifier field for this record"
+        msg = "Line 0 - Can't find identifier 'wrong_identifier'"
         self.assertIn(msg, self.geojson_source.report.errors)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
@@ -197,7 +197,7 @@ class ModelGeoJSONSourceTestCase(TestCase):
             file=get_file("bad.geojson"),
         )
 
-        with self.assertRaises(json.decoder.JSONDecodeError):
+        with self.assertRaises(GeoJSONSourceException):
             source.get_file_as_dict()
 
     def test_get_records_wrong_geom_file(self):
@@ -210,7 +210,7 @@ class ModelGeoJSONSourceTestCase(TestCase):
         #        with self.assertRaises(ValueError) as m:
         records, errors = source._get_records(1)
         self.assertIn(
-            "The record geometry seems invalid for feature 1.",
+            'Feature id 1: Invalid geometry pointer returned from "OGR_G_CreateGeometryFromJson".',
             errors,
         )
 
