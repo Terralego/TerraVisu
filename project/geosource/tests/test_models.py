@@ -265,6 +265,9 @@ class ModelWMTSSourceTestCase(TestCase):
     def test_refresh_data(self):
         self.assertEqual({}, self.source.refresh_data())
 
+    def test_refresh_status(self):
+        self.assertIsNone(self.source.refresh_status)
+
 
 class ModelCSVSourceTestCase(TestCase):
     @classmethod
