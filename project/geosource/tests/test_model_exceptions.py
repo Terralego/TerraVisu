@@ -352,8 +352,10 @@ class ShapefileSourceExceptionsTestCase(TestCase):
         self.assertIn(msg, source.report.errors)
 
 
+@patch("elasticsearch.client.IndicesClient.create")
+@patch("elasticsearch.client.IndicesClient.delete")
 class SourceExceptionTestCase(TestCase):
-    def test_source_exception_raised_create_a_report(self):
+    def test_source_exception_raised_create_a_report(self, mocked_es_delete, mocked_es_create):
         def side_effect(*args, **kwargs):
             raise SourceException("Error")
 
