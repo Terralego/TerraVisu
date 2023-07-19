@@ -373,3 +373,12 @@ class SourceExceptionTestCase(TestCase):
         self.assertEqual(
             source.report.message, "Error"
         )  # Should be the message of the exception raised
+
+    def test_get_record_exception_raise_source_exception(
+        self, mocked_es_delete, mocked_es_create
+    ):
+        source = Source.objects.create(name="get_records_exception")
+        source._get_record = Mock(side_effect=Exception)
+
+        with self.assertRaises(SourceException):
+            source._refresh_data()
