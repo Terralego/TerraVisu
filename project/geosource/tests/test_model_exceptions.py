@@ -1,5 +1,5 @@
 import json
-from unittest.mock import PropertyMock, patch
+from unittest.mock import Mock, PropertyMock, patch
 
 import pyexcel
 from django.contrib.gis.gdal.error import GDALException
@@ -7,13 +7,14 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from psycopg2 import OperationalError
 
-from project.geosource.exceptions import CSVSourceException
+from project.geosource.exceptions import CSVSourceException, SourceException
 from project.geosource.models import (
     CSVSource,
     GeoJSONSource,
     GeometryTypes,
     PostGISSource,
     ShapefileSource,
+    Source,
     SourceReporting,
 )
 from project.geosource.tests.helpers import get_file
@@ -349,3 +350,22 @@ class ShapefileSourceExceptionsTestCase(TestCase):
         msg = "Line 0 - Can't find identifier 'wrongid'"
         source.refresh_data()
         self.assertIn(msg, source.report.errors)
+
+
+class SourceExceptionTestCase(TestCase):
+    def test_source_exception_raised_create_a_report(self):
+        def side_effect(*args, **kwargs):
+            raise SourceException("Error")
+
+        source = Source.objects.create(name="mocked-source")
+        source._refresh_data = Mock(side_effect=side_effect)
+        self.assertIsNone(source.report)
+
+        # Since we mocked "_refresh_data", we need to init an empty SourceReporting manually
+        source.report = SourceReporting.objects.create()
+        source.refresh_data()
+        self.assertIsInstance(source.report, SourceReporting)
+        self.assertEqual(source.report.status, SourceReporting.Status.ERROR.value)
+        self.assertEqual(
+            source.report.message, "Error"
+        )  # Should be the message of the exception raised
