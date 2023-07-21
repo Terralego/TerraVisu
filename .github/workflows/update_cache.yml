@@ -32,6 +32,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: './admin/.nvmrc'
+          cache: 'npm'
 
       - name: Install admin dependencies
         if: steps.cache-admin.outputs.cache-hit != 'true'
@@ -58,6 +59,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: './front/.nvmrc'
+          cache: 'npm'
 
       - name: Install front dependencies
         if: steps.cache-front.outputs.cache-hit != 'true'
