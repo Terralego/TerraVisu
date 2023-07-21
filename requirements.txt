@@ -110,7 +110,7 @@ django-geostore==0.7.3
     # via -r requirements.in
 django-grappelli==3.0.6
     # via -r requirements.in
-django-mapbox-baselayer==0.0.9
+django-mapbox-baselayer==1.0.0
     # via -r requirements.in
 django-picklefield==3.1
     # via django-constance
