@@ -33,6 +33,7 @@ jobs:
         with:
           node-version-file: './admin/.nvmrc'
           cache: 'npm'
+          cache-dependency-path: './admin/package-lock.json'
 
       - name: Install admin dependencies
         if: steps.cache-admin.outputs.cache-hit != 'true'
@@ -60,6 +61,7 @@ jobs:
         with:
           node-version-file: './front/.nvmrc'
           cache: 'npm'
+          cache-dependency-path: './front/package-lock.json'
 
       - name: Install front dependencies
         if: steps.cache-front.outputs.cache-hit != 'true'
