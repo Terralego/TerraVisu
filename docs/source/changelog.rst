@@ -3,6 +3,18 @@ CHANGELOG
 =========
 
 
+2023.7.2       (2023-07-25)
+---------------------------
+
+**Improvements:**
+
+- Add icon categorization in layers in admin.
+
+**Bugfix**
+
+- Fix tooltip on menubar in frontend.
+
+
 2023.7.1       (2023-07-11)
 ---------------------------
 
