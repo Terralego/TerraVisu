@@ -3,6 +3,20 @@ CHANGELOG
 =========
 
 
+2023.8.1       (2023-08-03)
+---------------------------
+
+**Improvements:**
+
+- Add filter feature for layers tree
+- Make some A11y enhancements
+
+**Bugfix**
+
+- Remove legend scaling
+- Fix invisible splash-screen catching clicks
+
+
 2023.7.2       (2023-07-25)
 ---------------------------
 
