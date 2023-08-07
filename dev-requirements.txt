@@ -65,14 +65,15 @@ mccabe==0.7.0
     # via flake8
 mypy-extensions==1.0.0
     # via black
-packaging==23.0
+packaging==23.1
     # via
+    #   -c requirements.txt
     #   black
     #   build
     #   sphinx
 pathspec==0.11.0
     # via black
-pip-tools==7.1.0
+pip-tools==7.2.0
     # via -r dev-requirements.in
 platformdirs==3.0.0
     # via black
