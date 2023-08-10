@@ -3,6 +3,19 @@ CHANGELOG
 =========
 
 
+2023.8.2       (2023-08-10)
+---------------------------
+
+**Improvements:**
+
+- Add close button to partners modal
+- Improve source reporting interface in admin
+
+**Bugfix**
+
+- Allow numbers in source filter variables in admin
+
+
 2023.8.1       (2023-08-03)
 ---------------------------
 
