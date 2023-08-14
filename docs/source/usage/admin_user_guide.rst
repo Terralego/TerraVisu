@@ -319,17 +319,16 @@ Une page s’ouvre avec différents onglets à renseigner.
 
 Les informations à renseigner à minima lors de la définition de la couche sont le **nom** et la **source de données**.
 
-Le nommage de la couche se fait dans le premier onglet. A la différence des sources qui doivent avoir des noms uniques, il n’est pas interdit d’avoir plusieurs couches avec le même nom.
+A la différence des sources qui doivent avoir des noms uniques, il est possible d’avoir plusieurs couches avec le même nom.
 
-Il faut ensuite sélectionner une source de données dans la liste. Chaque couche est associée à une source. 
-
-Il est possible de filtrer une source de donnés directement lors de la configuration de la couche.
+Il faut ensuite sélectionner une source de données dans la liste. Chaque couche est associée à une source de données.
+Il est possible d'en filtrer le contenu en ajoutant une condition de sélection des données à partir de la liste des champs disponibles fournie (voir ci-dessous).
 
 Le **champ principal** permet d’activer la fonction de recherche dans le visualiseur qui retournera les résultats en fonction de ce champ. 
 
-Si l’option « **Affichée par défaut** » est activée, la couche sera activée de base dans le visualiseur cartographique.
+Si l’option « **Affichée par défaut** » est activée, la couche sera activée dès l'ouverture de la vue à laquelle elle est associée dans le visualiseur cartographique.
 
-Enfin, la partie « **Description** » est destinée aux couches qui seront intégrées dans une vue de type Storytelling. Pour le moment la description est rédigée uniquement en langage HTML.
+Enfin, la partie « **Description** » permet d'ajouter un texte informatif en langage HTML sur cette couche. Ce texte peut être mis à disposition de l'utilisateur dans les vues classiques et de storytelling.
 
 A ce stade, il est possible d’enregistrer la couche telle quelle et de l’afficher dans le visualiseur cartographique. Une représentation par défaut est appliquée à la couche, ce qui permet de la visualiser.
 
@@ -355,7 +354,7 @@ Le filtre appliqué à la source de données dans la couche est immédiatement r
 
 **Onglet ICÔNES**
 
-Il est possible d'afficher ses propres pictogrammes sur une couche. 
+Il est possible d'afficher ses propres pictogrammes sur une couche. Ils pourront servir d'icônes ou de motifs sur la carte créée.
 
 Pour cela il suffit de cliquer sur le bouton « **AJOUTER** », d'importer son image (png/jpeg) et de la nommer dans le champ « Nom ». 
 
@@ -374,9 +373,9 @@ La conception du style permet de donner du sens à une carte en transmettant une
 
 Parmi les nombreux styles que l’on peut réaliser, voici les plus courants :
 
-* Des **styles simples** sans analyse : polygones, lignes, points
+* Des **styles simples** sans analyse : polygones, lignes, points.
 
-* Des **analyses paramétrées** permettant de représenter une variable en particulier 
+* Des **analyses paramétrées** permettant de représenter une variable en particulier :
 
   * Cartes choroplèthes (analyse discrète)
   * Carte thématiques (catégorisation)
@@ -388,7 +387,7 @@ Parmi les nombreux styles que l’on peut réaliser, voici les plus courants :
 
 * Des représentations mettant en jeux plusieurs couches (polygone + centroide par exemple) du type couche principale + couche de décoration.
 
-* Des représentations différentes en fonction du niveau de zoom
+* Des représentations différentes en fonction du niveau de zoom.
 
 Il existe deux modes possibles pour la conception du style : le mode avec assistant de style et le mode sans. Par défaut, le mode avec assistant est activé.
 
@@ -508,6 +507,7 @@ Voici les typologies de légende :
 * Légende avec carrés pour représenter des polygones
 * Légende avec cercles pour représenter des points
 * Légende avec lignes pour représenter les lignes
+* Légende avec icônes pour représenter les pictogrammes ou motifs
 
 On peut faire varier :
 
