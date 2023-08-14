@@ -442,6 +442,7 @@ Il est possible d’utiliser des motifs au lieu des couleurs pour remplir un pol
 * Cercle
 * Icône
 * Texte
+* Diagrammes circulaires
 
 * Choix du de la **caractéristique à faire varier**
 
@@ -457,13 +458,14 @@ Il est possible d’utiliser des motifs au lieu des couleurs pour remplir un pol
 
 * Choix du **type d’analyse**
 
-  * Si variable de type String/Foat/Integer
+  * Si la variable est un nombre (type Float/Integer)
   
     * Discrétisation (méthodes Jenks, Quantiles, Intervalles égaux)
     * Interpolation
     * Catégorisation
+    * Diagrammes circulaires
     
-  * Si variable de type String
+  * Si la variable est un texte (type String)
   
     * Catégorisation
 
@@ -491,6 +493,8 @@ Le style secondaire doit être vu comme un élément de décoration sur la carte
 Exemple concret : Dans le cas d’une carte des communes, il pourra être intéressant de rajouter les étiquettes des noms au centre des communes. Pour se faire, on aura besoin de créer un style secondaire faisant appel à la source de données des centroides des communes pour pouvoir ajouter les étiquettes.
 
 .. image :: ../_static/images/admin/admin_couche_style_secondaire.png
+
+⚠️ *Les cartes avec diagrammes circulaires ne supportent pas un style secondaire*.
 
 **Style sans assistant**
 
