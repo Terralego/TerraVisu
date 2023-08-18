@@ -422,7 +422,9 @@ Il est possible d’utiliser des motifs au lieu des couleurs pour remplir un pol
        Il est nécessaire de désactiver l’assistant pour utiliser les motifs via du code Mapbox.
 
       Exemple :
-      .. code-block::
+
+.. code-block:: json
+
         {
           "type": "fill",
           "paint": {
