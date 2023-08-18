@@ -176,9 +176,15 @@ Quelques uns de ces outils de navigation sont détaillés ci-après.
 La recherche sur la carte
 -------------------------
 
-La recherche sur la carte (via l'outil loupe) permet d'effectuer une recherche de lieu ou d'adresse :
-- soit par à un appel à la base d'adresses Nominatim implémenté,
-_ soit par une recherche dans tous les champs textuels des couches activées.
+La recherche sur la carte (via l'outil loupe) permet d'effectuer à la fois :
+
+* une recherche de lieu ou d'adresse par à un appel à la base d'adresses Nominatim implémenté,
+* une recherche dans les champs textuels d'une ou plusieurs couches activées (exemple : une parcelle par le nom du proprétaire).
+
+Le fait de sélectionner un résultat dans les attributs de la ou les couches activées permet de zoomer sur ce résultat, de sélectionner l'objet en surbrillance et d'ouvrir la mini-fiche (si elle existe).
+
+Le comportement est différent si on sélectionne un résultat pour la recherche de lieu puisqu'il permet uniquement de zoomer sur l'emprise géographique correspondante sans réaliser d'intéraction avec la ou les couches activées.
+
 
 **Exemple de recherche pour le TerraVisu de SeineYonne**
 
