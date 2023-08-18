@@ -1,33 +1,33 @@
-==============================================================
-Manuel d'utilisation du back office de la plateforme TerraVisu 
-==============================================================
+===========================================================================
+Manuel d'utilisation de l'outil d'administration de la plateforme TerraVisu 
+===========================================================================
 
 
-Le Back Office 
-==============
+L'outil d'administration
+========================
 
-Cette documentation décrit les procédures pour accéder et gérer les différentes fonctionnalités de la plateforme TerraVisu.
+Cette documentation décrit les procédures pour l'activation et la gestion des différentes fonctionnalités de la plateforme TerraVisu.
 
-Le back-office de TerraVisu permet en quelques clics de gérer des utilisateurs, d’importer une source de données géographiques, de créer et personnaliser une couche, puis de visualiser le résultat sur une carte.
+L'outil d'administration de TerraVisu permet en quelques clics de gérer des utilisateurs, d’importer différentes sources de données géographiques, de créer et personnaliser ses cartes.
 
 **Résumé des fonctionnalités :**
 
 * Gérer les sources de données géographiques 
-* Gérer les couches
 * Configurer des fonds de cartes
-* Créer des visualisation personnelles 
+* Créer des visualisation privées 
 * Créer des visualisation publiques 
-* Créer des analyses personnelles 
+* Créer des analyses privées 
 * Créer des analyses publiques 
 * Créer des scénarios interactifs
+* Organiser les visualisations et analyses présentes dans l'application
 
-L'authentification au back-office
-=================================
+L'authentification à l'outil d'administration
+=============================================
 
 Procédure d’authentification
 ----------------------------
 
-Le chemin d’accès au back-office d’un visualiseur cartographique TerraVisu est toujours constitué de l’URL du visualiseur suivis de « /admin ».
+Le chemin d’accès à l'outil d'administration d’une application TerraVisu est toujours constitué de l’URL du visualiseur suivis de « /admin ».
 
 Une fois en possession des identifiants, vous pouvez les renseigner dans la page d’authentification.
 
@@ -63,12 +63,12 @@ Vous avez la possibilité d’exporter la liste des utilisateurs au format CSV e
 Créer un nouvel utilisateur
 ---------------------------
 
-Les conditions permettant de créer un nouvel utilisateur est d’être soi-même super-utilisateur.
+Seuls les **super-utilisateurs** sont autorisés à créer de nouveaux utilisateurs. 
 
 Pour ajouter un nouvel utilisateur cliquez sur le bouton « **CRÉER** ».
 Les informations à renseigner sont à minima le **nom**, le **prénom**, l’**adresse mail**, le **mot de passe**.
 
-Si vous activez l’option « **Superutilisateur** » l’utilisateur pourra à son tour créer de nouveaux utilisateurs.
+Si vous activez l’option « **Super-utilisateur** » l’utilisateur pourra à son tour créer de nouveaux utilisateurs.
 
 Si vous activez l’option « **Actif** » l’utilisateur pourra se connecter dès que son compte sera créé, sinon, il devra attendre que celui ci devienne actif.
 
@@ -76,7 +76,7 @@ Vous pouvez intégrer l’utilisateur à un ou plusieurs groupes.
 
 Il est possible de rajouter des informations supplémentaires comme la fonction, l’organisme de rattachement ou encore l’adresse. 
 
-Si l'utilisateur perd son mot de passe, il faut recréer un compte utilisateur.
+Si l'utilisateur perd son mot de passe, il faut supprimer son compte et lui en créer un nouveau.
 
 .. image :: ../_static/images/admin/admin_utilisateurs_ajout.png
 
@@ -89,7 +89,7 @@ Les groupes d’utilisateurs permettent de gérer des permissions à différents
 
 * L’administration de fonds de carte
 * La gestion des sources de données 
-* La gestion des couches 
+* La gestion des couches cartographiques
 * La gestion des groupes d’utilisateurs 
 * La gestion des utilisateurs 
 
@@ -138,37 +138,41 @@ Pour ajouter une nouvelle source, cliquez sur le bouton « **CRÉER** ».
 
 Les types de sources de données supportés actuellement par l’application sont :
 
-* GeoJSON
-* ESRI Shapefile
-* Requêtes PostGIS
-* CSV avec des coordonnées géographiques
-* Flux WMS/WMTS
+* les fichiers GeoJSON ;
+* les fichiers Shapefile ;
+* les requêtes PostGIS ;
+* les fichiers CSV contenant des coordonnées géographiques ;
+* les flux WMS/WMTS.
 
-A noter qu’une fois la source de données enregistrée il n’est pas possible de modifier son type. 
+A noter qu’une fois la source de données enregistrée, il n’est pas possible de modifier son type. 
 
-Les types de géométries supportés par l’application sont :
+Les types de géométries supportés par l’application sont les suivants :
 
-* Point
-* Linestring
-* Polygon
-* MultiPoint
-* MultiLinestring
-* MultiPolygon
-* GeometryCollection
+* *Point*
+* *Linestring*
+* *Polygon*
+* *MultiPoint*
+* *MultiLinestring*
+* *MultiPolygon*
+* *GeometryCollection*
 
 Lors de la déclaration de la source, il est possible d’ajouter un ou plusieurs groupes d’utilisateurs, De cette façon, seuls les utilisateurs faisant partie des groupes affectés à la source seront en mesure de visualiser les données.
 
 ⚠️ *Le nom d’une source de données doit être unique, si ce n’est pas le cas l’enregistrement échouera.*
 
+⚠️ *Toutes les données intégrées à l’application doivent a minima posséder un champ d’identifiant unique et une géométrie dont les coordonnées sont en WGS84 (epsg:4326).*
+
 * **Import de fichiers**
 
-Une source de données peut être créé par l’import d’un fichier GeoJSON, ESRI Shapefile ou CSV en uploadant le fichier. 
+Une source de données peut être créée par l’import d’un fichier GeoJSON, Shapefile ou CSV en déposant le fichier dans l'interface. 
 
 * **Import de fichier GeoJSON ou Shapefile**
 
 Les informations à renseigner à minima, lors de la création d’une nouvelle source GeoJSON ou Shapefile sont le nom, le type de données, le type de la géométrie et le champ de l’identifiant unique.
 
 .. image :: ../_static/images/admin/admin_source_creation_geojson.png
+
+⚠️ *Les fichiers Shapefile doivent être fournis sous la forme d’une archive zippée contenant l’ensemble des fichiers (.shp, .prj, .shx, .dbf, etc).*
 
 * **Import de fichier CSV**
 
@@ -182,7 +186,7 @@ L’ option « **Entête à la première ligne** » activée permet de conserver
 
 Si l’option « **Ignorer les colonnes à null** » est activée, toutes les colonnes vides ne seront pas conservées.
 
-* **Import via une requête SQL PostGIS**
+* **Requête vers une base de données PostGIS**
 
 Les informations à renseigner à minima lors de la création d’une nouvelle source PostGIS sont le **nom**, le **type de géométrie**, les **paramètres de connexion à la base de données** (hôte, port, nom bdd, nom utilisateur, mot de passe utilisateur), **requête SQL**, **champ de géométrie**, **champ de l’identifiant unique**.
 
@@ -194,6 +198,17 @@ Il est possible de définir la fréquence de mise à jour automatique de la sour
 L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde toutes les 25 mn s’il y a des changements) +date de fin de la dernière mise à jour. Il peut donc y avoir un delta de 24h et 25mn au minimum entre chaque mise à jour de source de données. Ce delta peut se rajouter d'autant plus s'il y a des mise à jour manuelles.
 
 ⚠️ *Attention à ne pas terminer la requête par un point virgule.*
+
+.. list-table:: Géométries invalides
+   :header-rows: 1
+
+   * - Géométries invalides
+   * - Seules des géométries valides peuvent être importées dans l’application TerraVisu. Avec PostGis, il est possible de corriger des géométries invalides avec les fonctions suivantes :
+         * `ST_MakeValid(geom)`
+         * `ST_Buffer(geom, 0)`
+         * `ST_SimplifyPreserveTopology(geom, tolerance)`
+
+
 
 * **Import via un flux WMS/WMTS**
 
@@ -232,14 +247,14 @@ L’outil détecte automatiquement les types de chaque champ mais il peut arrive
 
 Les types gérés par l’application sont les suivants :
 
-* String
-* Integer
-* Float
-* Boolean
-* Undefined
-* Date
+* *String*
+* *Integer*
+* *Float*
+* *Boolean*
+* *Undefined*
+* *Date*
 
-Lorsqu’un champ a le type « Undefined », cela signifie que l’outil n’a pas réussit à l’identifier. A ce moment là il faut lui assigner le bon type dans la liste déroulante.
+Lorsqu’un champ est de **type « Undefined »**, cela signifie que l’outil n’a pas réussit à l’identifier. A ce moment là il faut lui assigner le bon type dans la liste déroulante.
 
 Un extrait des valeurs pour chaque champ est fournit afin d’avoir un aperçu des données.
 
@@ -304,17 +319,16 @@ Une page s’ouvre avec différents onglets à renseigner.
 
 Les informations à renseigner à minima lors de la définition de la couche sont le **nom** et la **source de données**.
 
-Le nommage de la couche se fait dans le premier onglet. A la différence des sources qui doivent avoir des noms uniques, il n’est pas interdit d’avoir plusieurs couches avec le même nom.
+A la différence des sources qui doivent avoir des noms uniques, il est possible d’avoir plusieurs couches avec le même nom.
 
-Il faut ensuite sélectionner une source de données dans la liste. Chaque couche est associée à une source. 
-
-Il est possible de filtrer une source de donnés directement lors de la configuration de la couche.
+Il faut ensuite sélectionner une source de données dans la liste. Chaque couche est associée à une source de données.
+Il est possible d'en filtrer le contenu en ajoutant une condition de sélection des données à partir de la liste des champs disponibles fournie (voir ci-dessous).
 
 Le **champ principal** permet d’activer la fonction de recherche dans le visualiseur qui retournera les résultats en fonction de ce champ. 
 
-Si l’option « **Affichée par défaut** » est activée, la couche sera activée de base dans le visualiseur cartographique.
+Si l’option « **Affichée par défaut** » est activée, la couche sera activée dès l'ouverture de la vue à laquelle elle est associée dans le visualiseur cartographique.
 
-Enfin, la partie « **Description** » est destinée aux couches qui seront intégrées dans une vue de type Storytelling. Pour le moment la description est rédigée uniquement en langage HTML.
+Enfin, la partie « **Description** » permet d'ajouter un texte informatif en langage HTML sur cette couche. Ce texte peut être mis à disposition de l'utilisateur dans les vues classiques et de storytelling.
 
 A ce stade, il est possible d’enregistrer la couche telle quelle et de l’afficher dans le visualiseur cartographique. Une représentation par défaut est appliquée à la couche, ce qui permet de la visualiser.
 
@@ -340,7 +354,7 @@ Le filtre appliqué à la source de données dans la couche est immédiatement r
 
 **Onglet ICÔNES**
 
-Il est possible d'afficher ses propres icones sur une couche. 
+Il est possible d'afficher ses propres pictogrammes sur une couche. Ils pourront servir d'icônes ou de motifs sur la carte créée.
 
 Pour cela il suffit de cliquer sur le bouton « **AJOUTER** », d'importer son image (png/jpeg) et de la nommer dans le champ « Nom ». 
 
@@ -352,15 +366,16 @@ Pour enregistrer l'image, enregistrez la couche.
 
 .. image :: ../_static/images/admin/admin_couche_icone_bleue.png
 
+
 **Onglet STYLE**
 
 La conception du style permet de donner du sens à une carte en transmettant une information qui doit être la plus efficace et compréhensible possible.
 
 Parmi les nombreux styles que l’on peut réaliser, voici les plus courants :
 
-* Des **styles simples** sans analyse : polygones, lignes, points
+* Des **styles simples** sans analyse : polygones, lignes, points.
 
-* Des **analyses paramétrées** permettant de représenter une variable en particulier 
+* Des **analyses paramétrées** permettant de représenter une variable en particulier :
 
   * Cartes choroplèthes (analyse discrète)
   * Carte thématiques (catégorisation)
@@ -372,7 +387,7 @@ Parmi les nombreux styles que l’on peut réaliser, voici les plus courants :
 
 * Des représentations mettant en jeux plusieurs couches (polygone + centroide par exemple) du type couche principale + couche de décoration.
 
-* Des représentations différentes en fonction du niveau de zoom
+* Des représentations différentes en fonction du niveau de zoom.
 
 Il existe deux modes possibles pour la conception du style : le mode avec assistant de style et le mode sans. Par défaut, le mode avec assistant est activé.
 
@@ -393,6 +408,33 @@ Pour utiliser une icône existante dans un style simple, sélectionnez la repré
 
 .. image :: ../_static/images/admin/admin_couche_style_icone.png
 
+**Style avec motif**
+
+Il est possible d’utiliser des motifs au lieu des couleurs pour remplir un polygone.
+
+    1. Création d’un motif
+       La première étape est de créer le motif, dans l’onglet ICÔNES. 
+       Pour cela, il est nécessaire d’importer une image servant de base au motif (le motif est idéalement blanc et de taille 28 x 28 pixels). L’import d’image se fait via le bouton UPLOAD. 
+       Il est ensuite possible de colorer l’image précédemment importée dans l’application. Le bouton COMPOSE permet ce choix de couleur à appliquer sur le motif.
+ 
+    2. Utilisation d’un motif
+       Actuellement les motifs ne sont pas gérés par l’assistant de style.
+       Il est nécessaire de désactiver l’assistant pour utiliser les motifs via du code Mapbox.
+
+      Exemple :
+
+.. code-block:: json
+
+        {
+          "type": "fill",
+          "paint": {
+            "fill-pattern": "hachures-bleu"
+          },
+          "maxzoom": 24,
+          "minzoom": 0
+        }
+
+
 **Style avec une analyse**
 
 * Choix du **type de représentation**
@@ -402,6 +444,7 @@ Pour utiliser une icône existante dans un style simple, sélectionnez la repré
 * Cercle
 * Icône
 * Texte
+* Diagrammes circulaires
 
 * Choix du de la **caractéristique à faire varier**
 
@@ -417,13 +460,14 @@ Pour utiliser une icône existante dans un style simple, sélectionnez la repré
 
 * Choix du **type d’analyse**
 
-  * Si variable de type String/Foat/Integer
+  * Si la variable est un nombre (type Float/Integer)
   
     * Discrétisation (méthodes Jenks, Quantiles, Intervalles égaux)
     * Interpolation
     * Catégorisation
+    * Diagrammes circulaires
     
-  * Si variable de type String
+  * Si la variable est un texte (type String)
   
     * Catégorisation
 
@@ -467,6 +511,7 @@ Voici les typologies de légende :
 * Légende avec carrés pour représenter des polygones
 * Légende avec cercles pour représenter des points
 * Légende avec lignes pour représenter les lignes
+* Légende avec icônes pour représenter les pictogrammes ou motifs
 
 On peut faire varier :
 
