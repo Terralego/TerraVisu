@@ -199,15 +199,15 @@ L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde
 
 ⚠️ *Attention à ne pas terminer la requête par un point virgule.*
 
-+------------------------+
-| Géométries invalides   | 
-+========================+
-| Seules des géométries valides peuvent être importées dans l’application TerraVisu.
-Avec PostGis, il est possible de corriger des géométries invalides avec les fonctions suivantes :
-    * `ST_MakeValid(geom)`
-    * `ST_Buffer(geom, 0)`
-    * `ST_SimplifyPreserveTopology(geom, tolerance)` | 
-+--------------------------------------------------+
+.. list-table:: Géométries invalides
+   :header-rows: 1
+
+   * - Géométries invalides
+   * - Seules des géométries valides peuvent être importées dans l’application TerraVisu. Avec PostGis, il est possible de corriger des géométries invalides avec les fonctions suivantes :
+         * `ST_MakeValid(geom)`
+         * `ST_Buffer(geom, 0)`
+         * `ST_SimplifyPreserveTopology(geom, tolerance)`
+
 
 
 * **Import via un flux WMS/WMTS**
