@@ -173,10 +173,12 @@ Les outils de navigation
 
 Quelques uns de ces outils de navigation sont détaillés ci-après.
 
-La recherche globale
---------------------
+La recherche sur la carte
+-------------------------
 
-La recherche globale permet à la fois d'effectuer une recherche de lieux ou d'adresse grâce à la base d'adresses Nominatim implémentée, et de trouver un élément parmi les couches activées. Cette recherche va se faire dans tous les champs textuels des données  attributaires.
+La recherche sur la carte (via l'outil loupe) permet d'effectuer une recherche de lieu ou d'adresse :
+- soit par à un appel à la base d'adresses Nominatim implémenté,
+_ soit par une recherche dans tous les champs textuels des couches activées.
 
 **Exemple de recherche pour le TerraVisu de SeineYonne**
 
