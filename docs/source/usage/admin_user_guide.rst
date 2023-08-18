@@ -1,10 +1,10 @@
-==============================================================
+===========================================================================
 Manuel d'utilisation de l'outil d'administration de la plateforme TerraVisu 
-==============================================================
+===========================================================================
 
 
 L'outil d'administration
-==============
+========================
 
 Cette documentation décrit les procédures pour l'activation et la gestion des différentes fonctionnalités de la plateforme TerraVisu.
 
@@ -22,7 +22,7 @@ L'outil d'administration de TerraVisu permet en quelques clics de gérer des uti
 * Organiser les visualisations et analyses présentes dans l'application
 
 L'authentification à l'outil d'administration
-=================================
+=============================================
 
 Procédure d’authentification
 ----------------------------
@@ -493,8 +493,6 @@ Le style secondaire doit être vu comme un élément de décoration sur la carte
 Exemple concret : Dans le cas d’une carte des communes, il pourra être intéressant de rajouter les étiquettes des noms au centre des communes. Pour se faire, on aura besoin de créer un style secondaire faisant appel à la source de données des centroides des communes pour pouvoir ajouter les étiquettes.
 
 .. image :: ../_static/images/admin/admin_couche_style_secondaire.png
-
-⚠️ *Les cartes avec diagrammes circulaires ne supportent pas un style secondaire*.
 
 **Style sans assistant**
 
