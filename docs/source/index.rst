@@ -9,11 +9,12 @@ Welcome to TerraVisu's documentation!
 .. image:: ./_static/logo_color.png
 
 .. toctree::
+    :hidden:
     :caption: User manual
     :maxdepth: 2
 
-    usage/admin_user_guide.rst
     usage/user_guide.rst
+    usage/admin_user_guide.rst
 
 .. toctree::
    :maxdepth: 2
