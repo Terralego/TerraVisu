@@ -10,25 +10,25 @@ Welcome to TerraVisu's documentation!
 
 .. toctree::
     :hidden:
-    :caption: User manual
+    :caption: 🚀 User manual
     :maxdepth: 2
 
     usage/user_guide.rst
     usage/admin_user_guide.rst
 
 .. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: 📖 Installation & Configuration:
+    :maxdepth: 2
+    :hidden:
+    :caption: 📖 Installation & Configuration:
 
    install.rst
    configuration.rst
    troubleshooting.rst
 
 .. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: 🪄 Contribute
+    :maxdepth: 2
+    :hidden:
+    :caption: 🪄 Contribute
 
     CONTRIBUTING.rst
     contribute/development.rst
@@ -37,9 +37,9 @@ Welcome to TerraVisu's documentation!
     contribute/design.rst
 
 .. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: ✒️ Others
+    :maxdepth: 2
+    :hidden:
+    :caption: ✒️ Others
 
     authors.rst
     changelog.rst
