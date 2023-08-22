@@ -9,6 +9,14 @@ Welcome to TerraVisu's documentation!
 .. image:: ./_static/logo_color.png
 
 .. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: ✒️ Others
+
+    others/authors.rst
+    others/changelog.rst
+
+.. toctree::
     :maxdepth: 2
     :hidden:
     :caption: 🚀 User manual
@@ -30,18 +38,12 @@ Welcome to TerraVisu's documentation!
    :hidden:
    :caption: 🪄 Contribute
 
+    contribute/contributing.rst
     contribute/development.rst
     contribute/translating.rst
     contribute/documentation.rst
     contribute/design.rst
 
-.. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: ✒️ Others
-
-    others/authors.rst
-    others/changelog.rst
 
 User Manual
 ------------
