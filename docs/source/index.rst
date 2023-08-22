@@ -15,7 +15,17 @@ Welcome to TerraVisu's documentation!
 
    user_manual/user_guide.rst
    user_manual/admin_user_guide.rst
+   
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: 🪄 Contribute
 
+   contribute/contributing.rst
+   contribute/development.rst
+   contribute/translating.rst
+   contribute/documentation.rst
+   contribute/design.rst
 
 User Manual
 ------------
