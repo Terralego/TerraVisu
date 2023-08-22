@@ -162,7 +162,8 @@ Lors de la déclaration de la source, il est possible d’ajouter un ou plusieur
 
 ⚠️ *Toutes les données intégrées à l’application doivent a minima posséder un champ d’identifiant unique et une géométrie dont les coordonnées sont en WGS84 (epsg:4326).*
 
-* **Import de fichiers**
+Import de fichiers
+~~~~~~~~~~~~~~~~~~
 
 Une source de données peut être créée par l’import d’un fichier GeoJSON, Shapefile ou CSV en déposant le fichier dans l'interface. 
 
@@ -315,7 +316,8 @@ Pour créer une nouvelle couche, cliquez sur le bouton « **CRÉER** ».
 
 Une page s’ouvre avec différents onglets à renseigner.
 
-**Onglet DÉFINITION**
+Onglet DÉFINITION
+~~~~~~~~~~~~~~~~~
 
 Les informations à renseigner à minima lors de la définition de la couche sont le **nom** et la **source de données**.
 
@@ -352,7 +354,8 @@ Le nombre d’éléments retournés par le filtre est une aide précieuse pour s
 
 Le filtre appliqué à la source de données dans la couche est immédiatement répercuté dans la fenêtre de filtre côté interface du visualiseur cartographique. 
 
-**Onglet ICÔNES**
+Onglet ICÔNES
+~~~~~~~~~~~~~
 
 Il est possible d'afficher ses propres pictogrammes sur une couche. Ils pourront servir d'icônes ou de motifs sur la carte créée.
 
@@ -367,7 +370,8 @@ Pour enregistrer l'image, enregistrez la couche.
 .. image :: ../_static/images/admin/admin_couche_icone_bleue.png
 
 
-**Onglet STYLE**
+Onglet STYLE
+~~~~~~~~~~~~
 
 La conception du style permet de donner du sens à une carte en transmettant une information qui doit être la plus efficace et compréhensible possible.
 
@@ -471,7 +475,6 @@ Il est possible d’utiliser des motifs au lieu des couleurs pour remplir un pol
   
     * Catégorisation
 
-
 Afin de ne pas égarer l’utilisateur dans les nombreux choix du **type de représentation**, ce dernier sera restreint en fonction du type géométrique de la source de données utilisée par la couche. Par exemple, à une source de type **Polygon** sera proposé uniquement les types de représentation **Polygone**, **Ligne**, **Extrusion**.
 
 Le choix de la **caractéristique** à faire varier découlera automatiquement du type de représentation choisi précédemment. Par exemple, pour une **représentation Polygone**, les caractéristiques à faire varier seront **Couleur du polygone** et **Couleur du contour**. 
@@ -509,315 +512,312 @@ Exemples de styles Mapbox avancés
 
 * Fallback value (valeur par défaut)
 
-```json
-{
- "type": "fill",
- "paint": {
-  "fill-color": [
-    "case",
-    [
-      "has",
-      "nb_log_ind_pour_mille"
-    ],
-    [
-      "step",
-      [
-        "get",
-        "nb_log_ind_pour_mille"
+.. code-block:: json
+
+    {
+     "type": "fill",
+     "paint": {
+      "fill-color": [
+        "case",
+        [
+          "has",
+          "nb_log_ind_pour_mille"
+        ],
+        [
+          "step",
+          [
+            "get",
+            "nb_log_ind_pour_mille"
+          ],
+          "#fde725",
+          0.1,
+          "#5dc963",
+          1.1,
+          "#21908d",
+          3.1,
+          "#3b528b",
+          7.1,
+          "#440154",
+          15.1,
+          "#CCC"
+        ],
+        "#CCC"
       ],
-      "#fde725",
-      0.1,
-      "#5dc963",
-      1.1,
-      "#21908d",
-      3.1,
-      "#3b528b",
-      7.1,
-      "#440154",
-      15.1,
-      "#CCC"
-    ],
-    "#CCC"
-  ],
-  "fill-outline-color": "#a7c2e8"
-},
-"maxzoom": 24,
-"minzoom": 0
-}
-```
+      "fill-outline-color": "#a7c2e8"
+    },
+    "maxzoom": 24,
+    "minzoom": 0
+    }
 
 * Variation simple : icones en fonction d'un champ
 * Étiquettes en fonction d'un champ 
 
-```json
-{
-  "type": "symbol",
-  "paint": {
-    "text-color": "hsl(352, 100%, 15%)"
-  },
-  "layout": {
-    "icon-size": 1,
-    "text-font": [
-      "Arial Unicode MS Bold"
-    ],
-    "text-size": 8,
-    "icon-image": [
-      "match",
-      [
-        "get",
-        "cep_nature"
-      ],
-      "ESU",
-      "point-vert",
-      "ESO",
-      "point-noir",
-      "EMI",
-      "point-marron",
-      ""
-    ],
-    "text-field": "{cep_nom}",
-    "text-radial-offset": 2,
-    "text-variable-anchor": [
-      "top",
-      "bottom",
-      "left",
-      "right"
-    ]
-  },
-  "maxzoom": 24,
-  "minzoom": 0
-}
-```
+.. code-block:: json
+
+    {
+      "type": "symbol",
+      "paint": {
+        "text-color": "hsl(352, 100%, 15%)"
+      },
+      "layout": {
+        "icon-size": 1,
+        "text-font": [
+          "Arial Unicode MS Bold"
+        ],
+        "text-size": 8,
+        "icon-image": [
+          "match",
+          [
+            "get",
+            "cep_nature"
+          ],
+          "ESU",
+          "point-vert",
+          "ESO",
+          "point-noir",
+          "EMI",
+          "point-marron",
+          ""
+        ],
+        "text-field": "{cep_nom}",
+        "text-radial-offset": 2,
+        "text-variable-anchor": [
+          "top",
+          "bottom",
+          "left",
+          "right"
+        ]
+      },
+      "maxzoom": 24,
+      "minzoom": 0
+    }
 
 * Variation simple :  couleur des points en fonction d'un champ
 * Clusters colorés en fonction du nombre
 
-```json
-{
-  "type": "circle",
-  "paint": {
-    "circle-color": [
-      "case",
-      [
-        "has",
-        "secteuractivite"
-      ],
-      [
-        "match",
-        [
-          "get",
-          "secteuractivite"
-        ],
-        "Alimentaire",
-        "hsla(210, 50%, 40%, 0.8)",
-        "Automobiles, motos",
-        "hsla(0, 0%, 80%, 0.8)",
-        "Hôtels, cafés, restaurants",
-        "hsla(180, 50%, 60%, 0.8)",
-        "Culture, loisirs",
-        "hsla(180, 50%, 40%, 0.8)",
-        "Divers",
-        "hsla(0, 20%, 50%, 0.8)",
-        "Équipement de la maison",
-        "hsla(60, 50%, 60%, 0.8)",
-        "Équipement de la personne",
-        "hsla(300, 33%, 30%, 0.8)",
-        "Grand magasin",
-        "#c7843d",
-        "Hygiène, santé, beauté",
-        "hsla(300, 33%, 70%, 0.8)",
-        "Services à la personne",
-        "hsla(0, 100%, 90%, 0.8)",
-        "Services à vitrine",
-        "hsla(30, 100%, 60%, 0.8)",
-        "#CCC"
-      ],
-      "#CCC"
-    ],
-    "circle-radius": 7,
-    "circle-stroke-color": "hsl(0, 0%, 95%)",
-    "circle-stroke-width": 1
-  },
-  "cluster": {
-    "font": {
-      "color": "#ffffff"
-    },
-    "sizes": [
-      5,
-      10,
-      15,
-      20,
-      22,
-      25
-    ],
-    "steps": [
-      2,
-      5,
-      10,
-      50,
-      80
-    ],
-    "border": 4,
-    "colors": [
-      "#b8e295",
-      "#8dcf82",
-      "#64bc6e",
-      "#3ba859",
-      "#1c8a47",
-      "#006837"
-    ],
-    "radius": 50
-  },
-  "maxzoom": 24,
-  "minzoom": 0
-}
-```
+.. code-block:: json
 
+    {
+      "type": "circle",
+      "paint": {
+        "circle-color": [
+          "case",
+          [
+            "has",
+            "secteuractivite"
+          ],
+          [
+            "match",
+            [
+              "get",
+              "secteuractivite"
+            ],
+            "Alimentaire",
+            "hsla(210, 50%, 40%, 0.8)",
+            "Automobiles, motos",
+            "hsla(0, 0%, 80%, 0.8)",
+            "Hôtels, cafés, restaurants",
+            "hsla(180, 50%, 60%, 0.8)",
+            "Culture, loisirs",
+            "hsla(180, 50%, 40%, 0.8)",
+            "Divers",
+            "hsla(0, 20%, 50%, 0.8)",
+            "Équipement de la maison",
+            "hsla(60, 50%, 60%, 0.8)",
+            "Équipement de la personne",
+            "hsla(300, 33%, 30%, 0.8)",
+            "Grand magasin",
+            "#c7843d",
+            "Hygiène, santé, beauté",
+            "hsla(300, 33%, 70%, 0.8)",
+            "Services à la personne",
+            "hsla(0, 100%, 90%, 0.8)",
+            "Services à vitrine",
+            "hsla(30, 100%, 60%, 0.8)",
+            "#CCC"
+          ],
+          "#CCC"
+        ],
+        "circle-radius": 7,
+        "circle-stroke-color": "hsl(0, 0%, 95%)",
+        "circle-stroke-width": 1
+      },
+      "cluster": {
+        "font": {
+          "color": "#ffffff"
+        },
+        "sizes": [
+          5,
+          10,
+          15,
+          20,
+          22,
+          25
+        ],
+        "steps": [
+          2,
+          5,
+          10,
+          50,
+          80
+        ],
+        "border": 4,
+        "colors": [
+          "#b8e295",
+          "#8dcf82",
+          "#64bc6e",
+          "#3ba859",
+          "#1c8a47",
+          "#006837"
+        ],
+        "radius": 50
+      },
+      "maxzoom": 24,
+      "minzoom": 0
+    }
 
 * Variation double : 
-	* couleur des lignes en fonction d'un champ
-	* taille en fonction en fonction d'un champ
+  * couleur des lignes en fonction d'un champ
+  * taille en fonction en fonction d'un champ
 
+.. code-block:: json
 
-```json
-{
-  "type": "line",
-  "paint": {
-    "line-color": [
-      "match",
-      [
-        "get",
-        "class_adm"
-      ],
-      "Autoroute",
-      "#bb1e2a",
-      "Départementale",
-      "#487b00",
-      "Nationale",
-      "#487bb6",
-      "#000000"
-    ],
-    "line-width": [
-      "match",
-      [
-        "get",
-        "class_adm"
-      ],
-      "Autoroute",
-      3,
-      "Départementale",
-      2,
-      "Nationale",
-      1,
-      0
-    ]
-  },
-  "maxzoom": 24,
-  "minzoom": 9
-}
-```
+    {
+      "type": "line",
+      "paint": {
+        "line-color": [
+          "match",
+          [
+            "get",
+            "class_adm"
+          ],
+          "Autoroute",
+          "#bb1e2a",
+          "Départementale",
+          "#487b00",
+          "Nationale",
+          "#487bb6",
+          "#000000"
+        ],
+        "line-width": [
+          "match",
+          [
+            "get",
+            "class_adm"
+          ],
+          "Autoroute",
+          3,
+          "Départementale",
+          2,
+          "Nationale",
+          1,
+          0
+        ]
+      },
+      "maxzoom": 24,
+      "minzoom": 9
+    }
 
 * Variation simple : couleur du polygone en fonction d'un champ
 * Ordre d'affichage des géométries en fonction d'un champ
 
-```json
-{
-  "type": "fill",
-  "paint": {
-    "fill-color": [
-      "match",
-      [
-        "get",
-        "buffer"
-      ],
-      "1000",
-      "#e47e1c",
-      "250",
-      "#e41a1c",
-      "#000000"
-    ],
-    "fill-outline-color": "transparent"
-  },
-  "layout": {
-    "fill-sort-key": [
-      "case",
-      [
-        "==",
-        [
-          "get",
-          "buffer"
-        ],
-        "1000"
-      ],
-      0,
-      [
-        "==",
-        [
-          "get",
-          "buffer"
-        ],
-        "250"
-      ],
-      1,
-      0
-    ]
-  },
-  "maxzoom": 24,
-  "minzoom": 0
-}
-```
+.. code-block:: json
 
+    {
+      "type": "fill",
+      "paint": {
+        "fill-color": [
+          "match",
+          [
+            "get",
+            "buffer"
+          ],
+          "1000",
+          "#e47e1c",
+          "250",
+          "#e41a1c",
+          "#000000"
+        ],
+        "fill-outline-color": "transparent"
+      },
+      "layout": {
+        "fill-sort-key": [
+          "case",
+          [
+            "==",
+            [
+              "get",
+              "buffer"
+            ],
+            "1000"
+          ],
+          0,
+          [
+            "==",
+            [
+              "get",
+              "buffer"
+            ],
+            "250"
+          ],
+          1,
+          0
+        ]
+      },
+      "maxzoom": 24,
+      "minzoom": 0
+    }
 
 **Filtres**
 
 * Filtre simple (une condition)
 
-```json
-{
-  "type": "fill",
-  "paint": {
-    "fill-color": "hsl(140, 92%, 24%)",
-    "fill-outline-color": "hsl(0, 0%, 100%)"
-  },
-  "filter": [    
-    "==",
-    "nouvelle_culture",
-    "Oui"
-  ],
-  "maxzoom": 24,
-  "minzoom": 0
-}
-```
+.. code-block:: json
+
+    {
+      "type": "fill",
+      "paint": {
+        "fill-color": "hsl(140, 92%, 24%)",
+        "fill-outline-color": "hsl(0, 0%, 100%)"
+      },
+      "filter": [    
+        "==",
+        "nouvelle_culture",
+        "Oui"
+      ],
+      "maxzoom": 24,
+      "minzoom": 0
+    }
 
 * Filtre all (les conditions se cumulent)
 
-```json
-{
-  "type": "fill",
-  "paint": {
-    "fill-color": "hsl(140, 92%, 24%)",
-    "fill-outline-color": "hsl(0, 0%, 100%)"
-  },
-  "filter": [
-    "all",
-    [
-      "==",
-      "nouvelle_culture",
-      "Oui"
-    ],
-    [
-      ">=",
-      "evol_2021_surf",
-      "0"
-    ]
-  ],
-  "maxzoom": 24,
-  "minzoom": 0
-}
-```
+.. code-block:: json
 
+    {
+      "type": "fill",
+      "paint": {
+        "fill-color": "hsl(140, 92%, 24%)",
+        "fill-outline-color": "hsl(0, 0%, 100%)"
+      },
+      "filter": [
+        "all",
+        [
+          "==",
+          "nouvelle_culture",
+          "Oui"
+        ],
+        [
+          ">=",
+          "evol_2021_surf",
+          "0"
+        ]
+      ],
+      "maxzoom": 24,
+      "minzoom": 0
+    }
 
-**Onglet Légendes**
+Onglet Légendes
+~~~~~~~~~~~~~~~
 
 La légende est un des éléments essentiels de la carte. Elle doit être claire, facilement compréhensible et doit s’adapter aux éléments affichés sur la carte. 
 
@@ -845,7 +845,8 @@ Si la légende générée ne vous convient pas, il faut désactiver l’option �
 
 .. image :: ../_static/images/admin/admin_couche_legendegeneree.png
 
-**Onglet FENÊTRE AU SURVOL**
+Onglet FENÊTRE AU SURVOL
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 La fenêtre au survol ou info-bulle est un message contextuel apparaissant en surimpression au survol de la souris sur les éléments de la couche. Le contenu du message s’adapte dynamiquement en fonction de l’objet survolé. 
 Celle-ci n’est pas active par défaut.
@@ -870,7 +871,8 @@ Ce mode avancé s’adresse à des utilisateurs développeurs. Il peut être int
 
 .. image :: ../_static/images/admin/admin_couche_pophover_expert.png
 
-**Onglet MINI-FICHE**
+Onglet MINI-FICHE
+~~~~~~~~~~~~~~~~~
 
 La mini-fiche est une fiche structurée présentant des informations associées à un objet de la couche. Celle-ci s’ouvre au clic sur l’objet en question. 
 
@@ -900,7 +902,8 @@ Ce mode avancé s’adresse à des utilisateurs développeurs. Il peut être int
 
 .. image :: ../_static/images/admin/admin_couche_minifiche_expert.png
 
-**Onglet FILTRE**
+Onglet FILTRE
+~~~~~~~~~~~~~
 
 L’outil de filtre permet de restreindre les éléments sur la carte en fonction des valeurs de champs sélectionnées. 
 
@@ -926,7 +929,8 @@ Au niveau de l’affichage, il est possible de choisir:
 
 Il est possible de remonter/descendre les filtres dans l’ordre souhaité.
 
-**Onglet Table attributaire**
+Onglet TABLE ATTRIBUTAIRE
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 La table attributaire permet d’avoir une vision tabulaire des données de la couche. Elle n’est pas activée par défaut.
 
@@ -939,7 +943,8 @@ Il est possible de remonter/descendre les champs dans l’ordre souhaité.
 .. image :: ../_static/images/admin/admin_couche_tableactivee.png
 
 
-**Onglet WIDGET**
+Onglet WIDGET
+~~~~~~~~~~~~~
 
 L’outil de widget permet de récapituler dans un tableau dynamique des indicateurs utiles à l'analyse de la couche.
 
@@ -949,11 +954,13 @@ La configuration de l’outil de widget s’adresse à des utilisateurs dévelop
 
 .. image :: ../_static/images/admin/admin_couche_widget.png
 
-**Modifier une couche**
+Modifier une couche
+~~~~~~~~~~~~~~~~~~~
 
 Pour modifier une couche existante, cliquez sur la couche dans la liste et effectuez vos changements.
 
-**Dupliquer une couche**
+Dupliquer une couche
+~~~~~~~~~~~~~~~~~~~~
 
 La duplication d'une couche inclut la copie :
 
@@ -968,7 +975,8 @@ Pour dupliquer une couche cliquez sur le bouton « **DUPLIQUER** » depuis la 
 Un message indique à l'utilisateur que la couche a bien été dupliquée.
 
 
-**Supprimer une couche**
+Supprimer une couche
+~~~~~~~~~~~~~~~~~~~~
 
 Pouvoir supprimer une source de données nécessite de s’assurer qu’elle n’est utilisée dans aucun vue. Si ce n’est pas le cas, la suppression ne pourra pas être effectuée.
 
@@ -1012,7 +1020,8 @@ S’il a définit au préalable des fonds de carte dans le module **Liste des fo
 
 Une icône par défaut est appliquée à la vue si l’utilisateur ne lui en choisis pas. Sa couleur est blanche afin que l’icône se démarque bien sur le menu des vues dans le visualiseur cartographique. Le format supporté par l’outil est le png.  
 
-**Arbre des couches**
+Arbre des couches
+~~~~~~~~~~~~~~~~~
 
 Une couche appartient obligatoirement à un groupe.
 
@@ -1037,7 +1046,8 @@ L’enregistrement de la vue aura pour effet immédiat de rajouter automatiqueme
 
 Pour modifier une vue existante, cliquez sur la vue dans la liste et effectuez vos changements.
 
-**Supprimer une vue**
+Supprimer une vue
+~~~~~~~~~~~~~~~~~
 
 Pour supprimer une vue, vous avez deux façons de procéder :
 
