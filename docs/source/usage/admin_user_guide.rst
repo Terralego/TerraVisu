@@ -167,7 +167,8 @@ Import de fichiers
 
 Une source de données peut être créée par l’import d’un fichier GeoJSON, Shapefile ou CSV en déposant le fichier dans l'interface. 
 
-* **Import de fichier GeoJSON ou Shapefile**
+Import de fichier GeoJSON ou Shapefile
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Les informations à renseigner à minima, lors de la création d’une nouvelle source GeoJSON ou Shapefile sont le nom, le type de données, le type de la géométrie et le champ de l’identifiant unique.
 
@@ -175,7 +176,8 @@ Les informations à renseigner à minima, lors de la création d’une nouvelle 
 
 ⚠️ *Les fichiers Shapefile doivent être fournis sous la forme d’une archive zippée contenant l’ensemble des fichiers (.shp, .prj, .shx, .dbf, etc).*
 
-* **Import de fichier CSV**
+Import de fichier CSV
+~~~~~~~~~~~~~~~~~~~~~
 
 Pour intégrer un fichier CSV, il faut que celui-ci comporte des coordonnées géographiques, dans une ou deux colonnes. 
 
@@ -187,7 +189,8 @@ L’ option « **Entête à la première ligne** » activée permet de conserver
 
 Si l’option « **Ignorer les colonnes à null** » est activée, toutes les colonnes vides ne seront pas conservées.
 
-* **Requête vers une base de données PostGIS**
+Requête vers une base de données PostGIS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Les informations à renseigner à minima lors de la création d’une nouvelle source PostGIS sont le **nom**, le **type de géométrie**, les **paramètres de connexion à la base de données** (hôte, port, nom bdd, nom utilisateur, mot de passe utilisateur), **requête SQL**, **champ de géométrie**, **champ de l’identifiant unique**.
 
@@ -210,8 +213,8 @@ L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde
          * `ST_SimplifyPreserveTopology(geom, tolerance)`
 
 
-
-* **Import via un flux WMS/WMTS**
+Import via un flux WMS/WMTS
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Les flux WMS/WMTS sont des protocoles de communication qui permettent d’obtenir des cartes de données géoréférencées à partir de différents serveurs de données (IGN, BRGM, etc.). 
 
@@ -592,8 +595,7 @@ Exemples de styles Mapbox avancés
       "minzoom": 0
     }
 
-* Variation simple :  couleur des points en fonction d'un champ
-* Clusters colorés en fonction du nombre
+* Variation simple (couleur des points en fonction d'un champ) + clusters colorés en fonction du nombre
 
 .. code-block:: json
 
@@ -676,9 +678,7 @@ Exemples de styles Mapbox avancés
       "minzoom": 0
     }
 
-* Variation double : 
-  * couleur des lignes en fonction d'un champ
-  * taille en fonction en fonction d'un champ
+* Variation double : couleur des lignes en fonction d'un champ + taille en fonction en fonction d'un champ
 
 .. code-block:: json
 
@@ -718,8 +718,7 @@ Exemples de styles Mapbox avancés
       "minzoom": 9
     }
 
-* Variation simple : couleur du polygone en fonction d'un champ
-* Ordre d'affichage des géométries en fonction d'un champ
+* Variation simple (couleur du polygone en fonction d'un champ) + ordre d'affichage des géométries en fonction d'un champ
 
 .. code-block:: json
 
@@ -789,7 +788,7 @@ Exemples de styles Mapbox avancés
       "minzoom": 0
     }
 
-* Filtre all (les conditions se cumulent)
+* Filtre "et" (les conditions se cumulent)
 
 .. code-block:: json
 
@@ -816,7 +815,7 @@ Exemples de styles Mapbox avancés
       "minzoom": 0
     }
 
-Onglet Légendes
+Onglet LÉGENDES
 ~~~~~~~~~~~~~~~
 
 La légende est un des éléments essentiels de la carte. Elle doit être claire, facilement compréhensible et doit s’adapter aux éléments affichés sur la carte. 
@@ -929,8 +928,8 @@ Au niveau de l’affichage, il est possible de choisir:
 
 Il est possible de remonter/descendre les filtres dans l’ordre souhaité.
 
-Onglet TABLE ATTRIBUTAIRE
-~~~~~~~~~~~~~~~~~~~~~~~~~
+Onglet TABLE
+~~~~~~~~~~~~
 
 La table attributaire permet d’avoir une vision tabulaire des données de la couche. Elle n’est pas activée par défaut.
 
@@ -955,12 +954,12 @@ La configuration de l’outil de widget s’adresse à des utilisateurs dévelop
 .. image :: ../_static/images/admin/admin_couche_widget.png
 
 Modifier une couche
-~~~~~~~~~~~~~~~~~~~
+-------------------
 
 Pour modifier une couche existante, cliquez sur la couche dans la liste et effectuez vos changements.
 
 Dupliquer une couche
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 La duplication d'une couche inclut la copie :
 
@@ -976,7 +975,7 @@ Un message indique à l'utilisateur que la couche a bien été dupliquée.
 
 
 Supprimer une couche
-~~~~~~~~~~~~~~~~~~~~
+--------------------
 
 Pouvoir supprimer une source de données nécessite de s’assurer qu’elle n’est utilisée dans aucun vue. Si ce n’est pas le cas, la suppression ne pourra pas être effectuée.
 
@@ -1047,7 +1046,7 @@ L’enregistrement de la vue aura pour effet immédiat de rajouter automatiqueme
 Pour modifier une vue existante, cliquez sur la vue dans la liste et effectuez vos changements.
 
 Supprimer une vue
-~~~~~~~~~~~~~~~~~
+-----------------
 
 Pour supprimer une vue, vous avez deux façons de procéder :
 
