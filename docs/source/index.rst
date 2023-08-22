@@ -15,7 +15,16 @@ Welcome to TerraVisu's documentation!
 
    user_manual/user_guide.rst
    user_manual/admin_user_guide.rst
-   
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: 📖 Installation & Configuration
+
+   installation_configuration/install.rst
+   installation_configuration/configuration.rst
+   installation_configuration/troubleshooting.rst   
+
 .. toctree::
    :maxdepth: 2
    :hidden:
