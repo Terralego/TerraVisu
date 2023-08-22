@@ -163,12 +163,12 @@ Lors de la déclaration de la source, il est possible d’ajouter un ou plusieur
 ⚠️ *Toutes les données intégrées à l’application doivent a minima posséder un champ d’identifiant unique et une géométrie dont les coordonnées sont en WGS84 (epsg:4326).*
 
 Import de fichiers
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
 
 Une source de données peut être créée par l’import d’un fichier GeoJSON, Shapefile ou CSV en déposant le fichier dans l'interface. 
 
 Import de fichier GeoJSON ou Shapefile
-""""""""""""""""""""""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Les informations à renseigner à minima, lors de la création d’une nouvelle source GeoJSON ou Shapefile sont le nom, le type de données, le type de la géométrie et le champ de l’identifiant unique.
 
@@ -177,7 +177,7 @@ Les informations à renseigner à minima, lors de la création d’une nouvelle 
 ⚠️ *Les fichiers Shapefile doivent être fournis sous la forme d’une archive zippée contenant l’ensemble des fichiers (.shp, .prj, .shx, .dbf, etc).*
 
 Import de fichier CSV
-"""""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~~~
 
 Pour intégrer un fichier CSV, il faut que celui-ci comporte des coordonnées géographiques, dans une ou deux colonnes. 
 
@@ -190,7 +190,7 @@ L’ option « **Entête à la première ligne** » activée permet de conserver
 Si l’option « **Ignorer les colonnes à null** » est activée, toutes les colonnes vides ne seront pas conservées.
 
 Import via une requête PostGIS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Les informations à renseigner à minima lors de la création d’une nouvelle source PostGIS sont le **nom**, le **type de géométrie**, les **paramètres de connexion à la base de données** (hôte, port, nom bdd, nom utilisateur, mot de passe utilisateur), **requête SQL**, **champ de géométrie**, **champ de l’identifiant unique**.
 
@@ -214,7 +214,7 @@ L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde
 
 
 Import via un flux WMS/WMTS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Les flux WMS/WMTS sont des protocoles de communication qui permettent d’obtenir des cartes de données géoréférencées à partir de différents serveurs de données (IGN, BRGM, etc.). 
 
