@@ -1,6 +1,6 @@
-===========================================================================
-Manuel d'utilisation de l'outil d'administration de la plateforme TerraVisu 
-===========================================================================
+==================================================
+Outil d'administration de la plateforme TerraVisu 
+==================================================
 
 
 L'outil d'administration
