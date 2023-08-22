@@ -8,41 +8,42 @@ Welcome to TerraVisu's documentation!
 
 .. image:: ./_static/logo_color.png
 
-.. toctree::
-    :maxdepth: 2
-    :hidden:
-    :caption: ✒️ Others
-
-    others/authors.rst
-    others/changelog.rst
 
 .. toctree::
-    :maxdepth: 2
-    :hidden:
-    :caption: 🚀 User manual
+   :maxdepth: 2
+   :hidden:
+   :caption: ✒️ Others
 
-    user_manual/user_guide.rst
-    user_manual/admin_user_guide.rst
+   others/authors.rst
+   others/changelog.rst
 
 .. toctree::
-    :maxdepth: 2
-    :hidden:
-    :caption: 📖 Installation & Configuration
+   :maxdepth: 2
+   :hidden:
+   :caption: 🚀 User manual
+
+   user_manual/user_guide.rst
+   user_manual/admin_user_guide.rst
+
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: 📖 Installation & Configuration
 
    installation_configuration/install.rst
    installation_configuration/configuration.rst
    installation_configuration/troubleshooting.rst
 
 .. toctree::
-    :maxdepth: 2
-    :hidden:
-    :caption: 🪄 Contribute
+   :maxdepth: 2
+   :hidden:
+   :caption: 🪄 Contribute
 
-    contribute/contributing.rst
-    contribute/development.rst
-    contribute/translating.rst
-    contribute/documentation.rst
-    contribute/design.rst
+   contribute/contributing.rst
+   contribute/development.rst
+   contribute/translating.rst
+   contribute/documentation.rst
+   contribute/design.rst
 
 
 User Manual
