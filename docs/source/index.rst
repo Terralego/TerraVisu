@@ -30,7 +30,6 @@ Welcome to TerraVisu's documentation!
    :hidden:
    :caption: 🪄 Contribute
 
-    contribute/contributing.rst
     contribute/development.rst
     contribute/translating.rst
     contribute/documentation.rst
