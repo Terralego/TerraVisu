@@ -511,38 +511,38 @@ Exemples de styles Mapbox avancés
 
 ```json
 {
-  "type": "fill",
-  "paint": {
-    "fill-color": [
-      "case",
+ "type": "fill",
+ "paint": {
+  "fill-color": [
+    "case",
+    [
+      "has",
+      "nb_log_ind_pour_mille"
+    ],
+    [
+      "step",
       [
-        "has",
+        "get",
         "nb_log_ind_pour_mille"
       ],
-      [
-        "step",
-        [
-          "get",
-          "nb_log_ind_pour_mille"
-        ],
-        "#fde725",
-        0.1,
-        "#5dc963",
-        1.1,
-        "#21908d",
-        3.1,
-        "#3b528b",
-        7.1,
-        "#440154",
-        15.1,
-        "#CCC"
-      ],
+      "#fde725",
+      0.1,
+      "#5dc963",
+      1.1,
+      "#21908d",
+      3.1,
+      "#3b528b",
+      7.1,
+      "#440154",
+      15.1,
       "#CCC"
     ],
-    "fill-outline-color": "#a7c2e8"
-  },
-  "maxzoom": 24,
-  "minzoom": 0
+    "#CCC"
+  ],
+  "fill-outline-color": "#a7c2e8"
+},
+"maxzoom": 24,
+"minzoom": 0
 }
 ```
 
@@ -780,9 +780,9 @@ Exemples de styles Mapbox avancés
     "fill-outline-color": "hsl(0, 0%, 100%)"
   },
   "filter": [    
-      "==",
-      "nouvelle_culture",
-      "Oui"
+    "==",
+    "nouvelle_culture",
+    "Oui"
   ],
   "maxzoom": 24,
   "minzoom": 0
