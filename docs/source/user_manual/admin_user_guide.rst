@@ -1,6 +1,6 @@
-==================================================
-Outil d'administration de la plateforme TerraVisu 
-==================================================
+========================
+Outil d'administration 
+========================
 
 
 L'outil d'administration
@@ -496,24 +496,6 @@ Lors de la conception d’un style avec une analyse, il est possible d’activer
 
 .. image :: ../_static/images/admin/admin_couche_style_assistant.png
 
-Ajouter un style secondaire
-""""""""""""""""""""""""""""
-
-Une couche peut utiliser plusieurs styles. Le style principal utilise les données de la source utilisée par la couche, en revanche, le style secondaire peut faire appel à une source de données différente. 
-
-Le style secondaire doit être vu comme un élément de décoration sur la carte. De cette manière, aucune interaction ne sera possible avec les données du style secondaire (info-bulle, mini-fiche, filtre, etc.)
-
-Exemple concret : Dans le cas d’une carte des communes, il pourra être intéressant de rajouter les étiquettes des noms au centre des communes. Pour se faire, on aura besoin de créer un style secondaire faisant appel à la source de données des centroides des communes pour pouvoir ajouter les étiquettes.
-
-.. image :: ../_static/images/admin/admin_couche_style_secondaire.png
-
-Style sans assistant
-"""""""""""""""""""""
-
-Il est possible d’aller plus loin dans la conception d’un style en désactivant le mode assistant. Ce mode s’adresse à des utilisateurs développeurs car il faut rédiger le code en JSON, en suivant la spécification `Mapbox <https://docs.mapbox.com/mapbox-gl-js/style-spec/>`_.
-
-.. image :: ../_static/images/admin/admin_couche_style_sansassistant.png
-
 Exemples de styles Mapbox avancés
 """"""""""""""""""""""""""""""""""
 
@@ -821,6 +803,25 @@ Exemples de styles Mapbox avancés
       "maxzoom": 24,
       "minzoom": 0
     }
+
+Ajouter un style secondaire
+""""""""""""""""""""""""""""
+
+Une couche peut utiliser plusieurs styles. Le style principal utilise les données de la source utilisée par la couche, en revanche, le style secondaire peut faire appel à une source de données différente. 
+
+Le style secondaire doit être vu comme un élément de décoration sur la carte. De cette manière, aucune interaction ne sera possible avec les données du style secondaire (info-bulle, mini-fiche, filtre, etc.)
+
+Exemple concret : Dans le cas d’une carte des communes, il pourra être intéressant de rajouter les étiquettes des noms au centre des communes. Pour se faire, on aura besoin de créer un style secondaire faisant appel à la source de données des centroides des communes pour pouvoir ajouter les étiquettes.
+
+.. image :: ../_static/images/admin/admin_couche_style_secondaire.png
+
+Style sans assistant
+"""""""""""""""""""""
+
+Il est possible d’aller plus loin dans la conception d’un style en désactivant le mode assistant. Ce mode s’adresse à des utilisateurs développeurs car il faut rédiger le code en JSON, en suivant la spécification `Mapbox <https://docs.mapbox.com/mapbox-gl-js/style-spec/>`_.
+
+.. image :: ../_static/images/admin/admin_couche_style_sansassistant.png
+
 
 Onglet LÉGENDES
 ^^^^^^^^^^^^^^^^
