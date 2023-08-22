@@ -502,6 +502,321 @@ Il est possible d’aller plus loin dans la conception d’un style en désactiv
 
 .. image :: ../_static/images/admin/admin_couche_style_sansassistant.png
 
+Exemples de styles Mapbox avancés
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Catégorisation**
+
+* Fallback value (valeur par défaut)
+
+```json
+{
+ "type": "fill",
+ "paint": {
+  "fill-color": [
+    "case",
+    [
+      "has",
+      "nb_log_ind_pour_mille"
+    ],
+    [
+      "step",
+      [
+        "get",
+        "nb_log_ind_pour_mille"
+      ],
+      "#fde725",
+      0.1,
+      "#5dc963",
+      1.1,
+      "#21908d",
+      3.1,
+      "#3b528b",
+      7.1,
+      "#440154",
+      15.1,
+      "#CCC"
+    ],
+    "#CCC"
+  ],
+  "fill-outline-color": "#a7c2e8"
+},
+"maxzoom": 24,
+"minzoom": 0
+}
+```
+
+* Variation simple : icones en fonction d'un champ
+* Étiquettes en fonction d'un champ 
+
+```json
+{
+  "type": "symbol",
+  "paint": {
+    "text-color": "hsl(352, 100%, 15%)"
+  },
+  "layout": {
+    "icon-size": 1,
+    "text-font": [
+      "Arial Unicode MS Bold"
+    ],
+    "text-size": 8,
+    "icon-image": [
+      "match",
+      [
+        "get",
+        "cep_nature"
+      ],
+      "ESU",
+      "point-vert",
+      "ESO",
+      "point-noir",
+      "EMI",
+      "point-marron",
+      ""
+    ],
+    "text-field": "{cep_nom}",
+    "text-radial-offset": 2,
+    "text-variable-anchor": [
+      "top",
+      "bottom",
+      "left",
+      "right"
+    ]
+  },
+  "maxzoom": 24,
+  "minzoom": 0
+}
+```
+
+* Variation simple :  couleur des points en fonction d'un champ
+* Clusters colorés en fonction du nombre
+
+```json
+{
+  "type": "circle",
+  "paint": {
+    "circle-color": [
+      "case",
+      [
+        "has",
+        "secteuractivite"
+      ],
+      [
+        "match",
+        [
+          "get",
+          "secteuractivite"
+        ],
+        "Alimentaire",
+        "hsla(210, 50%, 40%, 0.8)",
+        "Automobiles, motos",
+        "hsla(0, 0%, 80%, 0.8)",
+        "Hôtels, cafés, restaurants",
+        "hsla(180, 50%, 60%, 0.8)",
+        "Culture, loisirs",
+        "hsla(180, 50%, 40%, 0.8)",
+        "Divers",
+        "hsla(0, 20%, 50%, 0.8)",
+        "Équipement de la maison",
+        "hsla(60, 50%, 60%, 0.8)",
+        "Équipement de la personne",
+        "hsla(300, 33%, 30%, 0.8)",
+        "Grand magasin",
+        "#c7843d",
+        "Hygiène, santé, beauté",
+        "hsla(300, 33%, 70%, 0.8)",
+        "Services à la personne",
+        "hsla(0, 100%, 90%, 0.8)",
+        "Services à vitrine",
+        "hsla(30, 100%, 60%, 0.8)",
+        "#CCC"
+      ],
+      "#CCC"
+    ],
+    "circle-radius": 7,
+    "circle-stroke-color": "hsl(0, 0%, 95%)",
+    "circle-stroke-width": 1
+  },
+  "cluster": {
+    "font": {
+      "color": "#ffffff"
+    },
+    "sizes": [
+      5,
+      10,
+      15,
+      20,
+      22,
+      25
+    ],
+    "steps": [
+      2,
+      5,
+      10,
+      50,
+      80
+    ],
+    "border": 4,
+    "colors": [
+      "#b8e295",
+      "#8dcf82",
+      "#64bc6e",
+      "#3ba859",
+      "#1c8a47",
+      "#006837"
+    ],
+    "radius": 50
+  },
+  "maxzoom": 24,
+  "minzoom": 0
+}
+```
+
+
+* Variation double : 
+	* couleur des lignes en fonction d'un champ
+	* taille en fonction en fonction d'un champ
+
+
+```json
+{
+  "type": "line",
+  "paint": {
+    "line-color": [
+      "match",
+      [
+        "get",
+        "class_adm"
+      ],
+      "Autoroute",
+      "#bb1e2a",
+      "Départementale",
+      "#487b00",
+      "Nationale",
+      "#487bb6",
+      "#000000"
+    ],
+    "line-width": [
+      "match",
+      [
+        "get",
+        "class_adm"
+      ],
+      "Autoroute",
+      3,
+      "Départementale",
+      2,
+      "Nationale",
+      1,
+      0
+    ]
+  },
+  "maxzoom": 24,
+  "minzoom": 9
+}
+```
+
+* Variation simple : couleur du polygone en fonction d'un champ
+* Ordre d'affichage des géométries en fonction d'un champ
+
+```json
+{
+  "type": "fill",
+  "paint": {
+    "fill-color": [
+      "match",
+      [
+        "get",
+        "buffer"
+      ],
+      "1000",
+      "#e47e1c",
+      "250",
+      "#e41a1c",
+      "#000000"
+    ],
+    "fill-outline-color": "transparent"
+  },
+  "layout": {
+    "fill-sort-key": [
+      "case",
+      [
+        "==",
+        [
+          "get",
+          "buffer"
+        ],
+        "1000"
+      ],
+      0,
+      [
+        "==",
+        [
+          "get",
+          "buffer"
+        ],
+        "250"
+      ],
+      1,
+      0
+    ]
+  },
+  "maxzoom": 24,
+  "minzoom": 0
+}
+```
+
+
+**Filtres**
+
+* Filtre simple (une condition)
+
+```json
+{
+  "type": "fill",
+  "paint": {
+    "fill-color": "hsl(140, 92%, 24%)",
+    "fill-outline-color": "hsl(0, 0%, 100%)"
+  },
+  "filter": [    
+    "==",
+    "nouvelle_culture",
+    "Oui"
+  ],
+  "maxzoom": 24,
+  "minzoom": 0
+}
+```
+
+* Filtre all (les conditions se cumulent)
+
+```json
+{
+  "type": "fill",
+  "paint": {
+    "fill-color": "hsl(140, 92%, 24%)",
+    "fill-outline-color": "hsl(0, 0%, 100%)"
+  },
+  "filter": [
+    "all",
+    [
+      "==",
+      "nouvelle_culture",
+      "Oui"
+    ],
+    [
+      ">=",
+      "evol_2021_surf",
+      "0"
+    ]
+  ],
+  "maxzoom": 24,
+  "minzoom": 0
+}
+```
+
+
 **Onglet Légendes**
 
 La légende est un des éléments essentiels de la carte. Elle doit être claire, facilement compréhensible et doit s’adapter aux éléments affichés sur la carte. 
