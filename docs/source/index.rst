@@ -36,6 +36,14 @@ Welcome to TerraVisu's documentation!
    contribute/documentation.rst
    contribute/design.rst
 
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: ✒️ Others
+
+   others/authors.rst
+   others/changelog.rst   
+
 User Manual
 ------------
 
