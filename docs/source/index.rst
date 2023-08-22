@@ -9,9 +9,9 @@ Welcome to TerraVisu's documentation!
 .. image:: ./_static/logo_color.png
 
 .. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: ✒️ Others
+    :maxdepth: 2
+    :hidden:
+    :caption: ✒️ Others
 
     others/authors.rst
     others/changelog.rst
@@ -25,18 +25,18 @@ Welcome to TerraVisu's documentation!
     user_manual/admin_user_guide.rst
 
 .. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: 📖 Installation & Configuration
+    :maxdepth: 2
+    :hidden:
+    :caption: 📖 Installation & Configuration
 
    installation_configuration/install.rst
    installation_configuration/configuration.rst
    installation_configuration/troubleshooting.rst
 
 .. toctree::
-   :maxdepth: 2
-   :hidden:
-   :caption: 🪄 Contribute
+    :maxdepth: 2
+    :hidden:
+    :caption: 🪄 Contribute
 
     contribute/contributing.rst
     contribute/development.rst
