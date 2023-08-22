@@ -2,4 +2,4 @@
 Install instructions
 ====================
 
-.. include:: ../../install/README.rst
+.. include:: ../../../install/README.rst

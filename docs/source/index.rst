@@ -10,37 +10,95 @@ Welcome to TerraVisu's documentation!
 
 .. toctree::
    :maxdepth: 2
-   :caption: Contents:
+   :hidden:
+   :caption: 🚀 User manual
 
-   install.rst
-   configuration.rst
-   troubleshooting.rst
-
-.. toctree::
-    :caption: User manual
-    :maxdepth: 2
-
-    usage/admin_user_guide.rst
-    usage/user_guide.rst
-
+   user_manual/user_guide.rst
+   user_manual/admin_user_guide.rst
 
 .. toctree::
-    :caption: Contribute
-    :maxdepth: 2
+   :maxdepth: 2
+   :hidden:
+   :caption: 📖 Installation & Configuration
 
-    CONTRIBUTING.rst
-    contribute/development.rst
-    contribute/translating.rst
-    contribute/documentation.rst
-    contribute/design.rst
+   installation_configuration/install.rst
+   installation_configuration/configuration.rst
+   installation_configuration/troubleshooting.rst   
 
 .. toctree::
-    :caption: Others
-    :maxdepth: 2
+   :maxdepth: 2
+   :hidden:
+   :caption: 🪄 Contribute
 
-    authors.rst
-    changelog.rst
+   contribute/contributing.rst
+   contribute/development.rst
+   contribute/translating.rst
+   contribute/documentation.rst
+   contribute/design.rst
 
+.. toctree::
+   :maxdepth: 2
+   :hidden:
+   :caption: ✒️ Others
+
+   others/authors.rst
+   others/changelog.rst   
+
+User Manual
+------------
+
+We have a few places for you to get started:
+
+🚀 `Plateforme TerraVisu <user_manual/user_guide.rst>`_
+  Discover everything you need to know about TerraVisu.
+
+🚀 `Outil d'administration <user_manual/admin_user_guide.rst>`_
+  Using the back-office for the first time? We have the manual to get you started.
+
+Installation & Configuration
+-----------------------------
+
+Need to know how something works? Here are a few of the most important reference docs:
+
+📖 `Install instruction <installation_configuration/install.rst>`_
+  Learn about the requirements and install instructions.
+
+📖 `Configuration <installation_configuration/configuration.rst>`_
+  Learn how to set your environment variables.
+
+📖 `Troubleshooting <installation_configuration/troubleshooting.rst>`_
+  Learn how to fix common problems.
+
+Contribute
+-----------
+
+Need to get something specific done? These guides provide step-by-step instructions in key areas to get you up to speed faster:
+
+🪄 `Contributing <contribute/contributing.rst>`_
+  Discover how to contribute to this project.
+
+🪄 `Development <contribute/development.rst>`_
+  Overview of all the main commands of developement.
+
+🪄 `Translating <contribute/translating.rst>`_
+  Feel free to translate our doc.
+
+🪄 `Documentation <contribute/documentation.rst>`_
+  Get familiar with some of the more advanced topics of building and deploying documentation with Read the Docs.
+
+🪄 `Design <contribute/Design.rst>`_
+  Information about the architecture and main components
+
+Others
+-------
+
+Learn about the authors and browse the changelog :
+
+✒️ `Authors <others/authors.rst>`_
+  Learn more about the authors.
+
+✒️ `Changelog <others/changelog.rst>`_
+  Overview of all notable changes made to the project. 
 
 Indices and tables
 ==================
@@ -48,4 +106,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
