@@ -19,7 +19,7 @@ Welcome to TerraVisu's documentation!
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: 📖 Installation & Configuration:
+   :caption: 📖 Installation & Configuration
 
    installation_configuration/install.rst
    installation_configuration/configuration.rst
