@@ -28,7 +28,7 @@ Welcome to TerraVisu's documentation!
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: 🪄 Contribute
+   :caption: ✨ Contribute
 
    contribute/contributing.rst
    contribute/development.rst
@@ -74,25 +74,25 @@ Contribute
 
 Need to get something specific done? These guides provide step-by-step instructions in key areas to get you up to speed faster:
 
-🪄 `Contributing <contribute/contributing.html>`_
+✨ `Contributing <contribute/contributing.html>`_
   Discover how to contribute to this project.
 
-🪄 `Development <contribute/development.html>`_
+✨ `Development <contribute/development.html>`_
   Overview of all the main commands of developement.
 
-🪄 `Translating <contribute/translating.html>`_
+✨ `Translating <contribute/translating.html>`_
   Feel free to translate our doc.
 
-🪄 `Documentation <contribute/documentation.html>`_
+✨ `Documentation <contribute/documentation.html>`_
   Get familiar with some of the more advanced topics of building and deploying documentation with Read the Docs.
 
-🪄 `Design <contribute/Design.html>`_
+✨ `Design <contribute/Design.html>`_
   Information about the architecture and main components
 
 Others
 -------
 
-Learn about the authors and browse the changelog :
+Learn about the authors and browse the changelog:
 
 📝 `Authors <others/authors.html>`_
   Learn more about the authors.
