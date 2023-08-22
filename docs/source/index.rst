@@ -12,7 +12,7 @@ Welcome to TerraVisu's documentation!
     :maxdepth: 2
     :hidden:
     :caption: 🚀 User manual
-    
+
     usage/user_guide.rst
     usage/admin_user_guide.rst
 
@@ -30,7 +30,7 @@ Welcome to TerraVisu's documentation!
    :hidden:
    :caption: 🪄 Contribute
 
-    CONTRIBUTING.rst
+    contribute/contributing.rst
     contribute/development.rst
     contribute/translating.rst
     contribute/documentation.rst
