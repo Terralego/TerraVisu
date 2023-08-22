@@ -163,12 +163,12 @@ Lors de la déclaration de la source, il est possible d’ajouter un ou plusieur
 ⚠️ *Toutes les données intégrées à l’application doivent a minima posséder un champ d’identifiant unique et une géométrie dont les coordonnées sont en WGS84 (epsg:4326).*
 
 Import de fichiers
-~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
 
 Une source de données peut être créée par l’import d’un fichier GeoJSON, Shapefile ou CSV en déposant le fichier dans l'interface. 
 
 Import de fichier GeoJSON ou Shapefile
-""""""""""""""""""""""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Les informations à renseigner à minima, lors de la création d’une nouvelle source GeoJSON ou Shapefile sont le nom, le type de données, le type de la géométrie et le champ de l’identifiant unique.
 
@@ -177,7 +177,7 @@ Les informations à renseigner à minima, lors de la création d’une nouvelle 
 ⚠️ *Les fichiers Shapefile doivent être fournis sous la forme d’une archive zippée contenant l’ensemble des fichiers (.shp, .prj, .shx, .dbf, etc).*
 
 Import de fichier CSV
-"""""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~~~
 
 Pour intégrer un fichier CSV, il faut que celui-ci comporte des coordonnées géographiques, dans une ou deux colonnes. 
 
@@ -190,7 +190,7 @@ L’ option « **Entête à la première ligne** » activée permet de conserver
 Si l’option « **Ignorer les colonnes à null** » est activée, toutes les colonnes vides ne seront pas conservées.
 
 Import via une requête PostGIS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Les informations à renseigner à minima lors de la création d’une nouvelle source PostGIS sont le **nom**, le **type de géométrie**, les **paramètres de connexion à la base de données** (hôte, port, nom bdd, nom utilisateur, mot de passe utilisateur), **requête SQL**, **champ de géométrie**, **champ de l’identifiant unique**.
 
@@ -214,7 +214,7 @@ L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde
 
 
 Import via un flux WMS/WMTS
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Les flux WMS/WMTS sont des protocoles de communication qui permettent d’obtenir des cartes de données géoréférencées à partir de différents serveurs de données (IGN, BRGM, etc.). 
 
@@ -320,7 +320,7 @@ Pour créer une nouvelle couche, cliquez sur le bouton « **CRÉER** ».
 Une page s’ouvre avec différents onglets à renseigner.
 
 Onglet DÉFINITION
-~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^
 
 Les informations à renseigner à minima lors de la définition de la couche sont le **nom** et la **source de données**.
 
@@ -340,7 +340,7 @@ A ce stade, il est possible d’enregistrer la couche telle quelle et de l’aff
 .. image :: ../_static/images/admin/admin_couche_definition.png
 
 Filtrage de source
-"""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~
 
 L’intérêt principal du filtrage de source est qu’il permet de créer de multiple couches à partir de la même source de données. 
 
@@ -359,7 +359,7 @@ Le nombre d’éléments retournés par le filtre est une aide précieuse pour s
 Le filtre appliqué à la source de données dans la couche est immédiatement répercuté dans la fenêtre de filtre côté interface du visualiseur cartographique. 
 
 Onglet ICÔNES
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 Il est possible d'afficher ses propres pictogrammes sur une couche. Ils pourront servir d'icônes ou de motifs sur la carte créée.
 
@@ -375,7 +375,7 @@ Pour enregistrer l'image, enregistrez la couche.
 
 
 Onglet STYLE
-~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 La conception du style permet de donner du sens à une carte en transmettant une information qui doit être la plus efficace et compréhensible possible.
 
@@ -402,7 +402,7 @@ Il existe deux modes possibles pour la conception du style : le mode avec assis
 Dans ce manuel d’utilisation, nous nous concentrons principalement sur le mode avec assistant car celui ci s’adresse à un profil d’utilisateur non développeur.
 
 Style simple
-"""""""""""""
+~~~~~~~~~~~~~
 
 L’application identifie automatiquement le type de représentation possible en fonction de la géométrie de la source de données utilisée. Ainsi, au moment de la conception, un style simple par défaut est proposé à l’utilisateur.
 Il est possible de modifier les couleurs par défaut en cliquant sur le carré coloré. Un sélecteur de couleur apparaît et vous permet d’en choisir une dans la palette chromatique ou de renseigner le code couleur en HTML ou RGBA.
@@ -418,7 +418,7 @@ Pour utiliser une icône existante dans un style simple, sélectionnez la repré
 .. image :: ../_static/images/admin/admin_couche_style_icone.png
 
 Style avec motif
-"""""""""""""""""
+~~~~~~~~~~~~~~~~~
 
 Il est possible d’utiliser des motifs au lieu des couleurs pour remplir un polygone.
 
@@ -446,7 +446,7 @@ Il est possible d’utiliser des motifs au lieu des couleurs pour remplir un pol
 
 
 Style avec une analyse
-"""""""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~~~~~
 
 * Choix du **type de représentation**
 * Polygone
@@ -497,7 +497,7 @@ Lors de la conception d’un style avec une analyse, il est possible d’activer
 .. image :: ../_static/images/admin/admin_couche_style_assistant.png
 
 Ajouter un style secondaire
-""""""""""""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Une couche peut utiliser plusieurs styles. Le style principal utilise les données de la source utilisée par la couche, en revanche, le style secondaire peut faire appel à une source de données différente. 
 
@@ -508,17 +508,17 @@ Exemple concret : Dans le cas d’une carte des communes, il pourra être inté
 .. image :: ../_static/images/admin/admin_couche_style_secondaire.png
 
 Style sans assistant
-"""""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~~~
 
 Il est possible d’aller plus loin dans la conception d’un style en désactivant le mode assistant. Ce mode s’adresse à des utilisateurs développeurs car il faut rédiger le code en JSON, en suivant la spécification `Mapbox <https://docs.mapbox.com/mapbox-gl-js/style-spec/>`_.
 
 .. image :: ../_static/images/admin/admin_couche_style_sansassistant.png
 
 Exemples de styles Mapbox avancés
-""""""""""""""""""""""""""""""""""
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Catégorisation
-'''''''''''''''
+"""""""""""""""
 
 * Fallback value (valeur par défaut)
 
@@ -774,7 +774,7 @@ Catégorisation
     }
 
 Filtres
-''''''''
+""""""""
 
 * Filtre simple (une condition)
 
@@ -823,7 +823,7 @@ Filtres
     }
 
 Onglet LÉGENDES
-~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^
 
 La légende est un des éléments essentiels de la carte. Elle doit être claire, facilement compréhensible et doit s’adapter aux éléments affichés sur la carte. 
 
@@ -852,7 +852,7 @@ Si la légende générée ne vous convient pas, il faut désactiver l’option �
 .. image :: ../_static/images/admin/admin_couche_legendegeneree.png
 
 Onglet FENÊTRE AU SURVOL
-~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 La fenêtre au survol ou info-bulle est un message contextuel apparaissant en surimpression au survol de la souris sur les éléments de la couche. Le contenu du message s’adapte dynamiquement en fonction de l’objet survolé. 
 Celle-ci n’est pas active par défaut.
@@ -878,7 +878,7 @@ Ce mode avancé s’adresse à des utilisateurs développeurs. Il peut être int
 .. image :: ../_static/images/admin/admin_couche_pophover_expert.png
 
 Onglet MINI-FICHE
-~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^
 
 La mini-fiche est une fiche structurée présentant des informations associées à un objet de la couche. Celle-ci s’ouvre au clic sur l’objet en question. 
 
@@ -909,7 +909,7 @@ Ce mode avancé s’adresse à des utilisateurs développeurs. Il peut être int
 .. image :: ../_static/images/admin/admin_couche_minifiche_expert.png
 
 Onglet FILTRE
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 L’outil de filtre permet de restreindre les éléments sur la carte en fonction des valeurs de champs sélectionnées. 
 
@@ -936,7 +936,7 @@ Au niveau de l’affichage, il est possible de choisir:
 Il est possible de remonter/descendre les filtres dans l’ordre souhaité.
 
 Onglet TABLE
-~~~~~~~~~~~~
+^^^^^^^^^^^^^
 
 La table attributaire permet d’avoir une vision tabulaire des données de la couche. Elle n’est pas activée par défaut.
 
@@ -950,7 +950,7 @@ Il est possible de remonter/descendre les champs dans l’ordre souhaité.
 
 
 Onglet WIDGET
-~~~~~~~~~~~~~
+^^^^^^^^^^^^^^
 
 L’outil de widget permet de récapituler dans un tableau dynamique des indicateurs utiles à l'analyse de la couche.
 
@@ -1027,7 +1027,7 @@ S’il a définit au préalable des fonds de carte dans le module **Liste des fo
 Une icône par défaut est appliquée à la vue si l’utilisateur ne lui en choisis pas. Sa couleur est blanche afin que l’icône se démarque bien sur le menu des vues dans le visualiseur cartographique. Le format supporté par l’outil est le png.  
 
 Arbre des couches
-~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^
 
 Une couche appartient obligatoirement à un groupe.
 
