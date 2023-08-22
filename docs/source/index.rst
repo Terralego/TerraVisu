@@ -49,10 +49,10 @@ User Manual
 
 We have a few places for you to get started:
 
-🚀 `Outil d'administration <user_manual/user_guide.rst>`_
+🚀 `Plateforme TerraVisu <user_manual/user_guide.rst>`_
   Discover everything you need to know about TerraVisu.
 
-🚀 :doc:`user_manual/admin_user_guide.rst`
+🚀 `Outil d'administration <user_manual/admin_user_guide.rst>`_
   Using the back-office for the first time? We have the manual to get you started.
 
 Installation & Configuration
@@ -60,13 +60,13 @@ Installation & Configuration
 
 Need to know how something works? Here are a few of the most important reference docs:
 
-📖 :doc:`installation_configuration/install.rst`
+📖 `Install instruction <installation_configuration/install.rst>`_
   Learn about the requirements and install instructions.
 
-📖 :doc:`installation_configuration/configuration.rst`
+📖 `Configuration <installation_configuration/configuration.rst>`_
   Learn how to set your environment variables.
 
-📖 :doc:`installation_configuration/troubleshooting.rst`
+📖 `Troubleshooting <installation_configuration/troubleshooting.rst>`_
   Learn how to fix common problems.
 
 Contribute
@@ -74,19 +74,19 @@ Contribute
 
 Need to get something specific done? These guides provide step-by-step instructions in key areas to get you up to speed faster:
 
-🪄 :doc:`contribute/contributing.rst`
+🪄 `Contributing <contribute/contributing.rst>`_
   Discover how to contribute to this project.
 
-🪄 :doc:`contribute/development.rst`
+🪄 `Development <contribute/development.rst>`_
   Overview of all the main commands of developement.
 
-🪄 :doc:`contribute/translating.rst`
+🪄 `Translating <contribute/translating.rst>`_
   Feel free to translate our doc.
 
-🪄 :doc:`contribute/documentation.rst`
+🪄 `Documentation <contribute/documentation.rst>`_
   Get familiar with some of the more advanced topics of building and deploying documentation with Read the Docs.
 
-🪄 :doc:`contribute/design.rst`
+🪄 `Design <contribute/Design.rst>`_
   Information about the architecture and main components
 
 Others
@@ -94,10 +94,10 @@ Others
 
 Learn about the authors and browse the changelog :
 
-✒️ :doc:`others/authors.rst`
+✒️ `Authors <others/authors.rst>`_
   Learn more about the authors.
 
-✒️ :doc:`others/changelog.rst`
+✒️ `Changelog <others/changelog.rst>`_
   Overview of all notable changes made to the project. 
 
 Indices and tables
