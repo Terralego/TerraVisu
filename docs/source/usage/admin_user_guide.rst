@@ -168,7 +168,7 @@ Import de fichiers
 Une source de données peut être créée par l’import d’un fichier GeoJSON, Shapefile ou CSV en déposant le fichier dans l'interface. 
 
 Import de fichier GeoJSON ou Shapefile
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+""""""""""""""""""""""""""""""""""""""
 
 Les informations à renseigner à minima, lors de la création d’une nouvelle source GeoJSON ou Shapefile sont le nom, le type de données, le type de la géométrie et le champ de l’identifiant unique.
 
@@ -177,7 +177,7 @@ Les informations à renseigner à minima, lors de la création d’une nouvelle 
 ⚠️ *Les fichiers Shapefile doivent être fournis sous la forme d’une archive zippée contenant l’ensemble des fichiers (.shp, .prj, .shx, .dbf, etc).*
 
 Import de fichier CSV
-~~~~~~~~~~~~~~~~~~~~~
+"""""""""""""""""""""
 
 Pour intégrer un fichier CSV, il faut que celui-ci comporte des coordonnées géographiques, dans une ou deux colonnes. 
 
@@ -340,7 +340,7 @@ A ce stade, il est possible d’enregistrer la couche telle quelle et de l’aff
 .. image :: ../_static/images/admin/admin_couche_definition.png
 
 Filtrage de source
-~~~~~~~~~~~~~~~~~~~
+"""""""""""""""""""
 
 L’intérêt principal du filtrage de source est qu’il permet de créer de multiple couches à partir de la même source de données. 
 
@@ -402,7 +402,7 @@ Il existe deux modes possibles pour la conception du style : le mode avec assis
 Dans ce manuel d’utilisation, nous nous concentrons principalement sur le mode avec assistant car celui ci s’adresse à un profil d’utilisateur non développeur.
 
 Style simple
-~~~~~~~~~~~~~
+"""""""""""""
 
 L’application identifie automatiquement le type de représentation possible en fonction de la géométrie de la source de données utilisée. Ainsi, au moment de la conception, un style simple par défaut est proposé à l’utilisateur.
 Il est possible de modifier les couleurs par défaut en cliquant sur le carré coloré. Un sélecteur de couleur apparaît et vous permet d’en choisir une dans la palette chromatique ou de renseigner le code couleur en HTML ou RGBA.
@@ -418,7 +418,7 @@ Pour utiliser une icône existante dans un style simple, sélectionnez la repré
 .. image :: ../_static/images/admin/admin_couche_style_icone.png
 
 Style avec motif
-~~~~~~~~~~~~~~~~~
+"""""""""""""""""
 
 Il est possible d’utiliser des motifs au lieu des couleurs pour remplir un polygone.
 
@@ -446,7 +446,7 @@ Il est possible d’utiliser des motifs au lieu des couleurs pour remplir un pol
 
 
 Style avec une analyse
-~~~~~~~~~~~~~~~~~~~~~~~
+"""""""""""""""""""""""
 
 * Choix du **type de représentation**
 * Polygone
@@ -497,7 +497,7 @@ Lors de la conception d’un style avec une analyse, il est possible d’activer
 .. image :: ../_static/images/admin/admin_couche_style_assistant.png
 
 Ajouter un style secondaire
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+""""""""""""""""""""""""""""
 
 Une couche peut utiliser plusieurs styles. Le style principal utilise les données de la source utilisée par la couche, en revanche, le style secondaire peut faire appel à une source de données différente. 
 
@@ -508,17 +508,17 @@ Exemple concret : Dans le cas d’une carte des communes, il pourra être inté
 .. image :: ../_static/images/admin/admin_couche_style_secondaire.png
 
 Style sans assistant
-~~~~~~~~~~~~~~~~~~~~~
+"""""""""""""""""""""
 
 Il est possible d’aller plus loin dans la conception d’un style en désactivant le mode assistant. Ce mode s’adresse à des utilisateurs développeurs car il faut rédiger le code en JSON, en suivant la spécification `Mapbox <https://docs.mapbox.com/mapbox-gl-js/style-spec/>`_.
 
 .. image :: ../_static/images/admin/admin_couche_style_sansassistant.png
 
 Exemples de styles Mapbox avancés
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+""""""""""""""""""""""""""""""""""
 
-Catégorisation
-"""""""""""""""
+**Catégorisation**
+
 
 * Fallback value (valeur par défaut)
 
@@ -773,8 +773,8 @@ Catégorisation
       "minzoom": 0
     }
 
-Filtres
-""""""""
+**Filtres**
+
 
 * Filtre simple (une condition)
 
