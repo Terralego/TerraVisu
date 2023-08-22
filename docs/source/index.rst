@@ -49,7 +49,7 @@ User Manual
 
 We have a few places for you to get started:
 
-🚀 :doc:`user_manual/user_guide.rst`
+🚀 `Outil d'administration <user_manual/user_guide.rst>`_
   Discover everything you need to know about TerraVisu.
 
 🚀 :doc:`user_manual/admin_user_guide.rst`
