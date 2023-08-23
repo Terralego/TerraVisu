@@ -239,7 +239,7 @@ Une fois la source enregistrée, revenez à la liste.
 La colonne ``Statut`` indique l’état actuel de la source de données.
 
 * ``NEED SYNC`` : le statut de la source nouvellement créé , cela signifie que la source a besoin d’être synchronisée pour être utilisée. Cliquez d’abord sur la source pour éditer son statut, puis sur :guilabel:`Actualiser les données`. Une fois revenu à la liste des source, vous pourrez constater que le statut est devenu ``SUCCESS``.  
-*``DON'T NEED`` : ce statut ne concerne que les sources WMS/WMTS car celles ci n'ont pas besoin d'être raffraichies.
+* ``DON'T NEED`` : ce statut ne concerne que les sources WMS/WMTS car celles ci n'ont pas besoin d'être raffraichies.
 * ``SUCCESS`` : la source de données a bien été créé et vient d’être synchronisée avec succès.
 * ``PENDING`` : la source de données a bien été créé et son état de synchronisation est stable.
 * ``FAILURE`` : la source de données n’a pas été correctement créé ou mise à jour. Il y a un problème dans les paramètres renseignés. Voir le détail dans l’onglet :guilabel:`RAPPORT D’IMPORTATION`.
