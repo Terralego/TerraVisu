@@ -58,7 +58,7 @@ Le module :guilabel:`Utilisateurs` de TerraVisu permet de gérer les permissions
 
 .. image :: ../_static/images/admin/admin_utilisateurs.png
 
-Vous avez la possibilité d’exporter la liste des utilisateurs au format CSV en cliquant sur le bouton :guilabel:`EXPORTER`.
+Vous avez la possibilité d’exporter la liste des utilisateurs au format ``CSV`` en cliquant sur le bouton :guilabel:`EXPORTER`.
 
 Créer un nouvel utilisateur
 ---------------------------
@@ -70,7 +70,7 @@ Les informations à renseigner sont à minima le ``nom``, le ``prénom``, l’``
 
 Si vous activez l’option :guilabel:`Super-utilisateur` l’utilisateur pourra à son tour créer de nouveaux utilisateurs.
 
-Si vous activez l’option :guilabel:`aCTIF` l’utilisateur pourra se connecter dès que son compte sera créé, sinon, il devra attendre que celui ci devienne actif.
+Si vous activez l’option :guilabel:`Actif` l’utilisateur pourra se connecter dès que son compte sera créé, sinon, il devra attendre que celui ci devienne actif.
 
 Vous pouvez intégrer l’utilisateur à un ou plusieurs groupes. 
 
@@ -110,7 +110,7 @@ Les informations à renseigner lors de la création d’un nouveau groupe sont �
 Module Visualiseur
 =====================
 
-Le module « **Visualiseur** » de TerraVisu permet de gérer les données de l’application et le paramétrage de leur(s) représentation(s).
+Le module :guilabel:`Visualiseur` de TerraVisu permet de gérer les données de l’application et le paramétrage de leur(s) représentation(s).
 
 Il comporte trois entrées :
 
@@ -144,7 +144,8 @@ Les types de sources de données supportés actuellement par l’application son
 * les fichiers **CSV** contenant des coordonnées géographiques ;
 * les flux **WMS/WMTS**.
 
-A noter qu’une fois la source de données enregistrée, il n’est pas possible de modifier son type. 
+.. note::
+    Une fois la source de données enregistrée, il n’est pas possible de modifier son type.
 
 Les types de géométries supportés par l’application sont les suivants :
 
@@ -170,37 +171,39 @@ Une source de données peut être créée par l’import d’un fichier **GeoJSO
 GeoJSON ou Shapefile
 ^^^^^^^^^^^^^^^^^^^^^
 
-Les informations à renseigner à minima, lors de la création d’une nouvelle source GeoJSON ou Shapefile sont le nom, le type de données, le type de la géométrie et le champ de l’identifiant unique.
+Les informations à renseigner à minima, lors de la création d’une nouvelle source **GeoJSON** ou **Shapefile** sont le ``nom``, le ``type de données``, le ``type de la géométrie`` et l’``identifiant unique``.
 
 .. image :: ../_static/images/admin/admin_source_creation_geojson.png
 
 .. note::
-    Les fichiers Shapefile doivent être fournis sous la forme d’une archive zippée contenant l’ensemble des fichiers (``.shp``, ``.prj``, ``.shx``, ``.dbf``, etc).
+    Les fichiers **Shapefile** doivent être fournis sous la forme d’une archive zippée contenant l’ensemble des fichiers (``.shp``, ``.prj``, ``.shx``, ``.dbf``, etc).
 
 CSV
 ^^^^
 
-Pour intégrer un fichier CSV, il faut que celui-ci comporte des coordonnées géographiques, dans une ou deux colonnes. 
+Pour intégrer un fichier **CSV**, il faut que celui-ci comporte des coordonnées géographiques, dans une ou deux colonnes. 
 
 Les informations à renseigner à minima lors de la création d’une nouvelle source CSV sont le ``nom``, le ou les ``champs de coordonnées``, le ``système de coordonnées``, le ``champ de l’identifiant unique``, le ``séparateur de champ``, le ``séparateur de texte``, le ``séparateur décimal pour les coordonnées`` et le ``nombre de lignes à ignorer``.
 
 .. image :: ../_static/images/admin/admin_source_creation_csv.png
 
-L’ option :guilabel:`Entête à la première ligne` activée permet de conserver les entêtes de colonnes qui se trouvent à la première ligne du fichier CSV. 
+L’ option :guilabel:`Entête à la première ligne` activée permet de conserver les entêtes de colonnes qui se trouvent à la première ligne du fichier **CSV**. 
 
 Si l’option :guilabel:`Ignorer les colonnes à null` est activée, toutes les colonnes vides ne seront pas conservées.
 
 Import via une requête PostGIS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Les informations à renseigner à minima lors de la création d’une nouvelle source PostGIS sont le ``nom``, le ``type de géométrie``, les ``paramètres de connexion à la base de données`` (hôte, port, nom bdd, nom utilisateur, mot de passe utilisateur), ``requête SQL``, ``champ de géométrie``, ``champ de l’identifiant unique``.
+Les informations à renseigner à minima lors de la création d’une nouvelle source **PostGIS** sont le ``nom``, le ``type de géométrie``, les ``paramètres de connexion à la base de données`` (hôte, port, nom bdd, nom utilisateur, mot de passe utilisateur), ``requête SQL``, ``champ de géométrie``, ``champ de l’identifiant unique``.
 
-Il est possible de définir la fréquence de mise à jour automatique de la source (toutes les heures, quotidiennement…). La requête peut ainsi être exécutée régulièrement afin de mettre à jour les données avec le contenu de la base.
+.. tip::
+    Il est possible de définir la fréquence de mise à jour automatique de la source (toutes les heures, quotidiennement…). La requête peut ainsi être exécutée régulièrement afin de mettre à jour les données avec le contenu de la base.
 
 .. image :: ../_static/images/admin/admin_source_creation_postgis.png
 
 .. tip::
-    Si une source de données dont la fréquence de mise à jour a été paramétrée sur « Quotidienne », le déclenchement de la synchronisation ne se fera pas exactement 24h après. L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde toutes les 25 mn s’il y a des changements) +date de fin de la dernière mise à jour. Il peut donc y avoir un delta de 24h et 25mn au minimum entre chaque mise à jour de source de données. Ce delta peut se rajouter d'autant plus s'il y a des mise à jour manuelles.
+    Si une source de données dont la fréquence de mise à jour a été paramétrée sur ``Quotidienne``, le déclenchement de la synchronisation ne se fera pas exactement 24h après. L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde toutes les 25 mn s’il y a des changements) + date de fin de la dernière mise à jour. 
+    Il peut donc y avoir un delta de 24h et 25mn au minimum entre chaque mise à jour de source de données. Ce delta peut se rajouter d'autant plus s'il y a des mise à jour manuelles.
 
 .. note::
     Attention à ne pas terminer la requête par un point virgule.
@@ -218,9 +221,9 @@ Il est possible de définir la fréquence de mise à jour automatique de la sour
 Import via un flux WMS/WMTS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Les flux WMS/WMTS sont des protocoles de communication qui permettent d’obtenir des cartes de données géoréférencées à partir de différents serveurs de données (IGN, BRGM, etc.). 
+Les flux **WMS/WMTS** sont des protocoles de communication qui permettent d’obtenir des cartes de données géoréférencées à partir de différents serveurs de données (IGN, BRGM, etc.). 
 
-Les informations à renseigner à minima lors de la création d’une nouvelle source WMS/WMTS  sont le **nom** et l’**adresse**.
+Les informations à renseigner à minima lors de la création d’une nouvelle source **WMS/WMTS**  sont le ``nom`` et l’``adresse``.
 
 Il est possible de renseigner les niveaux de zoom min et max auxquels les images du flux seront affichées dans le visualiseur cartographique.
 
@@ -239,7 +242,7 @@ Une fois la source enregistrée, revenez à la liste.
 La colonne ``Statut`` indique l’état actuel de la source de données.
 
 * ``NEED SYNC`` : le statut de la source nouvellement créé , cela signifie que la source a besoin d’être synchronisée pour être utilisée. Cliquez d’abord sur la source pour éditer son statut, puis sur :guilabel:`Actualiser les données`. Une fois revenu à la liste des source, vous pourrez constater que le statut est devenu ``SUCCESS``.  
-* ``DON'T NEED`` : ce statut ne concerne que les sources WMS/WMTS car celles ci n'ont pas besoin d'être raffraichies.
+* ``DON'T NEED`` : ce statut ne concerne que les sources **WMS/WMTS** car celles ci n'ont pas besoin d'être raffraichies.
 * ``SUCCESS`` : la source de données a bien été créé et vient d’être synchronisée avec succès.
 * ``PENDING`` : la source de données a bien été créé et son état de synchronisation est stable.
 * ``FAILURE`` : la source de données n’a pas été correctement créé ou mise à jour. Il y a un problème dans les paramètres renseignés. Voir le détail dans l’onglet :guilabel:`RAPPORT D’IMPORTATION`.
@@ -260,7 +263,9 @@ Les types gérés par l’application sont les suivants :
 * ``Undefined``
 * ``Date``
 
-Lorsqu’un champ est de type ``Undefined``, cela signifie que l’outil n’a pas réussit à l’identifier. A ce moment là il faut lui assigner le bon type dans la liste déroulante.
+.. note::
+    Lorsqu’un champ est de type ``Undefined``, cela signifie que l’outil n’a pas réussit à l’identifier. A ce moment là il faut lui assigner le bon type dans la liste déroulante.
+
 
 Un extrait des valeurs pour chaque champ est fournit afin d’avoir un aperçu des données.
 
@@ -271,9 +276,9 @@ Le libellé de chaque champ est modifiable de façon à le rendre plus lisible q
 Dupliquer une source de données
 -------------------------------
 
-Cela peut être particulièrement intéressant pour les sources PostGIS qui possèdent les mêmes paramètres de connexion à la base de données. 
+Cela peut être particulièrement intéressant pour les sources **PostGIS** qui possèdent les mêmes paramètres de connexion à la base de données. 
 
-Si la duplication est réalisée sur une source Shapefile/GeoJSON/CSV, il est nécessaire de réimporter le fichier de données.
+Si la duplication est réalisée sur une source **Shapefile**/**GeoJSON**/**CSV**, il est nécessaire de réimporter le fichier de données.
 
 Pour dupliquer une source de données cliquez sur le bouton :guilabel:`DUPLIQUER` depuis la liste des sources.
 
@@ -304,7 +309,9 @@ Pour afficher l’ensemble des couches cliquez sur :guilabel:`Liste des couches`
 
 .. image :: ../_static/images/admin/admin_couche_liste.png
 
-Pour retrouver plus facilement une couche dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par source de données, vue, affichée par défaut(oui/non), table attributaire affichée(oui/non), fenêtre au survol(oui/non), mini-fiche (oui/non).
+.. tip::
+    Pour retrouver plus facilement une couche dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par source de données, vue, affichée par défaut(oui/non), table attributaire affichée(oui/non), fenêtre au survol(oui/non), mini-fiche (oui/non).
+
 
 Créer une couche
 ----------------
@@ -334,7 +341,7 @@ A la différence des sources qui doivent avoir des noms uniques, il est possible
 Il faut ensuite sélectionner une source de données dans la liste. Chaque couche est associée à une source de données.
 Il est possible d'en filtrer le contenu en ajoutant une condition de sélection des données à partir de la liste des champs disponibles fournie (voir ci-dessous).
 
-Le :guilabel:`Chgamp principal` permet d’activer la fonction de recherche dans le visualiseur qui retournera les résultats en fonction de ce champ. 
+Le :guilabel:`Champ principal` permet d’activer la fonction de recherche dans le visualiseur qui retournera les résultats en fonction de ce champ. 
 
 Si l’option :guilabel:`Affichée par défaut` est activée, la couche sera activée dès l'ouverture de la vue à laquelle elle est associée dans le visualiseur cartographique.
 
@@ -349,7 +356,7 @@ Filtrage de source
 
 L’intérêt principal du filtrage de source est qu’il permet de créer de multiple couches à partir de la même source de données. 
 
-Le langage de filtrage, :guilabel:`Pivot QL`, est très proche du `SQL <https://fr.wikipedia.org/wiki/Structured_Query_Language>`_ et une aide ℹ️ permet d’obtenir des exemples avec des cas de figures parlants. 
+Le langage de filtrage, :guilabel:`Pivot QL`, est très proche du `SQL <https://fr.wikipedia.org/wiki/Structured_Query_Language>`_ et une aide 🛈 permet d’obtenir des exemples avec des cas de figures parlants. 
 
 Pour aider à l’écriture de la requête de filtrage, il peut être intéressant de consulter la liste des champs disponibles afin de ne pas faire d’erreur de nommage. 
 
@@ -430,7 +437,7 @@ Il est possible d’utiliser des motifs au lieu des couleurs pour remplir un pol
     1. Création d’un motif
        La première étape est de créer le motif, dans l’onglet :guilabel:`ICÔNES`. 
        Pour cela, il est nécessaire d’importer une image servant de base au motif (le motif est idéalement blanc et de taille 28 x 28 pixels). L’import d’image se fait via le bouton :guilabel:`UPLOAD`. 
-       Il est ensuite possible de colorer l’image précédemment importée dans l’application. Le bouton COMPOSE permet ce choix de couleur à appliquer sur le motif.
+       Il est ensuite possible de colorer l’image précédemment importée dans l’application. Le bouton :guilabel:`COMPOSE` permet ce choix de couleur à appliquer sur le motif.
  
     2. Utilisation d’un motif
        Actuellement les motifs ne sont pas gérés par l’assistant de style.
@@ -454,13 +461,14 @@ Style avec une analyse
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 * Choix du **type de représentation**
-* Polygone
-* Ligne
-* Extrusion (3D)
-* Cercle
-* Icône
-* Texte
-* Diagrammes circulaires
+
+  * Polygone
+  * Ligne
+  * Extrusion (3D)
+  * Cercle
+  * Icône
+  * Texte
+  * Diagrammes circulaires
 
 * Choix du de la **caractéristique à faire varier**
 
@@ -489,13 +497,13 @@ Style avec une analyse
 
 Afin de ne pas égarer l’utilisateur dans les nombreux choix du **type de représentation**, ce dernier sera restreint en fonction du type géométrique de la source de données utilisée par la couche. Par exemple, à une source de type ``Polygon`` sera proposé uniquement les types de représentation ``Polygone``, ``Ligne``, ``Extrusion``.
 
-Le choix de la **caractéristique** à faire varier découlera automatiquement du type de représentation choisi précédemment. Par exemple, pour une **représentation Polygone**, les caractéristiques à faire varier seront ``Couleur du polygone`` et ``Couleur du contour``. 
+Le choix de la **caractéristique** à faire varier découlera automatiquement du type de représentation choisi précédemment. Par exemple, pour une **représentation** ``Polygone``, les caractéristiques à faire varier seront ``Couleur du polygone`` et ``Couleur du contour``. 
 
 Il est à noter que **toutes les caractéristiques ne sont pas variables** car n’apportant pas d’intérêt : par exemple l’épaisseur du contour de la représentation Cercle n’est pas variable, uniquement fixe.
 
 Le choix de la **variable à représenter** se fait à l’aide d’une liste déroulante. La variable se présente ainsi : le label (éditable), le nom de la variable, le type. Le **type de la variable choisie** (``String``, ``Integer``, ``Float``..) **conditionne les possibilités du type d’analyse**.
 
-Le choix du type d’analyse constitue la dernière étape. Le **type d’analyse Interpolation** n’est disponible que pour faire varier les caractéristiques ``Diamètre`` ou``*Épaisseur``, c’est à dire une taille.
+Le choix du type d’analyse constitue la dernière étape. Le **type d’analyse Interpolation** n’est disponible que pour faire varier les caractéristiques ``Diamètre`` ou``Épaisseur``, c’est à dire une taille.
 
 Lors de la conception d’un style avec une analyse, il est possible d’activer l’option :guilabel:`Générer la légende associée` pour que la légende soit exactement conforme au style représenté.
 
@@ -816,14 +824,14 @@ Une couche peut utiliser plusieurs styles. Le style principal utilise les donné
 
 Le style secondaire doit être vu comme un élément de décoration sur la carte. De cette manière, aucune interaction ne sera possible avec les données du style secondaire (info-bulle, mini-fiche, filtre, etc.)
 
-Exemple concret : Dans le cas d’une carte des communes, il pourra être intéressant de rajouter les étiquettes des noms au centre des communes. Pour se faire, on aura besoin de créer un style secondaire faisant appel à la source de données des centroides des communes pour pouvoir ajouter les étiquettes.
+**Exemple concret** : Dans le cas d’une carte des communes, il pourra être intéressant de rajouter les étiquettes des noms au centre des communes. Pour se faire, on aura besoin de créer un style secondaire faisant appel à la source de données des centroides des communes pour pouvoir ajouter les étiquettes.
 
 .. image :: ../_static/images/admin/admin_couche_style_secondaire.png
 
 Style sans assistant
 ^^^^^^^^^^^^^^^^^^^^^
 
-Il est possible d’aller plus loin dans la conception d’un style en désactivant le mode assistant. Ce mode s’adresse à des utilisateurs développeurs car il faut rédiger le code en JSON, en suivant la spécification `Mapbox <https://docs.mapbox.com/mapbox-gl-js/style-spec/>`_.
+Il est possible d’aller plus loin dans la conception d’un style en désactivant le mode assistant. Ce mode s’adresse à des utilisateurs développeurs car il faut rédiger le code en ``JSON``, en suivant la spécification `Mapbox <https://docs.mapbox.com/mapbox-gl-js/style-spec/>`_.
 
 .. image :: ../_static/images/admin/admin_couche_style_sansassistant.png
 
@@ -853,7 +861,7 @@ Si elle est générée depuis l’onglet :guilabel:`STYLE`, alors elle se met en
 
 Il n’est pas possible de modifier une légende qui a été générée. Seuls le titre et le pied de légende sont éditables.
 
-Si la légende générée ne vous convient pas, il faut désactiver l’option :guilabel:`Générer la légende associée` dans l’onglet :guilabel:`STYLE` pour la caractéristique concernée (exemple Couleur du polygone). De cette façon, vous pourrez créer manuellement la légende souhaitée.
+Si la légende générée ne vous convient pas, il faut désactiver l’option :guilabel:`Générer la légende associée` dans l’onglet :guilabel:`STYLE` pour la caractéristique concernée (exemple ``Couleur du polygone``). De cette façon, vous pourrez créer manuellement la légende souhaitée.
 
 .. image :: ../_static/images/admin/admin_couche_legendegeneree.png
 
@@ -867,7 +875,7 @@ Celle-ci n’est pas active par défaut.
 
 Une fois activée, la configuration de la fenêtre est facilitée grâce à un assistant qui permet d’ajouter les éléments de contenus et de définir une plage de zoom.
 
-Si le champ principal a été définit dans l’onglet Définition, alors ce dernier sera aussi utilisé comme titre de l’info-bulle.
+Si le champ principal a été définit dans l’onglet :guilabel:`DÉFINITION`, alors ce dernier sera aussi utilisé comme titre de l’info-bulle.
 
 En cas de valeur nulle sur un champ, il est possible de définir une valeur par défaut. De même, l’outil permet de rajouter du texte en préfixe et suffixe de la valeur du champ choisi. 
 
@@ -1019,7 +1027,7 @@ Créer une vue
 
 Pour ajouter une nouvelle vue cliquez sur le bouton :guilabel:`CRÉER`.
 
-Les informations à renseigner à minima lors de la création d’une nouvelle vue sont le nom, le type de vue, le classement et l’arbre des couches.
+Les informations à renseigner à minima lors de la création d’une nouvelle vue sont le ``nom``, le ``type de vue``, le ``classement`` et l’``arbre des couches``.
 
 Il existe deux types de vues :
 
@@ -1102,7 +1110,7 @@ Créer un nouveau fond de carte
 
 Pour ajouter un nouveau fond de carte cliquez sur le bouton :guilabel:`CRÉER`.
 
-Les informations à renseigner à minima lors de la création d’un nouveau fond de carte sont le nom, le type et l’URL.
+Les informations à renseigner à minima lors de la création d’un nouveau fond de carte sont le ``nom``, le ``type`` et l’``URL``.
 
 La taille des tuiles est modifiable mais elle est définie par défaut sur la valeur 256. Le curseur de l’amplitude du zoom permet de choisir à quel niveau de zoom les tuiles du fond de carte s’afficheront dans le visualiseur.
 
