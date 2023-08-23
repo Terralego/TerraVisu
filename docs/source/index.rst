@@ -86,7 +86,7 @@ Need to get something specific done? These guides provide step-by-step instructi
 ✨ `Documentation <contribute/documentation.html>`_
   Get familiar with some of the more advanced topics of building and deploying documentation with Read the Docs.
 
-✨ `Design <contribute/Design.html>`_
+✨ `Design <contribute/design.html>`_
   Information about the architecture and main components
 
 Others

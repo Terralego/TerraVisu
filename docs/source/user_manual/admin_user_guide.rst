@@ -21,13 +21,13 @@ L'outil d'administration de TerraVisu permet en quelques clics de gérer des uti
 * Créer des scénarios interactifs
 * Organiser les visualisations et analyses présentes dans l'application
 
-L'authentification
-===================
+Authentification
+=================
 
 Procédure d’authentification
 ----------------------------
 
-Le chemin d’accès à l'outil d'administration d’une application TerraVisu est toujours constitué de l’URL du visualiseur suivis de « /admin ».
+Le chemin d’accès à l'outil d'administration d’une application TerraVisu est toujours constitué de l’URL du visualiseur suivis de ``/admin``.
 
 Une fois en possession des identifiants, vous pouvez les renseigner dans la page d’authentification.
 
@@ -39,9 +39,9 @@ Page d'accès
 Une fois connecté, vous arrivez sur l’écran d’accueil de l’outil d’administration.
 L’outil est composé de trois modules :
 
-* **Utilisateurs**, permet de gérer les utilisateurs de l’application
-* **Visualiseur**, permet de créer les cartes
-* **Fonds de carte**, permet de configurer les fonds de carte
+* :guilabel:`Utilisateurs`, permet de gérer les utilisateurs de l’application
+* :guilabel:`Visualiseur`, permet de créer les cartes
+* :guilabel:`Fonds de carte`, permet de configurer les fonds de carte
 
 .. image :: ../_static/images/admin/admin_accueil.png
 
@@ -51,30 +51,30 @@ Module de gestion des utilisateurs
 Liste des utilisateurs
 ----------------------
 
-Pour afficher l’ensemble des utilisateurs cliquez sur « **Liste des utilisateurs** ». 
+Pour afficher l’ensemble des utilisateurs cliquez sur :guilabel:`Liste des utilisateurs`. 
 Vous arrivez sur une page présentant la liste de tous les utilisateurs existants.
 
-Le module « **Utilisateurs** » de TerraVisu permet de gérer les permissions d'accès des utilisateurs et des groupes d’utilisateurs aux différents éléments du visualiseur cartographique.
+Le module :guilabel:`Utilisateurs` de TerraVisu permet de gérer les permissions d'accès des utilisateurs et des groupes d’utilisateurs aux différents éléments du visualiseur cartographique.
 
 .. image :: ../_static/images/admin/admin_utilisateurs.png
 
-Vous avez la possibilité d’exporter la liste des utilisateurs au format CSV en cliquant sur le bouton « **EXPORTER** ».
+Vous avez la possibilité d’exporter la liste des utilisateurs au format CSV en cliquant sur le bouton :guilabel:`EXPORTER`.
 
 Créer un nouvel utilisateur
 ---------------------------
 
 Seuls les **super-utilisateurs** sont autorisés à créer de nouveaux utilisateurs. 
 
-Pour ajouter un nouvel utilisateur cliquez sur le bouton « **CRÉER** ».
-Les informations à renseigner sont à minima le **nom**, le **prénom**, l’**adresse mail**, le **mot de passe**.
+Pour ajouter un nouvel utilisateur cliquez sur le bouton :guilabel:`CRÉER`.
+Les informations à renseigner sont à minima le ``nom``, le ``prénom``, l’``adresse mail``, le ``mot de passe``.
 
-Si vous activez l’option « **Super-utilisateur** » l’utilisateur pourra à son tour créer de nouveaux utilisateurs.
+Si vous activez l’option :guilabel:`Super-utilisateur` l’utilisateur pourra à son tour créer de nouveaux utilisateurs.
 
-Si vous activez l’option « **Actif** » l’utilisateur pourra se connecter dès que son compte sera créé, sinon, il devra attendre que celui ci devienne actif.
+Si vous activez l’option :guilabel:`aCTIF` l’utilisateur pourra se connecter dès que son compte sera créé, sinon, il devra attendre que celui ci devienne actif.
 
 Vous pouvez intégrer l’utilisateur à un ou plusieurs groupes. 
 
-Il est possible de rajouter des informations supplémentaires comme la fonction, l’organisme de rattachement ou encore l’adresse. 
+Il est possible de rajouter des informations supplémentaires comme la ``fonction``, l’``organisme de rattachement`` ou encore l’``adresse``. 
 
 Si l'utilisateur perd son mot de passe, il faut supprimer son compte et lui en créer un nouveau.
 
@@ -93,15 +93,15 @@ Les groupes d’utilisateurs permettent de gérer des permissions à différents
 * La gestion des groupes d’utilisateurs 
 * La gestion des utilisateurs 
 
-Pour afficher l’ensemble des groupes cliquez sur « **Liste des groupes d’utilisateurs** ». 
+Pour afficher l’ensemble des groupes cliquez sur :guilabel:`Liste des groupes d’utilisateurs`. 
 Vous arrivez sur une page présentant la liste de tous les groupes existants.
 
 Créer un nouveau groupe d'utilisateurs
 --------------------------------------
 
-Pour ajouter un nouveau groupe cliquez sur le bouton « **CRÉER** ».
+Pour ajouter un nouveau groupe cliquez sur le bouton :guilabel:`CRÉER`.
 
-Les informations à renseigner lors de la création d’un nouveau groupe sont à minima le **nom**, les **utilisateurs affectés**, les **permissions**.
+Les informations à renseigner lors de la création d’un nouveau groupe sont à minima le ``nom``, les ``utilisateurs affectés``, les ``permissions``.
 
 
 .. image :: ../_static/images/admin/admin_groupe_ajout.png
@@ -123,7 +123,7 @@ Liste des sources de données
 
 Afin de configurer une visualisation, l’utilisateur doit créer les différentes sources de données en adéquation avec le projet si elles n’existent pas déjà. 
 
-Pour afficher l’ensemble des sources de données cliquez sur « **Liste des sources de données** ». 
+Pour afficher l’ensemble des sources de données cliquez sur :guilabel:`Liste des sources de données`. 
 
 Vous arrivez sur une page présentant la liste de toutes les sources de données déclarées.
 
@@ -134,38 +134,38 @@ Pour retrouver plus facilement une source de données dans la liste, vous avez l
 Créer une source de données
 ---------------------------
 
-Pour ajouter une nouvelle source, cliquez sur le bouton « **CRÉER** ».
+Pour ajouter une nouvelle source, cliquez sur le bouton :guilabel:`CRÉER`.
 
 Les types de sources de données supportés actuellement par l’application sont :
 
-* les fichiers GeoJSON ;
-* les fichiers Shapefile ;
-* les requêtes PostGIS ;
-* les fichiers CSV contenant des coordonnées géographiques ;
-* les flux WMS/WMTS.
+* les fichiers **GeoJSON** ;
+* les fichiers **Shapefile** ;
+* les requêtes **PostGIS** ;
+* les fichiers **CSV** contenant des coordonnées géographiques ;
+* les flux **WMS/WMTS**.
 
 A noter qu’une fois la source de données enregistrée, il n’est pas possible de modifier son type. 
 
 Les types de géométries supportés par l’application sont les suivants :
 
-* *Point*
-* *Linestring*
-* *Polygon*
-* *MultiPoint*
-* *MultiLinestring*
-* *MultiPolygon*
-* *GeometryCollection*
+* ``Point``
+* ``Linestring``
+* ``Polygon``
+* ``MultiPoint``
+* ``MultiLinestring``
+* ``MultiPolygon``
+* ``GeometryCollection``
 
 Lors de la déclaration de la source, il est possible d’ajouter un ou plusieurs groupes d’utilisateurs, De cette façon, seuls les utilisateurs faisant partie des groupes affectés à la source seront en mesure de visualiser les données.
 
-⚠️ *Le nom d’une source de données doit être unique, si ce n’est pas le cas l’enregistrement échouera.*
-
-⚠️ *Toutes les données intégrées à l’application doivent a minima posséder un champ d’identifiant unique et une géométrie dont les coordonnées sont en WGS84 (epsg:4326).*
+.. note::
+    * Le nom d’une source de données doit être unique, si ce n’est pas le cas l’enregistrement échouera.
+    * Toutes les données intégrées à l’application doivent a minima posséder un champ d’identifiant unique et une géométrie.
 
 Import de fichiers
 ~~~~~~~~~~~~~~~~~~~
 
-Une source de données peut être créée par l’import d’un fichier GeoJSON, Shapefile ou CSV en déposant le fichier dans l'interface. 
+Une source de données peut être créée par l’import d’un fichier **GeoJSON**, **Shapefile** ou **CSV** en déposant le fichier dans l'interface. 
 
 GeoJSON ou Shapefile
 ^^^^^^^^^^^^^^^^^^^^^
@@ -174,34 +174,36 @@ Les informations à renseigner à minima, lors de la création d’une nouvelle 
 
 .. image :: ../_static/images/admin/admin_source_creation_geojson.png
 
-⚠️ *Les fichiers Shapefile doivent être fournis sous la forme d’une archive zippée contenant l’ensemble des fichiers (.shp, .prj, .shx, .dbf, etc).*
+.. note::
+    Les fichiers Shapefile doivent être fournis sous la forme d’une archive zippée contenant l’ensemble des fichiers (``.shp``, ``.prj``, ``.shx``, ``.dbf``, etc).
 
 CSV
 ^^^^
 
 Pour intégrer un fichier CSV, il faut que celui-ci comporte des coordonnées géographiques, dans une ou deux colonnes. 
 
-Les informations à renseigner à minima lors de la création d’une nouvelle source CSV sont le **nom**, le ou les **champs de coordonnées**, le **système de coordonnées**, le **champ de l’identifiant unique**, le **séparateur de champ**, le **séparateur de texte**, le **séparateur décimal pour les coordonnées** et le **nombre de lignes à ignorer**.
+Les informations à renseigner à minima lors de la création d’une nouvelle source CSV sont le ``nom``, le ou les ``champs de coordonnées``, le ``système de coordonnées``, le ``champ de l’identifiant unique``, le ``séparateur de champ``, le ``séparateur de texte``, le ``séparateur décimal pour les coordonnées`` et le ``nombre de lignes à ignorer``.
 
 .. image :: ../_static/images/admin/admin_source_creation_csv.png
 
-L’ option « **Entête à la première ligne** » activée permet de conserver les entêtes de colonnes qui se trouvent à la première ligne du fichier CSV. 
+L’ option :guilabel:`Entête à la première ligne` activée permet de conserver les entêtes de colonnes qui se trouvent à la première ligne du fichier CSV. 
 
-Si l’option « **Ignorer les colonnes à null** » est activée, toutes les colonnes vides ne seront pas conservées.
+Si l’option :guilabel:`Ignorer les colonnes à null` est activée, toutes les colonnes vides ne seront pas conservées.
 
 Import via une requête PostGIS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Les informations à renseigner à minima lors de la création d’une nouvelle source PostGIS sont le **nom**, le **type de géométrie**, les **paramètres de connexion à la base de données** (hôte, port, nom bdd, nom utilisateur, mot de passe utilisateur), **requête SQL**, **champ de géométrie**, **champ de l’identifiant unique**.
+Les informations à renseigner à minima lors de la création d’une nouvelle source PostGIS sont le ``nom``, le ``type de géométrie``, les ``paramètres de connexion à la base de données`` (hôte, port, nom bdd, nom utilisateur, mot de passe utilisateur), ``requête SQL``, ``champ de géométrie``, ``champ de l’identifiant unique``.
 
 Il est possible de définir la fréquence de mise à jour automatique de la source (toutes les heures, quotidiennement…). La requête peut ainsi être exécutée régulièrement afin de mettre à jour les données avec le contenu de la base.
 
 .. image :: ../_static/images/admin/admin_source_creation_postgis.png
 
-**Bon à savoir** : si une source de données dont la fréquence de mise à jour a été paramétrée sur « Quotidienne », le déclenchement de la synchronisation ne se fera pas exactement 24h après. 
-L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde toutes les 25 mn s’il y a des changements) +date de fin de la dernière mise à jour. Il peut donc y avoir un delta de 24h et 25mn au minimum entre chaque mise à jour de source de données. Ce delta peut se rajouter d'autant plus s'il y a des mise à jour manuelles.
+.. tip::
+    Si une source de données dont la fréquence de mise à jour a été paramétrée sur « Quotidienne », le déclenchement de la synchronisation ne se fera pas exactement 24h après. L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde toutes les 25 mn s’il y a des changements) +date de fin de la dernière mise à jour. Il peut donc y avoir un delta de 24h et 25mn au minimum entre chaque mise à jour de source de données. Ce delta peut se rajouter d'autant plus s'il y a des mise à jour manuelles.
 
-⚠️ *Attention à ne pas terminer la requête par un point virgule.*
+.. note::
+    Attention à ne pas terminer la requête par un point virgule.
 
 .. list-table:: Géométries invalides
    :header-rows: 1
@@ -229,36 +231,36 @@ Enregistrer une source de données
 
 Au moment de l’enregistrement de la source, les champs attributaires sont automatiquement déterminés et renseignés et trois onglets sont créés :
 
-* **DÉFINITION** contient les informations principales de la source
-* **DONNÉES** contient la liste de tous les champs attributaires 
-* **RAPPORT** D’IMPORTATION permet de remonter les éventuelles erreurs rencontrées lors de l’enregistrement
+* :guilabel:`DÉFINITION` contient les informations principales de la source
+* :guilabel:`DONNÉES` contient la liste de tous les champs attributaires 
+* :guilabel:`RAPPORT D’IMPORTATION` permet de remonter les éventuelles erreurs rencontrées lors de l’enregistrement
 
 Une fois la source enregistrée, revenez à la liste. 
-La colonne « Statut » indique l’état actuel de la source de données.
+La colonne ``Statut`` indique l’état actuel de la source de données.
 
-* **NEED SYNC** : le statut de la source nouvellement créé , cela signifie que la source a besoin d’être synchronisée pour être utilisée. Cliquez d’abord sur la source pour éditer son statut, puis sur « Actualiser les données ». Une fois revenu à la liste des source, vous pourrez constater que le statut est devenu « SUCCESS ».  
-* **DON'T NEED** : ce statut ne concerne que les sources WMS/WMTS car celles ci n'ont pas besoin d'être raffraichies.
-* **SUCCESS** : la source de données a bien été créé et vient d’être synchronisée avec succès.
-* **PENDING** : la source de données a bien été créé et son état de synchronisation est stable.
-* **FAILURE** : la source de données n’a pas été correctement créé ou mise à jour. Il y a un problème dans les paramètres renseignés. Voir le détail dans l’onglet « **RAPPORT D’IMPORTATION** ».
+* ``NEED SYNC`` : le statut de la source nouvellement créé , cela signifie que la source a besoin d’être synchronisée pour être utilisée. Cliquez d’abord sur la source pour éditer son statut, puis sur :guilabel:`Actualiser les données`. Une fois revenu à la liste des source, vous pourrez constater que le statut est devenu ``SUCCESS``.  
+*``DON'T NEED`` : ce statut ne concerne que les sources WMS/WMTS car celles ci n'ont pas besoin d'être raffraichies.
+* ``SUCCESS`` : la source de données a bien été créé et vient d’être synchronisée avec succès.
+* ``PENDING`` : la source de données a bien été créé et son état de synchronisation est stable.
+* ``FAILURE`` : la source de données n’a pas été correctement créé ou mise à jour. Il y a un problème dans les paramètres renseignés. Voir le détail dans l’onglet :guilabel:`RAPPORT D’IMPORTATION`.
 
 Modifier une source de données
 ------------------------------
 
-L’onglet « **DONNÉES** » contient l’ensemble des champs attributaires de la source. 
+L’onglet :guilabel:`DONNÉES` contient l’ensemble des champs attributaires de la source. 
 
 L’outil détecte automatiquement les types de chaque champ mais il peut arriver qu’il soit mal reconnu. Dans ce cas là, il est possible de le modifier dans la liste du type de chaque champ.
 
 Les types gérés par l’application sont les suivants :
 
-* *String*
-* *Integer*
-* *Float*
-* *Boolean*
-* *Undefined*
-* *Date*
+* ``String``
+* ``Integer``
+* ``Float``
+* ``Boolean``
+* ``Undefined``
+* ``Date``
 
-Lorsqu’un champ est de **type « Undefined »**, cela signifie que l’outil n’a pas réussit à l’identifier. A ce moment là il faut lui assigner le bon type dans la liste déroulante.
+Lorsqu’un champ est de type ``Undefined``, cela signifie que l’outil n’a pas réussit à l’identifier. A ce moment là il faut lui assigner le bon type dans la liste déroulante.
 
 Un extrait des valeurs pour chaque champ est fournit afin d’avoir un aperçu des données.
 
@@ -273,9 +275,10 @@ Cela peut être particulièrement intéressant pour les sources PostGIS qui poss
 
 Si la duplication est réalisée sur une source Shapefile/GeoJSON/CSV, il est nécessaire de réimporter le fichier de données.
 
-Pour dupliquer une source de données cliquez sur le bouton « **DUPLIQUER** » depuis la liste des sources.
+Pour dupliquer une source de données cliquez sur le bouton :guilabel:`DUPLIQUER` depuis la liste des sources.
 
-⚠️ *Assurez vous de renommer la source car le nom d'une source de données doit être unique*
+.. note::
+    Assurez vous de renommer la source car le nom d'une source de données doit être unique.
 
 
 Supprimer une source de données
@@ -285,17 +288,19 @@ Pouvoir supprimer une source de données nécessite de s’assurer qu’elle n�
 
 Pour supprimer une source, vous avez deux façons de procéder :
 
-* dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton « **SUPPRIMER** »
-* dans la liste, cochez la source et cliquez sur le bouton « **SUPPRIMER** »
+* dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton :guilabel:`SUPPRIMER`.
+* dans la liste, cochez la source et cliquez sur le bouton :guilabel:`SUPPRIMER`.
 
-⚠️ *Toute suppression est définitive.*
+.. note::
+    Toute suppression est définitive.
+
 
 Liste des couches
 -----------------
 
 Une fois les sources de données déclarées, l’utilisateur peut créer les couches qui en découlent. 
 
-Pour afficher l’ensemble des couches cliquez sur « **Liste des couches** ». 
+Pour afficher l’ensemble des couches cliquez sur :guilabel:`Liste des couches`. 
 
 .. image :: ../_static/images/admin/admin_couche_liste.png
 
@@ -315,25 +320,25 @@ La configuration des couches permet de personnaliser de manière très approfond
 * La gestion de la table attributaire
 * La gestion d’un outil de synthèse
       
-Pour créer une nouvelle couche, cliquez sur le bouton « **CRÉER** ».
+Pour créer une nouvelle couche, cliquez sur le bouton :guilabel:`CRÉER`.
 
 Une page s’ouvre avec différents onglets à renseigner.
 
 Onglet DÉFINITION
 ~~~~~~~~~~~~~~~~~~~
 
-Les informations à renseigner à minima lors de la définition de la couche sont le **nom** et la **source de données**.
+Les informations à renseigner à minima lors de la définition de la couche sont le ``nom`` et la ``source de données``.
 
 A la différence des sources qui doivent avoir des noms uniques, il est possible d’avoir plusieurs couches avec le même nom.
 
 Il faut ensuite sélectionner une source de données dans la liste. Chaque couche est associée à une source de données.
 Il est possible d'en filtrer le contenu en ajoutant une condition de sélection des données à partir de la liste des champs disponibles fournie (voir ci-dessous).
 
-Le **champ principal** permet d’activer la fonction de recherche dans le visualiseur qui retournera les résultats en fonction de ce champ. 
+Le :guilabel:`Chgamp principal` permet d’activer la fonction de recherche dans le visualiseur qui retournera les résultats en fonction de ce champ. 
 
-Si l’option « **Affichée par défaut** » est activée, la couche sera activée dès l'ouverture de la vue à laquelle elle est associée dans le visualiseur cartographique.
+Si l’option :guilabel:`Affichée par défaut` est activée, la couche sera activée dès l'ouverture de la vue à laquelle elle est associée dans le visualiseur cartographique.
 
-Enfin, la partie « **Description** » permet d'ajouter un texte informatif en langage HTML sur cette couche. Ce texte peut être mis à disposition de l'utilisateur dans les vues classiques et de storytelling.
+Enfin, la partie :guilabel:`Description` permet d'ajouter un texte informatif en langage ``HTML`` sur cette couche. Ce texte peut être mis à disposition de l'utilisateur dans les vues classiques et de storytelling.
 
 A ce stade, il est possible d’enregistrer la couche telle quelle et de l’afficher dans le visualiseur cartographique. Une représentation par défaut est appliquée à la couche, ce qui permet de la visualiser.
 
@@ -344,7 +349,7 @@ Filtrage de source
 
 L’intérêt principal du filtrage de source est qu’il permet de créer de multiple couches à partir de la même source de données. 
 
-Le langage de filtrage, Pivot QL, est très proche du `SQL <https://fr.wikipedia.org/wiki/Structured_Query_Language>`_ et une aide ℹ️ permet d’obtenir des exemples avec des cas de figures parlants. 
+Le langage de filtrage, :guilabel:`Pivot QL`, est très proche du `SQL <https://fr.wikipedia.org/wiki/Structured_Query_Language>`_ et une aide ℹ️ permet d’obtenir des exemples avec des cas de figures parlants. 
 
 Pour aider à l’écriture de la requête de filtrage, il peut être intéressant de consulter la liste des champs disponibles afin de ne pas faire d’erreur de nommage. 
 
@@ -363,11 +368,11 @@ Onglet ICÔNES
 
 Il est possible d'afficher ses propres pictogrammes sur une couche. Ils pourront servir d'icônes ou de motifs sur la carte créée.
 
-Pour cela il suffit de cliquer sur le bouton « **AJOUTER** », d'importer son image (png/jpeg) et de la nommer dans le champ « Nom ». 
+Pour cela il suffit de cliquer sur le bouton :guilabel:`AJOUTER`, d'importer son image (png/jpeg) et de la nommer dans le champ ``Nom``. 
 
 .. image :: ../_static/images/admin/admin_couche_icone.png
 
-Il est possible de modifier la couleur de fond de l'image en utilisant l'outil « **COMPOSER** ». Pour cela il est nécessaire que l'image ait été enregistrée au préalable afin qu'elle soit disponible dans la liste. 
+Il est possible de modifier la couleur de fond de l'image en utilisant l'outil :guilabel:`COMPOSER`. Pour cela il est nécessaire que l'image ait été enregistrée au préalable afin qu'elle soit disponible dans la liste. 
 
 Pour enregistrer l'image, enregistrez la couche.
 
@@ -405,15 +410,15 @@ Style simple
 ^^^^^^^^^^^^^
 
 L’application identifie automatiquement le type de représentation possible en fonction de la géométrie de la source de données utilisée. Ainsi, au moment de la conception, un style simple par défaut est proposé à l’utilisateur.
-Il est possible de modifier les couleurs par défaut en cliquant sur le carré coloré. Un sélecteur de couleur apparaît et vous permet d’en choisir une dans la palette chromatique ou de renseigner le code couleur en HTML ou RGBA.
+Il est possible de modifier les couleurs par défaut en cliquant sur le carré coloré. Un sélecteur de couleur apparaît et vous permet d’en choisir une dans la palette chromatique ou de renseigner le code couleur en ``HTML`` ou ``RGBA``.
 
-Pour renseigner une valeur numérique (exemple le Diamètre pour une représentation Cercle), il suffit de cliquer sur la zone concernée et d’inscrire une valeur.
+Pour renseigner une valeur numérique (exemple le ``Diamètre`` pour une représentation ``Cercle``), il suffit de cliquer sur la zone concernée et d’inscrire une valeur.
 
 .. image :: ../_static/images/admin/admin_couche_style.png
 
 Les curseur de la plage de visibilité permettent de définir des niveaux de zoom d’apparition/disparition d’un style sur la carte (exemple : on affiche des zones du zoom 0 jusqu’au zoom 13 et à partir du zoom 13 on affiche des icônes).
 
-Pour utiliser une icône existante dans un style simple, sélectionnez la représentation « Icône » et choisissez l'image que vous avez enregistré dans l'onglet « **ICÔNES** ».
+Pour utiliser une icône existante dans un style simple, sélectionnez la représentation ``Icône`` et choisissez l'image que vous avez enregistré dans l'onglet :guilabel:`ICÔNES`.
 
 .. image :: ../_static/images/admin/admin_couche_style_icone.png
 
@@ -423,13 +428,13 @@ Style avec motif
 Il est possible d’utiliser des motifs au lieu des couleurs pour remplir un polygone.
 
     1. Création d’un motif
-       La première étape est de créer le motif, dans l’onglet ICÔNES. 
-       Pour cela, il est nécessaire d’importer une image servant de base au motif (le motif est idéalement blanc et de taille 28 x 28 pixels). L’import d’image se fait via le bouton UPLOAD. 
+       La première étape est de créer le motif, dans l’onglet :guilabel:`ICÔNES`. 
+       Pour cela, il est nécessaire d’importer une image servant de base au motif (le motif est idéalement blanc et de taille 28 x 28 pixels). L’import d’image se fait via le bouton :guilabel:`UPLOAD`. 
        Il est ensuite possible de colorer l’image précédemment importée dans l’application. Le bouton COMPOSE permet ce choix de couleur à appliquer sur le motif.
  
     2. Utilisation d’un motif
        Actuellement les motifs ne sont pas gérés par l’assistant de style.
-       Il est nécessaire de désactiver l’assistant pour utiliser les motifs via du code Mapbox.
+       Il est nécessaire de désactiver l’assistant pour utiliser les motifs via du code ``Mapbox``.
 
       Exemple :
 
@@ -482,17 +487,17 @@ Style avec une analyse
   
     * Catégorisation
 
-Afin de ne pas égarer l’utilisateur dans les nombreux choix du **type de représentation**, ce dernier sera restreint en fonction du type géométrique de la source de données utilisée par la couche. Par exemple, à une source de type **Polygon** sera proposé uniquement les types de représentation **Polygone**, **Ligne**, **Extrusion**.
+Afin de ne pas égarer l’utilisateur dans les nombreux choix du **type de représentation**, ce dernier sera restreint en fonction du type géométrique de la source de données utilisée par la couche. Par exemple, à une source de type ``Polygon`` sera proposé uniquement les types de représentation ``Polygone``, ``Ligne``, ``Extrusion``.
 
-Le choix de la **caractéristique** à faire varier découlera automatiquement du type de représentation choisi précédemment. Par exemple, pour une **représentation Polygone**, les caractéristiques à faire varier seront **Couleur du polygone** et **Couleur du contour**. 
+Le choix de la **caractéristique** à faire varier découlera automatiquement du type de représentation choisi précédemment. Par exemple, pour une **représentation Polygone**, les caractéristiques à faire varier seront ``Couleur du polygone`` et ``Couleur du contour``. 
 
 Il est à noter que **toutes les caractéristiques ne sont pas variables** car n’apportant pas d’intérêt : par exemple l’épaisseur du contour de la représentation Cercle n’est pas variable, uniquement fixe.
 
-Le choix de la **variable à représenter** se fait à l’aide d’une liste déroulante. La variable se présente ainsi : le label (éditable), le nom de la variable, le type. Le **type de la variable choisie (String, Integer, Float..) conditionne les possibilités du type d’analyse**.
+Le choix de la **variable à représenter** se fait à l’aide d’une liste déroulante. La variable se présente ainsi : le label (éditable), le nom de la variable, le type. Le **type de la variable choisie** (``String``, ``Integer``, ``Float``..) **conditionne les possibilités du type d’analyse**.
 
-Le choix du type d’analyse constitue la dernière étape. Le **type d’analyse Interpolation** n’est disponible que pour faire varier les caractéristiques **Diamètre** ou **Épaisseur**, c’est à dire une taille.
+Le choix du type d’analyse constitue la dernière étape. Le **type d’analyse Interpolation** n’est disponible que pour faire varier les caractéristiques ``Diamètre`` ou``*Épaisseur``, c’est à dire une taille.
 
-Lors de la conception d’un style avec une analyse, il est possible d’activer l’option « **Générer la légende associée** » pour que la légende soit exactement conforme au style représenté.
+Lors de la conception d’un style avec une analyse, il est possible d’activer l’option :guilabel:`Générer la légende associée` pour que la légende soit exactement conforme au style représenté.
 
 .. image :: ../_static/images/admin/admin_couche_style_assistant.png
 
@@ -844,11 +849,11 @@ On peut faire varier :
 
 .. image :: ../_static/images/admin/admin_couche_legende.png
 
-Si elle est générée depuis l’onglet **Style**, alors elle se met en lien automatiquement avec le style de la couche et prend en compte la typologie de géométrie affichée.
+Si elle est générée depuis l’onglet :guilabel:`STYLE`, alors elle se met en lien automatiquement avec le style de la couche et prend en compte la typologie de géométrie affichée.
 
 Il n’est pas possible de modifier une légende qui a été générée. Seuls le titre et le pied de légende sont éditables.
 
-Si la légende générée ne vous convient pas, il faut désactiver l’option « **Générer la légende associée** » dans l’onglet **Style** pour la caractéristique concernée (exemple Couleur du polygone). De cette façon, vous pourrez créer manuellement la légende souhaitée.
+Si la légende générée ne vous convient pas, il faut désactiver l’option :guilabel:`Générer la légende associée` dans l’onglet :guilabel:`STYLE` pour la caractéristique concernée (exemple Couleur du polygone). De cette façon, vous pourrez créer manuellement la légende souhaitée.
 
 .. image :: ../_static/images/admin/admin_couche_legendegeneree.png
 
@@ -870,11 +875,11 @@ En cas de valeur nulle sur un champ, il est possible de définir une valeur par 
 
 Lorsque le label d’un champ est renommé à un endroit de l’application, il est renommé partout ailleurs.
 
-Le « **Mode expert** » permet d’aller plus loin dans le paramétrage de l’info-bulle en codant le contenu en `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_. 
+Le :guilabel:`Mode expert` permet d’aller plus loin dans le paramétrage de l’info-bulle en codant le contenu en `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_. 
 
-Le code est généré à partir de ce qui existe dans le mode avec assistant, en revanche l’inverse n’est pas vrai. C’est à dire que le mode avec assistant n’est pas synchronisé avec le « **Mode expert** ».
+Le code est généré à partir de ce qui existe dans le mode avec assistant, en revanche l’inverse n’est pas vrai. C’est à dire que le mode avec assistant n’est pas synchronisé avec le :guilabel:`Mode expert`.
 
-Ce mode avancé s’adresse à des utilisateurs développeurs. Il peut être intéressant de l’utiliser pour définir des conditions if ou elseif.
+Ce mode avancé s’adresse à des utilisateurs développeurs. Il peut être intéressant de l’utiliser pour définir des conditions ``if`` ou ``elseif``.
 
 .. image :: ../_static/images/admin/admin_couche_pophover_expert.png
 
@@ -887,7 +892,7 @@ La mini-fiche n’est pas active par défaut.
 
 .. image :: ../_static/images/admin/admin_couche_minifiche.png
 
-La mini-fiche fonctionne sur le même principe que celui de la fenêtre au survol. Si le champ principal a été définit dans l’onglet **Définition**, alors ce dernier sera aussi utilisé comme titre de la mini-fiche.
+La mini-fiche fonctionne sur le même principe que celui de la fenêtre au survol. Si le champ principal a été définit dans l’onglet :guilabel:`DÉFINITION`, alors ce dernier sera aussi utilisé comme titre de la mini-fiche.
 
 Il est possible de sélectionner une couleur de surbrillance pour les objets cliqués sur la carte au moment de l’affichage de la mini-fiche.
 
@@ -901,9 +906,9 @@ A la différence de l’info-bulle, l’utilisateur peut ajouter des titres de s
 
 Lorsque le label d’un champ est renommé à un endroit de l’application, il est renommé partout ailleurs.
 
-Le « **Mode expert** » permet d’aller plus loin dans le paramétrage de la fiche en codant le contenu en `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_. 
+Le :guilabel:`Mode expert` permet d’aller plus loin dans le paramétrage de la fiche en codant le contenu en `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_. 
 
-Le code est généré à partir de ce qui existe dans le mode avec assistant, en revanche l’inverse n’est pas vrai. C’est à dire que le mode avec assistant n’est pas synchronisé avec le « **Mode expert** ».
+Le code est généré à partir de ce qui existe dans le mode avec assistant, en revanche l’inverse n’est pas vrai. C’est à dire que le mode avec assistant n’est pas synchronisé avec le :guilabel:`Mode expert`.
 
 Ce mode avancé s’adresse à des utilisateurs développeurs. Il peut être intéressant de l’utiliser pour ajouter du texte coloré, des liens hypertexte ou des images.
 
@@ -918,7 +923,7 @@ L’outil de filtre n’est pas actif par défaut.
 
 .. image :: ../_static/images/admin/admin_couche_filtre.png
 
-Pour ajouter un filtre sur la couche cliquez sur « **AJOUTER** ». 
+Pour ajouter un filtre sur la couche cliquez sur :guilabel:`AJOUTER`. 
 
 Plusieurs types de filtrage sont disponibles en fonction des types de champs :
 
@@ -943,7 +948,7 @@ La table attributaire permet d’avoir une vision tabulaire des données de la c
 
 .. image :: ../_static/images/admin/admin_couche_table.png
 
-Une fois la table activée, l’utilisateur peut configurer l’affichage des champs et autoriser leur export au format xlsx.
+Une fois la table activée, l’utilisateur peut configurer l’affichage des champs et autoriser leur export au format ``xlsx``.
 
 Il est possible de remonter/descendre les champs dans l’ordre souhaité.
 
@@ -977,7 +982,7 @@ La duplication d'une couche inclut la copie :
 * de la mini-fiche
 * du widget
 
-Pour dupliquer une couche cliquez sur le bouton « **DUPLIQUER** » depuis la liste des couches.
+Pour dupliquer une couche cliquez sur le bouton :guilabel:`DUPLIQUER` depuis la liste des couches.
 
 Un message indique à l'utilisateur que la couche a bien été dupliquée.
 
@@ -989,10 +994,12 @@ Pouvoir supprimer une source de données nécessite de s’assurer qu’elle n�
 
 Pour supprimer une couche, vous avez deux façons de procéder :
 
-* dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton « **SUPPRIMER** »
-* dans la liste, cochez la couche et cliquez sur le bouton « **SUPPRIMER** »
+* dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton :guilabel:`SUPPRIMER`
+* dans la liste, cochez la couche et cliquez sur le bouton :guilabel:`SUPPRIMER`
 
-⚠️  *Toute suppression est définitive.*
+.. note::
+    Toute suppression est définitive.
+
 
 Liste des vues
 --------------
@@ -1001,7 +1008,7 @@ La configuration des menus d’accès aux couches de données s’appelle les vu
 
 Il s’agit de la dernière étape à réaliser (après la création de la source, puis création de la couche) pour visualiser ses données.
 
-Pour afficher l’ensemble des vues cliquez sur « **Liste des vues** ». 
+Pour afficher l’ensemble des vues cliquez sur :guilabel:`Liste des vues`. 
 
 Vous arrivez sur une page présentant la liste de toutes les vues déclarées.
 
@@ -1010,7 +1017,7 @@ Vous arrivez sur une page présentant la liste de toutes les vues déclarées.
 Créer une vue
 -------------
 
-Pour ajouter une nouvelle vue cliquez sur le bouton « **CRÉER** ».
+Pour ajouter une nouvelle vue cliquez sur le bouton :guilabel:`CRÉER`.
 
 Les informations à renseigner à minima lors de la création d’une nouvelle vue sont le nom, le type de vue, le classement et l’arbre des couches.
 
@@ -1023,7 +1030,7 @@ Le classement permet d’affecter à la vue une position par rapport aux autres 
 
 Il est possible de définir une emprise géographique différente de l’emprise par défaut du visualiseur cartographique (exemple : Centre ville de Thionville). Pour cela, il suffit de dessiner la zone à afficher à l’aide de l’outil de dessin.
 
-S’il a définit au préalable des fonds de carte dans le module **Liste des fonds de carte**, l’utilisateur peut choisir de les utiliser dans une vue. Si il ne le fait pas, c’est le fond de carte par défaut (Mapbox Monochrome Light) qui sera utilisé.
+S’il a définit au préalable des fonds de carte dans le module :guilabel:`Liste des fonds de carte`, l’utilisateur peut choisir de les utiliser dans une vue. Si il ne le fait pas, c’est le fond de carte par défaut (Mapbox Monochrome Light) qui sera utilisé.
 
 Une icône par défaut est appliquée à la vue si l’utilisateur ne lui en choisis pas. Sa couleur est blanche afin que l’icône se démarque bien sur le menu des vues dans le visualiseur cartographique. Le format supporté par l’outil est le png.  
 
@@ -1032,9 +1039,9 @@ Arbre des couches
 
 Une couche appartient obligatoirement à un groupe.
 
-Pour ajouter un groupe cliquez sur le bouton « **CRÉER  UN GROUPE**».
+Pour ajouter un groupe cliquez sur le bouton :guilabel:`CRÉER UN GROUPE`.
 
-Pour ajouter une couche à un groupe cliquez sur le « **+** » et choisissez la dans la liste.
+Pour ajouter une couche à un groupe cliquez sur le :guilabel:`+` et choisissez la dans la liste.
 
 Vous pouvez construire votre arbre en ajoutant, déplaçant, imbriquant les éléments. 
 
@@ -1045,7 +1052,9 @@ A partir d’un groupe, en cliquant sur les trois petits points verticaux vous a
 * Paramétrer le mode de sélection des couches (exclusif/inclusif)
 * Supprimer un groupe
 
-⚠️  *Une couche ne peut être ajoutée qu’à une seule vue à la fois.*
+.. note::
+    Une couche ne peut être ajoutée qu’à une seule vue à la fois.
+
 
 .. image :: ../_static/images/admin/admin_vue.png
 
@@ -1058,15 +1067,17 @@ Supprimer une vue
 
 Pour supprimer une vue, vous avez deux façons de procéder :
 
-* dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton « **SUPPRIMER** »
-* dans la liste, cochez la vue et cliquez sur le bouton « **SUPPRIMER** »
+* dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton :guilabel:`SUPPRIMER`
+* dans la liste, cochez la vue et cliquez sur le bouton :guilabel:`SUPPRIMER`
 
-⚠️ *Toute suppression est définitive.* 
+.. note::
+    Toute suppression est définitive.
+
 
 Fonds de carte
 ==============
 
-Le module « **Fonds de carte** » de TerraVisu  permet à l’utilisateur de définir ses fonds de cartes sur lesquels viendront se superposer les couches de données cartographiques de l’application. 
+Le module :guilabel:`Fonds de carte` de TerraVisu  permet à l’utilisateur de définir ses fonds de cartes sur lesquels viendront se superposer les couches de données cartographiques de l’application. 
 
 L’utilisateur peut par exemple ainsi basculer d’un fond de plan cartographique à une photographie aérienne pour avoir un meilleur aperçu de la réalité physique du territoire d’étude.
 
@@ -1080,7 +1091,7 @@ Trois types de fonds de cartes peuvent être définis :
 * Vectoriel
 * Mapbox
   
-Pour afficher l’ensemble des fonds de carte cliquez sur « **Liste des fonds de carte**». 
+Pour afficher l’ensemble des fonds de carte cliquez sur :guilabel:`Liste des fonds de carte`. 
 
 Vous arrivez sur une page présentant la liste de tous les fonds de carte existants.
 
@@ -1089,7 +1100,7 @@ Vous arrivez sur une page présentant la liste de tous les fonds de carte exista
 Créer un nouveau fond de carte
 ------------------------------
 
-Pour ajouter un nouveau fond de carte cliquez sur le bouton « **CRÉER** ».
+Pour ajouter un nouveau fond de carte cliquez sur le bouton :guilabel:`CRÉER`.
 
 Les informations à renseigner à minima lors de la création d’un nouveau fond de carte sont le nom, le type et l’URL.
 
@@ -1109,7 +1120,8 @@ Supprimer un fond de carte
 
 Pour supprimer fond de carte, vous avez deux façons de procéder :
 
-* dans la liste, cliquez sur le fond de carte et en bas de la page cliquez sur le bouton « **SUPPRIMER** »
-* dans la liste, cochez le fond de carte et cliquez sur le bouton « **SUPPRIMER** »
+* dans la liste, cliquez sur le fond de carte et en bas de la page cliquez sur le bouton :guilabel:`SUPPRIMER`
+* dans la liste, cochez le fond de carte et cliquez sur le bouton :guilabel:`SUPPRIMER`
 
-⚠️  *Toute suppression est définitive.* 
+.. note::
+    Toute suppression est définitive.
