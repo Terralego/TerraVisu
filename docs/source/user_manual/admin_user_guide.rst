@@ -201,7 +201,7 @@ Les informations à renseigner à minima lors de la création d’une nouvelle s
 
 .. image :: ../_static/images/admin/admin_source_creation_postgis.png
 
-.. tip::
+.. note::
     Si une source de données dont la fréquence de mise à jour a été paramétrée sur ``Quotidienne``, le déclenchement de la synchronisation ne se fera pas exactement 24h après. L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde toutes les 25 mn s’il y a des changements) + date de fin de la dernière mise à jour. 
     Il peut donc y avoir un delta de 24h et 25mn au minimum entre chaque mise à jour de source de données. Ce delta peut se rajouter d'autant plus s'il y a des mise à jour manuelles.
 
