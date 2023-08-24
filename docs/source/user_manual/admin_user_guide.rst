@@ -196,6 +196,9 @@ Import via une requête PostGIS
 
 Les informations à renseigner à minima lors de la création d’une nouvelle source **PostGIS** sont le ``nom``, le ``type de géométrie``, les ``paramètres de connexion à la base de données`` (hôte, port, nom bdd, nom utilisateur, mot de passe utilisateur), ``requête SQL``, ``champ de géométrie``, ``champ de l’identifiant unique``.
 
+.. note::
+    Attention à ne pas terminer la requête par un point virgule.
+
 .. tip::
     Il est possible de définir la fréquence de mise à jour automatique de la source (toutes les heures, quotidiennement…). La requête peut ainsi être exécutée régulièrement afin de mettre à jour les données avec le contenu de la base.
 
@@ -204,9 +207,6 @@ Les informations à renseigner à minima lors de la création d’une nouvelle s
 .. note::
     Si une source de données dont la fréquence de mise à jour a été paramétrée sur ``Quotidienne``, le déclenchement de la synchronisation ne se fera pas exactement 24h après. L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde toutes les 25 mn s’il y a des changements) + date de fin de la dernière mise à jour. 
     Il peut donc y avoir un delta de 24h et 25mn au minimum entre chaque mise à jour de source de données. Ce delta peut se rajouter d'autant plus s'il y a des mise à jour manuelles.
-
-.. note::
-    Attention à ne pas terminer la requête par un point virgule.
 
 .. list-table:: Géométries invalides
    :header-rows: 1
