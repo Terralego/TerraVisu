@@ -163,7 +163,11 @@ class SourceViewsetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertDictContainsSubset(self.source_example, response.json())
 
-    def test_wmts_source_creation(self):
+    @patch(
+        "project.geosource.serializers.requests.get",
+        retun_value={"status": status.HTTP_201_CREATED},
+    )
+    def test_wmts_source_creation(self, mocked_request_get):
         wmts_source = {
             "_type": "WMTSSource",
             "name": "Test Source",

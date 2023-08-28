@@ -2,9 +2,10 @@ from unittest.mock import patch
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
+from rest_framework.exceptions import ValidationError
 
 from project.geosource.models import CSVSource
-from project.geosource.serializers import CSVSourceSerializer
+from project.geosource.serializers import CSVSourceSerializer, GeoJSONSourceSerializer
 from project.geosource.tests.helpers import get_file
 
 
@@ -156,3 +157,34 @@ class CSVSourceSerializerTestCase(TestCase):
         with self.assertRaises(KeyError):
             serializer.is_valid()
             self.assertEqual(len(serializer.errors), 3)
+
+    @patch(
+        "project.geosource.serializers.CSVSource._get_records",
+        side_effect=ValueError("ValueError mocked"),
+    )
+    def test_validate_fields_exceptions(self, get_record_mock):
+        data = {
+            "name": "soure-csv",
+            "file": get_file("source.csv"),
+            "_type": "CSVSource",
+        }
+        serializer = CSVSourceSerializer(data=data)
+
+        with self.assertRaises(ValidationError):
+            serializer._validate_field_infos(serializer.initial_data)
+
+
+class GeoJSONSourceSerializerTestCase(TestCase):
+    @patch(
+        "project.geosource.serializers.GeoJSONSource._get_records",
+        side_effect=ValueError("ValueError mocked"),
+    )
+    def test_validate_fields_infos_exceptions(self, get_record_mock):
+        data = {
+            "name": "source-geojson",
+            "file": get_file("test.geojson"),
+            "_type": "GeoJSONSource",
+        }
+        serializer = GeoJSONSourceSerializer(data=data)
+        with self.assertRaises(ValidationError):
+            serializer._validate_field_infos(serializer.initial_data)

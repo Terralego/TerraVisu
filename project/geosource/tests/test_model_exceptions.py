@@ -282,6 +282,27 @@ class CSVSourceExceptionsTestCase(TestCase):
             )
             self.assertIsInstance(source.report, SourceReporting)
 
+    def test_coordinate_separator_exceptions(self, mocked_es_create, mocked_es_delete):
+        source = CSVSource.objects.create(
+            name="csv-source",
+            file=get_file("source.csv"),
+            geom_type=0,
+            id_field="identifier",
+            settings={
+                "coordinates_separator": "comma",
+                "coordinates_field_count": "xy",
+            },
+        )
+        with self.assertRaisesRegex(
+            CSVSourceException,
+            'Cannot split coordinate "69,420.42,069" with separator ","',
+        ):
+            source._extract_coordinates(
+                ["69,420.42,069", "identifier", "some value"],
+                [],
+                ["0"],
+            )
+
 
 @patch("elasticsearch.client.IndicesClient.create")
 @patch("elasticsearch.client.IndicesClient.delete")
