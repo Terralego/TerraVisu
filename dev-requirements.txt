@@ -73,7 +73,7 @@ packaging==23.1
     #   sphinx
 pathspec==0.11.0
     # via black
-pip-tools==7.1.0
+pip-tools==7.3.0
     # via -r dev-requirements.in
 platformdirs==3.0.0
     # via black
