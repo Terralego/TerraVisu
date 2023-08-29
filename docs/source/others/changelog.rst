@@ -11,7 +11,7 @@ Changelog
 - Optimize source refresh and ES indexation process
 
 
-2023.8.2       (2023-08-29)
+2023.8.2       (2023-08-10)
 ---------------------------
 
 **Improvements:**
