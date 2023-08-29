@@ -10,6 +10,8 @@ Changelog
 
 - Add close button to partners modal
 - Improve source reporting interface in admin
+- Optimize source refresh and ES indexation process
+
 
 **Bugfix**
 
@@ -101,14 +103,6 @@ Changelog
 **Improvements:**
 
 - Add more options to info content editor in config dashboard
-
-
-XXXX.X.X       (XXXX-XX-XX)
----------------------------
-
-**Performance**
-
-- Optimize source refresh and ES indexation process -p
 
 
 2023.6.9       (2023-06-21)
