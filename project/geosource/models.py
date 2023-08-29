@@ -154,10 +154,6 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         return next_run < now
 
     def refresh_data(self):
-        if self.status != self.Status.PENDING.value:
-            self.status = self.Status.PENDING.value
-            self.save()
-
         layer = self.get_layer()
         try:
             es_index = LayerESIndex(layer)
