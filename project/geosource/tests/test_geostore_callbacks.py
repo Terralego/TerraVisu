@@ -31,7 +31,7 @@ class GeostoreCallBacksTestCase(TestCase):
         )
         source.groups.add(group)
         layer = Layer.objects.create(name="test")
-        feature = geostore_callbacks.feature_callback(
+        feature, _ = geostore_callbacks.feature_callback(
             source, layer, "id", GEOSGeometry("POINT (0 0)", srid=3857), {}
         )
         self.assertEqual(feature.geom.srid, 4326)
@@ -84,3 +84,24 @@ class GeostoreCallBacksTestCase(TestCase):
         layer = Layer.objects.create(name="test")
         Feature.objects.create(layer=layer, geom=GEOSGeometry("POINT (0 0)"))
         geostore_callbacks.delete_layer(source)
+
+    @mock.patch(
+        "project.geosource.geostore_callbacks.GEOSGeometry", side_effect=ValueError()
+    )
+    def test_feature_callback_return_none_tuple_when_valueerror(self, mocked_geos):
+        # Setup test data
+        group = Group.objects.create(name="Group")
+        source = GeoJSONSource.objects.create(
+            name="test",
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
+        )
+        source.groups.add(group)
+        layer = Layer.objects.create(name="test")
+
+        # Testing
+        feature, created = geostore_callbacks.feature_callback(
+            source, layer, "id", "Not a Point", {"property": "Hola"}
+        )
+        self.assertIsNone(feature)
+        self.assertIsNone(created)

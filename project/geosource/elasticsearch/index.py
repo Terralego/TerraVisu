@@ -15,8 +15,6 @@ class LayerESIndex(ESMixin):
     def index(self):
         self.clean_index()
         self.create_index()
-        for feature in self.layer.features.all():
-            self.index_feature(self.layer, feature)
 
     def _get_formatted_record(self, index, feature):
         return {

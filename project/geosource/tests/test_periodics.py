@@ -58,8 +58,10 @@ class PeriodicsTestCase(TestCase):
 
         self.assertEqual(self.source2.should_refresh(), True)
 
+    @mock.patch("elasticsearch.client.IndicesClient.create")
+    @mock.patch("elasticsearch.client.IndicesClient.delete")
     @mock.patch("django.utils.timezone.now")
-    def test_auto_refresh(self, mock_timezone):
+    def test_auto_refresh(self, mock_timezone, mocked_es_delete, mocked_es_create):
         with mock.patch(
             "project.geosource.models.Source._refresh_data"
         ) as mocked, mock.patch(

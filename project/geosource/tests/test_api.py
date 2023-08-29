@@ -163,7 +163,11 @@ class SourceViewsetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertDictContainsSubset(self.source_example, response.json())
 
-    def test_wmts_source_creation(self):
+    @patch(
+        "project.geosource.serializers.requests.get",
+        retun_value={"status": status.HTTP_201_CREATED},
+    )
+    def test_wmts_source_creation(self, mocked_request_get):
         wmts_source = {
             "_type": "WMTSSource",
             "name": "Test Source",
@@ -267,9 +271,10 @@ class SourceViewsetTestCase(APITestCase):
     @patch(
         "project.geosource.models.Source._get_records",
         MagicMock(
-            return_value=[
-                {"a": "b", "c": 42, "d": b"4", "e": b"\xe8", "_geom_": "POINT(0 0)"}
-            ]
+            return_value=(
+                [{"a": "b", "c": 42, "d": b"4", "e": b"\xe8", "_geom_": "POINT(0 0)"}],
+                [],
+            )
         ),
     )
     def test_update_fields_method(self):
@@ -283,7 +288,7 @@ class SourceViewsetTestCase(APITestCase):
 
     @patch(
         "project.geosource.models.Source._get_records",
-        MagicMock(return_value=[{"a": "b", "c": 42, "_geom_": "POINT(0 0)"}]),
+        MagicMock(return_value=([{"a": "b", "c": 42, "_geom_": "POINT(0 0)"}], [])),
     )
     def test_update_fields_with_delete_method(self):
         obj = Source.objects.create(geom_type=10)

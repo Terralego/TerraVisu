@@ -3,6 +3,7 @@ import logging
 from celery import shared_task, states
 from celery.exceptions import Ignore
 from django.apps import apps
+from django.utils import timezone
 
 logger = logging.getLogger(__name__)
 
@@ -23,8 +24,9 @@ def set_failure_state(task, method, message, instance=None):
         text = ""
         for key, value in state["meta"].items():
             text += f"{key}: {value},"
-        instance.report["lines"] = text
-        instance.save(update_fields=["report"])
+        instance.report.message = text
+        instance.report.ended = timezone.now()
+        instance.report.save(update_fields=["ended", "message"])
 
 
 @shared_task(bind=True)
@@ -42,15 +44,17 @@ def run_model_object_method(self, app, model, pk, method, success_state=states.S
 
         self.update_state(state=success_state, meta=state)
         if obj and hasattr(obj, "report"):
-            text = ""
-            for key, value in state.items():
-                text += f"{key}: {value},"
-            obj.report["lines"] = text
-            obj.save(update_fields=["report"])
+            if obj.report is not None:
+                text = ""
+                for key, value in state.items():
+                    text += f"{key}: {value},"
+                obj.report.message = text
+                obj.report.ended = timezone.now()
+                obj.report.save(update_fields=["message", "ended"])
 
     except Model.DoesNotExist:
         set_failure_state(
-            self, method, f"{Model}'s object with pk {pk} doesn't exist", obj
+            self, method, f"{Model}'s object with pk {pk} doesn't exist", None
         )
 
     except AttributeError as e:

@@ -19,6 +19,7 @@ from .models import (
     PostGISSource,
     ShapefileSource,
     Source,
+    SourceReporting,
     WMTSSource,
 )
 
@@ -101,14 +102,24 @@ class FieldSerializer(serializers.ModelSerializer):
         read_only_fields = ("name", "sample", "source")
 
 
+class SourceReportingSerializer(serializers.ModelSerializer):
+    status = serializers.CharField(source="get_status_display")
+
+    class Meta:
+        fields = "__all__"
+        model = SourceReporting
+
+
 class SourceSerializer(PolymorphicModelSerializer):
     fields = FieldSerializer(many=True, required=False)
     status = serializers.SerializerMethodField()
     slug = serializers.SlugField(max_length=255, read_only=True)
+    report = SourceReportingSerializer(read_only=True)
 
     class Meta:
         fields = "__all__"
         model = Source
+        extras = {"read_only": {"status": True}}
 
     def _update_fields(self, source):
         if source.run_sync_method("update_fields", success_state="NEED_SYNC").result:
@@ -144,11 +155,12 @@ class SourceSerializer(PolymorphicModelSerializer):
         return source
 
     def get_status(self, instance):
-        return instance.get_status()
+        return instance.get_status_display()
 
 
 class SourceListSerializer(serializers.ModelSerializer):
     _type = serializers.SerializerMethodField()
+    report = SourceReportingSerializer(read_only=True)
     status = serializers.SerializerMethodField()
 
     class Meta:
@@ -159,13 +171,14 @@ class SourceListSerializer(serializers.ModelSerializer):
             "status",
             "name",
             "geom_type",
+            "report",
         )
 
     def get__type(self, instance):
         return instance.__class__.__name__
 
     def get_status(self, instance):
-        return instance.get_status()
+        return instance.refresh_status
 
 
 class PostGISSourceSerializer(SourceSerializer):
@@ -269,7 +282,7 @@ class GeoJSONSourceSerializer(FileSourceSerializer):
         except TypeError:
             return  # file field is empty in update no get_records
         try:
-            records = instance._get_records(1)
+            records, _ = instance._get_records(1)
         except Exception as err:
             raise ValidationError(err.args[0])
 
@@ -309,6 +322,7 @@ class WMTSSourceSerialize(SourceSerializer):
         min_value=0, max_value=24, allow_null=True, default=24
     )
     geom_type = serializers.CharField(required=False, allow_null=True, default=None)
+    status = serializers.SerializerMethodField()
 
     class Meta:
         model = WMTSSource
@@ -330,6 +344,9 @@ class WMTSSourceSerialize(SourceSerializer):
             raise ValidationError("Can't reach specified tile server. Check your url.")
 
         return super().validate(data)
+
+    def get_status(self, instance):
+        return instance.get_status().get("state")
 
 
 class CSVSourceSerializer(FileSourceSerializer):
@@ -423,7 +440,7 @@ class CSVSourceSerializer(FileSourceSerializer):
         # create an instance without saving data
         instance = self.Meta.model(**data_copy)
         try:
-            records = instance._get_records(1)
+            records, _ = instance._get_records(1)
         except (ValueError, GDALException) as err:
             raise ValidationError(err.args[0])
 

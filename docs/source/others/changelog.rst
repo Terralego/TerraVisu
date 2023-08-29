@@ -10,6 +10,8 @@ Changelog
 
 - Add close button to partners modal
 - Improve source reporting interface in admin
+- Optimize source refresh and ES indexation process
+
 
 **Bugfix**
 
