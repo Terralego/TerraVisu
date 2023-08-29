@@ -42,7 +42,9 @@ class SourceModelViewset(ModelViewSet):
 
         refresh_job = source.run_async_method("refresh_data", force=force_refresh)
         if refresh_job:
-            return Response(data=source.get_status(), status=status.HTTP_202_ACCEPTED)
+            source.status = Source.Status.PENDING.value
+            source.save()
+            return Response(data={**source.get_status(), "status": source.get_status_display()}, status=status.HTTP_202_ACCEPTED)
 
         return Response(status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
