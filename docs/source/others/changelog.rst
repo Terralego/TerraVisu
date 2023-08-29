@@ -3,15 +3,21 @@ Changelog
 ==========
 
 
-2023.8.2       (2023-08-10)
+2023.8.3       (2023-08-29)
+---------------------------
+
+**Improvements:**
+
+- Optimize source refresh and ES indexation process
+
+
+2023.8.2       (2023-08-29)
 ---------------------------
 
 **Improvements:**
 
 - Add close button to partners modal
 - Improve source reporting interface in admin
-- Optimize source refresh and ES indexation process
-
 
 **Bugfix**
 
