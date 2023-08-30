@@ -96,7 +96,7 @@ django-clearcache==1.2.1
     # via -r requirements.in
 django-clone==5.3.3
     # via -r requirements.in
-django-constance[database]==2.9.1
+django-constance[database]==3.1.0
     # via -r requirements.in
 django-cors-headers==4.2.0
     # via -r requirements.in
