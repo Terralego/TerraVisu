@@ -179,7 +179,7 @@ pillow==10.0.0
     # via -r requirements.in
 prompt-toolkit==3.0.38
     # via click-repl
-psycopg2==2.9.6
+psycopg2==2.9.7
     # via
     #   -r requirements.in
     #   django-geostore
