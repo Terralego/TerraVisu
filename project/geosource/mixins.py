@@ -14,7 +14,7 @@ class CeleryCallMethodsMixin:
     @property
     def can_sync(self):
         """Property containing a boolean that tell if the state allow to run a sync"""
-        return self.status != self.STATUS.PENDING
+        return self.status != self.Status.PENDING
 
     def run_async_method(
         self,
