@@ -47,7 +47,9 @@ class SourceModelViewset(ModelViewSet):
                 source.report.status = SourceReporting.Status.PENDING.value
                 source.report.save()
             else:
-                source.report = SourceReporting.objects.create(status=SourceReporting.Status.PENDING.value)
+                source.report = SourceReporting.objects.create(
+                    status=SourceReporting.Status.PENDING.value
+                )
             source.save()
             return Response(
                 data=source.get_status(),
