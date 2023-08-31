@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
 from .filtersets import SourceFilterSet
-from .models import Source
+from .models import Source, SourceReporting
 from .parsers import NestedMultipartJSONParser
 from .permissions import SourcePermission
 from .serializers import SourceListSerializer, SourceSerializer
@@ -43,6 +43,11 @@ class SourceModelViewset(ModelViewSet):
         refresh_job = source.run_async_method("refresh_data", force=force_refresh)
         if refresh_job:
             source.status = Source.Status.PENDING.value
+            if source.report:
+                source.report.status = SourceReporting.Status.PENDING.value
+                source.report.save()
+            else:
+                source.report = SourceReporting.objects.create(status=SourceReporting.Status.PENDING.value)
             source.save()
             return Response(
                 data=source.get_status(),
