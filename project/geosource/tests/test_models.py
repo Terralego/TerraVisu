@@ -548,7 +548,7 @@ class SourceReportingTestCase(TestCase):
             errors=["error 1", "error 2", "error 3"],
         )
         report.reset()
-        self.assertIsNone(report.status)
+        self.assertEqual(report.status, SourceReporting.Status.PENDING.value)
         self.assertEqual(report.message, "")
         self.assertEqual(report.added_lines, 0)
         self.assertEqual(report.modified_lines, 0)

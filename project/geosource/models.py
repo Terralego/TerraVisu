@@ -84,7 +84,7 @@ class SourceReporting(models.Model):
     errors = models.JSONField(default=list)
 
     def reset(self):
-        self.status = None
+        self.status = self.Status.PENDING.value
         self.message = ""
         self.started = timezone.now()
         self.ended = None
