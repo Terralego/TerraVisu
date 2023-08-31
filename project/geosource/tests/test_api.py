@@ -16,6 +16,7 @@ from project.geosource.models import (
     PostGISSource,
     ShapefileSource,
     Source,
+    SourceReporting,
 )
 from project.geosource.tests.helpers import get_file
 
@@ -101,6 +102,9 @@ class SourceViewsetTestCase(APITestCase):
                 reverse("geosource:geosource-refresh", args=[self.source_geojson.pk])
             )
         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        self.source_geojson.refresh_from_db()
+        self.assertEqual(self.source_geojson.status, Source.Status.PENDING.value)
+        self.assertEqual(self.source_geojson.report.status, SourceReporting.Status.PENDING.value)
 
     @patch(
         "project.geosource.serializers.PostGISSourceSerializer._first_record",
