@@ -44,6 +44,7 @@ class SourceModelViewset(ModelViewSet):
         if refresh_job:
             source.status = Source.Status.PENDING.value
             if source.report:
+                source.report.reset()
                 source.report.status = SourceReporting.Status.PENDING.value
                 source.report.save()
             else:
