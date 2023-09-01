@@ -117,9 +117,7 @@ six==1.16.0
     #   -c requirements.txt
     #   python-dateutil
 snowballstemmer==2.2.0
-    # via
-    #   -r docs/requirements.txt
-    #   sphinx
+    # via sphinx
 sphinx==7.2.5
     # via
     #   -r docs/requirements.txt
