@@ -255,4 +255,4 @@ La réorientation de la carte
 
 Par défaut la carte est orientée au nord. Pour changer l'orientation, cliquez sur l'icône en forme de boussole.
 
-Pour avoir une meilleure expérience utilisateur sur les couches en 3D, effectuez la combinaison :guilabel:`CTRL`+ clic gauche sur la carte pour incliner le plan.
+Pour avoir une meilleure expérience utilisateur sur les couches en 3D, effectuez la combinaison :guilabel:`CTRL` + :guilabel:`clic gauche` sur la carte pour incliner le plan.
