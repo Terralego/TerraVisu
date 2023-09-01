@@ -68,8 +68,8 @@ Les vues sont représentées par des pictogrammes dans le bandeau latéral gauch
 Pour changer de vue, cliquez sur le pictogramme concerné.
 
 .. note::
-    Chaque vue est indépendante et il n'est pas possible d'afficher deux vues à la fois. 
-    Cela signifie qu'en cliquant sur une autre vue, la carte change.
+Chaque vue est indépendante et il n'est pas possible d'afficher deux vues à la fois. 
+Cela signifie qu'en cliquant sur une autre vue, la carte change.
 
 
 L'arbre des couches
@@ -82,7 +82,7 @@ Vous pouvez créer autant de grandes catégories et de sous-catégories de group
 Dans le cas où il y aurait un grand nombre de couches dans l'arbre, vous pouvez utiliser la barre de recherche présente en haut du panneau pour filtrer une couche par son nom.
 
 .. note::
-    Le filtrage de couche ne peut se faire que dans la vue en cours.
+Le filtrage de couche ne peut se faire que dans la vue en cours.
 
 **Exemple de barre de filtre**
 
@@ -255,4 +255,38 @@ La réorientation de la carte
 
 Par défaut la carte est orientée au nord. Pour changer l'orientation, cliquez sur l'icône en forme de boussole.
 
-Pour avoir une meilleure expérience utilisateur sur les couches en 3D, effectuez la combinaison :guilabel:`CTRL` + :guilabel:`clic gauche` sur la carte pour incliner le plan.
+Pour avoir une meilleure expérience utilisateur sur les couches en 3D, effectuez la combinaison :guilabel:`CTRL` + :guilabel:`clic gauche` souris sur la carte pour incliner le plan.
+
+La gestion des fonds de carte
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Plusieurs fonds de cartes sont disponibles par défaut et vos propres fonds de carte peuvent être ajoutés depuis l'`outil d'administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#liste-des-fonds-de-carte>`_ 
+
+L'impression de la carte au format PDF
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+La carte affichée à l'écran peut être imprimée en format PDF selon les deux dispositions (portait ou paysage).
+
+**Exemple de la procédure d'impression**
+
+.. image :: ../_static/images/visu/visu_impression.png
+
+Le partage de la carte
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Il est possible de partager la carte soit en générant un hyperlien, soit en la partageant sur les réseaux sociaux (X, Facebook et Linkedin)
+
+**Exemple de partage d'hyperlien**
+
+.. image :: ../_static/images/visu/visu_impression.png
+
+La visualisation en Storytelling
+---------------------------------
+
+TerraVisu dispose d'une fonction de Storytelling. C'est une autre forme de visualisation qui est accessible depuis une vue dédiée. Le storytelling comprend du texte et des images qui sont parcourues comme un « slideshow » (diaporama).
+
+Cette fonctionnalité peut servir à la communication ou de manuel d'utilisation.
+
+**Exemple du storytelling de Carto Collectivités**
+
+.. image :: ../_static/images/visu/visu_storytelling.png
