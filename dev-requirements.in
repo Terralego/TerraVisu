@@ -1,4 +1,5 @@
 -c requirements.txt
+-r docs/requirements.txt
 
 django-debug-toolbar
 freezegun
@@ -8,4 +9,3 @@ black
 factory-boy
 coverage
 pip-tools
-sphinx-rtd-theme
