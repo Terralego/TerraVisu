@@ -250,3 +250,9 @@ Pour zoomer sur la carte utilisez la molette de la souris vers l'avant ou clique
 
 Pour dézoomer sur la carte utilisez la molette de la souris vers l'arrière ou cliquez sur l'icône :guilabel:`-`.
 
+La réorientation de la carte
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Par défaut la carte est orientée au nord. Pour changer l'orientation, cliquez sur l'icône en forme de boussole.
+
+Pour avoir une meilleure expérience utilisateur sur les couches en 3D, effectuez la combinaison :guilabel:`CTRL`+ clic gauche sur la carte pour incliner le plan.
