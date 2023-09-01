@@ -68,8 +68,8 @@ Les vues sont représentées par des pictogrammes dans le bandeau latéral gauch
 Pour changer de vue, cliquez sur le pictogramme concerné.
 
 .. note::
-Chaque vue est indépendante et il n'est pas possible d'afficher deux vues à la fois. 
-Cela signifie qu'en cliquant sur une autre vue, la carte change.
+	Chaque vue est indépendante et il n'est pas possible d'afficher deux vues à la fois. 
+	Cela signifie qu'en cliquant sur une autre vue, la carte change.
 
 
 L'arbre des couches
@@ -82,7 +82,7 @@ Vous pouvez créer autant de grandes catégories et de sous-catégories de group
 Dans le cas où il y aurait un grand nombre de couches dans l'arbre, vous pouvez utiliser la barre de recherche présente en haut du panneau pour filtrer une couche par son nom.
 
 .. note::
-Le filtrage de couche ne peut se faire que dans la vue en cours.
+	Le filtrage de couche ne peut se faire que dans la vue en cours.
 
 **Exemple de barre de filtre**
 
