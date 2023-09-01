@@ -24,12 +24,12 @@ Les principales fonctionnalités
 ===============================
 
 L'interface cartographique
---------------------------
+------------------------------
 
 L'interface cartographique est décomposée en 4 parties :
 
 * Les vues : à gauche, le panneau des vues permet d'organiser les couches par grande famille ou thématique
-* Ll'arbre des couches : entre les vues et la carte, l'arbre des couches permet d'afficher, de rechercher une couche et de filtrer les données à voir sur la carte
+* L'arbre des couches : entre les vues et la carte, l'arbre des couches permet d'afficher, de rechercher une couche et de filtrer les données à voir sur la carte
 * La carte : au centre, un fond de plan cartographique sur lequel se superposent des données
 * Les outils de navigation : à droite, se trouvent les outils incontournables d'une application cartographique (zoom, orientation) mais aussi d'autres outils additionnels comme le retour à l'emprise initiale, le changement de fond de plan, l'impression et le partage de la carte
 
@@ -38,7 +38,7 @@ L'interface cartographique est décomposée en 4 parties :
 .. image :: ../_static/images/visu/visu_interfacecarto.png
 
 Les données géographiques
--------------------------
+-----------------------------
 
 Les données géographiques sont organisées dans des couches qui rassemblent des entités de même nature. Chaque couche de carte permet d'afficher et d'utiliser un jeu de données SIG spécifique.
 
@@ -59,7 +59,7 @@ Au niveau d'une couche de données, vous pouvez ainsi activer les fonctionnalit�
 L'interface cartographique se met automatiquement à jour selon les fonctionnalités activées.
 
 Les vues
-~~~~~~~~
+~~~~~~~~~~~
 
 Les couches sont réparties dans des vues et reflètent des thématiques ou des applications métier. 
 
@@ -73,7 +73,7 @@ Pour changer de vue, cliquez sur le pictogramme concerné.
 
 
 L'arbre des couches
-~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
 Les données sont agencées de manière personnalisée dans l'arbre des couches. 
 
@@ -89,7 +89,7 @@ Dans le cas où il y aurait un grand nombre de couches dans l'arbre, vous pouvez
 .. image :: ../_static/images/visu/visu_filtre_arbrecouches.png
 
 L'affichage de la couche
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Pour activer/désactiver une couche cliquez sur le curseur à gauche du nom.
 
@@ -105,7 +105,7 @@ Quand les couches affichées ont des légendes, celles-ci s'affichent sur la par
 La configuration de la légende s’effectue depuis l'outil administration.
 
 La table attributaire
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 **TerraVisu** propose l’affichage de la table des données contenues dans la couche. La table attributaire contient les caractéristiques **non spatiales** des données.
 
@@ -126,7 +126,7 @@ La table attributaire de **TerraVisu** comprend de nombreuses fonctionnalités t
 Une fois la table exportée, vous pouvez travailler vos données avec votre tableur habituel et créer des graphiques, des tableaux dynamiques croisés, etc., depuis votre ordinateur.
 
 Le filtrage des données
-~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Un jeu de données peut être filtré par ses données attributaires, c’est à dire des informations textuelles qui décrivent les caractéristiques diverses (géographiques, alphanumériques, etc.). 
 
@@ -139,7 +139,7 @@ Les éléments qui ne correspondent pas au filtre sont cachés et la carte est a
 Les filtres peuvent prendre plusieurs formes (case à cocher, intervalle de valeurs, curseur, recherche, etc.) et sont paramétrables dans l'outil d'administration.
 
 Le widget
-~~~~~~~~~
+~~~~~~~~~~~~
 
 Le widget permet de récapituler dans un tableau dynamique, des indicateurs utiles à l'analyse de la couche. La synthèse des informations se réactualise en fonction des éléments qui se trouvent dans l'emprise spatiale. Le widget s’affiche à droite de l’écran.
 
@@ -150,7 +150,7 @@ Le widget permet de récapituler dans un tableau dynamique, des indicateurs util
 Les données à afficher dans le widget sont définies par l’utilisateur dans l'outil d'administration.
 
 Le zoom sur l'étendue spatiale
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Cet outil permet de zoomer sur l'étendue spatiale d'une couche activée. Le zoom est particulièrement utile lorsque l'on souhaite voir l'emprise géographique des éléments filtrés d'une couche.
 
@@ -161,7 +161,7 @@ Cet outil permet de zoomer sur l'étendue spatiale d'une couche activée. Le zoo
 La table attributaire et le widget sont automatiquement mis à jour en fonction du zoom.
 
 La modification de l'opacité 
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Pour changer l'opacité d'une couche, cliquez sur les trois petits points horizontaux à côté de l'outil filtre.
 
@@ -172,12 +172,12 @@ Faites glisser le curseur de droite à gauche pour modifier le pourcentage de tr
 .. image :: ../_static/images/visu/visu_transparence.png
 
 Les intéractions avec les données affichés sur la carte
--------------------------------------------------------
+---------------------------------------------------------
 
 Si les couches ont été configurées pour, il est possible d'intéragir avec les objets affichés sur la carte.
 
 La fiche descriptive
-~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 
 Les informations relatives aux données sont présentées dans une fiche à gauche de l'écran. Cette fiche apparaît au clic de l’objet cartographie (i.e. le point sur la carte).
 
@@ -192,7 +192,7 @@ Il n'y a pas de limite au contenu de la fiche tant que l'information est disponi
 Les fiches sont exportables et peuvent donc être imprimées en format texte ou PDF.
 
 L'infobulle au survol
-~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~
 
 Une information résumée de la donnée, sous la forme d'une infobulle, est disponible au survol des des objets cartographiques. Si la couche a été configurée dans ce sens dans l'outil d'administration, des infobulles peuvent apparaître au survol des objets cartographiques.
 
@@ -203,7 +203,7 @@ Une information résumée de la donnée, sous la forme d'une infobulle, est disp
 Le contenu de l'infobulle est entièrement personnalisable dans l'outil d'administration et peut comprendre toutes les information que vous souhaitez.
 
 Les outils de navigation
-------------------------
+---------------------------
 
 **TerraVisu** dispose des contrôles classiques de navigation :
 
@@ -222,7 +222,7 @@ Les outils de navigation
 Quelques uns de ces outils de navigation sont détaillés ci-après.
 
 La recherche sur la carte
-~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 La recherche sur la carte (via l'outil loupe) permet d'effectuer à la fois :
 
@@ -239,31 +239,31 @@ Le comportement est différent si on sélectionne un résultat pour la recherche
 .. image :: ../_static/images/visu/visu_recherche.png
 
 Le retour à l'emprise d'origine
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Pour revenir à l'emprise initiale du projet, cliquez sur l'icône en forme de maison.
 
 La gestion du zoom
-~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~
 
 Pour zoomer sur la carte utilisez la molette de la souris vers l'avant ou cliquez sur l'icône :guilabel:`+`.
 
 Pour dézoomer sur la carte utilisez la molette de la souris vers l'arrière ou cliquez sur l'icône :guilabel:`-`.
 
 La réorientation de la carte
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Par défaut la carte est orientée au nord. Pour changer l'orientation, cliquez sur l'icône en forme de boussole.
 
 Pour avoir une meilleure expérience utilisateur sur les couches en 3D, effectuez la combinaison :guilabel:`CTRL`+ clic gauche sur la carte pour incliner le plan.
 
 La gestion des fonds de carte
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Plusieurs fonds de cartes sont disponibles par défaut et vos propres fonds de carte peuvent être ajoutés depuis l'`outil d'administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#liste-des-fonds-de-carte>`_ 
 
 L'impression de la carte au format PDF
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 La carte affichée à l'écran peut être imprimée en format PDF selon les deux dispositions (portait ou paysage).
 
@@ -272,7 +272,7 @@ La carte affichée à l'écran peut être imprimée en format PDF selon les deux
 .. image :: ../_static/images/visu/visu_impression.png
 
 Le partage de la carte
-~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Il est possible de partager la carte soit en générant un hyperlien, soit en la partageant sur les réseaux sociaux (X, Facebook et Linkedin)
 
