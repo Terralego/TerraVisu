@@ -1110,11 +1110,14 @@ Créer un nouveau fond de carte
 
 Pour ajouter un nouveau fond de carte cliquez sur le bouton :guilabel:`CRÉER`.
 
-Les informations à renseigner à minima lors de la création d’un nouveau fond de carte sont le ``nom``, le ``type`` et l’``URL``.
+Les informations à renseigner à minima lors de la création d’un nouveau fond de carte sont le ``Nom``, le ``Type de fond de carte`` et l’``URL``.
 
 La taille des tuiles est modifiable mais elle est définie par défaut sur la valeur 256. Le curseur de l’amplitude du zoom permet de choisir à quel niveau de zoom les tuiles du fond de carte s’afficheront dans le visualiseur.
 
 Une fois les fonds de plan ajoutés, l’utilisateur peut les choisir de les utiliser dans les vues qu’il veut.
+
+.. note::
+    Il est possible de définir l'ordre d'affichage du fond de plan dans une vue en renseignant le champ ``Ordre``.
 
 .. image :: ../_static/images/admin/admin_fondscarte_modification.png
 
