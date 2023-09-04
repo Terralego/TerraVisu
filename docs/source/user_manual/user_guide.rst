@@ -189,8 +189,6 @@ Depuis l'outil d'administration, vous pouvez personnaliser la fiche de manière 
 
 Il n'y a pas de limite au contenu de la fiche tant que l'information est disponible. La fiche peut contenir des liens vers des sites web et des mails. 
 
-Les fiches sont exportables et peuvent donc être imprimées en format texte ou PDF.
-
 L'infobulle au survol
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
