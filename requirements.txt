@@ -16,7 +16,7 @@ attrs==22.2.0
     #   jsonschema
 billiard==4.1.0
     # via celery
-celery==5.3.3
+celery==5.3.4
     # via
     #   -r requirements.in
     #   django-celery-beat
