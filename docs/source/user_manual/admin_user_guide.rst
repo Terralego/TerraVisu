@@ -241,11 +241,27 @@ Au moment de l’enregistrement de la source, les champs attributaires sont auto
 Une fois la source enregistrée, revenez à la liste. 
 La colonne ``Statut`` indique l’état actuel de la source de données.
 
-* ``NEED SYNC`` : le statut de la source nouvellement créé , cela signifie que la source a besoin d’être synchronisée pour être utilisée. Cliquez d’abord sur la source pour éditer son statut, puis sur :guilabel:`Actualiser les données`. Une fois revenu à la liste des source, vous pourrez constater que le statut est devenu ``SUCCESS``.  
-* ``DON'T NEED`` : ce statut ne concerne que les sources **WMS/WMTS** car celles ci n'ont pas besoin d'être raffraichies.
-* ``SUCCESS`` : la source de données a bien été créé et vient d’être synchronisée avec succès.
-* ``PENDING`` : la source de données a bien été créé et son état de synchronisation est stable.
-* ``FAILURE`` : la source de données n’a pas été correctement créé ou mise à jour. Il y a un problème dans les paramètres renseignés. Voir le détail dans l’onglet :guilabel:`RAPPORT D’IMPORTATION`.
+* ``A actualiser`` : le statut de la source nouvellement créé, cela signifie que la source a besoin d’être synchronisée pour être utilisée. Cliquez d’abord sur la source pour éditer son statut, puis sur :guilabel:`Actualiser les données`. Une fois revenu à la liste des source, vous pourrez constater que le statut est devenu ``En cours`` ou ``Terminé``.  
+* ``Inutile`` : ce statut ne concerne que les sources **WMS/WMTS** car celles ci n'ont pas besoin d'être raffraichies.
+* ``Terminé`` : la source de données a bien été créé et vient d’être synchronisée. Dans le cas d'une actualisation réussie le statut est affiché en vert et préfixé du symbole ✔️. Si l'actualisation a rencontré une erreur le statut est affiché en jaune avec le symbole ⚠️. Si l'actualisation n'a rencontré que des erreur le statut est affiché en rouge avec le symbole ❌.
+* ``En cours`` : la source de données est en cours de mise à jour. Les autres sources avec le statut ``En cours`` sont mises en attente et traitées dans l'ordre de demande d'actualisation. 
+
+.. image :: ../_static/images/admin/admin_source_listesource.png
+
+.. note::
+    Lors de la mise à jour d'une source, dans la page d'édition, le bouton :guilabel:`Actualiser les données` est grisé pour éviter de relancer la synchronisation plusieurs fois. 
+
+Le rapport d'importation comporte plusieurs informations utiles comme :
+
+* ``Statut``
+* ``Rapport global``
+* ``Commencée à``
+* ``Finie à``
+* ``Nombre de lignes ajoutées``
+* ``Nombre de lignes modifiées``
+* ``Nombre de lignes supprimées``
+
+.. image :: ../_static/images/admin/admin_source_rapportimportation.png
 
 Modifier une source de données
 ------------------------------
