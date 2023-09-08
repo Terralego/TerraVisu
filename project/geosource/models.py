@@ -20,6 +20,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
+from fiona.crs import to_string
 from geostore import GeometryTypes
 from polymorphic.models import PolymorphicModel
 from psycopg2 import sql
@@ -438,7 +439,7 @@ class ShapefileSource(Source):
             # Detect the EPSG
             epsg_string = shapefile.crs
             if epsg_string:
-                raise Exception(epsg_string)
+                raise Exception(to_string(epsg_string))
                 _, srid = epsg_string.split(":")
             else:
                 srid = "4326"
