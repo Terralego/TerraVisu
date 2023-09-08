@@ -106,7 +106,7 @@ django-crispy-forms==2.0
     #   crispy-bootstrap5
 django-filter==23.2
     # via -r requirements.in
-django-geostore==0.7.3
+django-geostore==0.8.0
     # via -r requirements.in
 django-grappelli==3.0.7
     # via -r requirements.in
@@ -145,7 +145,7 @@ elasticsearch==8.9.0
     # via -r requirements.in
 filetype==1.2.0
     # via drf-extra-fields
-fiona==1.8.22
+fiona==1.9.4.post1
     # via
     #   -r requirements.in
     #   django-geostore
@@ -169,8 +169,6 @@ lml==0.1.0
     #   pyexcel-io
 mercantile==1.2.1
     # via django-geostore
-munch==2.5.0
-    # via fiona
 openid-connect==0.5.0
     # via django-auth-oidc
 packaging==23.1
@@ -231,7 +229,6 @@ six==1.16.0
     #   django-clone
     #   ecdsa
     #   fiona
-    #   munch
     #   python-dateutil
 sqlparse==0.4.4
     # via django
@@ -255,6 +252,3 @@ vine==5.0.0
     #   kombu
 wcwidth==0.2.6
     # via prompt-toolkit
-
-# The following packages are considered to be unsafe in a requirements file:
-# setuptools
