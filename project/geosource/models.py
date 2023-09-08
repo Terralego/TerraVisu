@@ -438,6 +438,7 @@ class ShapefileSource(Source):
             # Detect the EPSG
             epsg_string = shapefile.crs
             if epsg_string:
+                raise Exception(epsg_string)
                 _, srid = epsg_string.split(":")
             else:
                 srid = "4326"
