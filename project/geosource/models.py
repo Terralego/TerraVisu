@@ -437,6 +437,7 @@ class ShapefileSource(Source):
             limit = limit if limit else len(shapefile)
 
             # Detect the EPSG
+            raise Exception(shapefile.crs.to_dict())
             _, srid = shapefile.crs.to_dict().get("init", "epsg:4326")
 
             # Return geometries with a hack to set the correct geometry srid
