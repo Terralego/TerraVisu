@@ -18,7 +18,7 @@ jobs:
     name: Flake8 check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/python-cache-requirements
         with:
           requirements: dev-requirements.txt
@@ -35,7 +35,7 @@ jobs:
     name: iSort check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/python-cache-requirements
         with:
           requirements: dev-requirements.txt
@@ -51,7 +51,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/python-cache-requirements
         with:
           requirements: dev-requirements.txt
