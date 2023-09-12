@@ -440,6 +440,8 @@ class ShapefileSource(Source):
 
             ccs = CRS(to_string(shapefile.crs))
             srid = ccs.to_epsg()
+            if not srid:
+                srid = 4326
             # Return geometries with a hack to set the correct geometry srid
             records = []
             for feature in shapefile[:limit]:
