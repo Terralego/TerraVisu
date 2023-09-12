@@ -41,6 +41,8 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
             {
                 "allowUserRegistration": False,
                 "credits": "Source: TerraVisu",
+                "measureControl": False,
+                "measureDrawStyles": [],
                 "ssoAuth": {},
                 "extraMenuItems": [],
                 "favicon": "http://testserver/static_dj/img/favicon.ico",
@@ -80,6 +82,8 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "allowUserRegistration": False,
                 "credits": "My Credits",
                 "extraMenuItems": [],
+                "measureControl": False,
+                "measureDrawStyles": [],
                 "ssoAuth": {
                     "defaultButtonText": "Login via internal",
                     "loginUrl": "/api/auth/login/",
