@@ -440,19 +440,26 @@ class ShapefileSource(Source):
 
             ccs = CRS(to_string(shapefile.crs))
             srid = ccs.to_epsg()
-
             # Return geometries with a hack to set the correct geometry srid
-            records = [
-                {
-                    self.SOURCE_GEOM_ATTRIBUTE: GEOSGeometry(
-                        GEOSGeometry(json.dumps(feature.get("geometry"))).wkt,
-                        srid=int(srid),
-                    ),
-                    **feature.get("properties", {}),
-                }
-                for feature in shapefile[:limit]
-            ]
-            # No errors catched for Shapefile
+            records = []
+            for feature in shapefile[:limit]:
+                geometry = GEOSGeometry(
+                    json.dumps(
+                        {
+                            "type": feature.get("geometry").get("type"),
+                            "coordinates": feature.get("geometry").get("coordinates"),
+                        }
+                    )
+                )
+                geometry.srid = srid
+                records.append(
+                    {
+                        self.SOURCE_GEOM_ATTRIBUTE: geometry,
+                        **feature.get("properties", {}),
+                    }
+                )
+
+            # No errors caught for Shapefile
             return records, []
 
 
