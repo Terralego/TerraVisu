@@ -20,9 +20,11 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
+from fiona.crs import to_string
 from geostore import GeometryTypes
 from polymorphic.models import PolymorphicModel
 from psycopg2 import sql
+from pyproj import CRS
 
 from .callbacks import get_attr_from_path
 from .elasticsearch.index import LayerESIndex
@@ -434,23 +436,33 @@ class ShapefileSource(Source):
     def _get_records(self, limit=None):
         with fiona.BytesCollection(self.file.read()) as shapefile:
             limit = limit if limit else len(shapefile)
-
             # Detect the EPSG
-            _, srid = shapefile.crs.get("init", "epsg:4326").split(":")
 
+            ccs = CRS(to_string(shapefile.crs))
+            srid = ccs.to_epsg()
+            if not srid:
+                srid = 4326
             # Return geometries with a hack to set the correct geometry srid
-            records = [
-                {
-                    self.SOURCE_GEOM_ATTRIBUTE: GEOSGeometry(
-                        GEOSGeometry(json.dumps(feature.get("geometry"))).wkt,
-                        srid=int(srid),
-                    ),
-                    **feature.get("properties", {}),
-                }
-                for feature in shapefile[:limit]
-            ]
-            # No errors catched for Shapefile
-            return (records, [])
+            records = []
+            for feature in shapefile[:limit]:
+                geometry = GEOSGeometry(
+                    json.dumps(
+                        {
+                            "type": feature.get("geometry").get("type"),
+                            "coordinates": feature.get("geometry").get("coordinates"),
+                        }
+                    )
+                )
+                geometry.srid = srid
+                records.append(
+                    {
+                        self.SOURCE_GEOM_ATTRIBUTE: geometry,
+                        **feature.get("properties", {}),
+                    }
+                )
+
+            # No errors caught for Shapefile
+            return records, []
 
 
 class CommandSource(Source):
