@@ -144,6 +144,12 @@ class SettingsFrontendView(CommonSettings, APIView):
                 "user": user,
                 "token": token,
                 "ssoAuth": self.get_sso_auth_config(),
+                "frontendTools": {
+                    "measureControl": {
+                        "enable": config.MEASURE_CONTROL,
+                        "styles": config.MEASURE_DRAW_STYLES,
+                    },
+                },
             }
         )
 

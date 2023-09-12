@@ -3,6 +3,14 @@ Changelog
 ==========
 
 
+XXXX.X.X       (XXXX-XX-XX)
+---------------------------
+
+**New features:**
+
+- Add distance measurement map control (draw on the map and return the distance measured of the drawing)
+
+
 2023.8.3       (2023-08-29)
 ---------------------------
 

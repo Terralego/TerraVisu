@@ -255,6 +255,7 @@ CONSTANCE_ADDITIONAL_FIELDS = {
         "django.forms.CharField",
         {"widget": "tinymce.widgets.TinyMCE", "required": False},
     ],
+    "json_field": ["django.forms.JSONField", {"required": False}],
 }
 CONSTANCE_CONFIG = {
     "INSTANCE_TITLE": ("TerraVisu", _("Instance title"), str),
@@ -288,6 +289,16 @@ CONSTANCE_CONFIG = {
         "",
         _("Content of info tab in frontend"),
         "tinymce_field",
+    ),
+    "MEASURE_CONTROL": (
+        False,
+        _("Activate MapboxDraw Control to measure distance on the map"),
+        bool,
+    ),
+    "MEASURE_DRAW_STYLES": (
+        [],
+        _("Define custom MapboxDraw style for the distance measure control"),
+        "json_field",
     ),
 }
 
@@ -330,6 +341,8 @@ CONSTANCE_CONFIG_FIELDSETS = {
             "VIEW_ROOT_PATH",
             "OPENID_SSO_LOGIN_BUTTON_TEXT",
             "OPENID_DEFAULT_LOGIN_BUTTON_TEXT",
+            "MEASURE_CONTROL",
+            "MEASURE_DRAW_STYLES",
         ),
         "collapse": True,
     },
