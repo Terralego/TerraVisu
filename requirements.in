@@ -28,3 +28,4 @@ drf-jwt
 drf-spectacular
 drf-extra-fields
 django-tinymce
+pyproj

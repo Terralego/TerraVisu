@@ -24,6 +24,7 @@ from fiona.crs import to_string
 from geostore import GeometryTypes
 from polymorphic.models import PolymorphicModel
 from psycopg2 import sql
+from pyproj import CRS
 
 from .callbacks import get_attr_from_path
 from .elasticsearch.index import LayerESIndex
@@ -435,10 +436,10 @@ class ShapefileSource(Source):
     def _get_records(self, limit=None):
         with fiona.BytesCollection(self.file.read()) as shapefile:
             limit = limit if limit else len(shapefile)
-
             # Detect the EPSG
-            raise Exception(shapefile.crs.to_dict())
-            _, srid = shapefile.crs.to_dict().get("init", "epsg:4326")
+
+            ccs = CRS(to_string(shapefile.crs))
+            srid = ccs.to_epsg()
 
             # Return geometries with a hack to set the correct geometry srid
             records = [
@@ -452,7 +453,7 @@ class ShapefileSource(Source):
                 for feature in shapefile[:limit]
             ]
             # No errors catched for Shapefile
-            return (records, [])
+            return records, []
 
 
 class CommandSource(Source):

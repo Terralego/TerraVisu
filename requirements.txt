@@ -26,6 +26,7 @@ certifi==2023.7.22
     # via
     #   elastic-transport
     #   fiona
+    #   pyproj
     #   requests
     #   sentry-sdk
 cffi==1.15.1
@@ -193,6 +194,8 @@ pyexcel-io==0.6.6
     # via pyexcel
 pyjwt[crypto]==2.6.0
     # via drf-jwt
+pyproj==3.6.0
+    # via -r requirements.in
 pyrsistent==0.19.3
     # via jsonschema
 python-crontab==2.7.1
