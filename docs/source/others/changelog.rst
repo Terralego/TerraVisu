@@ -3,12 +3,16 @@ Changelog
 ==========
 
 
-XXXX.X.X       (XXXX-XX-XX)
+2023.8.4         (2023.8.4)
 ---------------------------
 
 **New features:**
 
 - Add distance measurement map control (draw on the map and return the distance measured of the drawing)
+
+**Bugfix**
+
+- Allow numbers in source filters
 
 
 2023.8.3       (2023-08-29)
