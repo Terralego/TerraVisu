@@ -27,6 +27,11 @@ jobs:
           echo "ADMIN_CACHE_KEY=$(git submodule status ./admin)" >> $GITHUB_ENV
           echo "FRONT_CACHE_KEY=$(git submodule status ./front)" >> $GITHUB_ENV
 
+      - name: Reconfigure git to use HTTP authentication
+        run: >
+          git config --global url."https://github.com/".insteadOf
+          ssh://git@github.com/
+
       - name: Cache admin
         id: cache-admin
         uses: actions/cache@v3
