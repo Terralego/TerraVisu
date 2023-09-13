@@ -7,9 +7,16 @@ changelog:
         labels:
           - dependencies
           - Bug
+          - documentation
+
     - title: 🛠 Bug fixes
       labels:
         - 'Bug'
+
+    - title: 📘 Documentation
+      labels:
+        - documentation
+
     - title: ⤴ Dependencies
       labels:
         - dependencies
