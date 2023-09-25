@@ -109,7 +109,7 @@ django-filter==23.3
     # via -r requirements.in
 django-geostore==0.8.0
     # via -r requirements.in
-django-grappelli==3.0.7
+django-grappelli==3.0.8
     # via -r requirements.in
 django-mapbox-baselayer==1.0.0
     # via -r requirements.in
