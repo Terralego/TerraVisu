@@ -194,7 +194,7 @@ pyexcel-io==0.6.6
     # via pyexcel
 pyjwt[crypto]==2.6.0
     # via drf-jwt
-pyproj==3.6.0
+pyproj==3.6.1
     # via -r requirements.in
 pyrsistent==0.19.3
     # via jsonschema
