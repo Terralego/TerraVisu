@@ -244,6 +244,8 @@ CACHES = {
     }
 }
 
+DATA_UPLOAD_MAX_MEMORY_SIZE = None
+
 ES_URL = config("ES_URL", default="http://elasticsearch:9200", cast=str)
 
 SESSION_ENGINE = "django.contrib.sessions.backends.file"
