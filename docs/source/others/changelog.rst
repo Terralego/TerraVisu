@@ -2,6 +2,14 @@
 Changelog
 ==========
 
+2023.9.0+dev    (XXXX.X.XX)
+---------------------------
+
+**Improvements:**
+
+- Improve frontend translations
+
+
 2023.9.0        (2023.9.28)
 ---------------------------
 
