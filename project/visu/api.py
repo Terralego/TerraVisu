@@ -149,6 +149,16 @@ class SettingsFrontendView(CommonSettings, APIView):
                         "enable": config.MEASURE_CONTROL,
                         "styles": config.MEASURE_DRAW_STYLES,
                     },
+                    "searchInLocations": {
+                        "enable": config.SEARCH_IN_LOCATIONS,
+                        "searchProvider": config.SEARCH_IN_LOCATIONS_PROVIDER,
+                        "viewbox": [
+                            config.MAP_BBOX_LNG_MIN,
+                            config.MAP_BBOX_LAT_MIN,
+                            config.MAP_BBOX_LNG_MAX,
+                            config.MAP_BBOX_LAT_MAX,
+                        ],
+                    },
                 },
             }
         )

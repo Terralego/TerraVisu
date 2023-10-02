@@ -302,6 +302,16 @@ CONSTANCE_CONFIG = {
         _("Define custom MapboxDraw style for the distance measure control"),
         "json_field",
     ),
+    "SEARCH_IN_LOCATIONS": (
+        False,
+        _("Enable search in locations in the search bar map control"),
+        bool,
+    ),
+    "SEARCH_IN_LOCATIONS_PROVIDER": (
+        "https://nominatim.openstreetmap.org/search?",
+        _("Search provider for the search in locations feature"),
+        str,
+    ),
 }
 
 CONSTANCE_CONFIG_FIELDSETS = {
@@ -345,6 +355,8 @@ CONSTANCE_CONFIG_FIELDSETS = {
             "OPENID_DEFAULT_LOGIN_BUTTON_TEXT",
             "MEASURE_CONTROL",
             "MEASURE_DRAW_STYLES",
+            "SEARCH_IN_LOCATIONS",
+            "SEARCH_IN_LOCATIONS_PROVIDER",
         ),
         "collapse": True,
     },
