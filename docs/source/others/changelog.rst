@@ -2,12 +2,13 @@
 Changelog
 ==========
 
-2023.9.0+dev    (XXXX.X.XX)
+2023.10.0      (2023.10.02)
 ---------------------------
 
 **Improvements:**
 
 - Improve frontend translations
+- Disable errors in console when style image already loaded
 
 
 2023.9.0        (2023.9.28)
