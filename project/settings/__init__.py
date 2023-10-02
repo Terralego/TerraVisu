@@ -308,7 +308,7 @@ CONSTANCE_CONFIG = {
         bool,
     ),
     "SEARCH_IN_LOCATIONS_PROVIDER": (
-        "https://nominatim.openstreetmap.org/search?",
+        "https://nominatim.openstreetmap.org/search",
         _("Search provider for the search in locations feature"),
         str,
     ),
