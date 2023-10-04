@@ -2,7 +2,15 @@
 Changelog
 ==========
 
-2023.10.0      (2023.10.02)
+2023.10.1      (2023-10-01)
+---------------------------
+
+**Improvements:**
+
+- Ability to go on direct view with base layer defined by ID
+
+
+2023.10.0      (2023-1-02)
 ---------------------------
 
 **Improvements:**
@@ -11,7 +19,7 @@ Changelog
 - Disable errors in console when style image already loaded
 
 
-2023.9.0        (2023.9.28)
+2023.9.0       (2023-09-28)
 ---------------------------
 
 **Bugfix**
@@ -19,7 +27,7 @@ Changelog
 - Increase max body size for upload files
 
 
-2023.8.4         (2023.8.4)
+2023.8.4       (2023-08-04)
 ---------------------------
 
 **New features:**
