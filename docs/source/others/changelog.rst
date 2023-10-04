@@ -5,6 +5,10 @@ Changelog
 2023.9.0+dev    (XXXX.X.XX)
 ---------------------------
 
+**New features:**
+
+- Add search providers configuration to improve search locations
+
 **Improvements:**
 
 - Improve frontend translations
