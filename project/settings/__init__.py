@@ -258,6 +258,13 @@ CONSTANCE_ADDITIONAL_FIELDS = {
         {"widget": "tinymce.widgets.TinyMCE", "required": False},
     ],
     "json_field": ["django.forms.JSONField", {"required": False}],
+    "choice_location_provider_field": [
+        "django.forms.fields.ChoiceField",
+        {
+            "widget": "django.forms.Select",
+            "choices": (("https://nominatim.openstreetmap.org/search", "Nominatim"),),
+        },
+    ],
 }
 CONSTANCE_CONFIG = {
     "INSTANCE_TITLE": ("TerraVisu", _("Instance title"), str),
@@ -308,9 +315,9 @@ CONSTANCE_CONFIG = {
         bool,
     ),
     "SEARCH_IN_LOCATIONS_PROVIDER": (
-        "https://nominatim.openstreetmap.org/search",
+        "Nominatim",
         _("Search provider for the search in locations feature"),
-        str,
+        "choice_location_provider_field",
     ),
 }
 
