@@ -48,8 +48,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                     },
                     "searchInLocations": {
                         "enable": False,
-                        "searchProvider": "https://nominatim.openstreetmap.org/search",
-                        "viewbox": [-180.0, -90.0, 180.0, 90.0],
+                        "searchProvider": {},
                     },
                 },
                 "ssoAuth": {},
@@ -98,8 +97,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                     },
                     "searchInLocations": {
                         "enable": False,
-                        "searchProvider": "https://nominatim.openstreetmap.org/search",
-                        "viewbox": [-180.0, -90.0, 180.0, 90.0],
+                        "searchProvider": {},
                     },
                 },
                 "ssoAuth": {

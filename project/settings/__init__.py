@@ -262,9 +262,10 @@ CONSTANCE_ADDITIONAL_FIELDS = {
         "django.forms.fields.ChoiceField",
         {
             "widget": "django.forms.Select",
-            "choices": (("https://nominatim.openstreetmap.org/search", "Nominatim"),),
+            "choices": (("nominatim", "Nominatim"),),
         },
     ],
+    "float_field": ["django.forms.FloatField", {"required": False}],
 }
 CONSTANCE_CONFIG = {
     "INSTANCE_TITLE": ("TerraVisu", _("Instance title"), str),
@@ -319,6 +320,36 @@ CONSTANCE_CONFIG = {
         _("Search provider for the search in locations feature"),
         "choice_location_provider_field",
     ),
+    "NOMINATIM_URL": (
+        "https://nominatim.openstreetmap.org/search.php",
+        _("Nominatim search service base url"),
+        str,
+    ),
+    "NOMINATIM_USE_VIEWBOX": (
+        False,
+        _("Use nominatim's viewbox option to filter search results"),
+        bool,
+    ),
+    "NOMINATIM_VIEWBOX_MIN_LAT": (
+        None,
+        _("Minimum latitude coordinate for nominatim viewbox"),
+        "float_field",
+    ),
+    "NOMINATIM_VIEWBOX_MIN_LONG": (
+        None,
+        _("Minimum longitude coordinate for nominatim viewbox"),
+        "float_field",
+    ),
+    "NOMINATIM_VIEWBOX_MAX_LAT": (
+        None,
+        _("Maximum latitude coordinate for nominatim viewbox"),
+        "float_field",
+    ),
+    "NOMINATIM_VIEWBOX_MAX_LONG": (
+        None,
+        _("Maximum longitude coordinate for nominatim viewbox"),
+        "float_field",
+    ),
 }
 
 CONSTANCE_CONFIG_FIELDSETS = {
@@ -364,6 +395,12 @@ CONSTANCE_CONFIG_FIELDSETS = {
             "MEASURE_DRAW_STYLES",
             "SEARCH_IN_LOCATIONS",
             "SEARCH_IN_LOCATIONS_PROVIDER",
+            "NOMINATIM_URL",
+            "NOMINATIM_USE_VIEWBOX",
+            "NOMINATIM_VIEWBOX_MIN_LAT",
+            "NOMINATIM_VIEWBOX_MIN_LONG",
+            "NOMINATIM_VIEWBOX_MAX_LAT",
+            "NOMINATIM_VIEWBOX_MAX_LONG",
         ),
         "collapse": True,
     },

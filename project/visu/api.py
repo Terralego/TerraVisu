@@ -151,17 +151,25 @@ class SettingsFrontendView(CommonSettings, APIView):
                     },
                     "searchInLocations": {
                         "enable": config.SEARCH_IN_LOCATIONS,
-                        "searchProvider": config.SEARCH_IN_LOCATIONS_PROVIDER,
-                        "viewbox": [
-                            config.MAP_BBOX_LNG_MIN,
-                            config.MAP_BBOX_LAT_MIN,
-                            config.MAP_BBOX_LNG_MAX,
-                            config.MAP_BBOX_LAT_MAX,
-                        ],
+                        "searchProvider": self._get_search_provider_config(),
                     },
                 },
             }
         )
+
+    def _get_search_provider_config(self):
+        provider_config = {}
+        if config.SEARCH_IN_LOCATIONS_PROVIDER == "nominatim":
+            provider_config["url"] = config.NOMINATIM_URL
+
+            if config.NOMINATIM_USE_VIEWBOX:
+                provider_config["viewbox"] = [
+                    config.NOMINATIM_VIEWBOX_MIN_LONG or config.MAP_BBOX_LNG_MIN,
+                    config.NOMINATIM_VIEWBOX_MIN_LAT or config.MAP_BBOX_LAT_MIN,
+                    config.NOMINATIM_VIEWBOX_MAX_LONG or config.MAP_BBOX_LNG_MAX,
+                    config.NOMINATIM_VIEWBOX_MAX_LAT or config.MAP_BBOX_LAT_MAX,
+                ]
+        return provider_config
 
 
 class EnvFrontendView(APIView):
