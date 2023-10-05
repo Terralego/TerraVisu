@@ -20,7 +20,7 @@ def set_failure_state(task, method, message, instance=None):
         },
     }
     task.update_state(**state)
-    if instance and hasattr(instance, "report"):
+    if instance and hasattr(instance, "report") and instance.report is not None:
         text = ""
         for key, value in state["meta"].items():
             text += f"{key}: {value},"
