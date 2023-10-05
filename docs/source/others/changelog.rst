@@ -5,6 +5,11 @@ Changelog
 2023.10.1      (2023-10-01)
 ---------------------------
 
+**Bugfix**
+
+- Check if report existing to update it when celery task fail
+
+
 **Improvements:**
 
 - Ability to go on direct view with base layer defined by ID
