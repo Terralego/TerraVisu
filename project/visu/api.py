@@ -158,7 +158,10 @@ class SettingsFrontendView(CommonSettings, APIView):
         )
 
     def _get_search_provider_config(self):
-        provider_config = {"provider": config.SEARCH_IN_LOCATIONS_PROVIDER, "options": {}}
+        provider_config = {
+            "provider": config.SEARCH_IN_LOCATIONS_PROVIDER,
+            "options": {},
+        }
 
         if provider_config["provider"] == "nominatim":
             provider_config["baseUrl"] = config.NOMINATIM_URL
