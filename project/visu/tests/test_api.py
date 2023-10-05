@@ -46,6 +46,10 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                         "enable": False,
                         "styles": [],
                     },
+                    "searchInLocations": {
+                        "enable": False,
+                        "searchProvider": {"provider": "Nominatim", "options": {}},
+                    },
                 },
                 "ssoAuth": {},
                 "extraMenuItems": [],
@@ -74,6 +78,9 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
         OPENID_SSO_LOGIN_BUTTON_TEXT="Login via SSO",
         OPENID_DEFAULT_LOGIN_BUTTON_TEXT="Login via internal",
         INSTANCE_INFO_CONTENT="<b>This is my info content</b>",
+        SEARCH_IN_LOCATIONS=True,
+        SEARCH_IN_LOCATIONS_PROVIDER="nominatim",
+        NOMINATIM_USE_VIEWBOX=True,
     )
     @override_settings(OIDC_ENABLE_LOGIN=True)
     def test_custom(self):
@@ -90,6 +97,16 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                     "measureControl": {
                         "enable": False,
                         "styles": [],
+                    },
+                    "searchInLocations": {
+                        "enable": True,
+                        "searchProvider": {
+                            "provider": "nominatim",
+                            "baseUrl": "https://nominatim.openstreetmap.org/search.php",
+                            "options": {
+                                "viewbox": [-180, -90, 180, 90],
+                            },
+                        },
                     },
                 },
                 "ssoAuth": {

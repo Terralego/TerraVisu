@@ -149,9 +149,32 @@ class SettingsFrontendView(CommonSettings, APIView):
                         "enable": config.MEASURE_CONTROL,
                         "styles": config.MEASURE_DRAW_STYLES,
                     },
+                    "searchInLocations": {
+                        "enable": config.SEARCH_IN_LOCATIONS,
+                        "searchProvider": self._get_search_provider_config(),
+                    },
                 },
             }
         )
+
+    def _get_search_provider_config(self):
+        provider_config = {
+            "provider": config.SEARCH_IN_LOCATIONS_PROVIDER,
+            "options": {},
+        }
+
+        if provider_config["provider"] == "nominatim":
+            provider_config["baseUrl"] = config.NOMINATIM_URL
+            provider_config["options"] = {}
+
+            if config.NOMINATIM_USE_VIEWBOX:
+                provider_config["options"]["viewbox"] = [
+                    config.NOMINATIM_VIEWBOX_MIN_LONG or config.MAP_BBOX_LNG_MIN,
+                    config.NOMINATIM_VIEWBOX_MIN_LAT or config.MAP_BBOX_LAT_MIN,
+                    config.NOMINATIM_VIEWBOX_MAX_LONG or config.MAP_BBOX_LNG_MAX,
+                    config.NOMINATIM_VIEWBOX_MAX_LAT or config.MAP_BBOX_LAT_MAX,
+                ]
+        return provider_config
 
 
 class EnvFrontendView(APIView):

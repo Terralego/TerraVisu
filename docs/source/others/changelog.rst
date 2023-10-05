@@ -13,6 +13,10 @@ Changelog
 2023.10.0      (2023-1-02)
 ---------------------------
 
+**New features:**
+
+- Add search providers configuration to improve search locations
+
 **Improvements:**
 
 - Improve frontend translations
