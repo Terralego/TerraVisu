@@ -158,12 +158,14 @@ class SettingsFrontendView(CommonSettings, APIView):
         )
 
     def _get_search_provider_config(self):
-        provider_config = {}
-        if config.SEARCH_IN_LOCATIONS_PROVIDER == "nominatim":
-            provider_config["url"] = config.NOMINATIM_URL
+        provider_config = {"provider": config.SEARCH_IN_LOCATIONS_PROVIDER, "options": {}}
+
+        if provider_config["provider"] == "nominatim":
+            provider_config["baseUrl"] = config.NOMINATIM_URL
+            provider_config["options"] = {}
 
             if config.NOMINATIM_USE_VIEWBOX:
-                provider_config["viewbox"] = [
+                provider_config["options"]["viewbox"] = [
                     config.NOMINATIM_VIEWBOX_MIN_LONG or config.MAP_BBOX_LNG_MIN,
                     config.NOMINATIM_VIEWBOX_MIN_LAT or config.MAP_BBOX_LAT_MIN,
                     config.NOMINATIM_VIEWBOX_MAX_LONG or config.MAP_BBOX_LNG_MAX,
