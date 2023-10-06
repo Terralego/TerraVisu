@@ -16,6 +16,7 @@ from project.geosource.models import (
     PostGISSource,
     ShapefileSource,
     Source,
+    SourceReporting,
 )
 from project.geosource.tests.helpers import get_file
 
@@ -101,6 +102,37 @@ class SourceViewsetTestCase(APITestCase):
                 reverse("geosource:geosource-refresh", args=[self.source_geojson.pk])
             )
         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        self.source_geojson.refresh_from_db()
+        self.assertEqual(self.source_geojson.status, Source.Status.PENDING.value)
+        self.assertEqual(
+            self.source_geojson.report.status, SourceReporting.Status.PENDING.value
+        )
+
+    def test_refresh_view_accepted_with_existing_report(self):
+        report = SourceReporting.objects.create(status=None)
+        source = GeoJSONSource.objects.create(
+            name="test-with-report",
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
+            report=report,
+        )
+        with patch(
+            "project.geosource.mixins.CeleryCallMethodsMixin.run_async_method",
+            return_value=True,
+        ):
+            response = self.client.get(
+                reverse("geosource:geosource-refresh", args=[source.pk])
+            )
+        self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
+        source.refresh_from_db()
+        self.assertEqual(
+            source.status, Source.Status.PENDING.value, source.get_status_display()
+        )
+        self.assertEqual(
+            source.report.status,
+            SourceReporting.Status.PENDING.value,
+            source.report.get_status_display(),
+        )
 
     @patch(
         "project.geosource.serializers.PostGISSourceSerializer._first_record",
