@@ -2,13 +2,18 @@
 Changelog
 ==========
 
-2023.10.1      (2023-10-01)
+
+2023.10.1+dev  (XXXX-XX-XX)
 ---------------------------
 
 **Bugfix**
 
 - Check if report existing to update it when celery task fail
+- Source auto refresh exclude PENDING source now
 
+
+2023.10.1      (2023-10-01)
+---------------------------
 
 **Improvements:**
 
