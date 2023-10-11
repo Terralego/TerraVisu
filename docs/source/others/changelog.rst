@@ -8,6 +8,7 @@ Changelog
 **Bugfix**
 
 - Fix missing translation for label in search control results
+- Fix map base layer labels and selection by URL
 
 
 2023.10.3      (2023-10-11)
