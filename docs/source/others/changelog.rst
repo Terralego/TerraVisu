@@ -2,6 +2,14 @@
 Changelog
 ==========
 
+2023.10.3+dev      (XXXX-XX-XX)
+---------------------------
+
+**Bugfix**
+
+- Fix missing translation for label in search control results
+
+
 2023.10.3      (2023-10-11)
 ---------------------------
 
