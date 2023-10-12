@@ -2,7 +2,7 @@
 Changelog
 ==========
 
-2023.10.4+dev      (XXXX-XX-XX)
+2023.10.4+dev  (XXXX-XX-XX)
 ---------------------------
 
 **New features:**
