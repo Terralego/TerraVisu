@@ -2,6 +2,14 @@
 Changelog
 ==========
 
+2023.10.4+dev  (XXXX-XX-XX)
+---------------------------
+
+**New features:**
+
+- It is now possible to configure a legend for wmts sources
+
+
 2023.10.4      (2023-10-11)
 ---------------------------
 
