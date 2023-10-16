@@ -58,8 +58,8 @@ class LayerESIndex(ESMixin):
         # Get type from source field configuration. Ignore undefined types.
         field_conf = {}
         for field in s.fields.all():
-            # if field.data_type != 5:
-            field_type = type_mapping[FieldTypes(field.data_type).name.lower()]
+            if field.data_type != 5:
+                field_type = type_mapping[FieldTypes(field.data_type).name.lower()]
             if field_type == "text":
                 # Exception for text field, we also want them to be keyword accessible
                 field_conf[field.name] = {
