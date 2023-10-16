@@ -146,7 +146,7 @@ elasticsearch==8.10.0
     # via -r requirements.in
 filetype==1.2.0
     # via drf-extra-fields
-fiona==1.9.4.post1
+fiona==1.9.5
     # via
     #   -r requirements.in
     #   django-geostore
