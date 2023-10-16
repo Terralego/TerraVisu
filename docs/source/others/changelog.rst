@@ -9,6 +9,10 @@ Changelog
 
 - It is now possible to configure a legend for wmts sources
 
+**Bugfix**
+
+- Fix elasticsearch index type error on json data type
+
 
 2023.10.4      (2023-10-11)
 ---------------------------

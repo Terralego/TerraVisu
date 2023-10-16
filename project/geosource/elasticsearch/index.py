@@ -60,14 +60,14 @@ class LayerESIndex(ESMixin):
         for field in s.fields.all():
             if field.data_type != 5:
                 field_type = type_mapping[FieldTypes(field.data_type).name.lower()]
-            if field_type == "text":
-                # Exception for text field, we also want them to be keyword accessible
-                field_conf[field.name] = {
-                    "type": field_type,
-                    "fields": {"keyword": {"type": "keyword", "ignore_above": 256}},
-                }
-            else:
-                field_conf[field.name] = {"type": field_type}
+                if field_type == "text":
+                    # Exception for text field, we also want them to be keyword accessible
+                    field_conf[field.name] = {
+                        "type": field_type,
+                        "fields": {"keyword": {"type": "keyword", "ignore_above": 256}},
+                    }
+                else:
+                    field_conf[field.name] = {"type": field_type}
 
         # Add geom default type mapping
         field_conf["geom"] = {"type": "geo_shape", "ignore_z_value": True}
