@@ -173,7 +173,7 @@ tomli==2.0.1
     #   pyproject-hooks
 typing-extensions==4.7.1
     # via black
-urllib3==1.26.17
+urllib3==1.26.18
     # via
     #   -c requirements.txt
     #   -r docs/requirements.txt
