@@ -23,3 +23,24 @@ Definition of done
 * Unit-tests total coverage is above or at least equal with previous commits. Patch coverage is 100% on new lines.
 * Settings have default value in ``project/settings/__init__.py``
 * Installation instructions and documentation are up-to-date
+
+
+Pull requests
+-------------
+
+Before creating a pull request, ensure you follow thoses rules :
+
+* Follow the guidelines of this page
+* Self-review your code
+* Add comments in your code, particularly in hard-to-understand areas
+* Make corresponding changes to the documentation
+* There is tests that prove my fix is effective or that my feature works.
+* New and existing unit tests pass locally with my changes
+* All new lines of code are tested
+* There is an entry in the changelog file (with the corresponding issue referenced)
+
+
+Release
+-------
+
+On master branch :
