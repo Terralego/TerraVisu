@@ -2,6 +2,14 @@
 Changelog
 ==========
 
+2023.10.5+dev  (XXXX-XX-XX)
+---------------------------
+
+**Bugfix**
+
+- Search control is now above legends and other map controls
+
+
 2023.10.5      (2023-10-16)
 ---------------------------
 
