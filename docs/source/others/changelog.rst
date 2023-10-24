@@ -2,13 +2,13 @@
 Changelog
 ==========
 
-2023.10.5+dev  (XXXX-XX-XX)
+2023.10.6      (2023-10-24)
 ---------------------------
 
 **Bugfix**
 
-- Search control is now above legends and other map controls
-- Map style is now correctly set at layer creation
+- Search control is now above legends and other map controls (#413)
+- Map style is now correctly set at layer creation (#349)
 - WMTS source group access is now working (no public by default) (#406)
 
 
