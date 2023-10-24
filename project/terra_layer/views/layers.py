@@ -575,14 +575,12 @@ class SceneTreeAPIView(APIView):
     @cached_property
     def authorized_sources(self):
         """Cached property of authorized sources from the authenticated user's groups"""
-        groups = self.user_groups
-        sources_slug = list(
+        return list(
             self.layergroup.layers.filter(
-                Q(authorized_groups__isnull=True) | Q(authorized_groups__in=groups)
+                Q(authorized_groups__isnull=True)
+                | Q(authorized_groups__in=self.user_groups)
             ).values_list("name", flat=True)
-        ) + list(WMTSSource.objects.values_list("slug", flat=True))
-
-        return sources_slug
+        )
 
     @cached_property
     def layers(self):

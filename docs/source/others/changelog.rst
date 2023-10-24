@@ -9,6 +9,7 @@ Changelog
 
 - Search control is now above legends and other map controls
 - Map style is now correctly set at layer creation
+- WMTS source group access is now working (no public by default) (#406)
 
 
 2023.10.5      (2023-10-16)
