@@ -128,7 +128,7 @@ SENTRY
 
 .. envvar:: SENTRY_TRACE_SAMPLE_RATE
 
-    Specify sample rate for your performance tracking.
+    Specify trace sample rate for your performance tracking.
 
     Example::
 
@@ -137,6 +137,19 @@ SENTRY
     Default::
 
         0.2
+
+.. envvar:: SENTRY_PROFILES_SAMPLE_RATE
+
+    Specify profiles sample rate for your performance tracking.
+
+    Example::
+
+        SENTRY_PROFILES_SAMPLE_RATE=1.0
+
+    Default::
+
+        0.2
+
 
 .. envvar:: SENTRY_SEND_DEFAULT_PII
 

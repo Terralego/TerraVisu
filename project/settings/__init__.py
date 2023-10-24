@@ -445,6 +445,9 @@ if SENTRY_DSN:
         dsn=SENTRY_DSN,
         integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
         traces_sample_rate=config("SENTRY_TRACE_SAMPLE_RATE", default=0.2, cast=float),
+        profiles_sample_rate=config(
+            "SENTRY_PROFILES_SAMPLE_RATE", default=0.2, cast=float
+        ),
         send_default_pii=config("SENTRY_SEND_DEFAULT_PII", default=True, cast=bool),
         release=f"terra-visu@{VERSION}",
     )
