@@ -8,6 +8,7 @@ Changelog
 **Bugfix**
 
 - Search control is now above legends and other map controls
+- Map style is now correctly set at layer creation
 
 
 2023.10.5      (2023-10-16)

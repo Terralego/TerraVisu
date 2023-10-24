@@ -112,6 +112,7 @@ class LayerDetailSerializer(ModelSerializer):
         # Update m2m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
         self._update_nested(instance, "extra_styles", CustomStyleSerializer)
+        instance.save()
 
         return instance
 
