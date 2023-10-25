@@ -141,7 +141,7 @@ jobs:
     needs: [ release ]
     permissions:
       contents: write  # required to attach zip to release
-    if: ${{ (github.event_name == 'release' && github.event.action == 'created')
+    if: ${{ (github.event_name == 'release' && github.event.action == 'created') }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
