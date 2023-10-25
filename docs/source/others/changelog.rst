@@ -7,9 +7,10 @@ Changelog
 
 **Improvements:**
 
-- Add `SENTRY_PROFILES_SAMPLE_RATE` setting to define the sample rate for sentry profiling.
+- Enable sentry in frontend and admin, configuration with new environment variables (cf. doc)
 - Remove logo from pdf print (#394)
-- Add some color to login/logout button to improve login status visibility. 
+- Add some color to login/logout button to improve login status visibility.
+
 
 **Bugfix**
 

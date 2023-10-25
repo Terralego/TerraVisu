@@ -65,6 +65,15 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "token": None,
                 "user": None,
                 "version": None,
+                "sentry": {
+                    "dsn": "",
+                    "environment": "",
+                    "release": "terra-visu@2023.10.6",
+                    "replaysOnErrorSampleRate": 1.0,
+                    "replaysSessionSampleRate": 0.2,
+                    "sendDefaultPii": True,
+                    "tracesSampleRate": 0.2,
+                },
             },
         )
 
@@ -127,6 +136,15 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "token": None,
                 "user": None,
                 "version": None,
+                "sentry": {
+                    "dsn": "",
+                    "environment": "",
+                    "release": "terra-visu@2023.10.6",
+                    "replaysOnErrorSampleRate": 1.0,
+                    "replaysSessionSampleRate": 0.2,
+                    "sendDefaultPii": True,
+                    "tracesSampleRate": 0.2,
+                },
             },
         )
 
@@ -223,6 +241,15 @@ class AdminSettingsApiView(APITestCase):
                 },
                 "user": None,
                 "token": None,
+                "sentry": {
+                    "dsn": "",
+                    "environment": "",
+                    "release": "terra-visu@2023.10.6",
+                    "replaysOnErrorSampleRate": 1.0,
+                    "replaysSessionSampleRate": 0.2,
+                    "sendDefaultPii": True,
+                    "tracesSampleRate": 0.2,
+                },
                 "spriteBaseUrl": "http://testserver/api/sprites",
             },
         )
@@ -276,6 +303,15 @@ class AdminSettingsApiView(APITestCase):
                 },
                 "user": None,
                 "token": None,
+                "sentry": {
+                    "dsn": "",
+                    "environment": "",
+                    "release": "terra-visu@2023.10.6",
+                    "replaysOnErrorSampleRate": 1.0,
+                    "replaysSessionSampleRate": 0.2,
+                    "sendDefaultPii": True,
+                    "tracesSampleRate": 0.2,
+                },
                 "spriteBaseUrl": "http://testserver/api/sprites",
             },
         )
