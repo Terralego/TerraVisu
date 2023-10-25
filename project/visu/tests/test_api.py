@@ -1,4 +1,5 @@
 from constance.test import override_config
+from django.conf import settings
 from django.contrib.auth.models import Group
 from django.test import RequestFactory, override_settings
 from rest_framework.reverse import reverse_lazy
@@ -68,7 +69,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "sentry": {
                     "dsn": "",
                     "environment": "",
-                    "release": "terra-visu@2023.10.6",
+                    "release": settings.SENTRY_RELEASE,
                     "replaysOnErrorSampleRate": 1.0,
                     "replaysSessionSampleRate": 0.2,
                     "sendDefaultPii": True,
@@ -139,7 +140,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "sentry": {
                     "dsn": "",
                     "environment": "",
-                    "release": "terra-visu@2023.10.6",
+                    "release": settings.SENTRY_RELEASE,
                     "replaysOnErrorSampleRate": 1.0,
                     "replaysSessionSampleRate": 0.2,
                     "sendDefaultPii": True,
@@ -244,7 +245,7 @@ class AdminSettingsApiView(APITestCase):
                 "sentry": {
                     "dsn": "",
                     "environment": "",
-                    "release": "terra-visu@2023.10.6",
+                    "release": settings.SENTRY_RELEASE,
                     "replaysOnErrorSampleRate": 1.0,
                     "replaysSessionSampleRate": 0.2,
                     "sendDefaultPii": True,
@@ -306,7 +307,7 @@ class AdminSettingsApiView(APITestCase):
                 "sentry": {
                     "dsn": "",
                     "environment": "",
-                    "release": "terra-visu@2023.10.6",
+                    "release": settings.SENTRY_RELEASE,
                     "replaysOnErrorSampleRate": 1.0,
                     "replaysSessionSampleRate": 0.2,
                     "sendDefaultPii": True,
