@@ -9,6 +9,7 @@ Changelog
 
 - Add `SENTRY_PROFILES_SAMPLE_RATE` setting to define the sample rate for sentry profiling.
 - Remove logo from pdf print (#394)
+- Add some color to login/logout button to improve login status visibility. 
 
 
 2023.10.6      (2023-10-24)
