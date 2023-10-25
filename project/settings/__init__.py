@@ -440,16 +440,29 @@ GRAPPELLI_ADMIN_TITLE = "TerraVisu: Configuration"
 GRAPPELLI_INDEX_DASHBOARD = "project.config_dashboard.CustomIndexDashboard"
 
 SENTRY_DSN = config("SENTRY_DSN", default="", cast=str)
+SENTRY_ENVIRONMENT = config("SENTRY_ENVIRONMENT", default="", cast=str)
+SENTRY_TRACE_SAMPLE_RATE = config("SENTRY_TRACE_SAMPLE_RATE", default=0.2, cast=float)
+SENTRY_PROFILES_SAMPLE_RATE = config(
+    "SENTRY_PROFILES_SAMPLE_RATE", default=0.2, cast=float
+)
+SENTRY_SEND_DEFAULT_PII = config("SENTRY_SEND_DEFAULT_PII", default=True, cast=bool)
+SENTRY_RELEASE = f"terra-visu@{VERSION}"
+SENTRY_REPLAYS_SESSION_SAMPLE_RATE = config(
+    "SENTRY_REPLAYS_SESSION_SAMPLE_RATE", default=0.2, cast=float
+)
+SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE = config(
+    "SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE", default=1, cast=float
+)
+
+
 if SENTRY_DSN:
     sentry_sdk.init(
         dsn=SENTRY_DSN,
         integrations=[DjangoIntegration(), CeleryIntegration(), RedisIntegration()],
-        traces_sample_rate=config("SENTRY_TRACE_SAMPLE_RATE", default=0.2, cast=float),
-        profiles_sample_rate=config(
-            "SENTRY_PROFILES_SAMPLE_RATE", default=0.2, cast=float
-        ),
-        send_default_pii=config("SENTRY_SEND_DEFAULT_PII", default=True, cast=bool),
-        release=f"terra-visu@{VERSION}",
+        traces_sample_rate=SENTRY_TRACE_SAMPLE_RATE,
+        profiles_sample_rate=SENTRY_PROFILES_SAMPLE_RATE,
+        send_default_pii=SENTRY_SEND_DEFAULT_PII,
+        release=SENTRY_RELEASE,
     )
 
 # Override with custom settings

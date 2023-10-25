@@ -1,5 +1,5 @@
 import logging
-
+import os
 from constance import config
 from django.conf import settings
 from django.core.files.storage import default_storage
@@ -70,6 +70,17 @@ class CommonSettings:
             )
         return content
 
+    def get_sentry_settings(self):
+        return {
+            "dsn": settings.SENTRY_DSN,
+            "environment": settings.SENTRY_ENVIRONMENT,
+            "release": settings.SENTRY_RELEASE,
+            "tracesSampleRate": settings.SENTRY_TRACE_SAMPLE_RATE,
+            "replaysSessionSampleRate": settings.SENTRY_REPLAYS_SESSION_SAMPLE_RATE,
+            "replaysOnErrorSampleRate": settings.SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE,
+            "sendDefaultPii": settings.SENTRY_SEND_DEFAULT_PII,
+        }
+
 
 class SettingsAdminView(CommonSettings, APIView):
     permission_classes = [
@@ -105,6 +116,7 @@ class SettingsAdminView(CommonSettings, APIView):
                 "token": token,
                 "ssoAuth": self.get_sso_auth_config(),
                 "spriteBaseUrl": reverse("sprites", request=request),
+                "sentry": self.get_sentry_settings(),
             }
         )
 
@@ -154,6 +166,7 @@ class SettingsFrontendView(CommonSettings, APIView):
                         "searchProvider": self._get_search_provider_config(),
                     },
                 },
+                "sentry": self.get_sentry_settings(),
             }
         )
 
