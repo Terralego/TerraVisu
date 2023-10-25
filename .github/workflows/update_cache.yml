@@ -34,7 +34,7 @@ jobs:
 
       - name: Setup node for admin
         if: steps.cache-admin.outputs.cache-hit != 'true'
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: './admin/.nvmrc'
           cache: 'npm'
@@ -62,7 +62,7 @@ jobs:
 
       - name: Setup node for front
         if: steps.cache-front.outputs.cache-hit != 'true'
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version-file: './front/.nvmrc'
           cache: 'npm'
