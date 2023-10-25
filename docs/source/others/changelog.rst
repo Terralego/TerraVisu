@@ -10,6 +10,10 @@ Changelog
 - Add `SENTRY_PROFILES_SAMPLE_RATE` setting to define the sample rate for sentry profiling.
 - Remove logo from pdf print (#394)
 
+**Bugfix**
+
+- Fix data tab being empty on datasource edit page (#410)
+
 
 2023.10.6      (2023-10-24)
 ---------------------------
