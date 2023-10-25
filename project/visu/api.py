@@ -1,5 +1,5 @@
 import logging
-import os
+
 from constance import config
 from django.conf import settings
 from django.core.files.storage import default_storage
