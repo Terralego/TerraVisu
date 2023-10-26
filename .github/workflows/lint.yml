@@ -65,7 +65,7 @@ jobs:
           black --check project
 
   translations:
-    name: Black check
+    name: Translations check
     runs-on: ubuntu-latest
 
     steps:
