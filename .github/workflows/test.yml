@@ -42,7 +42,7 @@ jobs:
         id: verify-changed-files
         with:
           files: |
-            *.po
+            **/*.po
 
       - name: Validating translations
         if: steps.verify-changed-files.outputs.files_changed == 'true'
