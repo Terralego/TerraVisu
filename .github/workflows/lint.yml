@@ -76,7 +76,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          apt install -y -qq gdal-bin
+          sudo apt-get -y -qq install gdal-bin
           pip3 install -r requirements.txt
 
       - name: Check missing or bad translations
