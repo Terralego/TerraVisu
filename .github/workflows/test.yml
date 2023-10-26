@@ -33,8 +33,6 @@ jobs:
       - name: Check migrations
         run: |
           docker compose run --user root --rm web ./manage.py makemigrations --check
-      
-            - name: Check missing or bad translations
 
       - name: Verify translation files
         run: |
