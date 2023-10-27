@@ -89,7 +89,7 @@ msgid "Applications"
 msgstr "Applications"
 
 msgid "Celery"
-msgstr "Celery"
+msgstr "Tâches asynchrones (Celery)"
 
 msgid "Recent actions"
 msgstr "Actions récentes"
