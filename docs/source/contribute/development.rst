@@ -3,6 +3,14 @@ Development
 ===========
 
 -------------
+Clone project
+-------------
+
+..  code-block:: bash
+
+    git clone --recurse-submodules git@github.com:Terralego/TerraVisu.git
+
+-------------
 Prepare stack
 -------------
 
