@@ -23,4 +23,11 @@ class SceneFilterSet(FilterSet):
 class LayerFilterSet(FilterSet):
     class Meta:
         model = Layer
-        fields = ["source", "group", "active_by_default", "in_tree", "table_enable"]
+        fields = [
+            "source",
+            "group",
+            "group__view",
+            "active_by_default",
+            "in_tree",
+            "table_enable",
+        ]
