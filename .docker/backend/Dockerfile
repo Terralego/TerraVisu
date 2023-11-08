@@ -16,6 +16,7 @@ RUN apt-get -y -qq update \
     binutils \
     libproj-dev \
     gdal-bin \
+    libgdal-dev \
     gettext \
     postgresql-client \
     tzdata \
