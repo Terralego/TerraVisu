@@ -11,7 +11,7 @@ Changelog
 
 **Bugfix**
 
--
+- Fix Docker build on Apple Silicon (#457) 
 
 **New features**
 
