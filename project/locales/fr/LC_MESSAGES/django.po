@@ -215,7 +215,7 @@ msgid "Content of info tab in frontend"
 msgstr "Contenu de l'onglet 'Informations' de l'application"
 
 msgid "Activate MapboxDraw Control to measure distance on the map"
-msgstr "Activate le contrôle MapBox des mesures sur la carte."
+msgstr "Activer le contrôle MapBox des mesures sur la carte."
 
 msgid "Define custom MapboxDraw style for the distance measure control"
 msgstr ""
