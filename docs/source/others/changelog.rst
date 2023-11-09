@@ -11,7 +11,7 @@ Changelog
 
 **Bugfix**
 
--
+- Fix build_admin and build_front on macOS (#456)
 
 **New features**
 
