@@ -16,7 +16,6 @@ RUN apt-get -y -qq update \
     binutils \
     libproj-dev \
     gdal-bin \
-    libgdal-dev \
     gettext \
     postgresql-client \
     tzdata \
@@ -43,6 +42,7 @@ RUN apt-get -y -qq update \
     build-essential \
     libpq-dev \
     git \
+    libgdal-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives/*
