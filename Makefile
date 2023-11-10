@@ -2,8 +2,10 @@
 
 SHELL = /bin/sh
 
-CURRENT_UID := $(shell id -u)
-CURRENT_UID := $(shell id -g)
+ifndef mac
+	CURRENT_UID := $(shell id -u)
+	CURRENT_GID := $(shell id -g)
+endif
 
 export CURRENT_UID
 export CURRENT_GID
@@ -11,13 +13,13 @@ export CURRENT_GID
 build_admin:
 	rm -rf ./public/admin
 	docker compose -f .docker/admin/docker-compose.yml pull
-	docker compose -f .docker/admin/docker-compose.yml run --user "$(id -u):$(id -g)" --rm admin bash -c "npm ci --legacy-peer-deps && npx react-scripts --openssl-legacy-provider build"
+	docker compose -f .docker/admin/docker-compose.yml run --rm admin bash -c "npm ci --legacy-peer-deps && npx react-scripts --openssl-legacy-provider build"
 	mv ./admin/build ./public/admin
 	rm -rf ./admin/node_modules
 
 build_front:
 	docker compose -f .docker/frontend/docker-compose.yml pull
-	docker compose -f .docker/frontend/docker-compose.yml run --user "$(id -u):$(id -g)" --rm front bash -c "git config --global url.\"https://github.com/\".insteadOf ssh://git@github.com/ && npm ci && npx react-scripts build"
+	docker compose -f .docker/frontend/docker-compose.yml run --rm front bash -c "git config --global url.\"https://github.com/\".insteadOf ssh://git@github.com/ && npm ci && npx react-scripts build"
 	find ./public -maxdepth 1 -type f -exec rm {} \;
 	if [ -e ./public/static ]; then rm -r ./public/static ./public/images ./public/locales; fi
 	mv ./front/build/* ./public/
