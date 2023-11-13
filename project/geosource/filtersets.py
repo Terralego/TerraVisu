@@ -11,6 +11,7 @@ class SourceFilterSet(filters.FilterSet):
         fields = (
             "polymorphic_ctype",
             "polymorphic_ctype__model",
+            "report__status",
             "geom_type",
             "q",
             "status",
