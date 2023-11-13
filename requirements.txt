@@ -14,9 +14,9 @@ attrs==22.2.0
     # via
     #   fiona
     #   jsonschema
-billiard==4.1.0
+billiard==4.2.0
     # via celery
-celery==5.3.4
+celery==5.3.5
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -162,7 +162,7 @@ jsonschema==4.17.3
     # via
     #   django-geostore
     #   drf-spectacular
-kombu==5.3.2
+kombu==5.3.3
     # via celery
 lml==0.1.0
     # via
@@ -250,7 +250,7 @@ urllib3==1.26.18
     #   elastic-transport
     #   requests
     #   sentry-sdk
-vine==5.0.0
+vine==5.1.0
     # via
     #   amqp
     #   celery
