@@ -16,7 +16,7 @@ babel==2.12.1
     # via
     #   -r docs/requirements.txt
     #   sphinx
-black==23.10.1
+black==23.11.0
     # via -r dev-requirements.in
 build==0.10.0
     # via pip-tools
