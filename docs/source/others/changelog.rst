@@ -2,22 +2,25 @@
 Changelog
 ==========
 
-2023.10.7+dev  (XXXX-XX-XX)
+2023.11.0      (2023-11-16)
 ---------------------------
 
 **Improvements:**
 
--
+- Layers information popup now renders HTML content (front)
+- Improvements on source list and report tab (admin)
 
 **Bugfix**
 
 - Fix admin's layerlist filter on view (#458)
 - Fix build_admin and build_front on macOS (#456)
 - Fix Docker build on Apple Silicon (#457) 
+- Fix admin layout issues
 
 **New features**
 
--
+- Embed dialog (admin and front)
+- Label option on polygon, line and circle layers (admin and front)
 
 
 2023.10.7      (2023-10-25)
