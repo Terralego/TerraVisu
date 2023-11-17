@@ -10,12 +10,12 @@ Changelog
 - Layers information popup now renders HTML content (front)
 - Improvements on source list and report tab (admin)
 
+
 **Bugfix**
 
 - Fix admin's layerlist filter on view (#458)
-- Fix build_admin and build_front on macOS (#456)
-- Fix Docker build on Apple Silicon (#457) 
 - Fix admin layout issues
+
 
 **New features**
 
