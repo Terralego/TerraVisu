@@ -12,8 +12,6 @@ Changelog
 **Bugfix**
 
 - Fix admin's layerlist filter on view (#458)
-- Fix build_admin and build_front on macOS (#456)
-- Fix Docker build on Apple Silicon (#457) 
 
 **New features**
 
