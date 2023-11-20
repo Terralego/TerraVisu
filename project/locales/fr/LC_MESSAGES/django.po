@@ -130,33 +130,6 @@ msgstr "Source actualisée avec succès"
 msgid "Source refreshed partially"
 msgstr "Source en partie actualisée"
 
-msgid "Success"
-msgstr ""
-
-msgid "Error"
-msgstr ""
-
-msgid "Warning"
-msgstr ""
-
-msgid "Pending"
-msgstr ""
-
-msgid "Need sync"
-msgstr ""
-
-msgid "Done"
-msgstr ""
-
-msgid "Failed to refresh data"
-msgstr ""
-
-msgid "Source refreshed successfully"
-msgstr ""
-
-msgid "Source refreshed partially"
-msgstr ""
-
 msgid "latlong_field must be defined when coordinates are set to one column"
 msgstr ""
 "latlong_field doit être défini quand les coordonnées sont dans une seule "
