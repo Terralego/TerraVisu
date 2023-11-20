@@ -142,7 +142,7 @@ ecdsa==0.18.0
     # via python-jose
 elastic-transport==8.4.0
     # via elasticsearch
-elasticsearch==8.10.1
+elasticsearch==8.11.0
     # via -r requirements.in
 filetype==1.2.0
     # via drf-extra-fields
