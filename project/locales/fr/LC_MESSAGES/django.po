@@ -89,10 +89,10 @@ msgid "Instance customization"
 msgstr "Personnalisation de l'instance"
 
 msgid "Administration"
-msgstr ""
+msgstr "Administration"
 
 msgid "Applications"
-msgstr ""
+msgstr "Applications"
 
 msgid "Celery"
 msgstr "Tâches asynchrones (Celery)"
@@ -101,7 +101,34 @@ msgid "Recent actions"
 msgstr "Actions récentes"
 
 msgid "URL"
-msgstr ""
+msgstr "URL"
+
+msgid "Success"
+msgstr "Succès"
+
+msgid "Error"
+msgstr "Erreur"
+
+msgid "Warning"
+msgstr "Alerte"
+
+msgid "Pending"
+msgstr "En attente"
+
+msgid "Need sync"
+msgstr "À synchroniser"
+
+msgid "Done"
+msgstr "Terminé"
+
+msgid "Failed to refresh data"
+msgstr "L'actualisation des données a échoué"
+
+msgid "Source refreshed successfully"
+msgstr "Source actualisée avec succès"
+
+msgid "Source refreshed partially"
+msgstr "Source en partie actualisée"
 
 msgid "Success"
 msgstr ""
@@ -170,13 +197,13 @@ msgid "Instance credits"
 msgstr "Crédits de l'instance"
 
 msgid "Logo"
-msgstr ""
+msgstr "Logo"
 
 msgid "Logo frontend URL"
 msgstr "URL du logo de l'application"
 
 msgid "Favicon"
-msgstr ""
+msgstr "Favicon"
 
 msgid "Splashscreen"
 msgstr "Logo de démarrage"
@@ -212,49 +239,50 @@ msgid "Frontend view root path"
 msgstr "Chemin de la vue racine de l'application"
 
 msgid "OpenID: SSO login button text"
-msgstr ""
+msgstr "OpenID: Texte du bouton de connexion"
 
 msgid "OpenID: Default login button text"
-msgstr ""
+msgstr "OpenID: Texte par défaut du bouton de connexion"
 
 msgid "Content of info tab in frontend"
-msgstr ""
+msgstr "Contenu de l'onglet 'Informations' de l'application"
 
 msgid "Activate MapboxDraw Control to measure distance on the map"
-msgstr ""
+msgstr "Activer le contrôle MapBox des mesures sur la carte."
 
 msgid "Define custom MapboxDraw style for the distance measure control"
 msgstr ""
+"Définissez un style spécifique pour le contrôle des mesures sur la carte."
 
 msgid "Enable search in locations in the search bar map control"
-msgstr ""
+msgstr "Active la recherche par lieu sur la carte."
 
 msgid "Search provider for the search in locations feature"
-msgstr ""
+msgstr "Fournisseur de recherche par lieu"
 
 msgid "Nominatim search service base url"
-msgstr ""
+msgstr "URL de recherche du service Nominatim"
 
 msgid "Use nominatim's viewbox option to filter search results"
-msgstr ""
+msgstr "Utiliser l'option 'viewbox' de Nominatim pour filtrer les résultats"
 
 msgid "Minimum latitude coordinate for nominatim viewbox"
-msgstr ""
+msgstr "Latitude minimum pour l'option 'viewbox' de Nominatim"
 
 msgid "Minimum longitude coordinate for nominatim viewbox"
-msgstr ""
+msgstr "Longitude minimum pour l'option 'viewbox' de Nominatim"
 
 msgid "Maximum latitude coordinate for nominatim viewbox"
-msgstr ""
+msgstr "Latitude maximum pour l'option 'viewbox' de Nominatim"
 
 msgid "Maximum longitude coordinate for nominatim viewbox"
-msgstr ""
+msgstr "Longitude maximum pour l'option 'viewbox' de Nominatim"
 
 msgid "Map"
-msgstr ""
+msgstr "Carte"
 
 msgid "Story"
-msgstr ""
+msgstr "Histoire"
 
 msgid "Copy"
 msgstr "Copie"
