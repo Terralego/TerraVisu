@@ -7,7 +7,9 @@
 amqp==5.1.1
     # via kombu
 asgiref==3.6.0
-    # via django
+    # via
+    #   django
+    #   django-cors-headers
 async-timeout==4.0.2
     # via redis
 attrs==22.2.0
@@ -99,7 +101,7 @@ django-clone==5.3.3
     # via -r requirements.in
 django-constance[database]==3.1.0
     # via -r requirements.in
-django-cors-headers==4.3.0
+django-cors-headers==4.3.1
     # via -r requirements.in
 django-crispy-forms==2.0
     # via
