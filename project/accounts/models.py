@@ -1,4 +1,5 @@
 import uuid
+from django.contrib.auth import get_user_model
 
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import Permission, PermissionsMixin, _user_has_perm
@@ -8,6 +9,7 @@ from django.utils.translation import gettext_lazy as _
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
 
 from project.accounts.managers import UserManager
+from project.accounts.tokens import generate_token
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -80,3 +82,20 @@ class FunctionalPermission(Permission):
     class Meta:
         verbose_name = _("Functional permission")
         verbose_name_plural = _("Functional permissions")
+
+
+class PermanentAccessToken(models.Model):
+    user = models.ForeignKey(get_user_model(), on_delete=models.CASCADE)
+    token = models.CharField(
+        max_length=255, unique=True, default=generate_token, blank=True, editable=False
+    )
+    description = models.TextField(blank=True, default="")
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = _("Permanent access token")
+        verbose_name_plural = _("Permanent access tokens")
+
+    def __str__(self):
+        return f"{self.user} - {self.token}"
