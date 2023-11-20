@@ -1,9 +1,10 @@
 from django.conf import settings
+from django.contrib.auth import login
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import RedirectView
-from django.contrib.auth import login
+
 from project.accounts.models import PermanentAccessToken
 
 

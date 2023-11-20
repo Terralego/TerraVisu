@@ -2,7 +2,7 @@ from constance import config
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from project.accounts.models import FunctionalPermission, User, PermanentAccessToken
+from project.accounts.models import FunctionalPermission, PermanentAccessToken, User
 
 admin.site.site_header = f"{config.INSTANCE_TITLE}"
 admin.site.index_title = _("Configuration panel / Debug")

@@ -1,6 +1,6 @@
 import uuid
-from django.contrib.auth import get_user_model
 
+from django.contrib.auth import get_user_model
 from django.contrib.auth.base_user import AbstractBaseUser
 from django.contrib.auth.models import Permission, PermissionsMixin, _user_has_perm
 from django.db import models

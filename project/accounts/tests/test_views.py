@@ -3,6 +3,7 @@ from django.urls import reverse
 from requests import HTTPError
 from rest_framework.test import APITestCase
 
+from project.accounts.models import PermanentAccessToken
 from project.accounts.tests.factories import UserFactory
 
 
@@ -52,3 +53,19 @@ class FunctionalPermissionAPITestCase(APITestCase):
         response = self.client.get(reverse("permission-available"))
         self.assertEqual(response.status_code, 200)
         self.client.logout()
+
+
+class LoginWithToken(TestCase):
+    def test_wrong_token_raise_404(self):
+        response = self.client.get(reverse("login_with_token") + "?token=xxx")
+        self.assertEqual(response.status_code, 404)
+
+    def test_correct_token_session_auth_and_redirect(self):
+        user = UserFactory()
+        access_token = PermanentAccessToken.objects.create(user=user)
+        response = self.client.get(
+            reverse("login_with_token") + f"?token={access_token.token}&url=/"
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertIn("_auth_user_id", self.client.session)
+        self.assertEqual(int(self.client.session["_auth_user_id"]), user.pk)
