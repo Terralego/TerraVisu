@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-26 12:31+0000\n"
+"POT-Creation-Date: 2023-11-20 09:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -67,6 +67,12 @@ msgstr "Permission fonctionnelle"
 msgid "Functional permissions"
 msgstr "Permissions fonctionnelles"
 
+msgid "Permanent access token"
+msgstr "Jeton d'accès permanent"
+
+msgid "Permanent access tokens"
+msgstr "Jetons d'accès permanents"
+
 msgid "Login to"
 msgstr "Connexion à"
 
@@ -95,6 +101,33 @@ msgid "Recent actions"
 msgstr "Actions récentes"
 
 msgid "URL"
+msgstr ""
+
+msgid "Success"
+msgstr ""
+
+msgid "Error"
+msgstr ""
+
+msgid "Warning"
+msgstr ""
+
+msgid "Pending"
+msgstr ""
+
+msgid "Need sync"
+msgstr ""
+
+msgid "Done"
+msgstr ""
+
+msgid "Failed to refresh data"
+msgstr ""
+
+msgid "Source refreshed successfully"
+msgstr ""
+
+msgid "Source refreshed partially"
 msgstr ""
 
 msgid "latlong_field must be defined when coordinates are set to one column"
@@ -177,6 +210,45 @@ msgstr "Latitude par défaut du centre de la carte"
 
 msgid "Frontend view root path"
 msgstr "Chemin de la vue racine de l'application"
+
+msgid "OpenID: SSO login button text"
+msgstr ""
+
+msgid "OpenID: Default login button text"
+msgstr ""
+
+msgid "Content of info tab in frontend"
+msgstr ""
+
+msgid "Activate MapboxDraw Control to measure distance on the map"
+msgstr ""
+
+msgid "Define custom MapboxDraw style for the distance measure control"
+msgstr ""
+
+msgid "Enable search in locations in the search bar map control"
+msgstr ""
+
+msgid "Search provider for the search in locations feature"
+msgstr ""
+
+msgid "Nominatim search service base url"
+msgstr ""
+
+msgid "Use nominatim's viewbox option to filter search results"
+msgstr ""
+
+msgid "Minimum latitude coordinate for nominatim viewbox"
+msgstr ""
+
+msgid "Minimum longitude coordinate for nominatim viewbox"
+msgstr ""
+
+msgid "Maximum latitude coordinate for nominatim viewbox"
+msgstr ""
+
+msgid "Maximum longitude coordinate for nominatim viewbox"
+msgstr ""
 
 msgid "Map"
 msgstr ""
