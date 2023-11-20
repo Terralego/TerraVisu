@@ -99,7 +99,7 @@ django-clearcache==1.2.1
     # via -r requirements.in
 django-clone==5.3.3
     # via -r requirements.in
-django-constance[database]==3.1.0
+django-constance==3.1.0
     # via -r requirements.in
 django-cors-headers==4.3.1
     # via -r requirements.in
@@ -259,3 +259,6 @@ vine==5.1.0
     #   kombu
 wcwidth==0.2.6
     # via prompt-toolkit
+
+# The following packages are considered to be unsafe in a requirements file:
+# setuptools

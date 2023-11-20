@@ -4,6 +4,7 @@ from rest_framework_jwt import views as auth_views
 from . import views
 
 urlpatterns = [
+    path("auth-token/", views.LoginWithToken.as_view(), name="login_with_token"),
     path("login/", views.LoginDispatcher.as_view(), name="login_dispatcher"),
     # jwt process
     path("obtain-token/", auth_views.obtain_jwt_token, name="token-obtain"),

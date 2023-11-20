@@ -11,7 +11,7 @@ django-clone
 crispy-bootstrap5
 django-mapbox-baselayer
 django-cors-headers
-django-constance[database]
+django-constance
 django-filter
 elasticsearch
 celery

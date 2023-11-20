@@ -1,6 +1,11 @@
 from django.conf import settings
+from django.contrib.auth import login
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
+from django.views import View
 from django.views.generic import RedirectView
+
+from project.accounts.models import PermanentAccessToken
 
 
 class LoginDispatcher(RedirectView):
@@ -9,3 +14,12 @@ class LoginDispatcher(RedirectView):
             return "/oidc/"
         else:
             return reverse("login")
+
+
+class LoginWithToken(View):
+    def get(self, *args, **kwargs):
+        token = self.request.GET.get("token")
+        user = get_object_or_404(PermanentAccessToken, token=token).user
+        login(self.request, user=user)
+        self.request.user = user
+        return redirect(self.request.GET.get("url", "/"))

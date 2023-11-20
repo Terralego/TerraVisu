@@ -2,7 +2,7 @@ from constance import config
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
-from project.accounts.models import FunctionalPermission, User
+from project.accounts.models import FunctionalPermission, PermanentAccessToken, User
 
 admin.site.site_header = f"{config.INSTANCE_TITLE}"
 admin.site.index_title = _("Configuration panel / Debug")
@@ -23,3 +23,11 @@ class FunctionalPermissionAdmin(admin.ModelAdmin):
 
     def has_change_permission(self, request, obj=None):
         return False
+
+
+@admin.register(PermanentAccessToken)
+class PermanentAccessTokenAdmin(admin.ModelAdmin):
+    list_display = ("id", "user", "created_at", "updated_at")
+    list_filter = ("user", "created_at", "updated_at")
+    search_fields = ("user__email", "token")
+    readonly_fields = ("token",)

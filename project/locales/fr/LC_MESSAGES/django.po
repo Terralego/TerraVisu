@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-10-26 14:21+0000\n"
+"POT-Creation-Date: 2023-11-20 09:43+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -66,6 +66,12 @@ msgstr "Permission fonctionnelle"
 
 msgid "Functional permissions"
 msgstr "Permissions fonctionnelles"
+
+msgid "Permanent access token"
+msgstr "Jeton d'accès permanent"
+
+msgid "Permanent access tokens"
+msgstr "Jetons d'accès permanents"
 
 msgid "Login to"
 msgstr "Connexion à"

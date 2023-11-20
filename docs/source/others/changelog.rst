@@ -2,6 +2,14 @@
 Changelog
 ==========
 
+2023.11.0+dev  (XXXX-XX-XX)
+---------------------------
+
+**New features**
+
+- Ability to manage and use permanent access token to auto login.
+
+
 2023.11.0      (2023-11-16)
 ---------------------------
 
