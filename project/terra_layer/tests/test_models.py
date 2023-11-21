@@ -151,3 +151,17 @@ class LayerTestCase(TestCase):
             clone.main_style["symbol"]["image"],
             clone.style_images.values_list("slug", flat=True),
         )
+
+
+class LayerGroupTestCase(TestCase):
+    def test_str_with_parent(self):
+        group1 = LayerGroupFactory()
+        group2 = LayerGroupFactory(parent=group1, view=group1.view)
+        self.assertEqual(
+            str(group2),
+            f"{group2.view.name} - {group1.label} - {group2.label}",
+        )
+
+    def test_str_without_parent(self):
+        group = LayerGroupFactory()
+        self.assertEqual(str(group), f"{group.view.name} - {group.label}")
