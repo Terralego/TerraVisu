@@ -1,6 +1,7 @@
 from django.test import TestCase
 
 from ...geosource.tests.factories import PostGISSourceFactory
+from ..models import Layer
 from .factories import LayerFactory, LayerGroupFactory, SceneFactory, StyleImageFactory
 
 
@@ -10,7 +11,11 @@ class LayerTestCase(TestCase):
             name="foo",
             uuid="91c60192-9060-4bf6-b0de-818c5a362d89",
         )
-        self.assertEqual(str(layer), "Layer({}) - foo".format(layer.pk))
+        layer = Layer.objects.get(id=layer.id)
+        self.assertEqual(
+            str(layer),
+            f"Layer ({layer.id}) - {layer.name} - ({layer.layer_identifier})",
+        )
 
     def test_scene_insert_in_tree(self):
         scene = SceneFactory()
@@ -146,3 +151,17 @@ class LayerTestCase(TestCase):
             clone.main_style["symbol"]["image"],
             clone.style_images.values_list("slug", flat=True),
         )
+
+
+class LayerGroupTestCase(TestCase):
+    def test_str_with_parent(self):
+        group1 = LayerGroupFactory()
+        group2 = LayerGroupFactory(parent=group1, view=group1.view)
+        self.assertEqual(
+            str(group2),
+            f"{group2.view.name} - {group1.label} - {group2.label}",
+        )
+
+    def test_str_without_parent(self):
+        group = LayerGroupFactory()
+        self.assertEqual(str(group), f"{group.view.name} - {group.label}")

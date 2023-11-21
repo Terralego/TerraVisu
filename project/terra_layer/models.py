@@ -5,7 +5,6 @@ from hashlib import md5
 from autoslug import AutoSlugField
 from django.db import models, transaction
 from django.db.models import TextChoices
-from django.utils.functional import cached_property
 from django.utils.text import slugify
 from django.utils.translation import gettext as _
 from django.views.generic.dates import timezone_today
@@ -15,7 +14,7 @@ from rest_framework.reverse import reverse
 
 from project.geosource.models import Field, Source
 
-from .managers import SceneManager
+from .managers import LayerManager, SceneManager
 from .schema import SCENE_LAYERTREE, JSONSchemaValidator
 from .style import generate_style_from_wizard
 
@@ -173,6 +172,13 @@ class LayerGroup(models.Model):
     class Meta:
         ordering = ["order"]
 
+    def __str__(self):
+        name = f"{self.view.name}"
+        if self.parent:
+            name += f" - {self.parent.label}"
+        name += f" - {self.label}"
+        return name
+
 
 class Layer(CloneMixin, models.Model):
     _clone_m2o_or_o2m_fields = ["style_images", "extra_styles"]
@@ -218,13 +224,11 @@ class Layer(CloneMixin, models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    objects = LayerManager()
+
     @property
     def map_style(self):
         return self.main_style.get("map_style", self.main_style)
-
-    @cached_property
-    def layer_identifier(self):
-        return md5(f"{self.source.slug}-{self.pk}".encode("utf-8")).hexdigest()
 
     class Meta:
         ordering = ("order", "name")
@@ -245,7 +249,6 @@ class Layer(CloneMixin, models.Model):
 
     def save(self, wizard_update=True, preserve_legend=False, **kwargs):
         super().save(**kwargs)
-
         if wizard_update:
             style_by_uid = {}
             # Mark not updated auto legends
@@ -332,7 +335,7 @@ class Layer(CloneMixin, models.Model):
         return obj
 
     def __str__(self):
-        return f"Layer({self.id}) - {self.name}"
+        return f"Layer ({self.id}) - {self.name} - ({self.layer_identifier})"
 
     @transaction.atomic()
     def replace_source(self, new_source, fields_matches=None, dry_run=False):

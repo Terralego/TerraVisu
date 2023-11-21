@@ -315,7 +315,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         raise NotImplementedError
 
     def __str__(self):
-        return f"{self.name} - {self.__class__.__name__}"
+        return f"{self.name} - ({self.slug})"
 
     @property
     def type(self):
