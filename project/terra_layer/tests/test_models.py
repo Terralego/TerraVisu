@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from ..models import Layer
 from ...geosource.tests.factories import PostGISSourceFactory
+from ..models import Layer
 from .factories import LayerFactory, LayerGroupFactory, SceneFactory, StyleImageFactory
 
 
