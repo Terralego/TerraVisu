@@ -321,7 +321,6 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     def type(self):
         return self.__class__
 
-
     @property
     def refresh_status(self):
         return self.status
