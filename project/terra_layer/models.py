@@ -249,7 +249,6 @@ class Layer(CloneMixin, models.Model):
 
     def save(self, wizard_update=True, preserve_legend=False, **kwargs):
         super().save(**kwargs)
-
         if wizard_update:
             style_by_uid = {}
             # Mark not updated auto legends
@@ -336,7 +335,7 @@ class Layer(CloneMixin, models.Model):
         return obj
 
     def __str__(self):
-        return f"Layer ({self.id}) - {self.name} - ({self.layer_identifier}"
+        return f"Layer ({self.id}) - {self.name} - ({self.layer_identifier})"
 
     @transaction.atomic()
     def replace_source(self, new_source, fields_matches=None, dry_run=False):

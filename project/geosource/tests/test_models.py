@@ -87,10 +87,10 @@ class ModelSourceTestCase(TestCase):
         )
 
     def test_source_str(self):
-        self.assertEqual(str(self.source), "Toto - Source")
+        self.assertEqual(str(self.source), "Toto - (toto)")
 
     def test_other_source_str(self):
-        self.assertEqual(str(self.geojson_source), "Titi - GeoJSONSource")
+        self.assertEqual(str(self.geojson_source), "Titi - (titi)")
 
     def test_source_type(self):
         self.assertEqual(self.source.type, self.source.__class__)

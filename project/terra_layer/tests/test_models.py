@@ -1,5 +1,6 @@
 from django.test import TestCase
 
+from ..models import Layer
 from ...geosource.tests.factories import PostGISSourceFactory
 from .factories import LayerFactory, LayerGroupFactory, SceneFactory, StyleImageFactory
 
@@ -10,7 +11,11 @@ class LayerTestCase(TestCase):
             name="foo",
             uuid="91c60192-9060-4bf6-b0de-818c5a362d89",
         )
-        self.assertEqual(str(layer), "Layer({}) - foo".format(layer.pk))
+        layer = Layer.objects.get(id=layer.id)
+        self.assertEqual(
+            str(layer),
+            f"Layer ({layer.id}) - {layer.name} - ({layer.layer_identifier})",
+        )
 
     def test_scene_insert_in_tree(self):
         scene = SceneFactory()
