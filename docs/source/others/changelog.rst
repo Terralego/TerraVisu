@@ -5,6 +5,10 @@ Changelog
 2023.11.1+dev  (XXXX-XX-XX)
 ---------------------------
 
+**Improvements:**
+
+- Tooltips added to buttons without text in admin
+
 
 2023.11.1      (2023-11-20)
 ---------------------------
