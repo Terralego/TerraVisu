@@ -94,6 +94,13 @@ class PolymorphicModelSerializer(serializers.ModelSerializer):
         else:
             return serializer.create(validated_data)
 
+    @transaction.atomic
+    def update(self, instance, validated_data):
+        instance.report.reset()
+        instance.report.status = SourceReporting.Status.PENDING
+        instance.report.save()
+        return super().update(instance, {**validated_data, "status": Source.Status.NEED_SYNC})
+
 
 class FieldSerializer(serializers.ModelSerializer):
     class Meta:

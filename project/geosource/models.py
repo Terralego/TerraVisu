@@ -88,7 +88,7 @@ class SourceReporting(models.Model):
     def reset(self):
         self.status = self.Status.PENDING.value
         self.message = ""
-        self.started = timezone.now()
+        self.started = None
         self.ended = None
         self.added_lines = 0
         self.deleted_lines = 0
@@ -102,6 +102,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         NEED_SYNC = 0, _("Need sync")
         PENDING = 1, _("Pending")
         DONE = 2, _("Done")
+        IN_PROGRESS = 3, _("In progress")
 
     name = models.CharField(max_length=255, unique=True)
     credit = models.TextField(blank=True)
@@ -156,9 +157,11 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         return next_run < now
 
     def refresh_data(self):
-        if self.status != self.Status.PENDING.value:
-            self.status = self.Status.PENDING.value
-            self.save()
+        self.status = self.Status.PENDING.value
+        self.save()
+
+        import time
+        time.sleep(300)
 
         layer = self.get_layer()
         try:
@@ -184,11 +187,11 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     def _refresh_data(self, es_index=None):
         if not self.report:
             self.report = SourceReporting.objects.create(
-                started=timezone.now(), status=SourceReporting.Status.PENDING.value
+                started=timezone.now(), status=SourceReporting.Status.PENDING
             )
         else:
             self.report.reset()
-            self.report.status = SourceReporting.Status.PENDING.value
+            self.report.status = SourceReporting.Status.PENDING
             self.report.save()
 
         layer = self.get_layer()
