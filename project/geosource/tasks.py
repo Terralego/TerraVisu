@@ -24,9 +24,13 @@ def set_failure_state(task, method, message, instance=None):
         text = ""
         for key, value in state["meta"].items():
             text += f"{key}: {value},"
+        if not instance.report.status:
+            instance.report.status = instance.report.Status.ERROR
         instance.report.message = text
+        if not instance.report.started:
+            instance.report.started = timezone.now()
         instance.report.ended = timezone.now()
-        instance.report.save(update_fields=["ended", "message"])
+        instance.report.save(update_fields=["status", "started", "ended", "message"])
 
 
 @shared_task(bind=True)
@@ -43,14 +47,6 @@ def run_model_object_method(self, app, model, pk, method, success_state=states.S
         logger.info(f"Method {method} on {obj} ended")
 
         self.update_state(state=success_state, meta=state)
-        if obj and hasattr(obj, "report"):
-            if obj.report is not None:
-                text = ""
-                for key, value in state.items():
-                    text += f"{key}: {value},"
-                obj.report.message = text
-                obj.report.ended = timezone.now()
-                obj.report.save(update_fields=["message", "ended"])
 
     except Model.DoesNotExist:
         set_failure_state(

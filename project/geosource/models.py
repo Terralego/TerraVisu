@@ -157,11 +157,8 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         return next_run < now
 
     def refresh_data(self):
-        self.status = self.Status.PENDING.value
+        self.status = self.Status.IN_PROGRESS
         self.save()
-
-        import time
-        time.sleep(300)
 
         layer = self.get_layer()
         try:
@@ -192,6 +189,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         else:
             self.report.reset()
             self.report.status = SourceReporting.Status.PENDING
+            self.report.started = timezone.now()
             self.report.save()
 
         layer = self.get_layer()
