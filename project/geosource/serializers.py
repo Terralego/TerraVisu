@@ -103,7 +103,6 @@ class FieldSerializer(serializers.ModelSerializer):
 
 
 class SourceReportingSerializer(serializers.ModelSerializer):
-
     class Meta:
         fields = "__all__"
         model = SourceReporting
@@ -135,7 +134,9 @@ class SourceSerializer(PolymorphicModelSerializer):
     def update(self, instance, validated_data):
         validated_data.pop("fields")
 
-        source = super().update(instance, {**validated_data, "status": Source.Status.NEED_SYNC})
+        source = super().update(
+            instance, {**validated_data, "status": Source.Status.NEED_SYNC}
+        )
 
         if source.report:
             source.report.reset()
