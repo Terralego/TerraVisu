@@ -163,6 +163,7 @@ class SourceListSerializer(serializers.ModelSerializer):
     _type = serializers.SerializerMethodField()
     report = SourceReportingSerializer(read_only=True)
     status = serializers.SerializerMethodField()
+    layers = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         model = Source
@@ -173,6 +174,7 @@ class SourceListSerializer(serializers.ModelSerializer):
             "name",
             "geom_type",
             "report",
+            "layers",
         )
 
     def get__type(self, instance):
