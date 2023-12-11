@@ -1,3 +1,4 @@
+from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.parsers import JSONParser
@@ -9,6 +10,8 @@ from .models import Source, SourceReporting
 from .parsers import NestedMultipartJSONParser
 from .permissions import SourcePermission
 from .serializers import SourceListSerializer, SourceSerializer
+
+User = get_user_model()
 
 
 class SourceModelViewset(ModelViewSet):
@@ -31,6 +34,10 @@ class SourceModelViewset(ModelViewSet):
 
     def get_queryset(self):
         return Source.objects.all().order_by("-id")
+
+    def perform_create(self, serializers):
+        user = User.objects.get(email=self.request.user)
+        serializers.save(author=user)
 
     @action(detail=True, methods=["get"])
     def refresh(self, request, pk):
