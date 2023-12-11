@@ -2,6 +2,14 @@
 Changelog
 ==========
 
+2023.11.2+dev  (XXXX-XX-XX)
+---------------------------
+
+**Improvements:**
+
+- Add "In progress" status to source
+
+
 2023.11.2      (2023-11-22)
 ---------------------------
 
