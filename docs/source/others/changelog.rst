@@ -2,6 +2,14 @@
 Changelog
 ==========
 
+2023.11.2+dev   (XXX-XX-XX)
+---------------------------
+
+**Improvements:**
+
+- Api result for are now filterable by model type and status
+
+
 2023.11.2      (2023-11-22)
 ---------------------------
 
