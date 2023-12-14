@@ -140,3 +140,4 @@ class TaskTestCase(TestCase):
             source.report.refresh_from_db()
             self.assertIsInstance(source.report.message, str)
             self.assertIsInstance(source.report.ended, datetime)
+            self.assertEqual(source.report.status, SourceReporting.Status.ERROR.value)
