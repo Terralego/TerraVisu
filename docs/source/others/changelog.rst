@@ -7,7 +7,8 @@ Changelog
 
 **Improvements:**
 
-- Api result for are now filterable by model type and status
+- Api result for sources are now filterable by model type and status
+- Api result for sources Sources are now sortable by updated date
 
 
 2023.11.2      (2023-11-22)
