@@ -466,7 +466,7 @@ class SceneTreeAPIView(APIView):
         group_content = {
             "group": group.label,
             "exclusive": group.exclusive,
-            "byVariable": group.byVariable,
+            "byVariable": group.by_variable,
             "variables": group.variables,
             "selectors": group.selectors,
             "order": group.order,

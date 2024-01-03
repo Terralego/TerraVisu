@@ -91,7 +91,7 @@ class Scene(models.Model):
                 label=current_node["label"],
                 exclusive=current_node.get("exclusive", False),
                 variables=current_node.get("variables", []),
-                byVariable=current_node.get("byVariable", False),
+                by_variable=current_node.get("byVariable", False),
                 selectors=current_node.get("selectors"),
                 settings=current_node.get("settings", {}),
                 order=order,
@@ -167,8 +167,8 @@ class LayerGroup(models.Model):
     )
     order = models.IntegerField(default=0)
     exclusive = models.BooleanField(default=False)
-    byVariable = models.BooleanField(default=False)
-    variables = models.JSONField(default=list)
+    by_variable = models.BooleanField(default=False)
+    variables = models.JSONField(default=list, blank=True)
     selectors = models.JSONField(null=True, default=None)
     settings = models.JSONField(default=dict)
     created_at = models.DateTimeField(auto_now_add=True)
