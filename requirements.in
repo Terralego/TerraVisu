@@ -1,4 +1,4 @@
-django==4.1.*
+django==4.2.*
 django-grappelli
 django-geostore
 psycopg2
