@@ -52,7 +52,7 @@ factory-boy==3.3.0
     # via -r dev-requirements.in
 faker==19.3.1
     # via factory-boy
-flake8==6.1.0
+flake8==7.0.0
     # via -r dev-requirements.in
 freezegun==1.4.0
     # via -r dev-requirements.in
@@ -94,7 +94,7 @@ platformdirs==3.10.0
     # via black
 pycodestyle==2.11.0
     # via flake8
-pyflakes==3.1.0
+pyflakes==3.2.0
     # via flake8
 pygments==2.16.1
     # via
