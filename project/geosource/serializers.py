@@ -365,7 +365,7 @@ class CSVSourceSerializer(FileSourceSerializer):
     coordinates_field_count = serializers.CharField(required=False)
     coordinates_separator = serializers.CharField(required=False)
     geom_type = serializers.ChoiceField(
-        default=GeometryTypes.Point, choices=GeometryTypes.choices()
+        default=GeometryTypes.Point, choices=GeometryTypes.choices
     )
 
     class Meta:
