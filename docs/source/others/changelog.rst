@@ -2,6 +2,14 @@
 Changelog
 ==========
 
+2024.01.0      (2024-01-12)
+---------------------------
+
+**Improvements:**
+
+- Backend preparation to group layer by variables
+
+
 2023.11.2      (2023-11-22)
 ---------------------------
 
