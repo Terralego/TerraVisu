@@ -256,6 +256,8 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         records, _ = self._get_records(50)
 
         fields = {}
+        if records is None:
+            return {"count": 0}
 
         for record in records:
             record.pop(self.SOURCE_GEOM_ATTRIBUTE)
