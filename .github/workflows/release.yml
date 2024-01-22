@@ -93,7 +93,7 @@ jobs:
         if: steps.cache-front.outputs.cache-hit != 'true'
         working-directory: ./front
         run: |
-          npx react-scripts build
+          npm run build
 
       - uses: docker/setup-buildx-action@v3
 
