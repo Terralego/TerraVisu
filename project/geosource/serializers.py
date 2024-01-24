@@ -6,6 +6,7 @@ from django.contrib.gis.gdal.error import GDALException
 from django.contrib.gis.geos import GEOSGeometry
 from django.db import transaction
 from django.utils.translation import gettext as _
+from geostore import GeometryTypes
 from psycopg2 import sql
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -15,7 +16,6 @@ from .models import (
     CSVSource,
     Field,
     GeoJSONSource,
-    GeometryTypes,
     PostGISSource,
     ShapefileSource,
     Source,
@@ -367,7 +367,7 @@ class CSVSourceSerializer(FileSourceSerializer):
     coordinates_field_count = serializers.CharField(required=False)
     coordinates_separator = serializers.CharField(required=False)
     geom_type = serializers.ChoiceField(
-        default=GeometryTypes.Point, choices=GeometryTypes.choices()
+        default=GeometryTypes.Point, choices=GeometryTypes.choices
     )
 
     class Meta:

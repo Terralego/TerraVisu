@@ -90,6 +90,8 @@ class Scene(models.Model):
                 view=self,
                 label=current_node["label"],
                 exclusive=current_node.get("exclusive", False),
+                variables=current_node.get("variables", []),
+                by_variable=current_node.get("byVariable", False),
                 selectors=current_node.get("selectors"),
                 settings=current_node.get("settings", {}),
                 order=order,
@@ -102,6 +104,7 @@ class Scene(models.Model):
             # Handle layers
             layer = Layer.objects.get(pk=current_node["geolayer"])
             layer.group = parent
+            layer.variables = current_node.get("variables", [])
             layer.order = order
             layer.save(wizard_update=False)
 
@@ -164,6 +167,8 @@ class LayerGroup(models.Model):
     )
     order = models.IntegerField(default=0)
     exclusive = models.BooleanField(default=False)
+    by_variable = models.BooleanField(default=False)
+    variables = models.JSONField(default=list, blank=True)
     selectors = models.JSONField(null=True, default=None)
     settings = models.JSONField(default=dict)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -220,6 +225,7 @@ class Layer(CloneMixin, models.Model):
     )
     interactions = models.JSONField(default=list, blank=True)
     advanced_style = models.JSONField(default=dict, blank=True)
+    variables = models.JSONField(default=list, blank=True)
     fields = models.ManyToManyField(Field, through="FilterField")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
