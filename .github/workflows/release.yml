@@ -42,7 +42,7 @@ jobs:
 
       - name: Cache admin
         id: cache-admin
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ./admin/build
           key: admin-${{ env.ADMIN_CACHE_KEY }}
@@ -70,7 +70,7 @@ jobs:
 
       - name: Cache front
         id: cache-front
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: ./front/build
           key: front-${{ env.FRONT_CACHE_KEY }}
@@ -93,7 +93,7 @@ jobs:
         if: steps.cache-front.outputs.cache-hit != 'true'
         working-directory: ./front
         run: |
-          npx react-scripts build
+          npm run build
 
       - uses: docker/setup-buildx-action@v3
 

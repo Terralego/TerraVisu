@@ -2,12 +2,35 @@
 Changelog
 ==========
 
-2023.11.2+dev  (XXXX-XX-XX)
+
+2024.01.2+dev  (XXXX-XX-XX)
 ---------------------------
 
 **Improvements:**
 
 - Add "In progress" status to source
+
+
+2024.01.1      (2024-01-22)
+---------------------------
+
+**Improvements:**
+- Terra-front is now part of Visu-front
+
+**New features:**
+- Support for layers grouped by variables (admin & front)
+
+**Bug fixes:**
+- New icon for layer's informations (front)
+- Fix piecharts going over legends (front)
+- Remove options to display labels on secondary styles (admin)
+
+2024.01.0      (2024-01-12)
+---------------------------
+
+**Improvements:**
+
+- Backend preparation to group layer by variables
 
 
 2023.11.2      (2023-11-22)

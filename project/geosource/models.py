@@ -111,7 +111,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
 
     id_field = models.CharField(max_length=255, default="id")
     geom_type = models.IntegerField(
-        choices=GeometryTypes.choices(), null=True, blank=True
+        choices=GeometryTypes.choices, null=True, blank=True
     )
 
     settings = models.JSONField(default=dict, blank=True)
@@ -257,6 +257,8 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         records, _ = self._get_records(50)
 
         fields = {}
+        if records is None:
+            return {"count": 0}
 
         for record in records:
             record.pop(self.SOURCE_GEOM_ATTRIBUTE)

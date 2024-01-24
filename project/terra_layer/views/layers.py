@@ -466,6 +466,8 @@ class SceneTreeAPIView(APIView):
         group_content = {
             "group": group.label,
             "exclusive": group.exclusive,
+            "byVariable": group.by_variable,
+            "variables": group.variables,
             "selectors": group.selectors,
             "order": group.order,
             "layers": [],
@@ -524,6 +526,7 @@ class SceneTreeAPIView(APIView):
             "source_filter": layer.source_filter,
             "layers": self.get_layers_list_for_layer(layer),
             "legends": layer.legends,
+            "variables": layer.variables,
             "mainField": main_field,
             "filters": {
                 "layer": layer.source.slug,
