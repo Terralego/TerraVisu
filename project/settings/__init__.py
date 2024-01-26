@@ -310,6 +310,11 @@ CONSTANCE_CONFIG = {
         _("Define custom MapboxDraw style for the distance measure control"),
         "json_field",
     ),
+    "SEARCH_IN_LAYERS": (
+        True,
+        _("Enable search in layers in the search bar map control"),
+        bool,
+    ),
     "SEARCH_IN_LOCATIONS": (
         False,
         _("Enable search in locations in the search bar map control"),
@@ -393,6 +398,7 @@ CONSTANCE_CONFIG_FIELDSETS = {
             "OPENID_DEFAULT_LOGIN_BUTTON_TEXT",
             "MEASURE_CONTROL",
             "MEASURE_DRAW_STYLES",
+            "SEARCH_IN_LAYERS",
             "SEARCH_IN_LOCATIONS",
             "SEARCH_IN_LOCATIONS_PROVIDER",
             "NOMINATIM_URL",

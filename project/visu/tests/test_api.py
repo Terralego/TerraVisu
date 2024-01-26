@@ -47,6 +47,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                         "enable": False,
                         "styles": [],
                     },
+                    "searchInLayers": True,
                     "searchInLocations": {
                         "enable": False,
                         "searchProvider": {"provider": "Nominatim", "options": {}},
@@ -108,6 +109,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                         "enable": False,
                         "styles": [],
                     },
+                    "searchInLayers": True,
                     "searchInLocations": {
                         "enable": True,
                         "searchProvider": {
