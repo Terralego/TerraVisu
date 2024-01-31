@@ -2,7 +2,7 @@
 Configuration Django
 =====================
 
-Le chemin d’accès à l’interface d'administration Django est toujours constitué de l’URL du visualiseur suivis de ``/config``.
+Le chemin d’accès à l’interface de configuration Django est toujours constitué de l’URL du visualiseur suivis de ``/config``.
 
 --------------------------
 Panneau de configuration
