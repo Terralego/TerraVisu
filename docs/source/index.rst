@@ -15,6 +15,7 @@ Welcome to TerraVisu's documentation!
 
    user_manual/user_guide.rst
    user_manual/admin_user_guide.rst
+   user_manual/django_configuration.rst
 
 .. toctree::
    :maxdepth: 2
