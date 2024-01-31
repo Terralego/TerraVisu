@@ -2,6 +2,12 @@
 Changelog
 ==========
 
+2024.01.1 +dev (XXXX-XX-XX)
+---------------------------
+
+**Documentation:**
+- Add Django configuration doc
+
 2024.01.1      (2024-01-22)
 ---------------------------
 
