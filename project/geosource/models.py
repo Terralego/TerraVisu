@@ -438,6 +438,7 @@ class GeoJSONSource(Source):
         verbose_name = _("GeoJSON Source")
         verbose_name_plural = _("GeoJSON Sources")
 
+
 class ShapefileSource(Source):
     # Zipped ShapeFile
     file = models.FileField(upload_to="geosource/shapefile/%Y/")
@@ -476,6 +477,7 @@ class ShapefileSource(Source):
     class Meta:
         verbose_name = _("Shapefile Source")
         verbose_name_plural = _("Shapefile Sources")
+
 
 class CommandSource(Source):
     command = models.CharField(max_length=255)
@@ -533,6 +535,7 @@ class WMTSSource(Source):
     class Meta:
         verbose_name = _("WMTS Source")
         verbose_name_plural = _("WMTS Sources")
+
 
 class CSVSource(Source):
     SEPARATORS = {

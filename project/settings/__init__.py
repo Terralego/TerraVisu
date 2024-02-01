@@ -356,60 +356,78 @@ CONSTANCE_CONFIG = {
     ),
 }
 
-CONSTANCE_CONFIG_FIELDSETS = {
-    "General Options": {"fields": ("INSTANCE_TITLE",)},
-    "Theme Options": {
-        "fields": (
-            "INSTANCE_LOGO",
-            "INSTANCE_LOGO_FRONTEND_URL",
-            "INSTANCE_FAVICON",
-            "INSTANCE_SPLASHSCREEN",
-            "INSTANCE_CREDITS",
-            "INSTANCE_INFO_CONTENT",
-        ),
-        "collapse": True,
-    },
-    "Map BBOX options": {
-        "fields": (
-            "MAP_BBOX_LNG_MIN",
-            "MAP_BBOX_LNG_MAX",
-            "MAP_BBOX_LAT_MIN",
-            "MAP_BBOX_LAT_MAX",
-        ),
-        "collapse": True,
-    },
-    "Map Zoom options": {
-        "fields": ("MAP_MAX_ZOOM", "MAP_MIN_ZOOM"),
-        "collapse": True,
-    },
-    "Map default options": {
-        "fields": ("MAP_DEFAULT_ZOOM", "MAP_DEFAULT_LNG", "MAP_DEFAULT_LAT"),
-        "collapse": True,
-    },
-    "Mapbox options": {
-        "fields": ("MAPBOX_ACCESS_TOKEN",),
-        "collapse": True,
-    },
-    "Frontend options": {
-        "fields": (
-            "VIEW_ROOT_PATH",
-            "OPENID_SSO_LOGIN_BUTTON_TEXT",
-            "OPENID_DEFAULT_LOGIN_BUTTON_TEXT",
-            "MEASURE_CONTROL",
-            "MEASURE_DRAW_STYLES",
-            "SEARCH_IN_LAYERS",
-            "SEARCH_IN_LOCATIONS",
-            "SEARCH_IN_LOCATIONS_PROVIDER",
-            "NOMINATIM_URL",
-            "NOMINATIM_USE_VIEWBOX",
-            "NOMINATIM_VIEWBOX_MIN_LAT",
-            "NOMINATIM_VIEWBOX_MIN_LONG",
-            "NOMINATIM_VIEWBOX_MAX_LAT",
-            "NOMINATIM_VIEWBOX_MAX_LONG",
-        ),
-        "collapse": True,
-    },
-}
+CONSTANCE_CONFIG_FIELDSETS = (
+    (
+        _("General Options"),
+        {
+            "fields": (
+                "INSTANCE_TITLE",
+                "INSTANCE_LOGO",
+                "INSTANCE_LOGO_FRONTEND_URL",
+                "INSTANCE_FAVICON",
+                "INSTANCE_SPLASHSCREEN",
+                "INSTANCE_CREDITS",
+                "INSTANCE_INFO_CONTENT",
+            ),
+            "collapse": False,
+        },
+    ),
+    (
+        _("Map max BBOX"),
+        {
+            "fields": (
+                "MAP_BBOX_LNG_MIN",
+                "MAP_BBOX_LNG_MAX",
+                "MAP_BBOX_LAT_MIN",
+                "MAP_BBOX_LAT_MAX",
+            ),
+            "collapse": False,
+        },
+    ),
+    (
+        _("Map zoom range"),
+        {
+            "fields": ("MAP_MAX_ZOOM", "MAP_MIN_ZOOM"),
+            "collapse": False,
+        },
+    ),
+    (
+        _("Map default position"),
+        {
+            "fields": ("MAP_DEFAULT_ZOOM", "MAP_DEFAULT_LNG", "MAP_DEFAULT_LAT"),
+            "collapse": False,
+        },
+    ),
+    (
+        _("Mapbox options"),
+        {
+            "fields": ("MAPBOX_ACCESS_TOKEN",),
+            "collapse": False,
+        },
+    ),
+    (
+        _("Other options"),
+        {
+            "fields": (
+                "VIEW_ROOT_PATH",
+                "OPENID_SSO_LOGIN_BUTTON_TEXT",
+                "OPENID_DEFAULT_LOGIN_BUTTON_TEXT",
+                "MEASURE_CONTROL",
+                "MEASURE_DRAW_STYLES",
+                "SEARCH_IN_LAYERS",
+                "SEARCH_IN_LOCATIONS",
+                "SEARCH_IN_LOCATIONS_PROVIDER",
+                "NOMINATIM_URL",
+                "NOMINATIM_USE_VIEWBOX",
+                "NOMINATIM_VIEWBOX_MIN_LAT",
+                "NOMINATIM_VIEWBOX_MIN_LONG",
+                "NOMINATIM_VIEWBOX_MAX_LAT",
+                "NOMINATIM_VIEWBOX_MAX_LONG",
+            ),
+            "collapse": False,
+        },
+    ),
+)
 
 CONSTANCE_BACKEND = "constance.backends.database.DatabaseBackend"
 CONSTANCE_DATABASE_CACHE_BACKEND = "default"

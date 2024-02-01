@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-01 14:54+0000\n"
+"POT-Creation-Date: 2024-02-01 15:13+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -284,6 +284,24 @@ msgid "Maximum latitude coordinate for nominatim viewbox"
 msgstr ""
 
 msgid "Maximum longitude coordinate for nominatim viewbox"
+msgstr ""
+
+msgid "General Options"
+msgstr ""
+
+msgid "Map max BBOX"
+msgstr ""
+
+msgid "Map zoom range"
+msgstr ""
+
+msgid "Map default position"
+msgstr ""
+
+msgid "Mapbox options"
+msgstr ""
+
+msgid "Other options"
 msgstr ""
 
 msgid "Layer identifier"

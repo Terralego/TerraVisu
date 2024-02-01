@@ -69,6 +69,7 @@ class User(AbstractBaseUser, PermissionsMixin):
         verbose_name = _("User")
         verbose_name_plural = _("Users")
 
+
 class FunctionalPermission(Permission):
     original = models.OneToOneField(
         Permission, on_delete=models.CASCADE, parent_link=True
