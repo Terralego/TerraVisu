@@ -2,6 +2,15 @@
 Changelog
 ==========
 
+2024.02.1+dev  (XXXX-XX-XX)
+---------------------------
+
+**Improvements:**
+
+- Switch from django-grappelli to django-admin-interface for config dashboard
+- Improve config dashboard
+
+
 2024.02.1      (2024-02-01)
 ---------------------------
 
