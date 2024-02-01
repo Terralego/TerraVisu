@@ -54,3 +54,6 @@ lint: black isort flake8
 
 deps:
 	docker compose run --rm web bash -c "pip-compile && pip-compile dev-requirements.in"
+
+django:
+	docker compose run --rm web ./manage.py $(filter-out $@,$(MAKECMDGOALS))

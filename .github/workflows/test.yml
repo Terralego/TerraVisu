@@ -26,17 +26,21 @@ jobs:
           cp app.env.dist app.env
           docker compose build web
 
-      - name: Test migrations
-        run: |
-          docker compose run --user root --rm web ./manage.py migrate
-
       - name: Check migrations
         run: |
           docker compose run --user root --rm web ./manage.py makemigrations --check
 
+      - name: Test migrations
+        run: |
+          docker compose run --user root --rm web ./manage.py migrate
+
       - name: Verify translation files
         run: |
           docker compose run --user root --rm web ./manage.py makemessages -a --no-location --no-obsolete
+
+      - name: Check initial data
+        run: |
+          docker compose run --user root --rm web ./manage.py loaddata project/fixtures/initial.json
 
       - uses: tj-actions/verify-changed-files@v17
         id: verify-changed-files
