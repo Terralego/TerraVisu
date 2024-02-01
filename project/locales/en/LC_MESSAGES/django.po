@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-31 15:45+0000\n"
+"POT-Creation-Date: 2024-02-01 14:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,9 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "Configuration panel / Debug"
+msgstr ""
+
+msgid "Accounts"
 msgstr ""
 
 msgid "Is able to create, delete, update users"
@@ -57,6 +60,12 @@ msgid ""
 msgstr ""
 
 msgid "date joined"
+msgstr ""
+
+msgid "User"
+msgstr ""
+
+msgid "Users"
 msgstr ""
 
 msgid "Functional permission"
@@ -126,6 +135,42 @@ msgid "Source refreshed successfully"
 msgstr ""
 
 msgid "Source refreshed partially"
+msgstr ""
+
+msgid "PostGIS Source"
+msgstr ""
+
+msgid "PostGIS Sources"
+msgstr ""
+
+msgid "GeoJSON Source"
+msgstr ""
+
+msgid "GeoJSON Sources"
+msgstr ""
+
+msgid "Shapefile Source"
+msgstr ""
+
+msgid "Shapefile Sources"
+msgstr ""
+
+msgid "Command Source"
+msgstr ""
+
+msgid "Command Sources"
+msgstr ""
+
+msgid "WMTS Source"
+msgstr ""
+
+msgid "WMTS Sources"
+msgstr ""
+
+msgid "CSV Source"
+msgstr ""
+
+msgid "CSV Sources"
 msgstr ""
 
 msgid "latlong_field must be defined when coordinates are set to one column"

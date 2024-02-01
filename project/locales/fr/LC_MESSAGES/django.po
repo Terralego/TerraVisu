@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-31 15:45+0000\n"
+"POT-Creation-Date: 2024-02-01 14:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,6 +20,9 @@ msgstr ""
 
 msgid "Configuration panel / Debug"
 msgstr "Panneau de configuration / Debug"
+
+msgid "Accounts"
+msgstr ""
 
 msgid "Is able to create, delete, update users"
 msgstr "Peut créer, supprimer, mettre à jour des utilisateurs"
@@ -60,6 +63,12 @@ msgstr ""
 
 msgid "date joined"
 msgstr "date d'inscription"
+
+msgid "User"
+msgstr "Utilisateur"
+
+msgid "Users"
+msgstr "Utilisateurs"
 
 msgid "Functional permission"
 msgstr "Permission fonctionnelle"
@@ -129,6 +138,42 @@ msgstr "Source actualisée avec succès"
 
 msgid "Source refreshed partially"
 msgstr "Source en partie actualisée"
+
+msgid "PostGIS Source"
+msgstr "Source PostGIS"
+
+msgid "PostGIS Sources"
+msgstr "Sources PostGIS"
+
+msgid "GeoJSON Source"
+msgstr "Source GeoJSON"
+
+msgid "GeoJSON Sources"
+msgstr "Sources GeoJSON"
+
+msgid "Shapefile Source"
+msgstr "Source Shapefile"
+
+msgid "Shapefile Sources"
+msgstr "Sources Shapefile"
+
+msgid "Command Source"
+msgstr "Source Commande"
+
+msgid "Command Sources"
+msgstr "Sources Commandes"
+
+msgid "WMTS Source"
+msgstr "Source WMTS"
+
+msgid "WMTS Sources"
+msgstr "Sources WMTS"
+
+msgid "CSV Source"
+msgstr "Source CSV"
+
+msgid "CSV Sources"
+msgstr "Sources CSV"
 
 msgid "latlong_field must be defined when coordinates are set to one column"
 msgstr ""

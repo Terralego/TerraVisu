@@ -398,6 +398,10 @@ class PostGISSource(Source):
 
         return (cursor, [])
 
+    class Meta:
+        verbose_name = _("PostGIS Source")
+        verbose_name_plural = _("PostGIS Sources")
+
 
 class GeoJSONSource(Source):
     file = models.FileField(upload_to="geosource/geojson/%Y/")
@@ -430,6 +434,9 @@ class GeoJSONSource(Source):
                 errors.append(f"Feature id {feature_id}: {exc}")
         return (records, errors)
 
+    class Meta:
+        verbose_name = _("GeoJSON Source")
+        verbose_name_plural = _("GeoJSON Sources")
 
 class ShapefileSource(Source):
     # Zipped ShapeFile
@@ -466,6 +473,9 @@ class ShapefileSource(Source):
             # No errors caught for Shapefile
             return records, []
 
+    class Meta:
+        verbose_name = _("Shapefile Source")
+        verbose_name_plural = _("Shapefile Sources")
 
 class CommandSource(Source):
     command = models.CharField(max_length=255)
@@ -496,6 +506,10 @@ class CommandSource(Source):
     def _get_records(self, limit=None):
         return [None, None]
 
+    class Meta:
+        verbose_name = _("Command Source")
+        verbose_name_plural = _("Command Sources")
+
 
 class WMTSSource(Source):
     minzoom = models.IntegerField(null=True)
@@ -516,6 +530,9 @@ class WMTSSource(Source):
     def _get_records(self, limit=None):
         return [None, None]
 
+    class Meta:
+        verbose_name = _("WMTS Source")
+        verbose_name_plural = _("WMTS Sources")
 
 class CSVSource(Source):
     SEPARATORS = {
@@ -735,3 +752,7 @@ class CSVSource(Source):
     @property
     def coordinates_separator(self):
         return self.settings.get("coordinates_separator")
+
+    class Meta:
+        verbose_name = _("CSV Source")
+        verbose_name_plural = _("CSV Sources")

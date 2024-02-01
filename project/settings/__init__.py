@@ -44,8 +44,8 @@ INSTALLED_APPS = [
     "django.contrib.contenttypes",
     "constance",
     "constance.backends.database",  # constance: after contenttypes and before grappelli
-    "grappelli.dashboard",
-    "grappelli",
+    "admin_interface",
+    "colorfield",
     "tinymce",
     "clearcache",
     "model_clone",
@@ -58,7 +58,6 @@ INSTALLED_APPS = [
     "django_auth_oidc",
     "rest_framework",
     "rest_framework_jwt",
-    "rest_framework_jwt.blacklist",
     "rest_framework_gis",
     "crispy_forms",
     "crispy_bootstrap5",
