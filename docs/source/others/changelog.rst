@@ -2,6 +2,20 @@
 Changelog
 ==========
 
+2024.02.1      (2024-02-01)
+---------------------------
+
+**New features :**
+
+- Admin interface for widgets configuration (admin)
+- Widgets can now have an icon and a title (admin & front)
+- Widgets can be limited to a specified bbox (admin & front)
+- Option to deactivate search in layers (config & front)
+
+**Bug fixes :**
+
+- Fix build non-split for CSS overrides
+
 2024.01.1      (2024-01-22)
 ---------------------------
 
