@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-01 15:13+0000\n"
+"POT-Creation-Date: 2024-02-02 09:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid "Configuration panel / Debug"
+#, python-brace-format
+msgid "Welcome to {config.INSTANCE_TITLE} debug interface."
 msgstr ""
 
 msgid "Accounts"
@@ -90,6 +91,13 @@ msgid "Reset password"
 msgstr ""
 
 msgid "OIDC connect"
+msgstr ""
+
+msgid "{config.INSTANCE_TITLE}: {_('Configuration')}"
+msgstr ""
+
+#, python-brace-format
+msgid "Welcome to {config.INSTANCE_TITLE} configuration interface."
 msgstr ""
 
 msgid "Instance customization"
