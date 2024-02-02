@@ -2,17 +2,17 @@
 Configuration Django
 =====================
 
-Le chemin d’accès à l’interface de configuration Django est toujours constitué de l’URL du visualiseur suivis de ``/config``.
+Le chemin d’accès à l’interface d'administration Django est toujours constitué de l’URL du visualiseur suivis de ``/config``.
 
 --------------------------
 Panneau de configuration
 --------------------------
 
-.. figure:: ../_static/images/django/django-conf-pannel.png
-   :alt: Panneau de configuration / Debug
+.. figure:: ../_static/images/django/config.png
+   :alt: Panneau de configuration
    :align: center
 
-   Panneau de configuration / Debug
+   Panneau de configuration
 
 --------------------------
 Options de configuration
@@ -22,6 +22,12 @@ L'entrée ``Config`` dans le panneau de configuration offre le moyen à l'utilis
 
 Constance
 ----------
+
+.. figure:: ../_static/images/django/config2.png
+   :alt: Page de configuration
+   :align: center
+
+   Page de configuration
 
 Frontend options
 ~~~~~~~~~~~~~~~~
