@@ -2,6 +2,18 @@
 Changelog
 ==========
 
+2024.02.3      (2024-02-02)
+---------------------------
+
+**Breaking changes**
+
+- To access new debug panel, you should add 'debug' exception in nginx configuration file.
+
+**Improvements:**
+
+- Split Config dashboard debug entries in another /debug/ panel.
+
+
 2024.02.2      (2024-02-01)
 ---------------------------
 

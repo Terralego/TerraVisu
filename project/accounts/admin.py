@@ -3,9 +3,12 @@ from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from project.accounts.models import FunctionalPermission, PermanentAccessToken, User
+from project.admin import config_site
 
-admin.site.site_header = f"{config.INSTANCE_TITLE}"
-admin.site.index_title = _("Configuration panel / Debug")
+admin.site.index_title = f'{config.INSTANCE_TITLE}: {_("Debug panel")}'
+admin.site.site_header = f'{config.INSTANCE_TITLE}: {_("Debug panel")}'
+admin.site.index_title = _(f"Welcome to {config.INSTANCE_TITLE} debug interface.")
+
 admin.site.register(User)
 
 
@@ -25,9 +28,10 @@ class FunctionalPermissionAdmin(admin.ModelAdmin):
         return False
 
 
-@admin.register(PermanentAccessToken)
 class PermanentAccessTokenAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "created_at", "updated_at")
     list_filter = ("user", "created_at", "updated_at")
     search_fields = ("user__email", "token")
     readonly_fields = ("token",)
+
+config_site.register(PermanentAccessToken, PermanentAccessTokenAdmin)
