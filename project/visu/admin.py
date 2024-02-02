@@ -1,6 +1,6 @@
 from admin_interface.admin import ThemeAdmin
 from admin_interface.models import Theme
-from constance.admin import ConstanceAdmin, Config
+from constance.admin import Config, ConstanceAdmin
 from django.contrib import admin
 
 from project.admin import config_site

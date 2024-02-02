@@ -8,4 +8,5 @@ class ConfigSite(AdminSite):
     site_title = _(f"{config.INSTANCE_TITLE}: {_('Configuration')}")
     index_title = _(f"Welcome to {config.INSTANCE_TITLE} configuration interface.")
 
-config_site = ConfigSite(name='config_site')
+
+config_site = ConfigSite(name="config_site")

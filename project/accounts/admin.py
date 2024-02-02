@@ -34,4 +34,5 @@ class PermanentAccessTokenAdmin(admin.ModelAdmin):
     search_fields = ("user__email", "token")
     readonly_fields = ("token",)
 
+
 config_site.register(PermanentAccessToken, PermanentAccessTokenAdmin)
