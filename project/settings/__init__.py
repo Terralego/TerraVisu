@@ -93,6 +93,7 @@ TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
+            PROJECT_DIR / "project" / "templates",
             PROJECT_DIR / "var" / "conf" / "templates",
         ],
         "APP_DIRS": True,
