@@ -6,6 +6,7 @@ Changelog
 ---------------------------
 
 **Documentation:**
+
 - Add Django configuration doc
 
 2024.02.3      (2024-02-02)
