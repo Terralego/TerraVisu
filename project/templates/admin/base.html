@@ -1,0 +1,12 @@
+{% extends "admin/base.html" %}
+
+{% block userlinks %}
+    {% if user.is_superuser and request.path|slice:":7" != "/debug/" %}
+    <a href="/debug/">Debug</a> /
+    {% endif %}
+    {% if request.path|slice:":8" != "/config/" %}
+    <a href="/config/">Config</a> /
+    {% endif %}
+    <a href="/admin/">Admin</a> /
+    {{ block.super }}
+{% endblock %}

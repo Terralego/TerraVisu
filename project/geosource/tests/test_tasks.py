@@ -140,3 +140,33 @@ class TaskTestCase(TestCase):
             source.report.refresh_from_db()
             self.assertIsInstance(source.report.message, str)
             self.assertIsInstance(source.report.ended, datetime)
+            self.assertEqual(source.report.status, SourceReporting.Status.ERROR.value)
+
+    def test_set_failure_state_task_when_report_status_none(
+        self,
+        mock_index_feature,
+        mock_es_delete,
+        mock_es_create,
+    ):
+        logging.disable(logging.ERROR)
+        source_report = SourceReporting.objects.create(status=None)
+        source = GeoJSONSource.objects.create(
+            name="exception-test",
+            geom_type=GeometryTypes.Point,
+            file=get_file("test.geojson"),
+            report=source_report,
+        )
+
+        self.assertIsNone(source.report.ended)
+        try:
+            run_model_object_method.apply(
+                (
+                    source._meta.app_label,
+                    source._meta.model_name,
+                    source.pk,
+                    "method_that_does_not_exist",
+                )
+            )
+        except AttributeError:
+            source.report.refresh_from_db()
+            self.assertEqual(source.report.status, SourceReporting.Status.ERROR.value)

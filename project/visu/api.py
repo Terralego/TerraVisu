@@ -161,6 +161,7 @@ class SettingsFrontendView(CommonSettings, APIView):
                         "enable": config.MEASURE_CONTROL,
                         "styles": config.MEASURE_DRAW_STYLES,
                     },
+                    "searchInLayers": config.SEARCH_IN_LAYERS,
                     "searchInLocations": {
                         "enable": config.SEARCH_IN_LOCATIONS,
                         "searchProvider": self._get_search_provider_config(),

@@ -14,5 +14,5 @@ class LayerAdminTesCase(TestCase):
         self.client.force_login(self.user)
 
     def test_list(self):
-        response = self.client.get("/config/terra_layer/layer/")
+        response = self.client.get("/debug/terra_layer/layer/")
         self.assertEqual(response.status_code, 200)

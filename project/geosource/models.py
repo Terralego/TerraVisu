@@ -10,6 +10,7 @@ import pyexcel
 from celery.result import AsyncResult
 from celery.utils.log import LoggingProxy
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.gis.gdal.error import GDALException
 from django.contrib.gis.geos import GEOSGeometry
@@ -32,6 +33,8 @@ from .exceptions import CSVSourceException, GeoJSONSourceException, SourceExcept
 from .fields import LongURLField
 from .mixins import CeleryCallMethodsMixin
 from .signals import refresh_data_done
+
+User = get_user_model()
 
 # Decimal fields must be returned as float
 DEC2FLOAT = psycopg2.extensions.new_type(
@@ -88,7 +91,7 @@ class SourceReporting(models.Model):
     def reset(self):
         self.status = self.Status.PENDING.value
         self.message = ""
-        self.started = timezone.now()
+        self.started = None
         self.ended = None
         self.added_lines = 0
         self.deleted_lines = 0
@@ -102,6 +105,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         NEED_SYNC = 0, _("Need sync")
         PENDING = 1, _("Pending")
         DONE = 2, _("Done")
+        IN_PROGRESS = 3, _("In progress")
 
     name = models.CharField(max_length=255, unique=True)
     credit = models.TextField(blank=True)
@@ -124,6 +128,9 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     last_refresh = models.DateTimeField(default=timezone.now)
     status = models.PositiveSmallIntegerField(
         choices=Status.choices, default=Status.NEED_SYNC
+    )
+    author = models.ForeignKey(
+        User, related_name="sources", blank=True, null=True, on_delete=models.SET_NULL
     )
 
     SOURCE_GEOM_ATTRIBUTE = "_geom_"
@@ -156,9 +163,8 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         return next_run < now
 
     def refresh_data(self):
-        if self.status != self.Status.PENDING.value:
-            self.status = self.Status.PENDING.value
-            self.save()
+        self.status = self.Status.IN_PROGRESS
+        self.save()
 
         layer = self.get_layer()
         try:
@@ -184,11 +190,12 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     def _refresh_data(self, es_index=None):
         if not self.report:
             self.report = SourceReporting.objects.create(
-                started=timezone.now(), status=SourceReporting.Status.PENDING.value
+                started=timezone.now(), status=SourceReporting.Status.PENDING
             )
         else:
             self.report.reset()
-            self.report.status = SourceReporting.Status.PENDING.value
+            self.report.status = SourceReporting.Status.PENDING
+            self.report.started = timezone.now()
             self.report.save()
 
         layer = self.get_layer()
@@ -398,6 +405,10 @@ class PostGISSource(Source):
 
         return (cursor, [])
 
+    class Meta:
+        verbose_name = _("PostGIS Source")
+        verbose_name_plural = _("PostGIS Sources")
+
 
 class GeoJSONSource(Source):
     file = models.FileField(upload_to="geosource/geojson/%Y/")
@@ -429,6 +440,10 @@ class GeoJSONSource(Source):
                 feature_id = record.get("properties", {}).get("id", i)
                 errors.append(f"Feature id {feature_id}: {exc}")
         return (records, errors)
+
+    class Meta:
+        verbose_name = _("GeoJSON Source")
+        verbose_name_plural = _("GeoJSON Sources")
 
 
 class ShapefileSource(Source):
@@ -466,6 +481,10 @@ class ShapefileSource(Source):
             # No errors caught for Shapefile
             return records, []
 
+    class Meta:
+        verbose_name = _("Shapefile Source")
+        verbose_name_plural = _("Shapefile Sources")
+
 
 class CommandSource(Source):
     command = models.CharField(max_length=255)
@@ -496,6 +515,10 @@ class CommandSource(Source):
     def _get_records(self, limit=None):
         return [None, None]
 
+    class Meta:
+        verbose_name = _("Command Source")
+        verbose_name_plural = _("Command Sources")
+
 
 class WMTSSource(Source):
     minzoom = models.IntegerField(null=True)
@@ -515,6 +538,10 @@ class WMTSSource(Source):
 
     def _get_records(self, limit=None):
         return [None, None]
+
+    class Meta:
+        verbose_name = _("WMTS Source")
+        verbose_name_plural = _("WMTS Sources")
 
 
 class CSVSource(Source):
@@ -735,3 +762,7 @@ class CSVSource(Source):
     @property
     def coordinates_separator(self):
         return self.settings.get("coordinates_separator")
+
+    class Meta:
+        verbose_name = _("CSV Source")
+        verbose_name_plural = _("CSV Sources")

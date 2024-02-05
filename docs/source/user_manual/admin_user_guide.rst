@@ -1038,6 +1038,8 @@ Vous arrivez sur une page présentant la liste de toutes les vues déclarées.
 
 .. image :: ../_static/images/admin/admin_vue_liste.png
 
+.. _creer-une-vue:
+
 Créer une vue
 -------------
 

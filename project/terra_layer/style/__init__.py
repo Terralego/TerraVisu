@@ -90,9 +90,9 @@ def generate_style_from_wizard(geo_layer, config):
             value = prop_config["value"]
             no_value = prop_config.get("no_value")
             data_field = prop_config.get("field")
-            map_style.setdefault(paint_or_layout, {})[
-                map_style_prop
-            ] = get_style_no_value_condition(["get", data_field], value, no_value)
+            map_style.setdefault(paint_or_layout, {})[map_style_prop] = (
+                get_style_no_value_condition(["get", data_field], value, no_value)
+            )
         elif style_type == "variable":
             # Variable style
             data_field = prop_config["field"]
@@ -101,10 +101,10 @@ def generate_style_from_wizard(geo_layer, config):
 
             if variation_type == "color":
                 if analysis == "graduated":
-                    map_style.setdefault(paint_or_layout, {})[
-                        map_style_prop
-                    ] = gen_graduated_color_style(
-                        geo_layer, data_field, map_field, prop_config
+                    map_style.setdefault(paint_or_layout, {})[map_style_prop] = (
+                        gen_graduated_color_style(
+                            geo_layer, data_field, map_field, prop_config
+                        )
                     )
                     if prop_config.get("generate_legend"):
                         legend = gen_graduated_color_legend(
@@ -118,10 +118,13 @@ def generate_style_from_wizard(geo_layer, config):
                         # TODO reuse previous computations
                         legends.append(legend)
                 elif analysis == "categorized":
-                    map_style.setdefault(paint_or_layout, {})[
-                        map_style_prop
-                    ] = gen_categorized_any_style(
-                        geo_layer, data_field, prop_config, DEFAULT_NO_VALUE_FILL_COLOR
+                    map_style.setdefault(paint_or_layout, {})[map_style_prop] = (
+                        gen_categorized_any_style(
+                            geo_layer,
+                            data_field,
+                            prop_config,
+                            DEFAULT_NO_VALUE_FILL_COLOR,
+                        )
                     )
                     if (
                         map_style.setdefault(paint_or_layout, {})[map_style_prop]
@@ -171,10 +174,10 @@ def generate_style_from_wizard(geo_layer, config):
                         legends.append(legend)
 
                 elif analysis == "proportionnal":
-                    map_style.setdefault(paint_or_layout, {})[
-                        map_style_prop
-                    ] = gen_proportionnal_radius_style(
-                        geo_layer, data_field, map_field, prop_config
+                    map_style.setdefault(paint_or_layout, {})[map_style_prop] = (
+                        gen_proportionnal_radius_style(
+                            geo_layer, data_field, map_field, prop_config
+                        )
                     )
                     # Add sort key
                     # TODO find more smart way to do that
@@ -208,10 +211,10 @@ def generate_style_from_wizard(geo_layer, config):
 
             if variation_type == "value":
                 if analysis == "graduated":
-                    map_style.setdefault(paint_or_layout, {})[
-                        map_style_prop
-                    ] = gen_graduated_size_style(
-                        geo_layer, data_field, map_field, prop_config
+                    map_style.setdefault(paint_or_layout, {})[map_style_prop] = (
+                        gen_graduated_size_style(
+                            geo_layer, data_field, map_field, prop_config
+                        )
                     )
                     if prop_config.get("generate_legend"):
                         # TODO reuse previous computations
@@ -265,10 +268,10 @@ def generate_style_from_wizard(geo_layer, config):
                     """map_style["layout"] = {
                         f"{map_style_type}-sort-key": ["-", ["get", data_field]]
                     }"""
-                    map_style.setdefault(paint_or_layout, {})[
-                        map_style_prop
-                    ] = gen_proportionnal_size_style(
-                        geo_layer, data_field, map_field, prop_config
+                    map_style.setdefault(paint_or_layout, {})[map_style_prop] = (
+                        gen_proportionnal_size_style(
+                            geo_layer, data_field, map_field, prop_config
+                        )
                     )
                     if prop_config.get("generate_legend"):
                         # TODO reuse previous computations

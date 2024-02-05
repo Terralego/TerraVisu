@@ -1,5 +1,5 @@
 django==4.2.*
-django-grappelli
+django-admin-interface
 django-geostore
 psycopg2
 pillow
