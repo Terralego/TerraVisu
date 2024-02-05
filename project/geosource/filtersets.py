@@ -8,4 +8,4 @@ class SourceFilterSet(filters.FilterSet):
 
     class Meta:
         model = Source
-        fields = ("polymorphic_ctype", "geom_type", "q")
+        fields = ("polymorphic_ctype", "geom_type", "q", "status", "report__status")
