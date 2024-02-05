@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.parsers import JSONParser
@@ -10,8 +9,6 @@ from .models import Source, SourceReporting
 from .parsers import NestedMultipartJSONParser
 from .permissions import SourcePermission
 from .serializers import SourceListSerializer, SourceSerializer
-
-User = get_user_model()
 
 
 class SourceModelViewset(ModelViewSet):
