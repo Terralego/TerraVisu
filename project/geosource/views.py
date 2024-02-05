@@ -36,8 +36,7 @@ class SourceModelViewset(ModelViewSet):
         return Source.objects.all().order_by("-id")
 
     def perform_create(self, serializers):
-        user = User.objects.get(email=self.request.user)
-        serializers.save(author=user)
+        serializers.save(author=self.request.user)
 
     @action(detail=True, methods=["get"])
     def refresh(self, request, pk):
