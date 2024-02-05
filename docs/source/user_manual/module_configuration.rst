@@ -1,8 +1,8 @@
-=====================
-Configuration Django
-=====================
+========================
+Module de configuration
+========================
 
-Le chemin d’accès à l’interface d'administration Django est toujours constitué de l’URL du visualiseur suivis de ``/config``.
+Le chemin d’accès au module de configuration est toujours constitué de l’URL du visualiseur suivis de ``/config``.
 
 --------------------------
 Panneau de configuration
@@ -89,7 +89,7 @@ Cette emprise pourra être redéfinie au niveau de chaque vue dans l'outil d'adm
 Mapbox options
 ~~~~~~~~~~~~~~
 
-La clé Mapbox est obligatoire pour l'affichage de la carte.
+La clé Mapbox est obligatoire pour l'affichage des cartes de définition de l'empriqse spatiale dans l'outil d'administration.
 
 - ``MAPBOX_ACCESS_TOKEN`` : Clé Mapbox
 
