@@ -3,14 +3,16 @@ Changelog
 ==========
 
 
-
-2024.02.3+dev  (XXXX-XX-XX)
+2024.02.4      (2024-02-05)
 ---------------------------
+
 **Improvements:**
 
-- Add "In progress" status to source
-- Source list endpoint now also return ids of related layer
-- Add author to Source
+- Add source layers in admin list
+- Add source status and report status filter in admin
+- Add new source status, "In Progress"
+- Add author to Source, auto linked at creation
+- Add info tab to source details
 
 **Documentation:**
 
