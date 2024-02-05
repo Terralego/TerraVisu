@@ -173,6 +173,7 @@ class SourceListSerializer(serializers.ModelSerializer):
             "name",
             "geom_type",
             "report",
+            "layers",
         )
 
     def get__type(self, instance):

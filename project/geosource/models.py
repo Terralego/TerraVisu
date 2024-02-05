@@ -10,6 +10,7 @@ import pyexcel
 from celery.result import AsyncResult
 from celery.utils.log import LoggingProxy
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
 from django.contrib.gis.gdal.error import GDALException
 from django.contrib.gis.geos import GEOSGeometry
@@ -32,6 +33,8 @@ from .exceptions import CSVSourceException, GeoJSONSourceException, SourceExcept
 from .fields import LongURLField
 from .mixins import CeleryCallMethodsMixin
 from .signals import refresh_data_done
+
+User = get_user_model()
 
 # Decimal fields must be returned as float
 DEC2FLOAT = psycopg2.extensions.new_type(
@@ -125,6 +128,9 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     last_refresh = models.DateTimeField(default=timezone.now)
     status = models.PositiveSmallIntegerField(
         choices=Status.choices, default=Status.NEED_SYNC
+    )
+    author = models.ForeignKey(
+        User, related_name="sources", blank=True, null=True, on_delete=models.SET_NULL
     )
 
     SOURCE_GEOM_ATTRIBUTE = "_geom_"

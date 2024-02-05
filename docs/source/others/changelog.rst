@@ -9,6 +9,8 @@ Changelog
 **Improvements:**
 
 - Add "In progress" status to source
+- Source list endpoint now also return ids of related layer
+- Add author to Source
 
 **Documentation:**
 
