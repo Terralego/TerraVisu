@@ -2,12 +2,14 @@
 Changelog
 ==========
 
-2024.02.3 +dev (XXXX-XX-XX)
+
+2024.02.3+dev  (XXXX-XX-XX)
 ---------------------------
 
 **Documentation:**
 
-- Add Django configuration doc
+- Add configuration dashboard doc
+
 
 2024.02.3      (2024-02-02)
 ---------------------------
@@ -44,6 +46,7 @@ Changelog
 
 - Fix build non-split for CSS overrides
 
+
 2024.01.1      (2024-01-22)
 ---------------------------
 
@@ -57,6 +60,7 @@ Changelog
 - New icon for layer's informations (front)
 - Fix piecharts going over legends (front)
 - Remove options to display labels on secondary styles (admin)
+
 
 2024.01.0      (2024-01-12)
 ---------------------------

@@ -65,6 +65,10 @@ class User(AbstractBaseUser, PermissionsMixin):
         payload = JSONWebTokenAuthentication.jwt_create_payload(self)
         return JSONWebTokenAuthentication.jwt_encode_payload(payload)
 
+    class Meta:
+        verbose_name = _("User")
+        verbose_name_plural = _("Users")
+
 
 class FunctionalPermission(Permission):
     original = models.OneToOneField(

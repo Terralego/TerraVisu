@@ -12,6 +12,7 @@ from drf_spectacular.views import (
 from rest_framework.routers import SimpleRouter
 
 from project.accounts.api import FunctionalPermissionViewSet, GroupViewSet, UserViewsSet
+from project.admin import config_site
 from project.terra_layer.views.extras import BaseLayerViewSet
 
 router = SimpleRouter()
@@ -23,10 +24,10 @@ router.register(r"permissions", FunctionalPermissionViewSet, basename="permissio
 
 
 urlpatterns = [
-    path("grappelli/", include("grappelli.urls")),  # grappelli URLS
     path("tinymce/", include("tinymce.urls")),
     path("config/clearcache/", include("clearcache.urls")),
-    path("config/", admin.site.urls),
+    path("config/", config_site.urls),
+    path("debug/", admin.site.urls),
     path("oidc/", include("django_auth_oidc.urls")),
     path("accounts/", include("django.contrib.auth.urls")),
     path("base-layers/", include("mapbox_baselayer.urls")),
