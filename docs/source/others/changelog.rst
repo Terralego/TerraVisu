@@ -10,6 +10,10 @@ Changelog
 
 - Add configuration dashboard doc
 
+**Bugfix:**
+
+- Admin : Fix widgets form crashing on existing widget-less layers
+
 
 2024.02.3      (2024-02-02)
 ---------------------------
