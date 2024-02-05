@@ -14,7 +14,7 @@ Vous voulez tester par vous-même? `Une instance de démonstration est accessibl
 **Résumé des fonctionnalités :**
 
 * Naviguer dans l'interface cartographique
-* Intéragir avec les couches (filtres, table attributaire, transparence, zoom sur l'emprise, synthèse statistique)
+* Intéragir avec les couches (descriptif, filtres, table attributaire, transparence, zoom sur l'emprise, synthèse statistique)
 * Interroger les objets géographiques (infobulle au survol, fiche descriptive)
 * Afficher des fonds de cartes
 * Utiliser les outils de navigation (recherche dans les données/lieux, gestion du zoom, orientation de la carte..) 
@@ -33,7 +33,7 @@ L'interface cartographique est décomposée en 4 parties :
 * La carte : au centre, un fond de plan cartographique sur lequel se superposent des données
 * Les outils de navigation : à droite, se trouvent les outils incontournables d'une application cartographique (zoom, orientation) mais aussi d'autres outils additionnels comme le retour à l'emprise initiale, le changement de fond de plan, l'impression et le partage de la carte
 
-**Exemple du TerraVisu déployé pour la Région Sud**
+**Exemple**
 
 .. image :: ../_static/images/visu/visu_interfacecarto.png
 
@@ -47,12 +47,15 @@ Les données géographiques sont organisées dans des couches qui rassemblent de
 Au niveau d'une couche de données, vous pouvez ainsi activer les fonctionnalités suivantes :
 
 * Afficher/masquer la couche
+* Afficher/masuqer le panneau d'informations de la couche
 * Afficher/masquer la table attributaire
 * Afficher/masquer le panneau de filtres
 * Afficher/modifier la liste des filtres appliqués
 * Afficher le widget de synthèse
+* Afficher du contenu provenant d'une application externe (graphiques par exemple)
 * Zoomer sur son étendue spatiale
 * Changer son opacité
+
 
 .. image :: ../_static/images/visu/visu_interfacecarto_couche.png
 
@@ -98,11 +101,19 @@ La légende
 
 Quand les couches affichées ont des légendes, celles-ci s'affichent sur la partie droite de l'écran. C'est vous qui décidez si vous souhaitez affichez la légende et quel type de légende.
 
-**Exemple de type légende disponible**
+**Exemple de légende disponible**
 
 .. image :: ../_static/images/visu/visu_legende.png
 
 La configuration de la légende s’effectue depuis l'outil administration.
+
+Le panneau d'informations
+~~~~~~~~~~~~~~~~~~~~~~~~
+Il est possible d'associer du contenu informatif à chaque couche. Ce contenu est mis à disposition de l'utilisateur via un panneau dédié, configurable dans l'interface d'administration de la plateforme **TerraVisu**.
+
+**Exemple de panneau d'informations**
+
+.. image :: ../_static/images/visu/visu_infos.png
 
 La table attributaire
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -119,7 +130,7 @@ La table attributaire de **TerraVisu** comprend de nombreuses fonctionnalités t
 * Afficher/masquer des colonnes
 * Agrandir la table
 
-**Exemple d'une table attributaire du TerraVisu Sud Éco Foncier**
+**Exemple d'une table attributaire**
 
 .. image :: ../_static/images/visu/visu_table.png
 
@@ -143,7 +154,7 @@ Le widget
 
 Le widget permet de récapituler dans un tableau dynamique, des indicateurs utiles à l'analyse de la couche. La synthèse des informations se réactualise en fonction des éléments qui se trouvent dans l'emprise spatiale. Le widget s’affiche à droite de l’écran.
 
-**Exemple d'un widget du TerraVisu de SCoT en action**
+**Exemple d'un widget**
 
 .. image :: ../_static/images/visu/visu_widget.png
 
@@ -154,7 +165,7 @@ Le zoom sur l'étendue spatiale
 
 Cet outil permet de zoomer sur l'étendue spatiale d'une couche activée. Le zoom est particulièrement utile lorsque l'on souhaite voir l'emprise géographique des éléments filtrés d'une couche.
 
-**Exemple d'un zoom pour le TerraVisu de SeineYonne**
+**Exemple d'un zoom**
 
 .. image :: ../_static/images/visu/visu_zoomemprise.png
 
@@ -170,6 +181,14 @@ Faites glisser le curseur de droite à gauche pour modifier le pourcentage de tr
 **Exemple de transparence sur la couche des lignes de bus**
 
 .. image :: ../_static/images/visu/visu_transparence.png
+
+Les contenus externes associés
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Des contenus configurés depuis une application externe, notamment graphiques, peuvent être ajoutés à une couche. Un pictogramme et un libellé, paramétrables depuis l'interface d'administration, permet d'identifier chacun d'entre eux dans la liste des informations et outils disponibles sur la couche.
+
+**Exemple de graphique**
+
+.. image :: ../_static/images/visu/visu_graphique.png
 
 Les intéractions avec les données affichés sur la carte
 ---------------------------------------------------------
@@ -232,7 +251,7 @@ Le fait de sélectionner un résultat dans les attributs de la ou les couches ac
 Le comportement est différent si on sélectionne un résultat pour la recherche de lieu puisqu'il permet uniquement de zoomer sur l'emprise géographique correspondante sans réaliser d'intéraction avec la ou les couches activées.
 
 
-**Exemple de recherche pour le TerraVisu de SeineYonne**
+**Exemple de recherche**
 
 .. image :: ../_static/images/visu/visu_recherche.png
 
@@ -285,6 +304,6 @@ TerraVisu dispose d'une fonction de Storytelling. C'est une autre forme de visua
 
 Cette fonctionnalité peut servir à la communication ou de manuel d'utilisation.
 
-**Exemple du storytelling de Carto Collectivités**
+**Exemple de storytelling**
 
 .. image :: ../_static/images/visu/visu_storytelling.png
