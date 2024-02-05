@@ -32,6 +32,9 @@ class SourceModelViewset(ModelViewSet):
     def get_queryset(self):
         return Source.objects.all().order_by("-id")
 
+    def perform_create(self, serializers):
+        serializers.save(author=self.request.user)
+
     @action(detail=True, methods=["get"])
     def refresh(self, request, pk):
         """Schedule a refresh now"""

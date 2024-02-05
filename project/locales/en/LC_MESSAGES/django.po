@@ -136,6 +136,9 @@ msgstr ""
 msgid "Done"
 msgstr ""
 
+msgid "In progress"
+msgstr ""
+
 msgid "Failed to refresh data"
 msgstr ""
 

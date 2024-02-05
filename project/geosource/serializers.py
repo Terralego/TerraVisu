@@ -103,8 +103,6 @@ class FieldSerializer(serializers.ModelSerializer):
 
 
 class SourceReportingSerializer(serializers.ModelSerializer):
-    status = serializers.CharField(source="get_status_display")
-
     class Meta:
         fields = "__all__"
         model = SourceReporting
@@ -112,7 +110,6 @@ class SourceReportingSerializer(serializers.ModelSerializer):
 
 class SourceSerializer(PolymorphicModelSerializer):
     fields = FieldSerializer(many=True, required=False)
-    status = serializers.SerializerMethodField()
     slug = serializers.SlugField(max_length=255, read_only=True)
     report = SourceReportingSerializer(read_only=True)
 
@@ -137,7 +134,14 @@ class SourceSerializer(PolymorphicModelSerializer):
     def update(self, instance, validated_data):
         validated_data.pop("fields")
 
-        source = super().update(instance, validated_data)
+        source = super().update(
+            instance, {**validated_data, "status": Source.Status.NEED_SYNC}
+        )
+
+        if source.report:
+            source.report.reset()
+            source.report.status = SourceReporting.Status.PENDING
+            source.report.save()
 
         self._update_fields(source)
 
@@ -154,9 +158,6 @@ class SourceSerializer(PolymorphicModelSerializer):
 
         return source
 
-    def get_status(self, instance):
-        return instance.get_status_display()
-
 
 class SourceListSerializer(serializers.ModelSerializer):
     _type = serializers.SerializerMethodField()
@@ -172,6 +173,7 @@ class SourceListSerializer(serializers.ModelSerializer):
             "name",
             "geom_type",
             "report",
+            "layers",
         )
 
     def get__type(self, instance):

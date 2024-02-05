@@ -138,6 +138,9 @@ msgstr "À synchroniser"
 msgid "Done"
 msgstr "Terminé"
 
+msgid "In progress"
+msgstr "En cours"
+
 msgid "Failed to refresh data"
 msgstr "L'actualisation des données a échoué"
 

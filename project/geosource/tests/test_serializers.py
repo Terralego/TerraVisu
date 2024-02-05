@@ -4,8 +4,12 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from rest_framework.exceptions import ValidationError
 
-from project.geosource.models import CSVSource
-from project.geosource.serializers import CSVSourceSerializer, GeoJSONSourceSerializer
+from project.geosource.models import CSVSource, GeoJSONSource, Source, SourceReporting
+from project.geosource.serializers import (
+    CSVSourceSerializer,
+    GeoJSONSourceSerializer,
+    SourceSerializer,
+)
 from project.geosource.tests.helpers import get_file
 
 
@@ -188,3 +192,37 @@ class GeoJSONSourceSerializerTestCase(TestCase):
         serializer = GeoJSONSourceSerializer(data=data)
         with self.assertRaises(ValidationError):
             serializer._validate_field_infos(serializer.initial_data)
+
+
+class SourceSerializerTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.report = SourceReporting.objects.create()
+        # Use GeoJSONSource for easier testing purpose
+        cls.source = GeoJSONSource.objects.create(
+            name="test-source",
+            file=get_file("test.geojson"),
+            geom_type=0,
+            id_field="id",
+            report=cls.report,
+        )
+
+    def test_update_method_reset_status(self):
+        data = {
+            "id": self.source.id,
+            "name": "new-name",
+            "_type": "GeoJSONSource",
+            "file": [get_file("test.geojson")],
+            "fields": [],
+        }
+        serializer = SourceSerializer(data=data, partial=True)
+        self.assertTrue(
+            serializer.is_valid(),
+            serializer.errors,
+        )
+        serializer.update(self.source, serializer.validated_data)
+
+        self.source.refresh_from_db()
+        self.report.refresh_from_db()
+        self.assertEqual(self.source.status, Source.Status.NEED_SYNC.value)
+        self.assertEqual(self.report.status, SourceReporting.Status.PENDING.value)
