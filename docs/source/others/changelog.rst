@@ -3,12 +3,56 @@ Changelog
 ==========
 
 
-2024.01.2+dev  (XXXX-XX-XX)
+
+2024.02.3+dev  (XXXX-XX-XX)
+---------------------------
+**Improvements:**
+
+- Add "In progress" status to source
+
+**Documentation:**
+
+- Add configuration dashboard doc
+
+**Bugfix:**
+
+- Admin : Fix widgets form crashing on existing widget-less layers
+
+
+2024.02.3      (2024-02-02)
+---------------------------
+
+**Breaking changes**
+
+- To access new debug panel, you should add 'debug' exception in nginx configuration file.
+
+**Improvements:**
+
+- Split Config dashboard debug entries in another /debug/ panel.
+
+
+2024.02.2      (2024-02-01)
 ---------------------------
 
 **Improvements:**
 
-- Add "In progress" status to source
+- Switch from django-grappelli to django-admin-interface for config dashboard
+- Improve config dashboard
+
+
+2024.02.1      (2024-02-01)
+---------------------------
+
+**New features :**
+
+- Admin interface for widgets configuration (admin)
+- Widgets can now have an icon and a title (admin & front)
+- Widgets can be limited to a specified bbox (admin & front)
+- Option to deactivate search in layers (config & front)
+
+**Bug fixes :**
+
+- Fix build non-split for CSS overrides
 
 
 2024.01.1      (2024-01-22)
@@ -24,6 +68,7 @@ Changelog
 - New icon for layer's informations (front)
 - Fix piecharts going over legends (front)
 - Remove options to display labels on secondary styles (admin)
+
 
 2024.01.0      (2024-01-12)
 ---------------------------

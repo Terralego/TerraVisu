@@ -272,9 +272,9 @@ class Layer(CloneMixin, models.Model):
                     extra_style.style_config
                 )
                 if extra_style.style_config:
-                    style_by_uid[
-                        extra_style.style_config["uid"]
-                    ] = extra_style.style_config
+                    style_by_uid[extra_style.style_config["uid"]] = (
+                        extra_style.style_config
+                    )
                 extra_style.save()
 
             all_legends = list(self.legends)

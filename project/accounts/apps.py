@@ -7,7 +7,7 @@ from project.accounts.permission_mixins import PermissionRegistrationMixin
 class AppConfig(PermissionRegistrationMixin, BaseAppConfig):
     default_auto_field = "django.db.models.BigAutoField"
     name = "project.accounts"
-    verbose_name = "Accounts"
+    verbose_name = _("Accounts")
 
     permissions = (
         ("User", "can_manage_users", _("Is able to create, delete, update users")),

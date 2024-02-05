@@ -39,4 +39,10 @@ class FeatureAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Feature, FeatureAdmin)
-admin.site.register(Scene)
+
+
+@admin.register(Scene)
+class SceneAdmin(admin.ModelAdmin):
+    list_display = ("id", "name", "slug", "category", "custom_icon", "order")
+    list_filter = ("category",)
+    search_fields = ("id", "name", "slug")

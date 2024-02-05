@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-04 14:44+0000\n"
+"POT-Creation-Date: 2024-02-02 09:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgid "Configuration panel / Debug"
+#, python-brace-format
+msgid "Welcome to {config.INSTANCE_TITLE} debug interface."
+msgstr ""
+
+msgid "Accounts"
 msgstr ""
 
 msgid "Is able to create, delete, update users"
@@ -59,6 +63,12 @@ msgstr ""
 msgid "date joined"
 msgstr ""
 
+msgid "User"
+msgstr ""
+
+msgid "Users"
+msgstr ""
+
 msgid "Functional permission"
 msgstr ""
 
@@ -81,6 +91,13 @@ msgid "Reset password"
 msgstr ""
 
 msgid "OIDC connect"
+msgstr ""
+
+msgid "{config.INSTANCE_TITLE}: {_('Configuration')}"
+msgstr ""
+
+#, python-brace-format
+msgid "Welcome to {config.INSTANCE_TITLE} configuration interface."
 msgstr ""
 
 msgid "Instance customization"
@@ -129,6 +146,42 @@ msgid "Source refreshed successfully"
 msgstr ""
 
 msgid "Source refreshed partially"
+msgstr ""
+
+msgid "PostGIS Source"
+msgstr ""
+
+msgid "PostGIS Sources"
+msgstr ""
+
+msgid "GeoJSON Source"
+msgstr ""
+
+msgid "GeoJSON Sources"
+msgstr ""
+
+msgid "Shapefile Source"
+msgstr ""
+
+msgid "Shapefile Sources"
+msgstr ""
+
+msgid "Command Source"
+msgstr ""
+
+msgid "Command Sources"
+msgstr ""
+
+msgid "WMTS Source"
+msgstr ""
+
+msgid "WMTS Sources"
+msgstr ""
+
+msgid "CSV Source"
+msgstr ""
+
+msgid "CSV Sources"
 msgstr ""
 
 msgid "latlong_field must be defined when coordinates are set to one column"
@@ -217,6 +270,9 @@ msgstr ""
 msgid "Define custom MapboxDraw style for the distance measure control"
 msgstr ""
 
+msgid "Enable search in layers in the search bar map control"
+msgstr ""
+
 msgid "Enable search in locations in the search bar map control"
 msgstr ""
 
@@ -239,6 +295,24 @@ msgid "Maximum latitude coordinate for nominatim viewbox"
 msgstr ""
 
 msgid "Maximum longitude coordinate for nominatim viewbox"
+msgstr ""
+
+msgid "General Options"
+msgstr ""
+
+msgid "Map max BBOX"
+msgstr ""
+
+msgid "Map zoom range"
+msgstr ""
+
+msgid "Map default position"
+msgstr ""
+
+msgid "Mapbox options"
+msgstr ""
+
+msgid "Other options"
 msgstr ""
 
 msgid "Layer identifier"
