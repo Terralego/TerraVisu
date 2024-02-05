@@ -1097,7 +1097,7 @@ A partir d’un groupe, en cliquant sur les trois petits points verticaux vous a
 
 * Ajouter une couche
 * Ajouter un sous-groupe
-* Paramétrer le mode de sélection des couches (exclusif/inclusif)
+* Paramétrer le mode de sélection des couches : exclusif, inclusif ou par variables
 * Supprimer un groupe
 
 .. note::
@@ -1109,6 +1109,51 @@ A partir d’un groupe, en cliquant sur les trois petits points verticaux vous a
 L’enregistrement de la vue aura pour effet immédiat de rajouter automatiquement l’ensemble des éléments de l’arbre des couches dans le visualiseur cartographique.
 
 Pour modifier une vue existante, cliquez sur la vue dans la liste et effectuez vos changements.
+
+Sélection des couches par variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Le mode de sélection de couches dit "par variables" permet de rassembler plusieurs couches portant sur un même indicateur, dont la valeur est fonction de combinaisons de variables.
+Ce mécanisme est particulièrement utile pour permettre la sélection du millésime de données ainsi que de l'échelle spatiale utilisée.
+
+Pour pouvoir actionner ce mode de sélection, il est nécessaire d'avoir préalablement défini une couche par combinaison de valeurs voulues pour les variables en jeux.
+
+**Exemple avec deux variables** :
+- Variables et valeurs associées
+  - Zone géographique : Département, Région
+  - Année : 2020, 2050
+- Couches nécessaires (sans contrainte sur le nom)
+  - Couche Département 2020
+  - Couche Département 2050
+  - Couche Région 2020
+  - Couche Région 2050
+
+Dans la page d'édition d'une vue, vous aurez alors accès au menu suivant permettant la création d'un nouveau groupe.
+
+1. Créer un nouveau groupe, le nommer et afficher ses paramètres :
+
+.. image :: ../_static/images/admin/admin_vue_groupe_.png
+
+2. Sélectionner le mode de sélection de couches "par variables" et renseigner le nom des variables souhaitées :
+
+.. image :: ../_static/images/admin/admin_vue_groupe_variables.png
+
+3. Ajouter une couche au groupe. C'est lors de cette étape que les valeurs des différentes variables sont définies.
+
+.. image :: ../_static/images/admin/admin_vue_groupe_variables_valeurs.png
+
+4. Affecter une couche à chaque combinaison :
+
+.. image :: ../_static/images/admin/admin_vue_groupe_variables_combinaisons.png
+
+
+Le groupe s'affiche alors dans l'arbre des couches et comporte un sélecteur de valeurs quand il est actif.
+
+.. image :: ../_static/images/visu/visu_groupe_variables.png
+
+Dans le cas où la couche correspondant à une combinaison n'a pas été définie,  une erreur s'affiche lors du changement de valeurs des variables et la couche sélectionnée n'est pas modifiée.
+
+.. image :: ../_static/images/visu/visu_groupe_variables_error.png
 
 Supprimer une vue
 -----------------
