@@ -112,6 +112,7 @@ class SourceSerializer(PolymorphicModelSerializer):
     fields = FieldSerializer(many=True, required=False)
     slug = serializers.SlugField(max_length=255, read_only=True)
     report = SourceReportingSerializer(read_only=True)
+    layers = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
 
     class Meta:
         fields = "__all__"
@@ -174,6 +175,7 @@ class SourceListSerializer(serializers.ModelSerializer):
             "geom_type",
             "report",
             "layers",
+            "updated_at",
         )
 
     def get__type(self, instance):
