@@ -1001,8 +1001,8 @@ Un champ de saisie avancée à destination des utilisateurs développeurs est é
 
 .. image :: ../_static/images/admin/admin_couche_widget_devs.png
 
-Onglet EMBED
-~~~~~~~~~~~~~~
+Onglet INCLUSIONS
+~~~~~~~~~~~~~~~~~~
 Enfin, il est également possible d'associer à une couche des contenus provenant d'applications externes - par exemple, pour associer des graphiques aux couches cartographiques.
 
 Pour cela, il suffit de renseigner :
@@ -1111,22 +1111,26 @@ L’enregistrement de la vue aura pour effet immédiat de rajouter automatiqueme
 Pour modifier une vue existante, cliquez sur la vue dans la liste et effectuez vos changements.
 
 Sélection des couches par variables
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Le mode de sélection de couches dit "par variables" permet de rassembler plusieurs couches portant sur un même indicateur, dont la valeur est fonction de combinaisons de variables.
 Ce mécanisme est particulièrement utile pour permettre la sélection du millésime de données ainsi que de l'échelle spatiale utilisée.
 
-Pour pouvoir actionner ce mode de sélection, il est nécessaire d'avoir préalablement défini une couche par combinaison de valeurs voulues pour les variables en jeux.
+Pour pouvoir actionner ce mode de sélection, il est nécessaire d'avoir préalablement défini une couche par combinaison de valeurs voulues pour les variables en jeu.
 
 **Exemple avec deux variables** :
-- Variables et valeurs associées
-  - Zone géographique : Département, Région
-  - Année : 2020, 2050
-- Couches nécessaires (sans contrainte sur le nom)
-  - Couche Département 2020
-  - Couche Département 2050
-  - Couche Région 2020
-  - Couche Région 2050
+
+* Variables et valeurs associées
+
+  * Zone géographique : Département, Région
+  * Année : 2020, 2050
+
+* Couches nécessaires (sans contrainte sur le nom)
+
+  * Couche Département 2020
+  * Couche Département 2050
+  * Couche Région 2020
+  * Couche Région 2050
 
 Dans la page d'édition d'une vue, vous aurez alors accès au menu suivant permettant la création d'un nouveau groupe.
 

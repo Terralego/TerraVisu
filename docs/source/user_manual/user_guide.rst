@@ -47,7 +47,7 @@ Les données géographiques sont organisées dans des couches qui rassemblent de
 Au niveau d'une couche de données, vous pouvez ainsi activer les fonctionnalités suivantes :
 
 * Afficher/masquer la couche
-* Afficher/masuqer le panneau d'informations de la couche
+* Afficher/masquer le panneau d'informations de la couche
 * Afficher/masquer la table attributaire
 * Afficher/masquer le panneau de filtres
 * Afficher/modifier la liste des filtres appliqués
