@@ -20,6 +20,7 @@ class SourceModelViewset(ModelViewSet):
         "geom_type",
         "id",
         "slug",
+        "updated_at",
     )
     filterset_class = SourceFilterSet
     search_fields = ["name"]

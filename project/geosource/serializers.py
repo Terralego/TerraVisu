@@ -174,9 +174,11 @@ class SourceListSerializer(serializers.ModelSerializer):
             "name",
             "geom_type",
             "report",
+            "updated_at",
             "layers",
             "updated_at",
         )
+        extras = {"read_only": {"updated_at": True}}
 
     def get__type(self, instance):
         return instance.__class__.__name__

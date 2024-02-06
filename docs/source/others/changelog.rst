@@ -3,6 +3,14 @@ Changelog
 ==========
 
 
+2024.02.4+dev  (XXXX-XX-XX)
+---------------------------
+
+**Improvements:**
+
+- Sources in admin can now be sorted / filtered by model type and update date
+
+
 2024.02.4      (2024-02-05)
 ---------------------------
 
