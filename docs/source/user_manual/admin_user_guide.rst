@@ -1136,7 +1136,7 @@ Dans la page d'édition d'une vue, vous aurez alors accès au menu suivant perme
 
 1. Créer un nouveau groupe, le nommer et afficher ses paramètres :
 
-.. image :: ../_static/images/admin/admin_vue_groupe_.png
+.. image :: ../_static/images/admin/admin_vue_groupe.png
 
 2. Sélectionner le mode de sélection de couches "par variables" et renseigner le nom des variables souhaitées :
 
