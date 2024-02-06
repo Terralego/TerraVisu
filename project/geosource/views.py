@@ -1,10 +1,11 @@
+from django.db.models import Count
 from rest_framework import status
 from rest_framework.decorators import action
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
-from .filtersets import SourceFilterSet
+from .filters import SourceFilterSet
 from .models import Source, SourceReporting
 from .parsers import NestedMultipartJSONParser
 from .permissions import SourcePermission
@@ -14,14 +15,6 @@ from .serializers import SourceListSerializer, SourceSerializer
 class SourceModelViewset(ModelViewSet):
     parser_classes = (JSONParser, NestedMultipartJSONParser)
     permission_classes = (SourcePermission,)
-    ordering_fields = (
-        "name",
-        "polymorphic_ctype__model",
-        "geom_type",
-        "id",
-        "slug",
-        "updated_at",
-    )
     filterset_class = SourceFilterSet
     search_fields = ["name"]
 
@@ -31,7 +24,11 @@ class SourceModelViewset(ModelViewSet):
         return SourceSerializer
 
     def get_queryset(self):
-        return Source.objects.all().order_by("-id")
+        qs = Source.objects.all().order_by("-id")
+        if self.action == "list":
+            # used to filter by layers count
+            qs = qs.annotate(layers_count=Count("layers"))
+        return qs
 
     def perform_create(self, serializers):
         serializers.save(author=self.request.user)

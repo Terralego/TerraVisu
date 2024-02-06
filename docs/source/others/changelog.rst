@@ -2,6 +2,13 @@
 Changelog
 ==========
 
+2024.02.5+dev  (XXXX-XX-XX)
+---------------------------
+
+**Improvements:**
+
+- Sources in admin can now be sorted / filtered by status and layers count
+
 
 2024.02.5      (2024-02-06)
 ---------------------------
