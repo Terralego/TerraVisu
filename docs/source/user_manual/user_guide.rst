@@ -3,7 +3,7 @@ Plateforme TerraVisu
 ======================
 
 TerraVisu 
-=========
+==========
 
 L’application cartographique **TerraVisu** permet de manipuler un ensemble de données relatives aux différents champs de l’action publique : démographie, habitat, patrimoine, mobilité, environnement.
 
@@ -92,7 +92,7 @@ Dans le cas où il y aurait un grand nombre de couches dans l'arbre, vous pouvez
 .. image :: ../_static/images/visu/visu_filtre_arbrecouches.png
 
 L'affichage de la couche
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Pour activer/désactiver une couche cliquez sur le curseur à gauche du nom.
 
@@ -108,7 +108,7 @@ Quand les couches affichées ont des légendes, celles-ci s'affichent sur la par
 La configuration de la légende s’effectue depuis l'outil administration.
 
 Le panneau d'informations
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 Il est possible d'associer du contenu informatif à chaque couche. Ce contenu est mis à disposition de l'utilisateur via un panneau dédié, configurable dans l'interface d'administration de la plateforme **TerraVisu**.
 
 **Exemple de panneau d'informations**
@@ -116,7 +116,7 @@ Il est possible d'associer du contenu informatif à chaque couche. Ce contenu es
 .. image :: ../_static/images/visu/visu_infos.png
 
 La table attributaire
-~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~
 
 **TerraVisu** propose l’affichage de la table des données contenues dans la couche. La table attributaire contient les caractéristiques **non spatiales** des données.
 
