@@ -365,12 +365,12 @@ class SourceViewsetTestCase(APITestCase):
         self.assertEqual(data[0]["name"], obj.name)
 
         # Test ordering by polymorphic_ctype__model asc
-        response = self.client.get(list_url, {"ordering": "polymorphic_ctype__model"})
+        response = self.client.get(list_url, {"ordering": "source_type"})
         data = response.json()["results"]
         self.assertEqual(data[0]["name"], obj2.name)
 
         # Test ordering by polymorphic_ctype__model desc
-        response = self.client.get(list_url, {"ordering": "-polymorphic_ctype__model"})
+        response = self.client.get(list_url, {"ordering": "-source_type"})
         data = response.json()["results"]
         self.assertEqual(data[-1]["name"], obj2.name)
 
