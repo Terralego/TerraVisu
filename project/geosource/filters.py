@@ -1,11 +1,45 @@
+from django.db.models import Func, IntegerField
 from django_filters import rest_framework as filters
 
 from .models import Source
 
 
+class SourceOrderingFilter(filters.OrderingFilter):
+    def filter(self, qs, value):
+        if value and any(v in ["status", "-status"] for v in value):
+            # as status display in admin differ along with report__status, source type or number of errors
+            # we should take in consideration
+            qs = qs.annotate(
+                num_errors=Func(
+                    "report__errors",
+                    function="jsonb_array_length",
+                    output_field=IntegerField(),
+                )
+            )
+            if "-status" in value:
+                orders = [
+                    "-status",
+                    "-report__status",
+                    "-polymorphic_ctype__model",
+                    "-num_errors",
+                ]
+
+            else:
+                orders = [
+                    "status",
+                    "report__status",
+                    "polymorphic_ctype__model",
+                    "-num_errors",
+                ]
+
+            qs = qs.order_by(*orders)
+            return qs
+        return super().filter(qs, value)
+
+
 class SourceFilterSet(filters.FilterSet):
     q = filters.CharFilter(field_name="name", lookup_expr="icontains")
-    ordering = filters.OrderingFilter(
+    ordering = SourceOrderingFilter(
         fields=(
             ("name", "name"),
             ("polymorphic_ctype__model", "source_type"),

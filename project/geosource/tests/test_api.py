@@ -342,51 +342,73 @@ class SourceViewsetTestCase(APITestCase):
         obj = GeoJSONSource.objects.create(
             name="foo",
             geom_type=GeometryTypes.Point.value,
+            status=Source.Status.PENDING.value,
         )
         obj2 = CommandSource.objects.create(
             name="bar",
             geom_type=GeometryTypes.LineString.value,
+            status=Source.Status.IN_PROGRESS.value,
         )
         ShapefileSource.objects.create(
             name="baz",
             geom_type=GeometryTypes.Polygon.value,
+            status=Source.Status.DONE.value,
         )
 
         list_url = reverse("geosource:geosource-list")
 
         # Test ordering by name asc
         response = self.client.get(list_url, data={"ordering": "name"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()["results"]
         self.assertEqual(data[-1]["name"], obj.name)
 
         # Test ordering by name desc
         response = self.client.get(list_url, {"ordering": "-name"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()["results"]
         self.assertEqual(data[0]["name"], obj.name)
 
         # Test ordering by polymorphic_ctype__model asc
         response = self.client.get(list_url, {"ordering": "source_type"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()["results"]
         self.assertEqual(data[0]["name"], obj2.name)
 
         # Test ordering by polymorphic_ctype__model desc
         response = self.client.get(list_url, {"ordering": "-source_type"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()["results"]
         self.assertEqual(data[-1]["name"], obj2.name)
 
-        # Test filter
+        # Test ordering by status
+        response = self.client.get(list_url, {"ordering": "status"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()["results"]
+        self.assertEqual(data[-1]["name"], obj2.name)
+
+        # Test ordering by status desc
+        response = self.client.get(list_url, {"ordering": "-status"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()["results"]
+        self.assertEqual(data[-1]["name"], obj.name)
+
+        # Test filter by geom_type
         response = self.client.get(list_url, {"geom_type": GeometryTypes.Point.value})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()["results"]
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["name"], obj.name)
 
         # Test search
         response = self.client.get(list_url, {"search": "foo"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()["results"]
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["name"], obj.name)
 
         response = self.client.get(list_url, {"search": "bar"})
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()["results"]
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["name"], obj2.name)
