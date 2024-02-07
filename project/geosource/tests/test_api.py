@@ -18,6 +18,7 @@ from project.geosource.models import (
     Source,
     SourceReporting,
 )
+from project.geosource.tests.factories import WMTSSourceFactory
 from project.geosource.tests.helpers import get_file
 
 UserModel = get_user_model()
@@ -412,6 +413,14 @@ class SourceViewsetTestCase(APITestCase):
         data = response.json()["results"]
         self.assertEqual(len(data), 1)
         self.assertEqual(data[0]["name"], obj2.name)
+
+    def test_wmts_is_excluded_from_status_filter(self):
+        WMTSSourceFactory(status=Source.Status.NEED_SYNC)
+        response = self.client.get(
+            reverse("geosource:geosource-list"), {"status": Source.Status.NEED_SYNC}
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.json()["results"]), 0)
 
     def test_property_values(self):
         source = GeoJSONSource.objects.create(

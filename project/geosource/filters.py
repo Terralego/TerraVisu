@@ -55,7 +55,9 @@ class SourceFilterSet(filters.FilterSet):
     def filter_status(self, queryset, name, value):
         if value:
             # WMTS sources should be excluded from status filter
-            return queryset.filter(status=value).exclude(polymorphic_ctype__model__icontains="wmts")
+            return queryset.filter(status=value).exclude(
+                polymorphic_ctype__model__icontains="wmts"
+            )
         return
 
     class Meta:

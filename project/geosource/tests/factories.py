@@ -1,6 +1,6 @@
 import factory
 
-from project.geosource.models import PostGISSource
+from project.geosource.models import PostGISSource, WMTSSource
 
 
 class PostGISSourceFactory(factory.django.DjangoModelFactory):
@@ -13,3 +13,11 @@ class PostGISSourceFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = PostGISSource
+
+
+class WMTSSourceFactory(factory.django.DjangoModelFactory):
+    name = factory.Faker("name")
+    url = factory.Faker("url")
+
+    class Meta:
+        model = WMTSSource
