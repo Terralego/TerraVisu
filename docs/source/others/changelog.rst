@@ -8,6 +8,7 @@ Changelog
 **Bugfix:**
 
 - Fix source status sort in admin
+- WMTS sources are exclude from filtering by status in admin
 
 
 2024.02.6      (2024-02-06)
