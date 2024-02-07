@@ -18,6 +18,7 @@ class PostGISSourceFactory(factory.django.DjangoModelFactory):
 class WMTSSourceFactory(factory.django.DjangoModelFactory):
     name = factory.Faker("name")
     url = factory.Faker("url")
+    tile_size = 256
 
     class Meta:
         model = WMTSSource
