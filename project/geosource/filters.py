@@ -6,7 +6,7 @@ from .models import Source
 
 class SourceOrderingFilter(filters.OrderingFilter):
     def filter(self, qs, value):
-        if any(v in ["status", "-status"] for v in value):
+        if value and any(v in ["status", "-status"] for v in value):
             # as status display in admin differ along with report__status, source type or number of errors
             # we should take in consideration
             qs = qs.annotate(
