@@ -129,7 +129,15 @@ Vous arrivez sur une page présentant la liste de toutes les sources de données
 
 .. image :: ../_static/images/admin/admin_sources.png
 
-Pour retrouver plus facilement une source de données dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par type de données ou par type de géométrie.
+.. tip::
+    - Pour retrouver plus facilement une source de données dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par type de données, type de géométrie, statut ou rapport d'importation.
+    - Toutes les colonnes de la liste des sources de données sont triables dans l'ordre ascendant / descendant :
+      * Nom
+      * Type de données
+      * Type de géométrie
+      * Couches associées
+      * Statut
+      * Dernière mise à jour
 
 Créer une source de données
 ---------------------------
@@ -162,6 +170,7 @@ Lors de la déclaration de la source, il est possible d’ajouter un ou plusieur
 .. note::
     * Le nom d’une source de données doit être unique, si ce n’est pas le cas l’enregistrement échouera.
     * Toutes les données intégrées à l’application doivent a minima posséder un champ d’identifiant unique et une géométrie.
+
 
 Import de fichiers
 ~~~~~~~~~~~~~~~~~~~
@@ -205,18 +214,23 @@ Les informations à renseigner à minima lors de la création d’une nouvelle s
 .. image :: ../_static/images/admin/admin_source_creation_postgis.png
 
 .. note::
-    Si une source de données dont la fréquence de mise à jour a été paramétrée sur ``Quotidienne``, le déclenchement de la synchronisation ne se fera pas exactement 24h après. L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde toutes les 25 mn s’il y a des changements) + date de fin de la dernière mise à jour. 
-    Il peut donc y avoir un delta de 24h et 25mn au minimum entre chaque mise à jour de source de données. Ce delta peut se rajouter d'autant plus s'il y a des mise à jour manuelles.
+    Si une source de données dont la fréquence de mise à jour a été paramétrée sur ``Quotidienne``, le déclenchement de la synchronisation ne se fera pas exactement 24h après. 
+
+    L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde toutes les 25 mn s’il y a des changements) + date de fin de la dernière mise à jour. 
+
+    Il peut donc y avoir un delta de 24h et 25mn au minimum entre chaque mise à jour de source de données. 
+
+    Ce delta peut se rajouter d'autant plus s'il y a des mise à jour manuelles.
 
 .. list-table:: Géométries invalides
    :header-rows: 1
 
    * - Géométries invalides
-   * - Seules des géométries valides peuvent être importées dans l’application TerraVisu. Avec PostGis, il est possible de corriger des géométries invalides avec les fonctions suivantes :
+   * - Seules des géométries valides peuvent être importées dans l’application TerraVisu. 
+   * - Avec PostGis, il est possible de corriger des géométries invalides avec les fonctions suivantes :
          * `ST_MakeValid(geom)`
          * `ST_Buffer(geom, 0)`
          * `ST_SimplifyPreserveTopology(geom, tolerance)`
-
 
 Import via un flux WMS/WMTS
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -232,36 +246,90 @@ Il est possible de renseigner les niveaux de zoom min et max auxquels les images
 Enregistrer une source de données
 ---------------------------------
 
-Au moment de l’enregistrement de la source, les champs attributaires sont automatiquement déterminés et renseignés et trois onglets sont créés :
+Au moment de l’enregistrement de la source, les champs attributaires sont automatiquement déterminés et renseignés et quatres onglets sont créés :
 
 * :guilabel:`DÉFINITION` contient les informations principales de la source
 * :guilabel:`DONNÉES` contient la liste de tous les champs attributaires 
-* :guilabel:`RAPPORT D’IMPORTATION` permet de remonter les éventuelles erreurs rencontrées lors de l’enregistrement
+* :guilabel:`RAPPORT D’IMPORTATION` permet de remonter des informations concernant l'importation des données suite à l'actualisation
+* :guilabel:`INFORMATIONS GÉNÉRALES` affiche plusieurs informations utiles sur la source de données
 
-Une fois la source enregistrée, revenez à la liste. 
-La colonne ``Statut`` indique l’état actuel de la source de données.
+Actualisation de la source de données
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-* ``A actualiser`` : le statut de la source nouvellement créé, cela signifie que la source a besoin d’être synchronisée pour être utilisée. Cliquez d’abord sur la source pour éditer son statut, puis sur :guilabel:`Actualiser les données`. Une fois revenu à la liste des source, vous pourrez constater que le statut est devenu ``En cours`` ou ``Terminé``.  
+Une fois créée, la source de données doit être actualisée afin d'importer les données dans la base PostGIS du projet.
+
+Statuts d'actualisation
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Il existe cinq types de statuts relatifs à l'actualisation des sources :
+* ``A synchroniser`` : le statut de la source nouvellement créé, cela signifie que la source a besoin d’être actualisée pour être utilisée. Cliquez d’abord sur la source pour éditer son statut, puis sur :guilabel:`ACTUALISER LES DONNÉES`. Une fois revenu à la liste des source, vous pourrez constater que le statut est devenu ``En cours`` ou ``Terminé``.  
+* ``En cours`` : la source de données est en cours d'actualisation. 
+* ``En attente`` : les sources mises en attente et traitées dans l'ordre de demande d'actualisation. 
+* ``Terminé`` : la source de données a bien été créé et vient d’être actualisée. 
 * ``Inutile`` : ce statut ne concerne que les sources **WMS/WMTS** car celles ci n'ont pas besoin d'être raffraichies.
-* ``Terminé`` : la source de données a bien été créé et vient d’être synchronisée. Dans le cas d'une actualisation réussie le statut est affiché en vert et préfixé du symbole ✔️. Si l'actualisation a rencontré une erreur le statut est affiché en jaune avec le symbole ⚠️. Si l'actualisation n'a rencontré que des erreur le statut est affiché en rouge avec le symbole ❌.
-* ``En cours`` : la source de données est en cours de mise à jour. Les autres sources avec le statut ``En cours`` sont mises en attente et traitées dans l'ordre de demande d'actualisation. 
 
-.. image :: ../_static/images/admin/admin_source_listesource.png
+.. image :: ../_static/images/admin/admin_source_listesource_status.png
 
 .. note::
-    Lors de la mise à jour d'une source, dans la page d'édition, le bouton :guilabel:`Actualiser les données` est grisé pour éviter de relancer la synchronisation plusieurs fois. 
+    - Lors de la mise à jour d'une source, dans la page d'édition, le bouton :guilabel:`ACTUALISER LES DONNÉES` est grisé pour éviter de relancer la synchronisation plusieurs fois. 
+    - Il est néanmoins possible de forcer la réactualisation d'une source de données en cliquant sur le bouton grisé. 
+
+Onglet DÉFINITION
+~~~~~~~~~~~~~~~~~~
+
+Cet onglet comporte les mêmes informations que celles renseignées lors de la création de la source de données.
+
+Onglet DONNÉES
+~~~~~~~~~~~~~~~~~~
+
+Cet onglet présente plusieurs intérêts :
+
+- Renommer le nom du champ (sera utilisé dans les couches)
+- Changer le type de champ (integer, float, string, etc.)
+- Afficher un extrait des valeurs du champ
+
+Onglet RAPPORT D'IMPORTATION
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Au survol sur la vignette du statut d'une source, une infobulle apparait avec les informations du rapport d'importation.
+
+.. image:: ../_static/images/admin/statut_encours.png
+    :width: 49 %
+.. image:: ../_static/images/admin/statut_terminé.png
+    :width: 49 %
+
+Il suffit de cliquer sur la vignette du statut pour être redirigé vers l'onglet :guilabel:`RAPPORT D’IMPORTATION`.
+
+Il existe trois types de statuts relatifs au rapport d'importation des sources :
+* ``Succès`` : les données ont toutes correctement été importées au moment de l'actualisation
+* ``Erreur`` : aucune donnée n'a pu être importée au moment de l'actualisation (exemple : aucune donnée)
+* ``Alerte`` : importation partielle des données car l'actualisation a rencontré une erreur (exemple : géométries invalides, mauvais typage de colonne)
 
 Le rapport d'importation comporte plusieurs informations utiles comme :
 
 * ``Statut``
-* ``Rapport global``
 * ``Commencée à``
 * ``Finie à``
-* ``Nombre de lignes ajoutées``
-* ``Nombre de lignes modifiées``
-* ``Nombre de lignes supprimées``
+* ``Rapport global``
+* ``Nombre total de lignes traitées``
+  * ``Erreurs``
+  * ``Nombre de lignes ajoutées``
+  * ``Nombre de lignes modifiées``
+  * ``Nombre de lignes supprimées``
 
-.. image :: ../_static/images/admin/admin_source_rapportimportation.png
+.. image :: ../_static/images/admin/admin_source_rapportimportation_alert.png
+
+Onglet INFORMATIONS GÉNÉRALES
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Cet onglet donne des informations utiles sur :
+
+- La date de création de la source de donnée (*automatique*)
+- La date de modification de la source de données (*automatique*)
+- La description (à renseigner dans l'onglet ``DÉFINITION``)
+- Les crédits (à renseigner dans l'onglet ``DÉFINITION``)
+- L'auteur de la source de données (*automatique à partir du nom de l'utilisateur à l'origine de la source*)
+
+.. image :: ../_static/images/admin/admin_source_infosgenerales.png
 
 Modifier une source de données
 ------------------------------
@@ -282,7 +350,6 @@ Les types gérés par l’application sont les suivants :
 .. note::
     Lorsqu’un champ est de type ``Undefined``, cela signifie que l’outil n’a pas réussit à l’identifier. A ce moment là il faut lui assigner le bon type dans la liste déroulante.
 
-
 Un extrait des valeurs pour chaque champ est fournit afin d’avoir un aperçu des données.
 
 Le libellé de chaque champ est modifiable de façon à le rendre plus lisible qu’une variable brut. Celui-ci sera utilisé lors de la configuration des couches.
@@ -296,11 +363,10 @@ Cela peut être particulièrement intéressant pour les sources **PostGIS** qui 
 
 Si la duplication est réalisée sur une source **Shapefile**/**GeoJSON**/**CSV**, il est nécessaire de réimporter le fichier de données.
 
-Pour dupliquer une source de données cliquez sur le bouton :guilabel:`DUPLIQUER` depuis la liste des sources.
+Pour dupliquer une source de données cliquez sur le bouton :guilabel:`+` depuis la liste des sources.
 
 .. note::
     Assurez vous de renommer la source car le nom d'une source de données doit être unique.
-
 
 Supprimer une source de données
 -------------------------------
@@ -309,12 +375,11 @@ Pouvoir supprimer une source de données nécessite de s’assurer qu’elle n�
 
 Pour supprimer une source, vous avez deux façons de procéder :
 
-* dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton :guilabel:`SUPPRIMER`.
+* depuis la liste, cliquez sur la couche et en bas de la page cliquez sur le bouton :guilabel:`SUPPRIMER`.
 * dans la liste, cochez la source et cliquez sur le bouton :guilabel:`SUPPRIMER`.
 
 .. note::
     Toute suppression est définitive.
-
 
 Liste des couches
 -----------------
@@ -326,8 +391,12 @@ Pour afficher l’ensemble des couches cliquez sur :guilabel:`Liste des couches`
 .. image :: ../_static/images/admin/admin_couche_liste.png
 
 .. tip::
-    Pour retrouver plus facilement une couche dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par source de données, vue, affichée par défaut(oui/non), table attributaire affichée(oui/non), fenêtre au survol(oui/non), mini-fiche (oui/non).
-
+    - Pour retrouver plus facilement une couche dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par source de données, vue, affichée par défaut(oui/non), table attributaire affichée(oui/non), fenêtre au survol(oui/non), mini-fiche (oui/non).
+    - Toutes les colonnes de la liste des sources de données sont triables dans l'ordre ascendant / descendant :
+      * Nom
+      * Vue
+      * Source des données
+      * Affichée par défaut
 
 Créer une couche
 ----------------
