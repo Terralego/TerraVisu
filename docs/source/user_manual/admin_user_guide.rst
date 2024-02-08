@@ -295,7 +295,7 @@ Au survol sur la vignette du statut d'une source, une infobulle apparait avec le
 
 .. image:: ../_static/images/admin/statut_encours.png
     :width: 49 %
-.. image:: ../_static/images/admin/statut_terminé.png
+.. image:: ../_static/images/admin/statut_termine.png
     :width: 49 %
 
 Il suffit de cliquer sur la vignette du statut pour être redirigé vers l'onglet :guilabel:`RAPPORT D’IMPORTATION`.
