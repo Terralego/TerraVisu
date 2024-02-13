@@ -335,6 +335,7 @@ Créer une couche
 La configuration des couches permet de personnaliser de manière très approfondie les possibilités d’interaction au sein d’une couche :
 
 * La fonction de recherche
+* La description associée
 * La représentation cartographique
 * La légende associée aux styles cartographiques affichés
 * L’affichage de popups associés aux données
@@ -342,6 +343,7 @@ La configuration des couches permet de personnaliser de manière très approfond
 * La gestion d’outils de filtrage des données
 * La gestion de la table attributaire
 * La gestion d’un outil de synthèse
+* L'affichage de contenus provenant d'applications externes
       
 Pour créer une nouvelle couche, cliquez sur le bouton :guilabel:`CRÉER`.
 
@@ -361,7 +363,7 @@ Le :guilabel:`Champ principal` permet d’activer la fonction de recherche dans 
 
 Si l’option :guilabel:`Affichée par défaut` est activée, la couche sera activée dès l'ouverture de la vue à laquelle elle est associée dans le visualiseur cartographique.
 
-Enfin, la partie :guilabel:`Description` permet d'ajouter un texte informatif en langage ``HTML`` sur cette couche. Ce texte peut être mis à disposition de l'utilisateur dans les vues classiques et de storytelling.
+Enfin, la partie :guilabel:`Description` permet d'ajouter du contenu informatif (textes, images, etc) sur cette couche. Ce texte peut être mis à disposition de l'utilisateur dans les vues classiques et de storytelling.
 
 A ce stade, il est possible d’enregistrer la couche telle quelle et de l’afficher dans le visualiseur cartographique. Une représentation par défaut est appliquée à la couche, ce qui permet de la visualiser.
 
@@ -984,11 +986,31 @@ Onglet WIDGET
 
 L’outil de widget permet de récapituler dans un tableau dynamique des indicateurs utiles à l'analyse de la couche.
 
-Sur le visualiseur cartographique, lors du zoom sur la carte, la synthèse se réactualise en fonction des éléments qui se trouvent dans l'emprise spatiale.
+Plusieurs widgets peuvent être créés par couche. L'icône et le libellé de chacun d'entre eux est personnalisable.
 
-La configuration de l’outil de widget s’adresse à des utilisateurs développeurs car il requiert l’écriture en `JSON <https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/JSON>`_ avec dans la clé "template" une chaîne de caractère contenant le code en `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_ du format de données attendu.
+Trois types de calculs statistiques sont proposés :
+- le comptage du nombre d'éléments présents ;
+- la somme de leur valeur ;
+- la moyenne de leur valeur.
 
 .. image :: ../_static/images/admin/admin_couche_widget.png
+
+Il est possible de choisir si le résultat de ces calculs se réactualise en fonction des éléments qui se trouvent dans l'emprise spatiale, lors du zoom sur la carte, ou non.
+
+Un champ de saisie avancée à destination des utilisateurs développeurs est également disponible. Il requiert l’écriture en `JSON <https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/JSON>`_ avec dans la clé "template" une chaîne de caractère contenant le code en `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_ du format de données attendu.
+
+.. image :: ../_static/images/admin/admin_couche_widget_devs.png
+
+Onglet INCLUSIONS
+~~~~~~~~~~~~~~~~~~
+Enfin, il est également possible d'associer à une couche des contenus provenant d'applications externes - par exemple, pour associer des graphiques aux couches cartographiques.
+
+Pour cela, il suffit de renseigner :
+- l'icône représentative,
+- un libellé correspondant,
+- l'url du contenu distant à mettre à disposition des utilisateurs de TerraVisu.
+
+.. image :: ../_static/images/admin/admin_couche_embed.png
 
 Modifier une couche
 -------------------
@@ -1075,7 +1097,7 @@ A partir d’un groupe, en cliquant sur les trois petits points verticaux vous a
 
 * Ajouter une couche
 * Ajouter un sous-groupe
-* Paramétrer le mode de sélection des couches (exclusif/inclusif)
+* Paramétrer le mode de sélection des couches : exclusif, inclusif ou par variables
 * Supprimer un groupe
 
 .. note::
@@ -1087,6 +1109,55 @@ A partir d’un groupe, en cliquant sur les trois petits points verticaux vous a
 L’enregistrement de la vue aura pour effet immédiat de rajouter automatiquement l’ensemble des éléments de l’arbre des couches dans le visualiseur cartographique.
 
 Pour modifier une vue existante, cliquez sur la vue dans la liste et effectuez vos changements.
+
+Sélection des couches par variables
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Le mode de sélection de couches dit "par variables" permet de rassembler plusieurs couches portant sur un même indicateur, dont la valeur est fonction de combinaisons de variables.
+Ce mécanisme est particulièrement utile pour permettre la sélection du millésime de données ainsi que de l'échelle spatiale utilisée.
+
+Pour pouvoir actionner ce mode de sélection, il est nécessaire d'avoir préalablement défini une couche par combinaison de valeurs voulues pour les variables en jeu.
+
+**Exemple avec deux variables** :
+
+* Variables et valeurs associées
+
+  * Zone géographique : Département, Région
+  * Année : 2020, 2050
+
+* Couches nécessaires (sans contrainte sur le nom)
+
+  * Couche Département 2020
+  * Couche Département 2050
+  * Couche Région 2020
+  * Couche Région 2050
+
+Dans la page d'édition d'une vue, vous aurez alors accès au menu suivant permettant la création d'un nouveau groupe.
+
+1. Créer un nouveau groupe, le nommer et afficher ses paramètres :
+
+.. image :: ../_static/images/admin/admin_vue_groupe.png
+
+2. Sélectionner le mode de sélection de couches "par variables" et renseigner le nom des variables souhaitées :
+
+.. image :: ../_static/images/admin/admin_vue_groupe_variables.png
+
+3. Ajouter une couche au groupe. C'est lors de cette étape que les valeurs des différentes variables sont définies.
+
+.. image :: ../_static/images/admin/admin_vue_groupe_variables_valeurs.png
+
+4. Affecter une couche à chaque combinaison :
+
+.. image :: ../_static/images/admin/admin_vue_groupe_variables_combinaisons.png
+
+
+Le groupe s'affiche alors dans l'arbre des couches et comporte un sélecteur de valeurs quand il est actif.
+
+.. image :: ../_static/images/visu/visu_groupe_variables.png
+
+Dans le cas où la couche correspondant à une combinaison n'a pas été définie,  une erreur s'affiche lors du changement de valeurs des variables et la couche sélectionnée n'est pas modifiée.
+
+.. image :: ../_static/images/visu/visu_groupe_variables_error.png
 
 Supprimer une vue
 -----------------
