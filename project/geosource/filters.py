@@ -53,14 +53,14 @@ class SourceFilterSet(filters.FilterSet):
         )
     )
 
-    def filter_status(self, queryset, name, value):
+    def filter_status(self, qs, name, value):
         if value is not None and value != "":
 
             # WMTS sources should be excluded from status filter
-            return queryset.filter(status=int(value)).exclude(
+            qs = qs.filter(status=int(value)).exclude(
                 polymorphic_ctype__model__icontains="wmts"
             )
-        return queryset
+        return qs
 
     class Meta:
         model = Source
