@@ -132,7 +132,7 @@ Vous arrivez sur une page présentant la liste de toutes les sources de données
 .. tip::
  - Pour retrouver plus facilement une source de données dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par type de données, type de géométrie, statut ou rapport d'importation.
  - Toutes les colonnes de la liste des sources de données sont triables dans l'ordre ascendant / descendant :
- 
+
   * Nom
   * Type de données
   * Type de géométrie
@@ -395,13 +395,13 @@ Pour afficher l’ensemble des couches cliquez sur :guilabel:`Liste des couches`
 .. image :: ../_static/images/admin/admin_couche_liste.png
 
 .. tip::
-- Pour retrouver plus facilement une couche dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par source de données, vue, affichée par défaut(oui/non), table attributaire affichée(oui/non), fenêtre au survol(oui/non), mini-fiche (oui/non).
-- Toutes les colonnes de la liste des sources de données sont triables dans l'ordre ascendant / descendant :
+  - Pour retrouver plus facilement une couche dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par source de données, vue, affichée par défaut(oui/non), table attributaire affichée(oui/non), fenêtre au survol(oui/non), mini-fiche (oui/non).
+  - Toutes les colonnes de la liste des sources de données sont triables dans l'ordre ascendant / descendant :
 
-  * Nom
-  * Vue
-  * Source des données
-  * Affichée par défaut
+    * Nom
+    * Vue
+    * Source des données
+    * Affichée par défaut
 
 Créer une couche
 ----------------
