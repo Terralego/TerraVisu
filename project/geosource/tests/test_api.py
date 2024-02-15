@@ -420,7 +420,8 @@ class SourceViewsetTestCase(APITestCase):
             reverse("geosource:geosource-list"), {"status": Source.Status.NEED_SYNC}
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(response.json()["results"]), 0)
+        data = response.json()["results"]
+        self.assertNotIn("WMTSSource", [d['_type'] for d in data])
 
     def test_property_values(self):
         source = GeoJSONSource.objects.create(

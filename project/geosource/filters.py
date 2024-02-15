@@ -39,6 +39,7 @@ class SourceOrderingFilter(filters.OrderingFilter):
 
 class SourceFilterSet(filters.FilterSet):
     q = filters.CharFilter(field_name="name", lookup_expr="icontains")
+    status = filters.ChoiceFilter(choices=Source.Status.choices, method="filter_status")
     ordering = SourceOrderingFilter(
         fields=(
             ("name", "name"),
@@ -53,12 +54,13 @@ class SourceFilterSet(filters.FilterSet):
     )
 
     def filter_status(self, queryset, name, value):
-        if value:
+        if value is not None and value != '':
+
             # WMTS sources should be excluded from status filter
-            return queryset.filter(status=value).exclude(
+            return queryset.filter(status=int(value)).exclude(
                 polymorphic_ctype__model__icontains="wmts"
             )
-        return
+        return queryset
 
     class Meta:
         model = Source
