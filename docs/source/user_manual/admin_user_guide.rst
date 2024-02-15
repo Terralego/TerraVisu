@@ -132,6 +132,7 @@ Vous arrivez sur une page présentant la liste de toutes les sources de données
 .. tip::
  - Pour retrouver plus facilement une source de données dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par type de données, type de géométrie, statut ou rapport d'importation.
  - Toutes les colonnes de la liste des sources de données sont triables dans l'ordre ascendant / descendant :
+ 
   * Nom
   * Type de données
   * Type de géométrie
