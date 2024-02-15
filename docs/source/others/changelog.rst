@@ -2,12 +2,13 @@
 Changelog
 ==========
 
-2024.02.7      (2024-02-07)
+2024.02.7      (2024-02-15)
 ---------------------------
 
 **Bugfix:**
 
 - Fix source status sort in admin
+- WMTS sources are exclude from filtering by status in admin
 
 
 2024.02.6      (2024-02-06)
