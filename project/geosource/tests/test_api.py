@@ -421,7 +421,7 @@ class SourceViewsetTestCase(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()["results"]
-        self.assertNotIn("WMTSSource", [d['_type'] for d in data])
+        self.assertNotIn("WMTSSource", [d["_type"] for d in data])
 
     def test_property_values(self):
         source = GeoJSONSource.objects.create(

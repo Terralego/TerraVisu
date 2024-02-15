@@ -54,7 +54,7 @@ class SourceFilterSet(filters.FilterSet):
     )
 
     def filter_status(self, queryset, name, value):
-        if value is not None and value != '':
+        if value is not None and value != "":
 
             # WMTS sources should be excluded from status filter
             return queryset.filter(status=int(value)).exclude(
