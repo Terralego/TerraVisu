@@ -89,7 +89,9 @@ Dans le cas où il y aurait un grand nombre de couches dans l'arbre, vous pouvez
 
 **Exemple de barre de filtre**
 
-.. image :: ../_static/images/visu/visu_filtre_arbrecouches.png
+.. image:: ../_static/images/visu/visu_filtre_arbrecouches.gif
+   :alt: Filtre dans l'arbre des couches
+   :align: center
 
 L'affichage de la couche
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -146,6 +148,7 @@ Les éléments qui ne correspondent pas au filtre sont cachés et la carte est a
 **Exemple de filtres disponibles**
 
 .. image :: ../_static/images/visu/visu_filtre.png
+  :width: 300
 
 Les filtres peuvent prendre plusieurs formes (case à cocher, intervalle de valeurs, curseur, recherche, etc.) et sont paramétrables dans l'outil d'administration.
 
@@ -205,6 +208,7 @@ Les informations relatives aux données sont présentées dans une fiche à gauc
 **Exemple de fiche descriptive pour une station du métro toulousain**
 
 .. image :: ../_static/images/visu/visu_minifiche.png
+  :width: 300
 
 Depuis l'outil d'administration, vous pouvez personnaliser la fiche de manière avancée, en y intégrant du texte, des images ou des graphiques pour améliorer le rendu visuel. 
 
@@ -257,6 +261,7 @@ Le comportement est différent si on sélectionne un résultat pour la recherche
 
 .. image :: ../_static/images/visu/visu_recherche.png
 
+
 Le retour à l'emprise d'origine
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -297,7 +302,7 @@ Il est possible de partager la carte soit en générant un hyperlien, soit en la
 
 **Exemple de partage d'hyperlien**
 
-.. image :: ../_static/images/visu/visu_impression.png
+.. image :: ../_static/images/visu/visu_partage.png
 
 La visualisation en Storytelling
 ---------------------------------
