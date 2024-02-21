@@ -62,7 +62,7 @@ crispy-bootstrap5==2023.10
     # via -r requirements.in
 cron-descriptor==1.2.35
     # via django-celery-beat
-cryptography==42.0.0
+cryptography==42.0.4
     # via pyjwt
 deepmerge==1.1.0
     # via django-geostore
