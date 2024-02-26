@@ -58,6 +58,7 @@ Au niveau d'une couche de données, vous pouvez ainsi activer les fonctionnalit�
 
 
 .. image :: ../_static/images/visu/visu_interfacecarto_couche.png
+  :width: 300
 
 L'interface cartographique se met automatiquement à jour selon les fonctionnalités activées.
 
@@ -67,6 +68,9 @@ Les vues
 Les couches sont réparties dans des vues et reflètent des thématiques ou des applications métier. 
 
 Les vues sont représentées par des pictogrammes dans le bandeau latéral gauche. 
+
+.. image :: ../_static/images/visu/vue.png
+  :width: 200
 
 Pour changer de vue, cliquez sur le pictogramme concerné.
 
@@ -89,7 +93,11 @@ Dans le cas où il y aurait un grand nombre de couches dans l'arbre, vous pouvez
 
 **Exemple de barre de filtre**
 
-.. image :: ../_static/images/visu/visu_filtre_arbrecouches.png
+.. image:: ../_static/images/visu/visu_filtre_arbrecouches.gif
+  :width: 200
+  :alt: Filtre dans l'arbre des couches
+
+
 
 L'affichage de la couche
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -104,6 +112,7 @@ Quand les couches affichées ont des légendes, celles-ci s'affichent sur la par
 **Exemple de légende disponible**
 
 .. image :: ../_static/images/visu/visu_legende.png
+  :width: 200
 
 La configuration de la légende s’effectue depuis l'outil administration.
 
@@ -146,6 +155,7 @@ Les éléments qui ne correspondent pas au filtre sont cachés et la carte est a
 **Exemple de filtres disponibles**
 
 .. image :: ../_static/images/visu/visu_filtre.png
+  :width: 200
 
 Les filtres peuvent prendre plusieurs formes (case à cocher, intervalle de valeurs, curseur, recherche, etc.) et sont paramétrables dans l'outil d'administration.
 
@@ -157,6 +167,7 @@ Le widget permet de récapituler dans un tableau dynamique, des indicateurs util
 **Exemple d'un widget**
 
 .. image :: ../_static/images/visu/visu_widget.png
+  :width: 300
 
 Les données à afficher dans le widget sont définies par l’utilisateur dans l'outil d'administration.
 
@@ -183,6 +194,7 @@ Faites glisser le curseur de droite à gauche pour modifier le pourcentage de tr
 **Exemple de transparence sur la couche des lignes de bus**
 
 .. image :: ../_static/images/visu/visu_transparence.png
+  :width: 300
 
 Les contenus externes associés
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -195,7 +207,7 @@ Des contenus configurés depuis une application externe, notamment graphiques, p
 Les intéractions avec les données affichés sur la carte
 ---------------------------------------------------------
 
-Si les couches ont été configurées pour, il est possible d'intéragir avec les objets affichés sur la carte.
+Il est possible d’interagir avec les objets affichés sur la carte, dès lors que les couches ont été configurées dans le backoffice pour inclure les infobulles (survol) ou les mini-fiches (clic).
 
 La fiche descriptive
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -205,6 +217,7 @@ Les informations relatives aux données sont présentées dans une fiche à gauc
 **Exemple de fiche descriptive pour une station du métro toulousain**
 
 .. image :: ../_static/images/visu/visu_minifiche.png
+  :width: 300
 
 Depuis l'outil d'administration, vous pouvez personnaliser la fiche de manière avancée, en y intégrant du texte, des images ou des graphiques pour améliorer le rendu visuel. 
 
@@ -218,6 +231,7 @@ Une information résumée de la donnée, sous la forme d'une infobulle, est disp
 **Exemple d'infobulle au clic sur une station de métro toulousain**
 
 .. image :: ../_static/images/visu/visu_infobulle.png
+  :width: 400
 
 Le contenu de l'infobulle est entièrement personnalisable dans l'outil d'administration et peut comprendre toutes les information que vous souhaitez.
 
@@ -237,6 +251,7 @@ Les outils de navigation
 **Barre de navigation à gauche sur la carte**
 
 .. image :: ../_static/images/visu/visu_outilnavigation.png
+  :width: 50
 
 Quelques uns de ces outils de navigation sont détaillés ci-après.
 
@@ -256,6 +271,7 @@ Le comportement est différent si on sélectionne un résultat pour la recherche
 **Exemple de recherche**
 
 .. image :: ../_static/images/visu/visu_recherche.png
+
 
 Le retour à l'emprise d'origine
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -297,7 +313,7 @@ Il est possible de partager la carte soit en générant un hyperlien, soit en la
 
 **Exemple de partage d'hyperlien**
 
-.. image :: ../_static/images/visu/visu_impression.png
+.. image :: ../_static/images/visu/visu_partage.png
 
 La visualisation en Storytelling
 ---------------------------------

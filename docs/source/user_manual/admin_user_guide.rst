@@ -130,14 +130,15 @@ Vous arrivez sur une page présentant la liste de toutes les sources de données
 .. image :: ../_static/images/admin/admin_sources.png
 
 .. tip::
-    - Pour retrouver plus facilement une source de données dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par type de données, type de géométrie, statut ou rapport d'importation.
-    - Toutes les colonnes de la liste des sources de données sont triables dans l'ordre ascendant / descendant :
-      * Nom
-      * Type de données
-      * Type de géométrie
-      * Couches associées
-      * Statut
-      * Dernière mise à jour
+ - Pour retrouver plus facilement une source de données dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par type de données, type de géométrie, statut ou rapport d'importation.
+ - Toutes les colonnes de la liste des sources de données sont triables dans l'ordre ascendant / descendant :
+
+  * Nom
+  * Type de données
+  * Type de géométrie
+  * Couches associées
+  * Statut
+  * Dernière mise à jour
 
 Créer une source de données
 ---------------------------
@@ -146,11 +147,11 @@ Pour ajouter une nouvelle source, cliquez sur le bouton :guilabel:`CRÉER`.
 
 Les types de sources de données supportés actuellement par l’application sont :
 
-* les fichiers **GeoJSON** ;
-* les fichiers **Shapefile** ;
-* les requêtes **PostGIS** ;
-* les fichiers **CSV** contenant des coordonnées géographiques ;
-* les flux **WMS/WMTS**.
+* les fichiers **GeoJSON** 
+* les fichiers **Shapefile** 
+* les requêtes **PostGIS** 
+* les fichiers **CSV** contenant des coordonnées géographiques 
+* les flux **WMS/WMTS**
 
 .. note::
     Une fois la source de données enregistrée, il n’est pas possible de modifier son type.
@@ -262,6 +263,7 @@ Statuts d'actualisation
 ^^^^^^^^^^^^^^^^^^^^^^^
 
 Il existe cinq types de statuts relatifs à l'actualisation des sources :
+
 * ``A synchroniser`` : le statut de la source nouvellement créé, cela signifie que la source a besoin d’être actualisée pour être utilisée. Cliquez d’abord sur la source pour éditer son statut, puis sur :guilabel:`ACTUALISER LES DONNÉES`. Une fois revenu à la liste des source, vous pourrez constater que le statut est devenu ``En cours`` ou ``Terminé``.  
 * ``En cours`` : la source de données est en cours d'actualisation. 
 * ``En attente`` : les sources mises en attente et traitées dans l'ordre de demande d'actualisation. 
@@ -301,6 +303,7 @@ Au survol sur la vignette du statut d'une source, une infobulle apparait avec le
 Il suffit de cliquer sur la vignette du statut pour être redirigé vers l'onglet :guilabel:`RAPPORT D’IMPORTATION`.
 
 Il existe trois types de statuts relatifs au rapport d'importation des sources :
+
 * ``Succès`` : les données ont toutes correctement été importées au moment de l'actualisation
 * ``Erreur`` : aucune donnée n'a pu être importée au moment de l'actualisation (exemple : aucune donnée)
 * ``Alerte`` : importation partielle des données car l'actualisation a rencontré une erreur (exemple : géométries invalides, mauvais typage de colonne)
@@ -312,6 +315,7 @@ Le rapport d'importation comporte plusieurs informations utiles comme :
 * ``Finie à``
 * ``Rapport global``
 * ``Nombre total de lignes traitées``
+
   * ``Erreurs``
   * ``Nombre de lignes ajoutées``
   * ``Nombre de lignes modifiées``
@@ -325,8 +329,8 @@ Cet onglet donne des informations utiles sur :
 
 - La date de création de la source de donnée (*automatique*)
 - La date de modification de la source de données (*automatique*)
-- La description (à renseigner dans l'onglet ``DÉFINITION``)
-- Les crédits (à renseigner dans l'onglet ``DÉFINITION``)
+- La description (à renseigner dans l'onglet :guilabel:`DÉFINITION`)
+- Les crédits (à renseigner dans l'onglet :guilabel:`DÉFINITION`)
 - L'auteur de la source de données (*automatique à partir du nom de l'utilisateur à l'origine de la source*)
 
 .. image :: ../_static/images/admin/admin_source_infosgenerales.png
@@ -391,12 +395,13 @@ Pour afficher l’ensemble des couches cliquez sur :guilabel:`Liste des couches`
 .. image :: ../_static/images/admin/admin_couche_liste.png
 
 .. tip::
-    - Pour retrouver plus facilement une couche dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par source de données, vue, affichée par défaut(oui/non), table attributaire affichée(oui/non), fenêtre au survol(oui/non), mini-fiche (oui/non).
-    - Toutes les colonnes de la liste des sources de données sont triables dans l'ordre ascendant / descendant :
-      * Nom
-      * Vue
-      * Source des données
-      * Affichée par défaut
+  - Pour retrouver plus facilement une couche dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par source de données, vue, affichée par défaut(oui/non), table attributaire affichée(oui/non), fenêtre au survol(oui/non), mini-fiche (oui/non).
+  - Toutes les colonnes de la liste des sources de données sont triables dans l'ordre ascendant / descendant :
+
+    * Nom
+    * Vue
+    * Source des données
+    * Affichée par défaut
 
 Créer une couche
 ----------------
@@ -1058,9 +1063,10 @@ L’outil de widget permet de récapituler dans un tableau dynamique des indicat
 Plusieurs widgets peuvent être créés par couche. L'icône et le libellé de chacun d'entre eux est personnalisable.
 
 Trois types de calculs statistiques sont proposés :
-- le comptage du nombre d'éléments présents ;
-- la somme de leur valeur ;
-- la moyenne de leur valeur.
+
+- le comptage du nombre d'éléments présents
+- la somme de leur valeur
+- la moyenne de leur valeur
 
 .. image :: ../_static/images/admin/admin_couche_widget.png
 
@@ -1075,9 +1081,10 @@ Onglet INCLUSIONS
 Enfin, il est également possible d'associer à une couche des contenus provenant d'applications externes - par exemple, pour associer des graphiques aux couches cartographiques.
 
 Pour cela, il suffit de renseigner :
-- l'icône représentative,
-- un libellé correspondant,
-- l'url du contenu distant à mettre à disposition des utilisateurs de TerraVisu.
+
+- l'icône représentative
+- un libellé correspondant
+- l'URL du contenu distant à mettre à disposition des utilisateurs de TerraVisu
 
 .. image :: ../_static/images/admin/admin_couche_embed.png
 
@@ -1183,6 +1190,7 @@ Sélection des couches par variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Le mode de sélection de couches dit "par variables" permet de rassembler plusieurs couches portant sur un même indicateur, dont la valeur est fonction de combinaisons de variables.
+
 Ce mécanisme est particulièrement utile pour permettre la sélection du millésime de données ainsi que de l'échelle spatiale utilisée.
 
 Pour pouvoir actionner ce mode de sélection, il est nécessaire d'avoir préalablement défini une couche par combinaison de valeurs voulues pour les variables en jeu.
@@ -1272,7 +1280,7 @@ Les informations à renseigner à minima lors de la création d’un nouveau fon
 
 La taille des tuiles est modifiable mais elle est définie par défaut sur la valeur 256. Le curseur de l’amplitude du zoom permet de choisir à quel niveau de zoom les tuiles du fond de carte s’afficheront dans le visualiseur.
 
-Une fois les fonds de plan ajoutés, l’utilisateur peut les choisir de les utiliser dans les vues qu’il veut.
+Une fois les fonds de plan ajoutés, l’utilisateur peut choisir de les utiliser dans les vues qu’il veut.
 
 .. note::
     Il est possible de définir l'ordre d'affichage du fond de plan dans une vue en renseignant le champ ``Ordre``.
