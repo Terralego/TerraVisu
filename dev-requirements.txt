@@ -18,7 +18,7 @@ babel==2.12.1
     #   sphinx
 black==24.2.0
     # via -r dev-requirements.in
-build==0.10.0
+build==1.0.3
     # via pip-tools
 certifi==2023.7.22
     # via
@@ -88,7 +88,7 @@ packaging==23.1
     #   sphinx
 pathspec==0.11.2
     # via black
-pip-tools==7.3.0
+pip-tools==7.4.0
     # via -r dev-requirements.in
 platformdirs==3.10.0
     # via black
@@ -101,7 +101,9 @@ pygments==2.16.1
     #   -r docs/requirements.txt
     #   sphinx
 pyproject-hooks==1.0.0
-    # via build
+    # via
+    #   build
+    #   pip-tools
 python-dateutil==2.8.2
     # via
     #   -c requirements.txt
