@@ -207,7 +207,7 @@ Des contenus configurés depuis une application externe, notamment graphiques, p
 Les intéractions avec les données affichés sur la carte
 ---------------------------------------------------------
 
-Si les couches ont été configurées pour, il est possible d'intéragir avec les objets affichés sur la carte.
+Il est possible d’interagir avec les objets affichés sur la carte, dès lors que les couches ont été configurées dans le backoffice pour inclure les infobulles (survol) ou les mini-fiches (clic).
 
 La fiche descriptive
 ~~~~~~~~~~~~~~~~~~~~~~~
