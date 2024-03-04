@@ -10,7 +10,7 @@ asgiref==3.6.0
     # via
     #   django
     #   django-cors-headers
-async-timeout==4.0.2
+async-timeout==4.0.3
     # via redis
 attrs==22.2.0
     # via
@@ -225,7 +225,7 @@ pytz==2023.3
     #   djangorestframework
 pyyaml==6.0
     # via drf-spectacular
-redis==5.0.1
+redis==5.0.2
     # via -r requirements.in
 requests==2.31.0
     # via
