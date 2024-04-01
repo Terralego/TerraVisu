@@ -145,9 +145,9 @@ drf-spectacular==0.27.1
     # via -r requirements.in
 ecdsa==0.18.0
     # via python-jose
-elastic-transport==8.4.0
+elastic-transport==8.13.0
     # via elasticsearch
-elasticsearch==8.12.1
+elasticsearch==8.13.0
     # via -r requirements.in
 filetype==1.2.0
     # via drf-extra-fields
