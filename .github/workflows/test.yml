@@ -42,7 +42,7 @@ jobs:
         run: |
           docker compose run --user root --rm web ./manage.py loaddata project/fixtures/initial.json
 
-      - uses: tj-actions/verify-changed-files@v19
+      - uses: tj-actions/verify-changed-files@v20
         id: verify-changed-files
         with:
           files: |
