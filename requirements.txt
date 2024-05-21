@@ -227,7 +227,7 @@ pyyaml==6.0
     # via drf-spectacular
 redis==5.0.4
     # via -r requirements.in
-requests==2.31.0
+requests==2.32.0
     # via
     #   django-geostore
     #   openid-connect
