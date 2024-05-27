@@ -54,7 +54,7 @@ faker==19.3.1
     # via factory-boy
 flake8==7.0.0
     # via -r dev-requirements.in
-freezegun==1.4.0
+freezegun==1.5.1
     # via -r dev-requirements.in
 idna==3.7
     # via
