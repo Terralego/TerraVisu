@@ -41,7 +41,7 @@ django==4.2.13
     # via
     #   -c requirements.txt
     #   django-debug-toolbar
-django-debug-toolbar==4.3.0
+django-debug-toolbar==4.4.2
     # via -r dev-requirements.in
 docutils==0.18.1
     # via
