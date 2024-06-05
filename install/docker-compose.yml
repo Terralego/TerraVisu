@@ -2,7 +2,7 @@ version: "3.7"
 
 x-images:
   django: &django
-    image: ghcr.io/Terralego/terravisu
+    image: ghcr.io/terralego/terravisu
     user: ${UID:-1000}:${GID:-1000}
     env_file:
       - ./conf/visu.env
@@ -18,7 +18,7 @@ services:
       - ./conf/visu.env
     volumes:
       - db:/var/lib/postgresql/data
-      - ./conf/postgres.conf":/etc/postgresql/postgresql.conf
+      - ./conf/postgres.conf:/etc/postgresql/postgresql.conf
 
   redis:
     image: redis:7-alpine
