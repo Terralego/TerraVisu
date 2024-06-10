@@ -233,7 +233,7 @@ requests==2.32.0
     #   openid-connect
 rsa==4.9
     # via python-jose
-sentry-sdk==2.3.1
+sentry-sdk==2.5.1
     # via -r requirements.in
 simplekml==1.3.6
     # via django-geostore
