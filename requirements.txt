@@ -225,7 +225,7 @@ pytz==2023.3
     #   djangorestframework
 pyyaml==6.0
     # via drf-spectacular
-redis==5.0.5
+redis==5.0.6
     # via -r requirements.in
 requests==2.32.0
     # via
