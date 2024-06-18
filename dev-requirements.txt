@@ -4,7 +4,7 @@
 #
 #    pip-compile --strip-extras dev-requirements.in
 #
-alabaster==0.7.13
+alabaster==0.7.16
     # via
     #   -r docs/requirements.txt
     #   sphinx
@@ -12,13 +12,17 @@ asgiref==3.6.0
     # via
     #   -c requirements.txt
     #   django
-babel==2.12.1
+babel==2.15.0
     # via
     #   -r docs/requirements.txt
     #   sphinx
 black==24.4.2
     # via -r dev-requirements.in
-build==1.0.3
+blessed==1.20.0
+    # via curtsies
+bpython==0.24
+    # via -r dev-requirements.in
+build==1.2.1
     # via pip-tools
 certifi==2023.7.22
     # via
@@ -37,25 +41,33 @@ click==8.1.3
     #   pip-tools
 coverage==7.5.3
     # via -r dev-requirements.in
+curtsies==0.4.2
+    # via bpython
+cwcwidth==0.1.9
+    # via
+    #   bpython
+    #   curtsies
 django==4.2.13
     # via
     #   -c requirements.txt
     #   django-debug-toolbar
 django-debug-toolbar==4.4.2
     # via -r dev-requirements.in
-docutils==0.18.1
+docutils==0.20.1
     # via
     #   -r docs/requirements.txt
     #   sphinx
     #   sphinx-rtd-theme
 factory-boy==3.3.0
     # via -r dev-requirements.in
-faker==19.3.1
+faker==25.8.0
     # via factory-boy
 flake8==7.1.0
     # via -r dev-requirements.in
 freezegun==1.5.1
     # via -r dev-requirements.in
+greenlet==3.0.3
+    # via bpython
 idna==3.7
     # via
     #   -c requirements.txt
@@ -71,7 +83,7 @@ jinja2==3.1.4
     # via
     #   -r docs/requirements.txt
     #   sphinx
-markupsafe==2.1.3
+markupsafe==2.1.5
     # via
     #   -r docs/requirements.txt
     #   jinja2
@@ -86,21 +98,22 @@ packaging==23.1
     #   black
     #   build
     #   sphinx
-pathspec==0.11.2
+pathspec==0.12.1
     # via black
 pip-tools==7.4.1
     # via -r dev-requirements.in
-platformdirs==3.10.0
+platformdirs==4.2.2
     # via black
 pycodestyle==2.12.0
     # via flake8
 pyflakes==3.2.0
     # via flake8
-pygments==2.16.1
+pygments==2.18.0
     # via
     #   -r docs/requirements.txt
+    #   bpython
     #   sphinx
-pyproject-hooks==1.0.0
+pyproject-hooks==1.1.0
     # via
     #   build
     #   pip-tools
@@ -109,40 +122,39 @@ python-dateutil==2.8.2
     #   -c requirements.txt
     #   faker
     #   freezegun
+pyxdg==0.28
+    # via bpython
 requests==2.32.3
     # via
     #   -c requirements.txt
     #   -r docs/requirements.txt
+    #   bpython
     #   sphinx
 six==1.16.0
     # via
     #   -c requirements.txt
+    #   blessed
     #   python-dateutil
 snowballstemmer==2.2.0
     # via
     #   -r docs/requirements.txt
     #   sphinx
-sphinx==7.2.5
+sphinx==7.3.7
     # via
     #   -r docs/requirements.txt
     #   sphinx-rtd-theme
-    #   sphinxcontrib-applehelp
-    #   sphinxcontrib-devhelp
-    #   sphinxcontrib-htmlhelp
     #   sphinxcontrib-jquery
-    #   sphinxcontrib-qthelp
-    #   sphinxcontrib-serializinghtml
 sphinx-rtd-theme==2.0.0
     # via -r docs/requirements.txt
-sphinxcontrib-applehelp==1.0.7
+sphinxcontrib-applehelp==1.0.8
     # via
     #   -r docs/requirements.txt
     #   sphinx
-sphinxcontrib-devhelp==1.0.5
+sphinxcontrib-devhelp==1.0.6
     # via
     #   -r docs/requirements.txt
     #   sphinx
-sphinxcontrib-htmlhelp==2.0.4
+sphinxcontrib-htmlhelp==2.0.5
     # via
     #   -r docs/requirements.txt
     #   sphinx
@@ -154,11 +166,11 @@ sphinxcontrib-jsmath==1.0.1
     # via
     #   -r docs/requirements.txt
     #   sphinx
-sphinxcontrib-qthelp==1.0.6
+sphinxcontrib-qthelp==1.0.7
     # via
     #   -r docs/requirements.txt
     #   sphinx
-sphinxcontrib-serializinghtml==1.1.9
+sphinxcontrib-serializinghtml==1.1.10
     # via
     #   -r docs/requirements.txt
     #   sphinx
@@ -169,18 +181,23 @@ sqlparse==0.4.4
     #   django-debug-toolbar
 tomli==2.0.1
     # via
+    #   -r docs/requirements.txt
     #   black
     #   build
     #   pip-tools
-    #   pyproject-hooks
-typing-extensions==4.7.1
+    #   sphinx
+typing-extensions==4.12.2
     # via black
 urllib3==1.26.19
     # via
     #   -c requirements.txt
     #   -r docs/requirements.txt
     #   requests
-wheel==0.41.2
+wcwidth==0.2.6
+    # via
+    #   -c requirements.txt
+    #   blessed
+wheel==0.43.0
     # via pip-tools
 
 # The following packages are considered to be unsafe in a requirements file:
