@@ -15,18 +15,14 @@ from project.accounts.serializers import UserSerializer
 from project.terra_layer.models import Scene
 from project.visu.models import ExtraMenuItem, SpriteValue
 from project.visu.serializers import ExtraMenuItemSerializer
+from project.visu.utils import get_logo_url
 
 logger = logging.getLogger(__name__)
 
 
 class CommonSettings:
     def get_logo_url(self):
-        if config.INSTANCE_LOGO.startswith("/"):
-            LOGO_URL = config.INSTANCE_LOGO
-        else:
-            LOGO_URL = default_storage.url(config.INSTANCE_LOGO)
-
-        return self.request.build_absolute_uri(LOGO_URL)
+        return get_logo_url(request=self.request)
 
     def get_favicon_url(self):
         if config.INSTANCE_FAVICON.startswith("/"):
