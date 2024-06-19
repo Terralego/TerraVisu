@@ -1,7 +1,6 @@
 from io import StringIO
 from unittest import mock
 
-from constance.test import override_config
 from django.contrib.gis.geos.point import Point
 from django.test import TestCase
 from geostore.models import Layer
@@ -560,7 +559,6 @@ class SourceReportingTestCase(TestCase):
     @mock.patch("elasticsearch.client.IndicesClient.delete")
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
-    @override_config(INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS="terravisu@terra.org")
     def test_partial_refresh_trigger_warning(
         self, mock_es_create, mock_es_delete, mock_es_index, mock_es_index_feature
     ):
