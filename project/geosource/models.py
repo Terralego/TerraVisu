@@ -171,16 +171,18 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             es_index = LayerESIndex(layer)
             es_index.index()
             response = self._refresh_data(es_index)
+            self.status = self.Status.DONE.value
             return response
-        except SourceException as exc:
+
+        except Exception as exc:
             self.report.status = self.report.Status.ERROR.value
-            self.report.message = exc.message
+            self.report.message = str(exc)
             self.report.ended = timezone.now()
             self.report.save(update_fields=["status", "message", "ended"])
+            self.status = self.Status.DONE
 
         finally:
             self.last_refresh = timezone.now()
-            self.status = self.Status.DONE.value
             self.save()
             refresh_data_done.send_robust(
                 sender=self.__class__,
