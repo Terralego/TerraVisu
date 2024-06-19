@@ -145,9 +145,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = os.getenv("LANGUAGE_CODE", "en-us")
 
-TIME_ZONE = "UTC"
+TIME_ZONE = os.getenv("TZ", "UTC")
 
 USE_I18N = True
 
@@ -266,6 +266,17 @@ CONSTANCE_ADDITIONAL_FIELDS = {
             "choices": (("nominatim", "Nominatim"),),
         },
     ],
+    "choice_email_source_refresh_level": [
+        "django.forms.fields.ChoiceField",
+        {
+            "widget": "django.forms.Select",
+            "choices": (
+                ("success", _("Success")),
+                ("warning", _("Warning")),
+                ("error", _("Error")),
+            ),
+        },
+    ],
     "float_field": ["django.forms.FloatField", {"required": False}],
 }
 CONSTANCE_CONFIG = {
@@ -300,6 +311,30 @@ CONSTANCE_CONFIG = {
         "",
         _("Content of info tab in frontend"),
         "tinymce_field",
+    ),
+    "INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS": (
+        "",
+        _("Email addresses to send refresh done reports. (comma separated values)"),
+        str,
+    ),
+    "INSTANCE_EMAIL_FROM": (
+        "no-reply@terravisu.org",
+        _("Email address used as sender for emails sent."),
+        str,
+    ),
+    "INSTANCE_EMAIL_SOURCE_REFRESH_LEVEL": (
+        "success",
+        _(
+            "Minimum report status level to send email to refresh recipients. (success, warning, error)"
+        ),
+        str,
+    ),
+    "INSTANCE_EMAIL_MEDIA_BASE_URL": (
+        "",
+        _(
+            "Base url to prefix media files in HTML emails. (ex: https://terravisu.org/static_dj/)"
+        ),
+        str,
     ),
     "MEASURE_CONTROL": (
         False,
@@ -372,6 +407,18 @@ CONSTANCE_CONFIG_FIELDSETS = (
                 "INSTANCE_INFO_CONTENT",
             ),
             "collapse": False,
+        },
+    ),
+    (
+        _("Emails"),
+        {
+            "fields": (
+                "INSTANCE_EMAIL_FROM",
+                "INSTANCE_EMAIL_MEDIA_BASE_URL",
+                "INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS",
+                "INSTANCE_EMAIL_SOURCE_REFRESH_LEVEL",
+            ),
+            "collapse": True,
         },
     ),
     (
@@ -460,9 +507,6 @@ AUTH_GET_USER_FUNCTION = "project.accounts.oidc:get_user"
 API_SCHEMA = config("API_SCHEMA", default=False, cast=bool)
 API_SWAGGER = config("API_SWAGGER", default=False, cast=bool)  # NEED API_SCHEMA
 API_REDOC = config("API_REDOC", default=False, cast=bool)  # NEED API_SCHEMA
-
-GRAPPELLI_ADMIN_TITLE = "TerraVisu: Configuration"
-GRAPPELLI_INDEX_DASHBOARD = "project.config_dashboard.CustomIndexDashboard"
 
 SENTRY_DSN = config("SENTRY_DSN", default="", cast=str)
 SENTRY_ENVIRONMENT = config("SENTRY_ENVIRONMENT", default="", cast=str)

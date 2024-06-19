@@ -576,6 +576,7 @@ class SourceReportingTestCase(TestCase):
         )
         self.source._get_records = mock.MagicMock(return_value=mocked_rows)
         self.source.refresh_data()
+        self.source.refresh_from_db()
         self.assertEqual(
             self.source.report.status,
             SourceReporting.Status.WARNING.value,

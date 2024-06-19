@@ -2,6 +2,7 @@ import logging
 from datetime import datetime
 from unittest import mock
 
+from constance.test import override_config
 from django.contrib.auth.models import Group
 from django.test import TestCase
 from geostore.models import Feature, Layer
@@ -25,6 +26,7 @@ class TaskTestCase(TestCase):
         )
         cls.element.groups.add(cls.group)
 
+    @override_config(INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS="terravisu@terra.org")
     def test_task_refresh_data_method(
         self, mocked_index_feature, mocked_es_delete, mocked_es_create
     ):

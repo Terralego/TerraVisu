@@ -75,7 +75,4 @@ class LayerESIndex(ESMixin):
         # Create query body with mapping
         body = {"mappings": {"properties": field_conf}}
 
-        try:
-            self.client.indices.create(index=self.layer.name, body=body)
-        except Exception:
-            logger.exception("ES index for layer {layer.name} can't be created")
+        self.client.indices.create(index=self.layer.name, body=body)

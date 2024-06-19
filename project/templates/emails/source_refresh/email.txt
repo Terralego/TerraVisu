@@ -1,0 +1,35 @@
+{% load i18n %}
+
+{% blocktranslate with source_name=obj.name refresh_datetime=obj.last_refresh refresh_start=obj.report.started refresh_ended=obj.report.ended added_lines=obj.report.added_lines modified_lines=obj.report.modified_lines deleted_lines=obj.report.deleted_lines total=obj.report.total %}
+Hi,
+
+Data source "{{ source_name }}" refresh ended on {{ refresh_datetime }}.
+
+Started at {{ refresh_start }}
+Ended at {{ refresh_ended }}
+
+{{ total }} total features
+
+with
+
+{{ added_lines }} added features
+{{ modified_lines }} modified features
+{{ deleted_lines }} deleted features
+
+{% endblocktranslate %}
+
+{% if obj.report.status != obj.report.Status.SUCCESS %}
+{% blocktranslate with status=obj.report.get_status_display %}
+Its status is: {{ status }}.
+{% endblocktranslate %}
+{% else %}
+{% blocktranslate with instance_title=title %}
+No problem detected.
+
+Regards,
+
+The {{ instance_title }} team
+
+{% endblocktranslate %}
+
+{% endif %}
