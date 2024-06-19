@@ -12,7 +12,7 @@ app = Celery("project")
 BROKER_URL = f'redis://{os.getenv("REDIS_HOST", "redis")}:{os.getenv("REDIS_PORT", "6379")}/{os.getenv("REDIS_DB", "0")}'
 
 app.conf.update(
-    enable_utc=True,
+    timezone=settings.TIME_ZONE,
     accept_content=["json"],
     broker_url=BROKER_URL,
     task_serializer="json",
