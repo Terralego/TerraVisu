@@ -8,7 +8,6 @@ logger = logging.getLogger(__name__)
 def auto_refresh_source():
     countdown = 0
     for source in Source.objects.exclude(status=Source.Status.PENDING):
-        logger.info(f"Is refresh for {source}<{source.id}> needed?")
         if source.should_refresh():
             logger.info(f"Schedule refresh for source {source}<{source.id}>...")
             # Delay execution by some minutes to avoid struggling
