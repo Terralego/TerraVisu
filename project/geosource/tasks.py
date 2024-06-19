@@ -2,8 +2,14 @@ import logging
 
 from celery import shared_task, states
 from celery.exceptions import Ignore
+from constance import config
 from django.apps import apps
+from django.core.mail import send_mail
+from django.template.loader import get_template
 from django.utils import timezone
+from django.utils.translation import gettext as _
+
+from project.visu.utils import get_logo_url
 
 logger = logging.getLogger(__name__)
 
@@ -41,7 +47,6 @@ def run_model_object_method(self, app, model, pk, method, success_state=states.S
 
     try:
         obj = Model.objects.get(pk=pk)
-        # raise Exception("not okkkkkkk")
         logger.info(f"Call method {method} on {obj}")
         state = {"action": method, **getattr(obj, method)()}
         logger.info(f"Method {method} on {obj} ended")
@@ -66,6 +71,34 @@ def run_model_object_method(self, app, model, pk, method, success_state=states.S
             message = f"{e}"
         set_failure_state(self, method, message, obj)
         logger.error(e, exc_info=True)
+
+    if config.INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS:
+        emails = config.INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS.split(",")
+        obj.refresh_from_db()
+        logo_url = f"{config.INSTANCE_EMAIL_MEDIA_BASE_URL}{get_logo_url()}"
+        context = {
+            "title": config.INSTANCE_TITLE,
+            "obj": obj,
+            "logo_url": logo_url,
+        }
+        txt_template = get_template("emails/source_refresh/email.txt")
+        txt_message = txt_template.render(context=context)
+        html_template = get_template("emails/source_refresh/email.html")
+        html_message = html_template.render(context)
+        send_mail(
+            _(
+                "%(title)s : Data source %(obj)s refresh ended with state %(success_state)s"
+            )
+            % {
+                "title": config.INSTANCE_TITLE,
+                "obj": obj,
+                "success_state": obj.report.get_status_display(),
+            },
+            txt_message,
+            config.INSTANCE_EMAIL_FROM,
+            recipient_list=emails,
+            html_message=html_message,
+        )
 
     raise Ignore()
 

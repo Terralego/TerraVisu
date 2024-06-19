@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% load i18n %}
+{% load static %}
+
+{% block content %}
+    <br>
+    <div class="card offset-lg-3 col-lg-6">
+        <img src="{{ logo_url }}" class="card-img-top bg-secondary p-2" alt="logo">
+        <div class="card-header text-bg-{% if obj.report.status == 0 %}success{% elif obj.report.status == 1 %}danger{% elif obj.report.status == 2 %}warning{% endif %}">
+            <h4>
+            {% if obj.report.status == 1 %}
+                {% blocktranslate with title=title source_name=obj.name %}
+                    {{ title }}: Error when refreshing data source <b>"{{ source_name }}"</b>
+                {% endblocktranslate %}
+            {% else %}
+            {% blocktranslate with title=title source_name=obj.name %}
+                {{ title }}: Data source <b>"{{ source_name }}"</b> refreshed
+            {% endblocktranslate %}
+            {% endif %}
+            </h4>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">
+                {% blocktranslate with source_name=obj.name refresh_datetime=obj.last_refresh %}
+                    Hi,<br><br>
+                    Data source "{{ source_name }}" refresh ended on <b>{{ refresh_datetime }}</b>.<br>
+                {% endblocktranslate %}
+            </h5>
+            <p class="card-text">
+                {% if obj.report.status != 1 %}
+                    <table class="table">
+                        <tr class="text-center text-bg-secondary">
+                            <th colspan="2">
+                                {% translate "Objects" %}
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>{% trans "Total" %}</th>
+                            <td class="text-end">
+                                <span class="badge bg-success">{{ obj.report.total }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "Start" %}</th>
+                            <td class="text-end">{{ obj.report.started }}</td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "End" %}</th>
+                            <td class="text-end">{{ obj.report.ended }}</td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "Adding" %}</th>
+                            <td class="text-end">
+                                <span class="badge bg-primary">{{ obj.report.added_lines }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "Updates" %}</th>
+                            <td class="text-end">
+                                <span class="badge bg-warning">{{ obj.report.modified_lines }}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>{% trans "Deletion" %}</th>
+                            <td class="text-end">
+                                <span class="badge bg-danger">{{ obj.report.deleted_lines }}</span>
+                            </td>
+                        </tr>
+                    </table>
+                {% endif %}
+            </p>
+        </div>
+    </div>
+{% endblock %}
