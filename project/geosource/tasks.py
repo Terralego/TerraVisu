@@ -73,32 +73,39 @@ def run_model_object_method(self, app, model, pk, method, success_state=states.S
         logger.error(e, exc_info=True)
 
     if config.INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS:
-        emails = config.INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS.split(",")
         obj.refresh_from_db()
-        logo_url = f"{config.INSTANCE_EMAIL_MEDIA_BASE_URL}{get_logo_url()}"
-        context = {
-            "title": config.INSTANCE_TITLE,
-            "obj": obj,
-            "logo_url": logo_url,
-        }
-        txt_template = get_template("emails/source_refresh/email.txt")
-        txt_message = txt_template.render(context=context)
-        html_template = get_template("emails/source_refresh/email.html")
-        html_message = html_template.render(context)
-        send_mail(
-            _(
-                "%(title)s : Data source %(obj)s refresh ended with state %(success_state)s"
-            )
-            % {
+        mail_level = config.INSTANCE_EMAIL_SOURCE_REFRESH_LEVEL
+        if (
+            mail_level == "success"
+            or (mail_level == "warning" and obj.report.status in (1, 2))
+            or (mail_level == "error" and obj.report.status == 1)
+        ):
+            emails = config.INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS.split(",")
+            logo_url = f"{config.INSTANCE_EMAIL_MEDIA_BASE_URL}{get_logo_url()}"
+            context = {
                 "title": config.INSTANCE_TITLE,
                 "obj": obj,
-                "success_state": obj.report.get_status_display(),
-            },
-            txt_message,
-            config.INSTANCE_EMAIL_FROM,
-            recipient_list=emails,
-            html_message=html_message,
-        )
+                "logo_url": logo_url,
+            }
+            txt_template = get_template("emails/source_refresh/email.txt")
+            txt_message = txt_template.render(context=context)
+            html_template = get_template("emails/source_refresh/email.html")
+            html_message = html_template.render(context)
+            send_mail(
+                _(
+                    "%(title)s : Data source %(obj)s refresh ended with state %(success_state)s"
+                )
+                % {
+                    "title": config.INSTANCE_TITLE,
+                    "obj": obj,
+                    "success_state": obj.report.get_status_display(),
+                },
+                txt_message,
+                config.INSTANCE_EMAIL_FROM,
+                recipient_list=emails,
+                html_message=html_message,
+                fail_silently=True,
+            )
 
     raise Ignore()
 

@@ -266,6 +266,17 @@ CONSTANCE_ADDITIONAL_FIELDS = {
             "choices": (("nominatim", "Nominatim"),),
         },
     ],
+    "choice_email_source_refresh_level": [
+        "django.forms.fields.ChoiceField",
+        {
+            "widget": "django.forms.Select",
+            "choices": (
+                ("success", _("Success")),
+                ("warning", _("Warning")),
+                ("error", _("Error")),
+            ),
+        },
+    ],
     "float_field": ["django.forms.FloatField", {"required": False}],
 }
 CONSTANCE_CONFIG = {
@@ -309,6 +320,13 @@ CONSTANCE_CONFIG = {
     "INSTANCE_EMAIL_FROM": (
         "no-reply@terravisu.org",
         _("Email address used as sender for emails sent."),
+        str,
+    ),
+    "INSTANCE_EMAIL_SOURCE_REFRESH_LEVEL": (
+        "success",
+        _(
+            "Minimum report status level to send email to refresh recipients. (success, warning, error)"
+        ),
         str,
     ),
     "INSTANCE_EMAIL_MEDIA_BASE_URL": (
@@ -396,8 +414,9 @@ CONSTANCE_CONFIG_FIELDSETS = (
         {
             "fields": (
                 "INSTANCE_EMAIL_FROM",
-                "INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS",
                 "INSTANCE_EMAIL_MEDIA_BASE_URL",
+                "INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS",
+                "INSTANCE_EMAIL_SOURCE_REFRESH_LEVEL",
             ),
             "collapse": True,
         },
