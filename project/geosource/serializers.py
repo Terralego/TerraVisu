@@ -139,11 +139,6 @@ class SourceSerializer(PolymorphicModelSerializer):
             instance, {**validated_data, "status": Source.Status.NEED_SYNC}
         )
 
-        if source.report:
-            source.report.reset()
-            source.report.status = SourceReporting.Status.PENDING
-            source.report.save()
-
         self._update_fields(source)
 
         for field_data in self.get_initial().get("fields", []):

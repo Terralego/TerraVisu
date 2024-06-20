@@ -1,0 +1,16 @@
+{% load i18n %}
+{% blocktranslate with title=title %}{{ title}}: Periodic data source refresh report{% endblocktranslate %}
+
+\n
+\n
+
+{% blocktranslate with source_name=obj.name refresh_datetime=obj.last_refresh %}
+    Hi,<br><br>
+    Here is source refresh report :
+{% endblocktranslate %}
+
+{% for source in sources %}
+<li class="list-group-item">
+  {{ source }} {% translate "at" %} {{ source.last_refresh }} ({% if source.report.status == 0 %}{% translate "Success" %}{% elif source.report.status == 1 %}{% translate "Error" %}{% else %}{% translate "Warning" %}{% endif %})\n
+</li>
+{% endfor %}

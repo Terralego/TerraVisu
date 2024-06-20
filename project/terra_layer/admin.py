@@ -13,6 +13,7 @@ class StyleImageInline(admin.TabularInline):
     readonly_fields = ("slug",)
 
 
+@admin.register(Layer)
 class LayerAdmin(CloneModelAdmin):
     inlines = [
         StyleImageInline,
@@ -22,23 +23,21 @@ class LayerAdmin(CloneModelAdmin):
     search_fields = ("name", "layer_identifier", "id", "uuid")
     readonly_fields = ("layer_identifier",)
 
+    @admin.display(
+        description=_("Layer identifier"),
+        ordering="layer_identifier",
+    )
     def layer_identifier(self, obj):
         return obj.layer_identifier
 
-    layer_identifier.short_description = _("Layer identifier")
-    layer_identifier.admin_order_field = "layer_identifier"
 
-
-admin.site.register(Layer, LayerAdmin)
 admin.site.register(GeostoreLayer)
 
 
+@admin.register(Feature)
 class FeatureAdmin(admin.ModelAdmin):
     list_display = ("id", "identifier", "layer")
     list_filter = ("layer",)
-
-
-admin.site.register(Feature, FeatureAdmin)
 
 
 @admin.register(Scene)

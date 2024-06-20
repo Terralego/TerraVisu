@@ -1,6 +1,5 @@
-{% load i18n %}
 {% load static %}
-
+{% load i18n %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
   <head>
@@ -49,7 +48,7 @@
                                       <tbody>
                                         <tr>
                                           <td style="line-height: 24px; font-size: 16px; margin: 0; padding: 8px;" align="left">
-                                            <img src="{{ logo_url }}" class="card-img-top bg-secondary" alt="logo" style="max-height: 150px; height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; background-color: #718096; border-style: none; border-width: 0;">
+                                            <img src="{{ logo_url }}" class="card-img-top bg-secondary  m-auto" alt="logo" style="max-height: 150px; height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; background-color: #718096; border-style: none; border-width: 0;">
                                           </td>
                                         </tr>
                                       </tbody>
@@ -59,15 +58,7 @@
                                         <tr>
                                           <td style="line-height: 24px; font-size: 16px; width: 100%; margin: 0;" align="left" width="100%">
                                             <h4 style="padding-top: 0; padding-bottom: 0; font-weight: 500; vertical-align: baseline; font-size: 24px; line-height: 28.8px; margin: 0;" align="left">
-                                              {% if obj.report.status == 1 %}
-                                              {% blocktranslate with title=title source_name=obj.name %}
-                                              {{ title }}: Error when refreshing data source <b>"{{ source_name }}"</b>
-                                              {% endblocktranslate %}
-                                              {% else %}
-                                              {% blocktranslate with title=title source_name=obj.name %}
-                                              {{ title }}: Data source <b>"{{ source_name }}"</b> refreshed
-                                              {% endblocktranslate %}
-                                              {% endif %}
+                                              {% blocktranslate with title=title %}{{ title}}: Periodic data source refresh report{% endblocktranslate %}
                                             </h4>
                                           </td>
                                         </tr>
@@ -81,84 +72,18 @@
                                               {% blocktranslate with source_name=obj.name refresh_datetime=obj.last_refresh %}
                                               Hi,<br>
                                               <br>
-                                              Data source "{{ source_name }}" refresh ended on <b>{{ refresh_datetime }}</b>.<br>
+                                              Here is source refresh report:<br>
                                               {% endblocktranslate %}
                                             </h5>
                                             <p class="card-text" style="line-height: 24px; font-size: 16px; width: 100%; margin: 0;" align="left">
-                                              {% if obj.report.status != 1 %}
                                             </p>
-                                            <table class="table" border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 100%;">
-                                              <tr class="text-center text-bg-secondary" style="" align="center">
-                                                <th colspan="2" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">
-                                                  {% translate "Objects" %}
-                                                </th>
-                                              </tr>
-                                              <tr>
-                                                <th style="line-height: 24px; font-size: 16px; margin: 0;" align="left">{% trans "Total" %}</th>
-                                                <td class="text-end" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">
-                                                  <table class="badge bg-success" align="left" role="presentation" border="0" cellpadding="0" cellspacing="0" style="" bgcolor="#198754">
-                                                    <tbody>
-                                                      <tr>
-                                                        <td style="line-height: 1; font-size: 75%; display: inline-block; font-weight: 700; white-space: nowrap; border-radius: 4px; margin: 0; padding: 4px 6.4px;" align="center" bgcolor="#198754" valign="baseline">
-                                                          <span>{{ obj.report.total }}</span>
-                                                        </td>
-                                                      </tr>
-                                                    </tbody>
-                                                  </table>
-                                                </td>
-                                              </tr>
-                                              <tr>
-                                                <th style="line-height: 24px; font-size: 16px; margin: 0;" align="left">{% trans "Start" %}</th>
-                                                <td class="text-end" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">{{ obj.report.started }}</td>
-                                              </tr>
-                                              <tr>
-                                                <th style="line-height: 24px; font-size: 16px; margin: 0;" align="left">{% trans "End" %}</th>
-                                                <td class="text-end" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">{{ obj.report.ended }}</td>
-                                              </tr>
-                                              <tr>
-                                                <th style="line-height: 24px; font-size: 16px; margin: 0;" align="left">{% trans "Adding" %}</th>
-                                                <td class="text-end" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">
-                                                  <table class="badge bg-primary" align="left" role="presentation" border="0" cellpadding="0" cellspacing="0" style="" bgcolor="#0d6efd">
-                                                    <tbody>
-                                                      <tr>
-                                                        <td style="line-height: 1; font-size: 75%; display: inline-block; font-weight: 700; white-space: nowrap; border-radius: 4px; margin: 0; padding: 4px 6.4px;" align="center" bgcolor="#0d6efd" valign="baseline">
-                                                          <span>{{ obj.report.added_lines }}</span>
-                                                        </td>
-                                                      </tr>
-                                                    </tbody>
-                                                  </table>
-                                                </td>
-                                              </tr>
-                                              <tr>
-                                                <th style="line-height: 24px; font-size: 16px; margin: 0;" align="left">{% trans "Updates" %}</th>
-                                                <td class="text-end" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">
-                                                  <table class="badge bg-warning" align="left" role="presentation" border="0" cellpadding="0" cellspacing="0" style="" bgcolor="#ffc107">
-                                                    <tbody>
-                                                      <tr>
-                                                        <td style="line-height: 1; font-size: 75%; display: inline-block; font-weight: 700; white-space: nowrap; border-radius: 4px; margin: 0; padding: 4px 6.4px;" align="center" bgcolor="#ffc107" valign="baseline">
-                                                          <span>{{ obj.report.modified_lines }}</span>
-                                                        </td>
-                                                      </tr>
-                                                    </tbody>
-                                                  </table>
-                                                </td>
-                                              </tr>
-                                              <tr>
-                                                <th style="line-height: 24px; font-size: 16px; margin: 0;" align="left">{% trans "Deletion" %}</th>
-                                                <td class="text-end" style="line-height: 24px; font-size: 16px; margin: 0;" align="left">
-                                                  <table class="badge bg-danger" align="left" role="presentation" border="0" cellpadding="0" cellspacing="0" style="" bgcolor="#dc3545">
-                                                    <tbody>
-                                                      <tr>
-                                                        <td style="line-height: 1; font-size: 75%; display: inline-block; font-weight: 700; white-space: nowrap; border-radius: 4px; margin: 0; padding: 4px 6.4px;" align="center" bgcolor="#dc3545" valign="baseline">
-                                                          <span>{{ obj.report.deleted_lines }}</span>
-                                                        </td>
-                                                      </tr>
-                                                    </tbody>
-                                                  </table>
-                                                </td>
-                                              </tr>
-                                            </table>
-                                            {% endif %}
+                                            <ul>
+                                              {% for source in sources %}
+                                              <li class="list-group-item">
+                                                {{ source }} {% translate "at" %} {{ source.last_refresh }} {% if source.report.status == 0 %}<span class="bg-success" style="background-color: #198754;">{% translate "Success" %}</span>{% elif source.report.status == 1 %}<span class="bg-danger" style="background-color: #dc3545;">{% translate "Error" %}</span>{% else %}<span class="bg-warning" style="background-color: #ffc107;">{% translate "Warning" %}</span>{% endif %}
+                                              </li>
+                                              {% endfor %}
+                                            </ul>
                                           </td>
                                         </tr>
                                       </tbody>
