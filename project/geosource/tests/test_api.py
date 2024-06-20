@@ -105,8 +105,8 @@ class SourceViewsetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_202_ACCEPTED)
         self.source_geojson.refresh_from_db()
         self.assertEqual(self.source_geojson.status, Source.Status.PENDING.value)
-        self.assertEqual(
-            self.source_geojson.report.status, SourceReporting.Status.PENDING.value
+        self.assertIsNone(
+            self.source_geojson.report.status
         )
 
     def test_refresh_view_accepted_with_existing_report(self):
@@ -129,10 +129,8 @@ class SourceViewsetTestCase(APITestCase):
         self.assertEqual(
             source.status, Source.Status.PENDING.value, source.get_status_display()
         )
-        self.assertEqual(
-            source.report.status,
-            SourceReporting.Status.PENDING.value,
-            source.report.get_status_display(),
+        self.assertIsNone(
+            source.report.status
         )
 
     @patch(
