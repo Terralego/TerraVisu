@@ -5,8 +5,9 @@
 \n
 
 {% blocktranslate with source_name=obj.name refresh_datetime=obj.last_refresh %}
-    Hi,<br><br>
-    Here is source refresh report :
+    Hi,
+
+    Here is source refresh report:
 {% endblocktranslate %}
 
 {% for source in sources %}
