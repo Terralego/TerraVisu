@@ -12,6 +12,6 @@
 
 {% for source in sources %}
 <li class="list-group-item">
-  {{ source }} {% translate "at" %} {{ source.last_refresh }} ({% if source.report.status == 0 %}{% translate "Success" %}{% elif source.report.status == 1 %}{% translate "Error" %}{% else %}{% translate "Warning" %}{% endif %})\n
+  {{ source.name }} {% translate "at" %} {{ source.last_refresh }} ({% if source.report.status == 0 %}{% translate "Success" %}{% elif source.report.status == 1 %}{% translate "Error" %}{% else %}{% translate "Warning" %}{% endif %})\n
 </li>
 {% endfor %}

@@ -69,7 +69,7 @@
                                         <tr>
                                           <td style="line-height: 24px; font-size: 16px; width: 100%; margin: 0; padding: 20px;" align="left">
                                             <h5 class="card-title" style="padding-top: 0; padding-bottom: 0; font-weight: 500; vertical-align: baseline; font-size: 20px; line-height: 24px; margin: 0;" align="left">
-                                              {% blocktranslate with source_name=obj.name refresh_datetime=obj.last_refresh %}
+                                              {% blocktranslate %}
                                               Hi,<br>
                                               <br>
                                               Here is source refresh report:<br>
@@ -80,7 +80,7 @@
                                             <ul>
                                               {% for source in sources %}
                                               <li class="list-group-item">
-                                                {{ source }} {% translate "at" %} {{ source.last_refresh }} {% if source.report.status == 0 %}<span class="bg-success" style="background-color: #198754;">{% translate "Success" %}</span>{% elif source.report.status == 1 %}<span class="bg-danger" style="background-color: #dc3545;">{% translate "Error" %}</span>{% else %}<span class="bg-warning" style="background-color: #ffc107;">{% translate "Warning" %}</span>{% endif %}
+                                                {{ source.name }} {% translate "at" %} {{ source.last_refresh }} {% if source.report.status == 0 %}<span class="bg-success" style="background-color: #198754;">{% translate "Success" %}</span>{% elif source.report.status == 1 %}<span class="bg-danger" style="background-color: #dc3545;">{% translate "Error" %}</span>{% else %}<span class="bg-warning" style="background-color: #ffc107;">{% translate "Warning" %}</span>{% endif %}
                                               </li>
                                               {% endfor %}
                                             </ul>
