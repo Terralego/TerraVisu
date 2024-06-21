@@ -126,7 +126,9 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     task_date = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    last_refresh = models.DateTimeField(default=timezone.now)
+    last_refresh = models.DateTimeField(
+        default=None, null=True, blank=True, db_index=True
+    )
     status = models.PositiveSmallIntegerField(
         choices=Status.choices, default=Status.NEED_SYNC
     )
