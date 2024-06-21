@@ -26,10 +26,15 @@ def periodic_source_refresh_report(*args, **kwargs):
         "warning": [0, 3],
         "error": [0, 2, 3],
     }
-    impacted_sources = Source.objects.filter(
-        last_refresh__gte=last_report,
-        report__isnull=False,
-    ).select_related("report")
+    impacted_sources = (
+        Source.objects.filter(
+            last_refresh__isnull=False,
+            last_refresh__gte=last_report,
+            report__isnull=False,
+        )
+        .select_related("report")
+        .order_by("-last_refresh")
+    )
     impacted_sources = impacted_sources.exclude(
         report__status__in=level_exclude.get(mail_level, [])
     )

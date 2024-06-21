@@ -1,3 +1,5 @@
+import sys
+
 from . import *  # NOQA
 
 DEBUG = True
@@ -10,6 +12,10 @@ MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)  # NOQA
 DEBUG_TOOLBAR_CONFIG = {
     "SHOW_TOOLBAR_CALLBACK": lambda x: True,
 }
+
+# ensure default language is English when makemigrations
+if "makemigrations" in sys.argv:
+    LANGUAGE_CODE = "en-us"
 
 # EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 EMAIL_BACKEND = "django.core.mail.backends.filebased.EmailBackend"
