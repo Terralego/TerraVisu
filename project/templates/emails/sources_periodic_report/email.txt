@@ -1,0 +1,50 @@
+{% load i18n %}
+{% blocktranslate with title=title %}{{ title}}: Periodic data source refresh report{% endblocktranslate %}
+{% blocktranslate %}
+    Hi,
+
+    Here is source refresh report:\n
+{% endblocktranslate %}
+
+{% if sources_success %}
+{% blocktranslate with count=sources_success|length %}
+{{ count }} source(s) were successfully refreshed:
+{% endblocktranslate %}
+
+
+{% for source in sources_success %}
+- {{ source.name }} {% translate "on" %} {{ source.last_refresh }}\n
+{% endfor %}
+{% endif %}
+
+
+{% if sources_warning %}
+{% blocktranslate with count=sources_warning|length %}
+{{ count }} source(s) refreshed with one or more warning:
+{% endblocktranslate %}
+
+
+{% for source in sources_warning %}
+- {{ source.name }} {% translate "on" %} {{ source.last_refresh }}\n
+{% endfor %}
+{% endif %}
+
+
+{% if sources_error %}
+{% blocktranslate with count=sources_error|length %}
+{{ count }} source(s) refreshed with one or more error:
+{% endblocktranslate %}
+
+
+
+{% for source in sources_error %}
+- {{ source.name }} {% translate "on" %} {{ source.last_refresh }}\n
+{% endfor %}
+{% endif %}
+
+
+{% blocktranslate with instance_title=title %}
+Regards,
+
+The {{ instance_title }} team
+{% endblocktranslate %}

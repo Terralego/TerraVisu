@@ -78,7 +78,9 @@ class SourceReporting(models.Model):
         WARNING = 2, _("Warning")
         PENDING = 3, _("Pending")
 
-    status = models.PositiveSmallIntegerField(choices=Status.choices, null=True)
+    status = models.PositiveSmallIntegerField(
+        choices=Status.choices, null=True, default=None
+    )
     message = models.CharField(max_length=255, default="")
     started = models.DateTimeField(null=True)
     ended = models.DateTimeField(null=True)
@@ -89,7 +91,6 @@ class SourceReporting(models.Model):
     errors = models.JSONField(default=list)
 
     def reset(self):
-        self.status = self.Status.PENDING.value
         self.message = ""
         self.started = None
         self.ended = None
@@ -191,12 +192,9 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
 
     def _refresh_data(self, es_index=None):
         if not self.report:
-            self.report = SourceReporting.objects.create(
-                started=timezone.now(), status=SourceReporting.Status.PENDING
-            )
+            self.report = SourceReporting.objects.create(started=timezone.now())
         else:
             self.report.reset()
-            self.report.status = SourceReporting.Status.PENDING
             self.report.started = timezone.now()
             self.report.save()
 

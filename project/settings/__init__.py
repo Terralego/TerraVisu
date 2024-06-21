@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 import sentry_sdk
@@ -277,6 +277,16 @@ CONSTANCE_ADDITIONAL_FIELDS = {
             ),
         },
     ],
+    "choice_email_source_refresh_type": [
+        "django.forms.fields.ChoiceField",
+        {
+            "widget": "django.forms.Select",
+            "choices": (
+                ("periodic", _("Periodic")),
+                ("everytime", _("Each time a source refresh")),
+            ),
+        },
+    ],
     "float_field": ["django.forms.FloatField", {"required": False}],
 }
 CONSTANCE_CONFIG = {
@@ -317,17 +327,20 @@ CONSTANCE_CONFIG = {
         _("Email addresses to send refresh done reports. (comma separated values)"),
         str,
     ),
-    "INSTANCE_EMAIL_FROM": (
-        "no-reply@terravisu.org",
-        _("Email address used as sender for emails sent."),
-        str,
-    ),
     "INSTANCE_EMAIL_SOURCE_REFRESH_LEVEL": (
         "success",
-        _(
-            "Minimum report status level to send email to refresh recipients. (success, warning, error)"
-        ),
-        str,
+        _("Minimum report status level to send email to refresh recipients."),
+        "choice_email_source_refresh_level",
+    ),
+    "INSTANCE_EMAIL_SOURCE_TYPE": (
+        "periodic",
+        _("Source refresh report type, periodic or everytime a source refresh."),
+        "choice_email_source_refresh_type",
+    ),
+    "INSTANCE_EMAIL_SOURCE_LAST_PERIODIC": (
+        datetime.now(tz=timezone.utc),
+        _("Last periodic source refresh report datetime. Do not change it"),
+        datetime,
     ),
     "INSTANCE_EMAIL_MEDIA_BASE_URL": (
         "",
@@ -413,10 +426,11 @@ CONSTANCE_CONFIG_FIELDSETS = (
         _("Emails"),
         {
             "fields": (
-                "INSTANCE_EMAIL_FROM",
                 "INSTANCE_EMAIL_MEDIA_BASE_URL",
                 "INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS",
                 "INSTANCE_EMAIL_SOURCE_REFRESH_LEVEL",
+                "INSTANCE_EMAIL_SOURCE_TYPE",
+                "INSTANCE_EMAIL_SOURCE_LAST_PERIODIC",
             ),
             "collapse": True,
         },

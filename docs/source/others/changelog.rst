@@ -2,6 +2,14 @@
 Changelog
 ==========
 
+2024.06.0      (2024-06-20)
+---------------------------
+
+**New features**
+
+- Configure data source refresh report, at each refresh or periodically.
+
+
 2024.02.7      (2024-02-15)
 ---------------------------
 

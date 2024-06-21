@@ -26,7 +26,10 @@ class TaskTestCase(TestCase):
         )
         cls.element.groups.add(cls.group)
 
-    @override_config(INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS="terravisu@terra.org")
+    @override_config(
+        INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS="terravisu@terra.org",
+        INSTANCE_EMAIL_SOURCE_TYPE="everytime",
+    )
     def test_task_refresh_data_method(
         self, mocked_index_feature, mocked_es_delete, mocked_es_create
     ):

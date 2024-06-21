@@ -28,11 +28,9 @@ class FunctionalPermissionAdmin(admin.ModelAdmin):
         return False
 
 
+@admin.register(PermanentAccessToken, site=config_site)
 class PermanentAccessTokenAdmin(admin.ModelAdmin):
     list_display = ("id", "user", "created_at", "updated_at")
     list_filter = ("user", "created_at", "updated_at")
     search_fields = ("user__email", "token")
     readonly_fields = ("token",)
-
-
-config_site.register(PermanentAccessToken, PermanentAccessTokenAdmin)

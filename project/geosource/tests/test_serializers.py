@@ -225,4 +225,3 @@ class SourceSerializerTestCase(TestCase):
         self.source.refresh_from_db()
         self.report.refresh_from_db()
         self.assertEqual(self.source.status, Source.Status.NEED_SYNC.value)
-        self.assertEqual(self.report.status, SourceReporting.Status.PENDING.value)

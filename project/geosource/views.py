@@ -44,13 +44,8 @@ class SourceModelViewset(ModelViewSet):
         refresh_job = source.run_async_method("refresh_data", force=force_refresh)
         if refresh_job:
             source.status = Source.Status.PENDING.value
-            if source.report:
-                source.report.reset()
-                source.report.save()
-            else:
-                source.report = SourceReporting.objects.create(
-                    status=SourceReporting.Status.PENDING.value
-                )
+            if not source.report:
+                source.report = SourceReporting.objects.create()
             source.save()
             return Response(
                 data=source.get_status(),
