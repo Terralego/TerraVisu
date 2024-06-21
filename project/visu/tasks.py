@@ -29,8 +29,10 @@ def periodic_source_refresh_report(*args, **kwargs):
     impacted_sources = Source.objects.filter(
         last_refresh__gte=last_report,
         report__isnull=False,
-    ).select_related('report')
-    impacted_sources = impacted_sources.exclude(report__status__in=level_exclude.get(mail_level, []))
+    ).select_related("report")
+    impacted_sources = impacted_sources.exclude(
+        report__status__in=level_exclude.get(mail_level, [])
+    )
     impacted_sources_success = impacted_sources.filter(
         report__status=0,
     )
