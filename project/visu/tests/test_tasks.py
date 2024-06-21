@@ -13,13 +13,22 @@ class PeriodicReportTaskTestCase(TestCase):
         INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS="terravisu@terra.org",
         INSTANCE_EMAIL_SOURCE_TYPE="periodic",
     )
-    def test_report_active(self):
+    def test_report_active_email_sent(self):
         PostGISSourceFactory.create(
             report=SourceReporting.objects.create(status=0), last_refresh=now()
         )
         self.assertTrue(periodic_source_refresh_report())
         # test mail in outbox
         self.assertEqual(len(mail.outbox), 1)
+
+    @override_config(
+        INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS="terravisu@terra.org",
+        INSTANCE_EMAIL_SOURCE_TYPE="periodic",
+    )
+    def test_report_active_email_not_sent(self):
+        self.assertTrue(periodic_source_refresh_report())
+        # test mail in outbox
+        self.assertEqual(len(mail.outbox), 0)
 
     @override_config(
         INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS="terravisu@terra.org",
