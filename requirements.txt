@@ -124,7 +124,7 @@ django-polymorphic==3.1.0
     # via -r requirements.in
 django-timezone-field==5.0
     # via django-celery-beat
-django-tinymce==4.0.0
+django-tinymce==4.1.0
     # via -r requirements.in
 django-token-tools==0.2.0
     # via django-geostore
