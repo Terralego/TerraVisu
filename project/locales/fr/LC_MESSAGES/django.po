@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-20 16:49+0200\n"
+"POT-Creation-Date: 2024-06-21 10:56+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -510,19 +510,62 @@ msgstr ""
 "d'actualisation des sources de données :<br>\n"
 "                                              "
 
-msgid "at"
-msgstr "à"
+#, python-format
+msgid "%(count)s source(s) were successfully refreshed:"
+msgstr "%(count)s source(s) actualisée(s) avec succès :"
+
+msgid "on"
+msgstr "le"
+
+#, python-format
+msgid "%(count)s source(s) refreshed with one or more warning:"
+msgstr "%(count)s source(s) actualisée(s) avec une ou plusieurs alertes:"
 
 msgid ""
 "\n"
 "    Hi,\n"
 "\n"
-"    Here is source refresh report:\n"
+"    Here is source refresh report:\\n\n"
 msgstr ""
 "\n"
 "    Bonjour,\n"
 "\n"
 "    Voici le rapport d'actualisation des sources de données :\n"
+
+#, python-format
+msgid ""
+"\n"
+"%(count)s source(s) were successfully refreshed:\n"
+msgstr ""
+"\n"
+"%(count)s source(s) actualisée(s) avec succès :\n"
+
+#, python-format
+msgid ""
+"\n"
+"%(count)s source(s) refreshed with one or more warning:\n"
+msgstr ""
+"\n"
+"%(count)s source(s) actualisé(e) avec une ou plusieurs alertes :\n"
+
+#, python-format
+msgid ""
+"\n"
+"%(count)s source(s) refreshed with one or more error:\n"
+msgstr ""
+"\n"
+"%(count)s source(s) actualisée(s) avec une ou plusieurs erreurs :\n"
+
+#, python-format
+msgid ""
+"\n"
+"Regards,\n"
+"\n"
+"The %(instance_title)s team\n"
+msgstr ""
+"Cordialement,\n"
+"\n"
+"L'équipe %(instance_title)s\n"
 
 msgid "Layer identifier"
 msgstr "Identifiant de la couche"

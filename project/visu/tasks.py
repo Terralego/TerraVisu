@@ -29,20 +29,30 @@ def periodic_source_refresh_report(*args, **kwargs):
     impacted_sources = Source.objects.filter(
         last_refresh__gte=last_report,
         report__isnull=False,
+    ).select_related('report')
+    impacted_sources = impacted_sources.exclude(report__status__in=level_exclude.get(mail_level, []))
+    impacted_sources_success = impacted_sources.filter(
+        report__status=0,
     )
-    excludes = level_exclude.get(mail_level, [])
-    if excludes:
-        impacted_sources = impacted_sources.exclude(report__status__in=excludes)
-    impacted_sources = impacted_sources.order_by("report__status")
+    impacted_sources_warning = impacted_sources.filter(
+        report__status=2,
+    )
+    impacted_sources_error = impacted_sources.filter(
+        report__status=1,
+    )
+
     email_recipients = get_emails_recipients()
     logger.debug(
-        f"Periodic source refresh report: {len(impacted_sources)} sources(s), send to {email_recipients}"
+        f"Periodic source refresh report: {impacted_sources.count()} sources(s), send to {email_recipients}"
     )
     if impacted_sources and email_recipients:
         logo_url = f"{config.INSTANCE_EMAIL_MEDIA_BASE_URL}{get_logo_url()}"
         context = {
             "title": config.INSTANCE_TITLE,
-            "sources": impacted_sources,
+            "sources_count": impacted_sources.count(),
+            "sources_success": impacted_sources_success,
+            "sources_warning": impacted_sources_warning,
+            "sources_error": impacted_sources_error,
             "logo_url": logo_url,
         }
         txt_template = get_template("emails/sources_periodic_report/email.txt")

@@ -21,12 +21,6 @@
               <tbody>
                 <tr>
                   <td align="center" style="line-height: 24px; font-size: 16px; margin: 0; padding: 0 16px;">
-                    <!--[if (gte mso 9)|(IE)]>
-                      <table align="center" role="presentation">
-                        <tbody>
-                          <tr>
-                            <td width="600">
-                    <![endif]-->
                     <table align="center" role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%; max-width: 600px; margin: 0 auto;">
                       <tbody>
                         <tr>
@@ -53,7 +47,7 @@
                                         </tr>
                                       </tbody>
                                     </table>
-                                    <table class="card-header text-bg-{% if obj.report.status == 0 %}success{% elif obj.report.status == 1 %}danger{% elif obj.report.status == 2 %}warning{% endif %} w-full" role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%;" width="100%">
+                                    <table class="card-header w-full" role="presentation" border="0" cellpadding="0" cellspacing="0" style="width: 100%;" width="100%">
                                       <tbody>
                                         <tr>
                                           <td style="line-height: 24px; font-size: 16px; width: 100%; margin: 0;" align="left" width="100%">
@@ -75,15 +69,42 @@
                                               Here is source refresh report:<br>
                                               {% endblocktranslate %}
                                             </h5>
+                                          {% if sources_success %}
                                             <p class="card-text" style="line-height: 24px; font-size: 16px; width: 100%; margin: 0;" align="left">
+                                            <h5>{% blocktranslate with count=sources_success|length %}{{ count }} source(s) were successfully refreshed:{% endblocktranslate %}</h5>
+                                                <ul>
+                                                  {% for source in sources_success %}
+                                                  <li class="list-group-item">
+                                                    {{ source.name }} <i>{% translate "on" %} {{ source.last_refresh }}</i>
+                                                  </li>
+                                                  {% endfor %}
+                                                </ul>
                                             </p>
-                                            <ul>
-                                              {% for source in sources %}
-                                              <li class="list-group-item">
-                                                {{ source.name }} {% translate "at" %} {{ source.last_refresh }} {% if source.report.status == 0 %}<span class="bg-success" style="background-color: #198754;">{% translate "Success" %}</span>{% elif source.report.status == 1 %}<span class="bg-danger" style="background-color: #dc3545;">{% translate "Error" %}</span>{% else %}<span class="bg-warning" style="background-color: #ffc107;">{% translate "Warning" %}</span>{% endif %}
-                                              </li>
-                                              {% endfor %}
-                                            </ul>
+                                          {% endif %}
+                                          {% if sources_warning %}
+                                            <p class="card-text" style="line-height: 24px; font-size: 16px; width: 100%; margin: 0;" align="left">
+                                            <h5>{% blocktranslate with count=sources_warning|length %}{{ count }} source(s) refreshed with one or more warning:{% endblocktranslate %}</h5>
+                                                <ul>
+                                                  {% for source in sources_warning %}
+                                                  <li class="list-group-item">
+                                                    {{ source.name }} <i>{% translate "on" %} {{ source.last_refresh }}</i>
+                                                  </li>
+                                                  {% endfor %}
+                                                </ul>
+                                            </p>
+                                          {% endif %}
+                                          {% if sources_error %}
+                                            <p class="card-text" style="line-height: 24px; font-size: 16px; width: 100%; margin: 0;" align="left">
+                                            <h5>{% blocktranslate with count=sources_error|length %}{{ count }} source(s) refreshed with one or more warning:{% endblocktranslate %}</h5>
+                                                <ul>
+                                                  {% for source in sources_error %}
+                                                  <li class="list-group-item">
+                                                      {{ source.name }} <i>{% translate "on" %} {{ source.last_refresh }}</i>
+                                                  </li>
+                                                  {% endfor %}
+                                                </ul>
+                                            </p>
+                                          {% endif %}
                                           </td>
                                         </tr>
                                       </tbody>

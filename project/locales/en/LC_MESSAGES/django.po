@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-20 16:49+0200\n"
+"POT-Creation-Date: 2024-06-21 10:54+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -443,14 +443,48 @@ msgid ""
 "                                              "
 msgstr ""
 
-msgid "at"
+#, python-format
+msgid "%(count)s source(s) were successfully refreshed:"
+msgstr ""
+
+msgid "on"
+msgstr ""
+
+#, python-format
+msgid "%(count)s source(s) refreshed with one or more warning:"
 msgstr ""
 
 msgid ""
 "\n"
 "    Hi,\n"
 "\n"
-"    Here is source refresh report:\n"
+"    Here is source refresh report:\\n\n"
+msgstr ""
+
+#, python-format
+msgid ""
+"\n"
+"%(count)s source(s) were successfully refreshed:\n"
+msgstr ""
+
+#, python-format
+msgid ""
+"\n"
+"%(count)s source(s) refreshed with one or more warning:\n"
+msgstr ""
+
+#, python-format
+msgid ""
+"\n"
+"%(count)s source(s) refreshed with one or more error:\n"
+msgstr ""
+
+#, python-format
+msgid ""
+"\n"
+"Regards,\n"
+"\n"
+"The %(instance_title)s team\n"
 msgstr ""
 
 msgid "Layer identifier"
