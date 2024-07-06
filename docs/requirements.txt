@@ -8,13 +8,13 @@ alabaster==0.7.16
     # via sphinx
 babel==2.15.0
     # via sphinx
-certifi==2023.7.22
+certifi==2024.7.4
     # via
-    #   -c ../requirements.txt
+    #   -c docs/../requirements.txt
     #   requests
 charset-normalizer==3.1.0
     # via
-    #   -c ../requirements.txt
+    #   -c docs/../requirements.txt
     #   requests
 docutils==0.20.1
     # via
@@ -22,7 +22,7 @@ docutils==0.20.1
     #   sphinx-rtd-theme
 idna==3.7
     # via
-    #   -c ../requirements.txt
+    #   -c docs/../requirements.txt
     #   requests
 imagesize==1.4.1
     # via sphinx
@@ -32,13 +32,13 @@ markupsafe==2.1.5
     # via jinja2
 packaging==23.1
     # via
-    #   -c ../requirements.txt
+    #   -c docs/../requirements.txt
     #   sphinx
 pygments==2.18.0
     # via sphinx
 requests==2.32.3
     # via
-    #   -c ../requirements.txt
+    #   -c docs/../requirements.txt
     #   sphinx
 snowballstemmer==2.2.0
     # via sphinx
@@ -47,7 +47,7 @@ sphinx==7.3.7
     #   sphinx-rtd-theme
     #   sphinxcontrib-jquery
 sphinx-rtd-theme==2.0.0
-    # via -r requirements.in
+    # via -r docs/requirements.in
 sphinxcontrib-applehelp==1.0.8
     # via sphinx
 sphinxcontrib-devhelp==1.0.6
@@ -66,5 +66,5 @@ tomli==2.0.1
     # via sphinx
 urllib3==1.26.19
     # via
-    #   -c ../requirements.txt
+    #   -c docs/../requirements.txt
     #   requests
