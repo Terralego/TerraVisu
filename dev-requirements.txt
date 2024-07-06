@@ -24,7 +24,7 @@ bpython==0.24
     # via -r dev-requirements.in
 build==1.2.1
     # via pip-tools
-certifi==2023.7.22
+certifi==2024.7.4
     # via
     #   -c requirements.txt
     #   -r docs/requirements.txt

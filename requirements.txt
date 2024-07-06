@@ -24,7 +24,7 @@ celery==5.4.0
     #   django-celery-beat
     #   django-celery-results
     #   django-geostore
-certifi==2023.7.22
+certifi==2024.7.4
     # via
     #   elastic-transport
     #   fiona
