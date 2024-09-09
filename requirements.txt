@@ -151,7 +151,7 @@ elasticsearch==8.14.0
     # via -r requirements.in
 filetype==1.2.0
     # via drf-extra-fields
-fiona==1.9.6
+fiona==1.10.0
     # via
     #   -r requirements.in
     #   django-geostore
@@ -240,7 +240,6 @@ six==1.16.0
     #   click-repl
     #   django-clone
     #   ecdsa
-    #   fiona
     #   python-dateutil
 sqlparse==0.4.4
     # via django
