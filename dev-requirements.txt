@@ -16,7 +16,7 @@ babel==2.15.0
     # via
     #   -r docs/requirements.txt
     #   sphinx
-black==24.4.2
+black==24.8.0
     # via -r dev-requirements.in
 blessed==1.20.0
     # via curtsies
