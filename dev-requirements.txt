@@ -58,7 +58,7 @@ docutils==0.20.1
     #   -r docs/requirements.txt
     #   sphinx
     #   sphinx-rtd-theme
-factory-boy==3.3.0
+factory-boy==3.3.1
     # via -r dev-requirements.in
 faker==25.8.0
     # via factory-boy
