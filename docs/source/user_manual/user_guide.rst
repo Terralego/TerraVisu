@@ -9,7 +9,7 @@ L’application cartographique **TerraVisu** permet de manipuler un ensemble de 
 
 **TerraVisu** propose des outils d’observation et d’analyse pour comprendre l’évolution de vos territoires.
 
-Vous voulez tester par vous-même? `Une instance de démonstration est accessible ici <https://demo-terravisu.solutions-territoriales.fr/>`_ !
+Vous voulez tester par vous-même? `Une instance de démonstration est accessible ici <https://demo-terravisu-territoires.makina-corpus.com/>`_ !
 
 **Résumé des fonctionnalités :**
 
