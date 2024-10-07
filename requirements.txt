@@ -58,7 +58,7 @@ cligj==0.7.2
     # via fiona
 conditional==1.4
     # via django-clone
-crispy-bootstrap5==2024.2
+crispy-bootstrap5==2024.10
     # via -r requirements.in
 cron-descriptor==1.2.35
     # via django-celery-beat
@@ -108,7 +108,7 @@ django-constance==3.1.0
     # via -r requirements.in
 django-cors-headers==4.4.0
     # via -r requirements.in
-django-crispy-forms==2.2
+django-crispy-forms==2.3
     # via
     #   -r requirements.in
     #   crispy-bootstrap5
