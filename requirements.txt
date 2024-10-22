@@ -80,7 +80,6 @@ django==4.2.16
     #   django-filter
     #   django-geostore
     #   django-mapbox-baselayer
-    #   django-picklefield
     #   django-polymorphic
     #   django-tinymce
     #   django-token-tools
@@ -104,7 +103,7 @@ django-clone==5.3.3
     # via -r requirements.in
 django-colorfield==0.11.0
     # via django-admin-interface
-django-constance==3.1.0
+django-constance==4.1.2
     # via -r requirements.in
 django-cors-headers==4.4.0
     # via -r requirements.in
@@ -118,8 +117,6 @@ django-geostore==1.0.0
     # via -r requirements.in
 django-mapbox-baselayer==1.0.0
     # via -r requirements.in
-django-picklefield==3.1
-    # via django-constance
 django-polymorphic==3.1.0
     # via -r requirements.in
 django-timezone-field==5.0
