@@ -112,7 +112,7 @@ django-crispy-forms==2.3
     # via
     #   -r requirements.in
     #   crispy-bootstrap5
-django-filter==24.2
+django-filter==24.3
     # via -r requirements.in
 django-geostore==1.0.0
     # via -r requirements.in
