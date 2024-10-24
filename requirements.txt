@@ -203,7 +203,7 @@ pyjwt==2.6.0
     # via
     #   drf-jwt
     #   pyjwt
-pyproj==3.6.1
+pyproj==3.7.0
     # via -r requirements.in
 pyrsistent==0.19.3
     # via jsonschema
