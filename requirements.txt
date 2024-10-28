@@ -185,7 +185,7 @@ pillow==10.4.0
     #   django-colorfield
 prompt-toolkit==3.0.38
     # via click-repl
-psycopg2==2.9.9
+psycopg2==2.9.10
     # via
     #   -r requirements.in
     #   django-geostore
