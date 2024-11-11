@@ -88,7 +88,7 @@ django==4.2.16
     #   drf-extra-fields
     #   drf-jwt
     #   drf-spectacular
-django-admin-interface==0.28.9
+django-admin-interface==0.29.1
     # via -r requirements.in
 django-auth-oidc @ git+https://github.com/Terralego/django-auth-oidc.git@master
     # via -r requirements.in
