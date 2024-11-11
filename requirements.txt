@@ -157,7 +157,7 @@ fiona==1.10.1
     #   django-geostore
 gpxpy==1.5.0
     # via django-geostore
-gunicorn==22.0.0
+gunicorn==23.0.0
     # via -r requirements.in
 idna==3.7
     # via requests
