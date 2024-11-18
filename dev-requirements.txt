@@ -144,7 +144,7 @@ sphinx==7.3.7
     #   -r docs/requirements.txt
     #   sphinx-rtd-theme
     #   sphinxcontrib-jquery
-sphinx-rtd-theme==2.0.0
+sphinx-rtd-theme==3.0.2
     # via -r docs/requirements.txt
 sphinxcontrib-applehelp==1.0.8
     # via
