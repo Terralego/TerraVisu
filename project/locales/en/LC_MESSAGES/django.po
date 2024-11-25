@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-21 10:54+0200\n"
+"POT-Creation-Date: 2024-11-25 12:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,8 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#, python-brace-format
-msgid "Welcome to {config.INSTANCE_TITLE} debug interface."
+msgid "Welcome to TerraVisu debug interface."
 msgstr ""
 
 msgid "Accounts"
@@ -93,11 +92,10 @@ msgstr ""
 msgid "OIDC connect"
 msgstr ""
 
-msgid "{config.INSTANCE_TITLE}: {_('Configuration')}"
+msgid "TerraVisu: Configuration"
 msgstr ""
 
-#, python-brace-format
-msgid "Welcome to {config.INSTANCE_TITLE} configuration interface."
+msgid "Welcome to TerraVisu configuration interface."
 msgstr ""
 
 msgid "Instance customization"

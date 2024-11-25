@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-21 10:56+0200\n"
+"POT-Creation-Date: 2024-11-25 12:51+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,9 +18,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#, python-brace-format
-msgid "Welcome to {config.INSTANCE_TITLE} debug interface."
-msgstr "Bienvenue sur l'interface de debug de {config.INSTANCE_TITLE}."
+msgid "Welcome to TerraVisu debug interface."
+msgstr "Bienvenue sur l'interface de debug de TerraVisu."
 
 msgid "Accounts"
 msgstr "Comptes"
@@ -95,12 +94,11 @@ msgstr "Mot de passe oublié ?"
 msgid "OIDC connect"
 msgstr "Connexion via OIDC"
 
-msgid "{config.INSTANCE_TITLE}: {_('Configuration')}"
-msgstr "{config.INSTANCE_TITLE} : {_('Configuration')}"
+msgid "TerraVisu: Configuration"
+msgstr ""
 
-#, python-brace-format
-msgid "Welcome to {config.INSTANCE_TITLE} configuration interface."
-msgstr "Bienvenue sur l'interface de configuration de {config.INSTANCE_TITLE}."
+msgid "Welcome to TerraVisu configuration interface."
+msgstr "Bienvenue sur l'interface de configuration de TerraVisu."
 
 msgid "Instance customization"
 msgstr "Personnalisation de l'instance"
