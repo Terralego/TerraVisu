@@ -77,7 +77,7 @@ class ResyncAllSourcesTestCase(TestCase):
                 new_callable=mock.PropertyMock,
                 return_value=False,
             ):
-                with self.assertRaisesRegexp(
+                with self.assertRaisesRegex(
                     MethodNotAllowed,
                     'Method "One job is still running on this source" not allowed.',
                 ):

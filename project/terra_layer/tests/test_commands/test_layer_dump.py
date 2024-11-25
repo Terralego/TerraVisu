@@ -72,7 +72,7 @@ class LayerDumpTestCase(TestCase):
 
     def test_command_fail(self):
         out = StringIO()
-        with self.assertRaisesRegexp(CommandError, "Layer does not exist"):
+        with self.assertRaisesRegex(CommandError, "Layer does not exist"):
             call_command("layer_dump", pk=999, stdout=out)
 
     @mock.patch("sys.stdout", new_callable=StringIO)

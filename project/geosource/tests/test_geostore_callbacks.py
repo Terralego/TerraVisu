@@ -52,7 +52,7 @@ class GeostoreCallBacksTestCase(TestCase):
             "project.geosource.geostore_callbacks.logger.warning",
             side_effect=side_effect,
         ):
-            with self.assertRaisesRegexp(
+            with self.assertRaisesRegex(
                 ValueError,
                 "One record was ignored from source, because of "
                 "invalid geometry: {'property': 'Hola'}",
