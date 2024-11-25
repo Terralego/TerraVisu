@@ -48,7 +48,7 @@ RUN apt-get -y -qq update \
 
 USER docker
 
-RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir --upgrade pip<=24.3 wheel
+RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir --upgrade "pip<24.3" wheel
 
 COPY requirements.txt /opt/terra-visu/requirements.txt
 RUN /opt/venv/bin/pip install --no-cache-dir --upgrade -r /opt/terra-visu/requirements.txt
