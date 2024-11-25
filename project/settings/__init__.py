@@ -43,8 +43,8 @@ ALLOWED_HOSTS = config("ALLOWED_HOSTS", default="", cast=Csv())
 # Application definition
 INSTALLED_APPS = [
     "django.contrib.contenttypes",
+    "constance.backends.database",
     "constance",
-    "constance.backends.database",  # constance: after contenttypes and before grappelli
     "admin_interface",
     "colorfield",
     "tinymce",
