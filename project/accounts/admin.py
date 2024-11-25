@@ -1,13 +1,12 @@
-from constance import config
 from django.contrib import admin
 from django.utils.translation import gettext_lazy as _
 
 from project.accounts.models import FunctionalPermission, PermanentAccessToken, User
 from project.admin import config_site
 
-admin.site.index_title = f'{config.INSTANCE_TITLE}: {_("Debug panel")}'
-admin.site.site_header = f'{config.INSTANCE_TITLE}: {_("Debug panel")}'
-admin.site.index_title = _(f"Welcome to {config.INSTANCE_TITLE} debug interface.")
+admin.site.index_title = f'TerraVisu: {_("Debug panel")}'
+admin.site.site_header = f'TerraVisu: {_("Debug panel")}'
+admin.site.index_title = _("Welcome to TerraVisu debug interface.")
 
 admin.site.register(User)
 

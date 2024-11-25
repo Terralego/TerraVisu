@@ -144,9 +144,9 @@ class SourceViewsetTestCase(APITestCase):
             {**self.source_example, "db_password": "test_password"},
             format="json",
         )
-
+        data = response.json()
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertDictContainsSubset(self.source_example, response.json())
+        self.assertEqual(data, data | self.source_example)
 
     @patch(
         "project.geosource.serializers.PostGISSourceSerializer._first_record",
@@ -188,7 +188,8 @@ class SourceViewsetTestCase(APITestCase):
         )
         self.source_example["geom_field"] = "foo"
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertDictContainsSubset(self.source_example, response.json())
+        data = response.json()
+        self.assertEqual(data, data | self.source_example)
 
     @patch(
         "project.geosource.serializers.requests.get",
@@ -209,7 +210,8 @@ class SourceViewsetTestCase(APITestCase):
         )
 
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
-        self.assertDictContainsSubset(wmts_source, response.json())
+        data = response.json()
+        self.assertEqual(data, data | wmts_source)
 
     @patch(
         "project.geosource.serializers.PostGISSourceSerializer._first_record",

@@ -1,11 +1,11 @@
-FROM ubuntu:jammy as base
+FROM ubuntu:noble AS base
 
-ENV PYTHONBUFFERED 1
-ENV DEBIAN_FRONTEND noninteractive
-ENV LANG C.UTF-8
-ENV TZ UTC
-ENV POSTGRES_HOST db
-ENV POSTGRES_PORT 5432
+ENV PYTHONBUFFERED=1
+ENV DEBIAN_FRONTEND=noninteractive
+ENV LANG=C.UTF-8
+ENV TZ=UTC
+ENV POSTGRES_HOST=db
+ENV POSTGRES_PORT=5432
 ENV CUSTOM_SETTINGS_FILE="/opt/terra-visu/var/conf/custom.py"
 
 RUN apt-get -y -qq update \
@@ -19,12 +19,12 @@ RUN apt-get -y -qq update \
     gettext \
     postgresql-client \
     tzdata \
-    netcat \
+    netcat-traditional \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives/*
 
-RUN adduser docker --disabled-password
+RUN useradd --system docker
 RUN mkdir -p /opt/terra-visu && chown docker:docker /opt
 WORKDIR /opt/terra-visu
 
@@ -33,7 +33,7 @@ COPY .docker/backend/entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 EXPOSE 8000
 
-FROM base as build
+FROM base AS build
 
 RUN apt-get -y -qq update \
     && apt-get -y -qq install \
@@ -48,23 +48,23 @@ RUN apt-get -y -qq update \
 
 USER docker
 
-RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir --upgrade pip wheel
+RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir --upgrade "pip<24.3" wheel
 
 COPY requirements.txt /opt/terra-visu/requirements.txt
 RUN /opt/venv/bin/pip install --no-cache-dir --upgrade -r /opt/terra-visu/requirements.txt
 
-FROM build as dev
+FROM build AS dev
 
 COPY dev-requirements.txt /opt/terra-visu/dev-requirements.txt
 RUN /opt/venv/bin/pip install --no-cache-dir --upgrade -r /opt/terra-visu/dev-requirements.txt
 COPY .docker/backend/update.sh /usr/local/bin/update.sh
 
-CMD /opt/venv/bin/python manage.py runserver 0.0.0.0:8000
+CMD ["/opt/venv/bin/python", "manage.py", "runserver", "0.0.0.0:8000"]
 
-FROM base as prod
+FROM base AS prod
 
-ENV GUNICORN_WORKERS 1
-ENV GUNICORN_TIMEOUT 60
+ENV GUNICORN_WORKERS=1
+ENV GUNICORN_TIMEOUT=60
 
 COPY --from=build /opt/venv /opt/venv
 
