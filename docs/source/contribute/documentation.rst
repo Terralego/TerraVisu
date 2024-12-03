@@ -1,10 +1,16 @@
 Documentation
 =============
 
-We use sphinx doc and sphinx-rtd-theme. Requirements are included.
+We use sphinx doc. Requirements are included in development docker image.
 
-To compile and test documentation on local environment, run :
+To test documentation on local environment, run :
 
 .. code-block :: bash
 
-    docker-compose up -d sphinx
+    make docs_serve
+
+To test documentation compilation:
+
+.. code-block :: bash
+
+    make docs_build

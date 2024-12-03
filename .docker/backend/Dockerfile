@@ -58,6 +58,8 @@ FROM build AS dev
 COPY dev-requirements.txt /opt/terra-visu/dev-requirements.txt
 RUN /opt/venv/bin/pip install --no-cache-dir --upgrade -r /opt/terra-visu/dev-requirements.txt
 COPY .docker/backend/update.sh /usr/local/bin/update.sh
+COPY ../../docs/requirements.txt /opt/terra-visu/doc-requirements.txt
+RUN /opt/venv/bin/pip install --no-cache-dir --upgrade -r /opt/terra-visu/doc-requirements.txt
 
 CMD ["/opt/venv/bin/python", "manage.py", "runserver", "0.0.0.0:8000"]
 

@@ -57,3 +57,9 @@ deps:
 
 django:
 	docker compose run --rm web ./manage.py $(filter-out $@,$(MAKECMDGOALS))
+
+docs_serve:
+	docker compose run -p 8800:8800 -w=/opt/terra-visu/docs --rm web sphinx-autobuild -c source -b html --host 0.0.0.0 --port 8800 ./source ./build/html
+
+docs_build:
+	docker compose run -w=/opt/terra-visu/docs make html
