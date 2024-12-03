@@ -138,7 +138,7 @@ drf-extra-fields==3.7.0
     # via -r requirements.in
 drf-jwt==1.19.2
     # via -r requirements.in
-drf-spectacular==0.27.2
+drf-spectacular==0.28.0
     # via -r requirements.in
 ecdsa==0.19.0
     # via python-jose
