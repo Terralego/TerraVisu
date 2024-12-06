@@ -8,11 +8,19 @@ alabaster==0.7.16
     # via
     #   -r docs/requirements.txt
     #   sphinx
+annotated-types==0.7.0
+    # via
+    #   -r docs/requirements.txt
+    #   pydantic
 anyio==4.6.2.post1
     # via
     #   -r docs/requirements.txt
     #   starlette
     #   watchfiles
+appdirs==1.4.4
+    # via
+    #   -r docs/requirements.txt
+    #   sphinx-immaterial
 asgiref==3.8.1
     # via
     #   -c requirements.txt
@@ -21,6 +29,7 @@ babel==2.15.0
     # via
     #   -r docs/requirements.txt
     #   sphinx
+    #   sphinx-intl
 black==24.10.0
     # via -r dev-requirements.in
 blessed==1.20.0
@@ -45,6 +54,7 @@ click==8.1.7
     #   -r docs/requirements.txt
     #   black
     #   pip-tools
+    #   sphinx-intl
     #   uvicorn
 colorama==0.4.6
     # via
@@ -68,7 +78,6 @@ docutils==0.20.1
     # via
     #   -r docs/requirements.txt
     #   sphinx
-    #   sphinx-rtd-theme
 factory-boy==3.3.1
     # via -r dev-requirements.in
 faker==25.8.0
@@ -103,6 +112,7 @@ markupsafe==2.1.5
     # via
     #   -r docs/requirements.txt
     #   jinja2
+    #   sphinx-immaterial
 mccabe==0.7.0
     # via flake8
 mypy-extensions==1.0.0
@@ -122,6 +132,19 @@ platformdirs==4.2.2
     # via black
 pycodestyle==2.12.0
     # via flake8
+pydantic==2.10.3
+    # via
+    #   -r docs/requirements.txt
+    #   pydantic-extra-types
+    #   sphinx-immaterial
+pydantic-core==2.27.1
+    # via
+    #   -r docs/requirements.txt
+    #   pydantic
+pydantic-extra-types==2.10.0
+    # via
+    #   -r docs/requirements.txt
+    #   sphinx-immaterial
 pyflakes==3.2.0
     # via flake8
 pygments==2.18.0
@@ -146,6 +169,7 @@ requests==2.32.3
     #   -r docs/requirements.txt
     #   bpython
     #   sphinx
+    #   sphinx-immaterial
 six==1.16.0
     # via
     #   -c requirements.txt
@@ -163,11 +187,13 @@ sphinx==7.3.7
     # via
     #   -r docs/requirements.txt
     #   sphinx-autobuild
-    #   sphinx-rtd-theme
-    #   sphinxcontrib-jquery
+    #   sphinx-immaterial
+    #   sphinx-intl
 sphinx-autobuild==2024.10.3
     # via -r docs/requirements.txt
-sphinx-rtd-theme==3.0.2
+sphinx-immaterial==0.12.4
+    # via -r docs/requirements.txt
+sphinx-intl==2.3.1
     # via -r docs/requirements.txt
 sphinxcontrib-applehelp==1.0.8
     # via
@@ -181,10 +207,6 @@ sphinxcontrib-htmlhelp==2.0.5
     # via
     #   -r docs/requirements.txt
     #   sphinx
-sphinxcontrib-jquery==4.1
-    # via
-    #   -r docs/requirements.txt
-    #   sphinx-rtd-theme
 sphinxcontrib-jsmath==1.0.1
     # via
     #   -r docs/requirements.txt
@@ -206,6 +228,13 @@ starlette==0.41.3
     # via
     #   -r docs/requirements.txt
     #   sphinx-autobuild
+typing-extensions==4.12.2
+    # via
+    #   -r docs/requirements.txt
+    #   pydantic
+    #   pydantic-core
+    #   pydantic-extra-types
+    #   sphinx-immaterial
 urllib3==2.2.3
     # via
     #   -c requirements.txt
