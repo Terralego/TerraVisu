@@ -1,4 +1,7 @@
 -c ../requirements.txt
 
-sphinx-rtd-theme
 sphinx-autobuild
+sphinx_immaterial
+sphinx>=4.0.0
+sphinx-autobuild
+sphinx-intl
