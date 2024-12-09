@@ -218,7 +218,7 @@ python-slugify==8.0.4
     # via django-admin-interface
 pyyaml==6.0.2
     # via drf-spectacular
-redis==5.2.0
+redis==5.2.1
     # via -r requirements.in
 referencing==0.35.1
     # via
