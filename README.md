@@ -25,14 +25,13 @@
     <a href="#license"><b>License</b></a>  • 
 </p>
 
-![TerraVisu demo](./docs/source/_static/screenshot.png)
+![TerraVisu demo](./docs/source/_static/demo.jpg)
 
 ## TerraVisu
 
 TerraVisu is an interactive web application designed to visualize and analyze spatial data, providing an engaging interface to showcase and explore territorial dynamics and immersive experiences.
 
-You can explore TerraVisu in action through the demonstration website:
-- [https://demo-terravisu-territoires.makina-corpus.com](https://demo-terravisu-territoires.makina-corpus.com) : 
+You can explore TerraVisu in action through the [demonstration website](https://demo-terravisu-territoires.makina-corpus.com).
 
 TerraVisu is built on a modern, modular architecture that leverages React for dynamic interfaces and NextJS for server-side rendering (SSR) and search engine optimization (SEO). 
 
