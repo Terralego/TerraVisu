@@ -9,6 +9,11 @@ Changelog
 
 - Update to python 3.12
 
+**Documentation:**
+
+- Add sphinx_immaterial theme
+- Improve README.md
+
 
 2024.06.0      (2024-06-21)
 ---------------------------
