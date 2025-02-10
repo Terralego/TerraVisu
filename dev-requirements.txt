@@ -60,7 +60,7 @@ colorama==0.4.6
     # via
     #   -r docs/requirements.txt
     #   sphinx-autobuild
-coverage==7.6.10
+coverage==7.6.11
     # via -r dev-requirements.in
 curtsies==0.4.2
     # via bpython
