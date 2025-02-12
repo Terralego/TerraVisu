@@ -34,7 +34,7 @@ black==24.10.0
     # via -r dev-requirements.in
 blessed==1.20.0
     # via curtsies
-bpython==0.24
+bpython==0.25
     # via -r dev-requirements.in
 build==1.2.1
     # via pip-tools
