@@ -188,7 +188,7 @@ psycopg2==2.9.10
     # via
     #   -r requirements.in
     #   django-geostore
-pyasn1==0.6.1
+pyasn1==0.4.8
     # via
     #   python-jose
     #   rsa
@@ -212,7 +212,7 @@ python-dateutil==2.9.0.post0
     #   python-crontab
 python-decouple==3.8
     # via -r requirements.in
-python-jose==3.3.0
+python-jose==3.4.0
     # via openid-connect
 python-slugify==8.0.4
     # via django-admin-interface
