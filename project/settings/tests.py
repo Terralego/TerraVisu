@@ -12,3 +12,6 @@ CACHES["default"] = {  # NOQA
 }
 
 CONSTANCE_BACKEND = "constance.backends.memory.MemoryBackend"
+LANGUAGE_CODE = "en-us"
+OIDC_ENABLE_LOGIN = False
+TIME_ZONE = "UTC"

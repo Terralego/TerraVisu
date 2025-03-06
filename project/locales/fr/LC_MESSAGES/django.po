@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-25 12:51+0100\n"
+"POT-Creation-Date: 2025-03-06 11:22+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -244,6 +244,9 @@ msgstr "URL du logo de l'application"
 
 msgid "Favicon"
 msgstr "Favicon"
+
+msgid "Splashscreen enabled"
+msgstr "Logo de démarrage activé"
 
 msgid "Splashscreen"
 msgstr "Logo de démarrage"

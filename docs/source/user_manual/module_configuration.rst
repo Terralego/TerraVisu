@@ -101,7 +101,8 @@ Options de personnalisation du thème de l'application.
 - ``INSTANCE_LOGO`` : Logo affiché en haut à gauche du menu des vues
 - ``INSTANCE_LOGO_FRONTEND_URL`` : URL du logo de l'application
 - ``INSTANCE_FAVICON`` : Favicon
-- ``INSTANCE_SPLASHSCREEN`` : Logo de démarrage (non fonctionnel)
+- ``INSTANCE_SPLASHSCREEN_ENABLED`` : Active le logo de démarrage
+- ``INSTANCE_SPLASHSCREEN`` : Logo de démarrage
 - ``INSTANCE_CREDITS`` : Crédits de l'instance, s'affiche sur la carte en mode impression
 - ``INSTANCE_INFO_CONTENT`` : Contenu de l'onglet 'Informations' de l'application
     

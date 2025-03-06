@@ -138,7 +138,8 @@ class SettingsFrontendView(CommonSettings, APIView):
                 "favicon": self.get_favicon_url(),
                 "theme": {
                     "logo": self.get_logo_url(),
-                    "brandLogo": self.get_splashcreen_url(),
+                    "splashScreenEnabled": config.INSTANCE_SPLASHSCREEN_ENABLED,
+                    "splashScreen": self.get_splashcreen_url(),
                     "logoUrl": config.INSTANCE_LOGO_FRONTEND_URL,
                     "styles": [],
                 },
