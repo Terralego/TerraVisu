@@ -1,6 +1,16 @@
 FROM ubuntu:noble AS base
 
+LABEL org.opencontainers.image.authors="Makina Corpus Territoires"
+LABEL org.opencontainers.image.source="https://github.com/Terralego/TerraVisu/"
+LABEL org.opencontainers.image.documentation="https://terravisu.readthedocs.io/"
+LABEL org.opencontainers.image.vendor="Makina Corpus Territoires"
+LABEL org.opencontainers.image.licenses="MIT"
+LABEL org.opencontainers.image.url="https://territoires.makina-corpus.com/"
+LABEL org.opencontainers.image.title="TerraVisu"
+LABEL org.opencontainers.image.description="Manage and visualize your geographic data."
+
 ENV PYTHONBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 ENV DEBIAN_FRONTEND=noninteractive
 ENV LANG=C.UTF-8
 ENV TZ=UTC
