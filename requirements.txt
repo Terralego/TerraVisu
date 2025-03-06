@@ -63,7 +63,7 @@ cryptography==44.0.1
     # via pyjwt
 deepmerge==2.0
     # via django-geostore
-django==4.2.19
+django==4.2.20
     # via
     #   -r requirements.in
     #   crispy-bootstrap5
