@@ -69,11 +69,13 @@ requests==2.32.3
     #   -c docs/../requirements.txt
     #   sphinx
     #   sphinx-immaterial
+roman-numerals-py==3.1.0
+    # via sphinx
 sniffio==1.3.1
     # via anyio
 snowballstemmer==2.2.0
     # via sphinx
-sphinx==8.1.3
+sphinx==8.2.3
     # via
     #   -r docs/requirements.in
     #   sphinx-autobuild
