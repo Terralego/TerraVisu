@@ -48,7 +48,7 @@ RUN apt-get -y -qq update \
 
 USER docker
 
-RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir --upgrade "pip<24.3" wheel
+RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir --upgrade "pip<24.3" setuptools wheel
 
 COPY requirements.txt /opt/terra-visu/requirements.txt
 RUN /opt/venv/bin/pip install --no-cache-dir --upgrade -r /opt/terra-visu/requirements.txt
@@ -88,4 +88,4 @@ RUN apt-get -y -qq update \
 
 USER docker
 
-CMD /opt/venv/bin/gunicorn project.wsgi:application --bind 0.0.0.0:8000 --workers=$GUNICORN_WORKERS --timeout=$GUNICORN_TIMEOUT
+CMD ["/opt/venv/bin/gunicorn", "project.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "$GUNICORN_WORKERS", "--timeout", "$GUNICORN_TIMEOUT"]
