@@ -7,6 +7,7 @@ on:
   push:
     branches:
       - master
+      - develop
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -118,6 +119,8 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
           push: true
+          provenance: mode=max
+          sbom: true
           tags: ${{ steps.meta-dev.outputs.tags }}
           labels: ${{ steps.meta-dev.outputs.labels }}
           target: dev
