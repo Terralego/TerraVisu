@@ -5,6 +5,10 @@ Changelog
 2024.06.0+dev  (XXXX-XX-XX)
 ---------------------------
 
+**New features**
+
+- Show application screensplash
+
 **Improvements:**
 
 - Update to python 3.12
