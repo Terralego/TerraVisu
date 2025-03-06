@@ -416,6 +416,7 @@ CONSTANCE_CONFIG_FIELDSETS = (
                 "INSTANCE_LOGO",
                 "INSTANCE_LOGO_FRONTEND_URL",
                 "INSTANCE_FAVICON",
+                "INSTANCE_SPLASHSCREEN_ENABLED",
                 "INSTANCE_SPLASHSCREEN",
                 "INSTANCE_CREDITS",
                 "INSTANCE_INFO_CONTENT",
