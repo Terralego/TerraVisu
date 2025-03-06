@@ -58,9 +58,10 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "favicon": "http://testserver/static_dj/img/favicon.ico",
                 "infoContent": CommonSettings().get_info_content(),
                 "theme": {
-                    "brandLogo": "http://testserver/static_dj/img/splashscreen.png",
                     "logo": "http://testserver/static_dj/img/logo.webp",
                     "logoUrl": "/",
+                    "splashScreenEnabled": False,
+                    "splashScreen": "http://testserver/static_dj/img/logo.webp",
                     "styles": [],
                 },
                 "title": "TerraVisu",
@@ -98,7 +99,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
         self.maxDiff = None
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
+        self.assertDictEqual(
             response.data,
             {
                 "allowUserRegistration": False,
@@ -116,7 +117,7 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                             "provider": "nominatim",
                             "baseUrl": "https://nominatim.openstreetmap.org/search.php",
                             "options": {
-                                "viewbox": [-180, -90, 180, 90],
+                                "viewbox": [-180.0, -90.0, 180.0, 90.0],
                             },
                         },
                     },
@@ -130,9 +131,10 @@ class FrontendSettingsAPIViewTestCase(APITestCase):
                 "favicon": "http://testserver/media/favicon.ico",
                 "infoContent": "<b>This is my info content</b>",
                 "theme": {
-                    "brandLogo": "http://testserver/media/splashscreen.png",
                     "logo": "http://testserver/media/logo.webp",
                     "logoUrl": "https://example.com",
+                    "splashScreen": "http://testserver/media/splashscreen.png",
+                    "splashScreenEnabled": False,
                     "styles": [],
                 },
                 "title": "My Title",
@@ -216,6 +218,7 @@ class AdminSettingsApiView(APITestCase):
     url = reverse_lazy("settings-admin")
 
     def test_default_values(self):
+        self.maxDiff = None
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 200)
         self.assertEqual(
