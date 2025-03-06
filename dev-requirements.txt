@@ -68,7 +68,7 @@ cwcwidth==0.1.9
     # via
     #   bpython
     #   curtsies
-django==4.2.19
+django==4.2.20
     # via
     #   -c requirements.txt
     #   django-debug-toolbar
