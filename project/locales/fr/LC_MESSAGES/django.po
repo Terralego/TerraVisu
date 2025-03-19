@@ -585,7 +585,8 @@ msgid "Source field to get value to compare."
 msgstr "Champ de la source de donnée à utiliser pour la comparaison."
 
 msgid "Separator to generate query params from field values."
-msgstr "Séparateur à utiliser pour les valeurs de champs des objets à comparer."
+msgstr ""
+"Séparateur à utiliser pour les valeurs de champs des objets à comparer."
 
 msgid "Copy"
 msgstr "Copie"
