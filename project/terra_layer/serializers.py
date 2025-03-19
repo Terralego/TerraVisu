@@ -8,12 +8,11 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from rest_framework.reverse import reverse
-from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 
 from .models import CustomStyle, FilterField, Layer, Scene, StyleImage
 
 
-class SceneListSerializer(ModelSerializer):
+class SceneListSerializer(serializers.ModelSerializer):
     url = serializers.CharField(source="get_absolute_url", read_only=True)
     layers_tree_url = SerializerMethodField()
 
@@ -34,9 +33,9 @@ class SceneListSerializer(ModelSerializer):
         )
 
 
-class SceneDetailSerializer(ModelSerializer):
+class SceneDetailSerializer(serializers.ModelSerializer):
     slug = serializers.SlugField(required=False)
-    baselayer = PrimaryKeyRelatedField(
+    baselayer = serializers.PrimaryKeyRelatedField(
         queryset=MapBaseLayer.objects.all(), source="base_layers", many=True
     )  # compat with old name of m2m attribute. to fix in admin.
 
@@ -56,21 +55,21 @@ class SceneDetailSerializer(ModelSerializer):
         return super().to_internal_value(querydict)
 
 
-class FilterFieldSerializer(ModelSerializer):
-    sourceFieldId = PrimaryKeyRelatedField(source="field", read_only=True)
+class FilterFieldSerializer(serializers.ModelSerializer):
+    sourceFieldId = serializers.PrimaryKeyRelatedField(source="field", read_only=True)
 
     class Meta:
         model = FilterField
         exclude = ("layer",)
 
 
-class CustomStyleSerializer(ModelSerializer):
+class CustomStyleSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomStyle
         exclude = ("layer",)
 
 
-class StyleImageSerializer(ModelSerializer):
+class StyleImageSerializer(serializers.ModelSerializer):
     id = serializers.IntegerField(required=False)
     data = Base64ImageField(required=False, source="file", write_only=True)
 
@@ -80,7 +79,7 @@ class StyleImageSerializer(ModelSerializer):
         read_only_fields = ("slug", "file")
 
 
-class LayerListSerializer(ModelSerializer):
+class LayerListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Layer
         fields = ("id", "source", "group", "name", "order", "active_by_default")
@@ -92,11 +91,27 @@ class LayerListSerializer(ModelSerializer):
         }
 
 
-class LayerDetailSerializer(ModelSerializer):
+class LayerComparaison(serializers.ModelSerializer):
+    field = serializers.CharField(source="name")
+
+    class Meta:
+        model = Layer
+        fields = ("url", "field", "separator")
+
+
+class LayerDetailSerializer(serializers.ModelSerializer):
     fields = FilterFieldSerializer(many=True, read_only=True, source="fields_filters")
     extra_styles = CustomStyleSerializer(many=True, read_only=True)
-    group = PrimaryKeyRelatedField(read_only=True)
+    group = serializers.PrimaryKeyRelatedField(read_only=True)
     style_images = StyleImageSerializer(many=True, read_only=False, required=False)
+    comparaison = LayerComparaison(required=False)
+
+    def validated_data(self):
+        data = super().validated_data()
+        comparaison_data = data.pop("comparaison")
+        if comparaison_data:
+            data.update(comparaison_data)
+        return data
 
     @transaction.atomic
     def create(self, validated_data):
