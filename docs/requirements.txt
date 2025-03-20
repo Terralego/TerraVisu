@@ -20,7 +20,7 @@ babel==2.15.0
     #   sphinx-intl
 certifi==2024.8.30
     # via
-    #   -c docs/../requirements.txt
+    #   -c ../requirements.txt
     #   requests
 charset-normalizer==3.4.0
     # via
