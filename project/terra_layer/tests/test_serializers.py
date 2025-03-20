@@ -4,6 +4,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
 from project.geosource.models import Source, Field
+from project.geosource.tests.factories import PostGISSourceFactory
 from project.terra_layer.models import Layer, StyleImage
 from project.terra_layer.serializers import LayerDetailSerializer
 
@@ -16,7 +17,7 @@ class LayerDetailSerializerTestCase(TestCase):
             b"\x00\x05\x04\x04\x00\x00\x00\x2c\x00\x00\x00\x00"
             b"\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"
         )
-        cls.source = Source.objects.create(name="source test")
+        cls.source = PostGISSourceFactory()
 
     def test_create_layer_with_style_image(self):
         image = base64.b64encode(self.small_gif)
