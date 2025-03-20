@@ -3,7 +3,7 @@ import base64
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
-from project.geosource.models import Source
+from project.geosource.models import Source, Field
 from project.terra_layer.models import Layer, StyleImage
 from project.terra_layer.serializers import LayerDetailSerializer
 
@@ -16,13 +16,13 @@ class LayerDetailSerializerTestCase(TestCase):
             b"\x00\x05\x04\x04\x00\x00\x00\x2c\x00\x00\x00\x00"
             b"\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"
         )
+        cls.source = Source.objects.create(name="source test")
 
     def test_create_layer_with_style_image(self):
-        source = Source.objects.create(name="source test")
         image = base64.b64encode(self.small_gif)
         layer_data = {
             "name": "test_layer",
-            "source": source.pk,
+            "source": self.source.pk,
             "style_images": [
                 {
                     "name": "small.gif",
@@ -39,14 +39,13 @@ class LayerDetailSerializerTestCase(TestCase):
         )
 
     def test_create_style_image_when_updating_layer(self):
-        source = Source.objects.create(name="source test")
-        layer = Layer.objects.create(name="test layer", source=source)
+        layer = Layer.objects.create(name="test layer", source=self.source)
         self.assertEqual(layer.style_images.count(), 0)
         image = base64.b64encode(self.small_gif)
         layer_data = {
             "id": layer.id,
             "name": layer.name,
-            "source": source.id,
+            "source": self.source.id,
             "style_images": [
                 {
                     "name": "small.gif",
@@ -110,3 +109,24 @@ class LayerDetailSerializerTestCase(TestCase):
         self.assertTrue(serializer.is_valid(), serializer.errors)
         serializer.save()
         self.assertFalse(StyleImage.objects.filter(id=style_image.id).exists())
+
+    def test_create_with_comparaison_data(self):
+        field = Field.objects.create(name="test_field", source=self.source)
+        comparaison_data = {
+            "url": "https://test.com/?compare=",
+            "field": field.pk,
+            "separator": "+",
+        }
+        layer_data = {
+            "name": "test_layer",
+            "source": self.source.pk,
+            "comparaison": comparaison_data,
+        }
+
+        serializer = LayerDetailSerializer(data=layer_data)
+        self.assertTrue(serializer.is_valid(), serializer.errors)
+        layer = serializer.save()
+
+        self.assertEqual(layer.compare_url, comparaison_data["url"])
+        self.assertEqual(layer.compare_field_id, comparaison_data["field"])
+        self.assertEqual(layer.compare_separator, comparaison_data["separator"])

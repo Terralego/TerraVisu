@@ -10,6 +10,7 @@ from rest_framework.fields import SerializerMethodField
 from rest_framework.reverse import reverse
 
 from .models import CustomStyle, FilterField, Layer, Scene, StyleImage
+from ..geosource.models import Field
 
 
 class SceneListSerializer(serializers.ModelSerializer):
@@ -92,7 +93,11 @@ class LayerListSerializer(serializers.ModelSerializer):
 
 
 class LayerComparaison(serializers.ModelSerializer):
-    field = serializers.CharField(source="name")
+    field = serializers.PrimaryKeyRelatedField(
+        source="compare_field", queryset=Field.objects.all()
+    )
+    url = serializers.URLField(source="compare_url")
+    separator = serializers.CharField(source="compare_separator")
 
     class Meta:
         model = Layer
@@ -112,9 +117,9 @@ class LayerDetailSerializer(serializers.ModelSerializer):
         if "comparaison" in data:
             comparaison_data = data.pop("comparaison")
             if comparaison_data:
-                data["comparaison_url"] = comparaison_data["url"]
-                data["comparaison_field"] = comparaison_data["field"]
-                data["comparaison_separator"] = comparaison_data["separator"]
+                data["compare_url"] = comparaison_data["compare_url"]
+                data["compare_field"] = comparaison_data["compare_field"]
+                data["compare_separator"] = comparaison_data["compare_separator"]
         return data
 
     @transaction.atomic
