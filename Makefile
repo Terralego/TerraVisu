@@ -4,6 +4,7 @@ SHELL = /bin/sh
 
 CURRENT_UID := $(shell id -u)
 CURRENT_GID := $(shell id -g)
+DOCKER_COMPOSE_CMD = docker compose run --rm --remove-orphans web
 
 export CURRENT_UID
 export CURRENT_GID
@@ -28,35 +29,38 @@ build_prod: build_admin
 	docker build -t terra-visu:latest -f .docker/backend/Dockerfile .
 
 messages:
-	docker compose run --rm web ./manage.py makemessages -a --no-location --no-obsolete
-	docker compose run --rm web ./manage.py compilemessages
+	$(DOCKER_COMPOSE_CMD) ./manage.py makemessages -a --no-location --no-obsolete
+	$(DOCKER_COMPOSE_CMD) ./manage.py compilemessages
 
 tests:
-	docker compose run --rm web ./manage.py test -v 3 --settings=project.settings.tests
+	$(DOCKER_COMPOSE_CMD) ./manage.py test -v 3 --settings=project.settings.tests
 
 coverage:
-	docker compose run --rm web coverage run ./manage.py test -v 3 --settings=project.settings.tests
-	docker compose run --rm web coverage report -m
+	$(DOCKER_COMPOSE_CMD) coverage run ./manage.py test -v 3 --settings=project.settings.tests
+	$(DOCKER_COMPOSE_CMD) coverage report -m
 
 sphinx:
 	docker compose run --workdir=/opt/terra-visu/docs --rm web make html -e SPHINXOPTS="-W"
 
 black:
-	docker compose run --rm web black project
+	$(DOCKER_COMPOSE_CMD) black project
 
 isort:
-	docker compose run --rm web isort project
+	$(DOCKER_COMPOSE_CMD) isort project
 
 flake8:
-	docker compose run --rm web flake8 project
+	$(DOCKER_COMPOSE_CMD) flake8 project
 
 lint: black isort flake8
 
+test:
+	$(DOCKER_COMPOSE_CMD) ./manage.py test -v 3 --settings=project.settings.tests
+
 deps:
-	docker compose run --rm web bash -c "pip-compile --strip-extras && cd docs && pip-compile --strip-extras && cd .. && pip-compile dev-requirements.in"
+	$(DOCKER_COMPOSE_CMD) bash -c "pip-compile --strip-extras && cd docs && pip-compile --strip-extras && cd .. && pip-compile dev-requirements.in"
 
 django:
-	docker compose run --rm web ./manage.py $(filter-out $@,$(MAKECMDGOALS))
+	$(DOCKER_COMPOSE_CMD) ./manage.py $(filter-out $@,$(MAKECMDGOALS))
 
 docs_serve:
 	docker compose run -p 8800:8800 -w=/opt/terra-visu/docs --rm web sphinx-autobuild -c source -b html --host 0.0.0.0 --port 8800 ./source ./build/html

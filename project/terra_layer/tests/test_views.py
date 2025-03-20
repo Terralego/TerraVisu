@@ -164,8 +164,10 @@ class SceneViewsetTestCase(APITestCase):
         layer = Layer.objects.create(
             source=source,
             name="Layer",
-            id=1,
         )
+        layer = Layer.objects.get(
+            pk=layer.pk
+        )  # get annotated field layer_identifier by executing queryset in default manager
 
         query = {
             "name": "Scene Name",
@@ -185,8 +187,8 @@ class SceneViewsetTestCase(APITestCase):
             json_response["map"]["customStyle"]["layers"],
             [
                 {
-                    "id": "5f3f90d2aa8a14d5bb88c2f0bbf44610",
-                    "layerId": 1,
+                    "id": layer.layer_identifier,
+                    "layerId": layer.pk,
                     "source": "terra_0",
                     "source-layer": "test_view_2",
                     "advanced_style": {},
@@ -206,9 +208,10 @@ class SceneViewsetTestCase(APITestCase):
         layer = Layer.objects.create(
             source=source,
             name="Layer",
-            id=1,
         )
-
+        layer = Layer.objects.get(
+            pk=layer.pk
+        )  # get annotated field layer_identifier by executing queryset in default manager
         query = {
             "name": "Scene Name",
             "category": "map",
@@ -227,8 +230,8 @@ class SceneViewsetTestCase(APITestCase):
             json_response["map"]["customStyle"]["layers"],
             [
                 {
-                    "id": "282d40e1ab9a059aa9d6eff431407e76",
-                    "layerId": 1,
+                    "id": layer.layer_identifier,
+                    "layerId": layer.pk,
                     "type": "raster",
                     "minzoom": 14,
                     "maxzoom": 15,
@@ -279,9 +282,9 @@ class SceneViewsetTestCase(APITestCase):
         scene = response.json()
 
         response = self.client.get(reverse("layerview", args=[scene["slug"]]))
-        layersTree = response.json()
+        layer_tree = response.json()
 
-        self.assertEqual(len(layersTree["interactions"]), 4)
+        self.assertEqual(len(layer_tree["interactions"]), 4)
 
     def test_layer_view_with_table_enable(self):
         field = self.source.fields.create(
@@ -315,10 +318,10 @@ class SceneViewsetTestCase(APITestCase):
         scene = response.json()
 
         response = self.client.get(reverse("layerview", args=[scene["slug"]]))
-        layersTree = response.json()
+        layer_tree = response.json()
 
         self.assertEqual(
-            layersTree["layersTree"][0]["filters"]["fields"][0],
+            layer_tree["layersTree"][0]["filters"]["fields"][0],
             {
                 "value": "_test_field",
                 "label": "test layer fields",
@@ -362,7 +365,7 @@ class SceneViewsetTestCase(APITestCase):
             for x in range(7)
         ]
 
-        COMPLEXE_SCENE_TREE = [
+        complex_scene_tree = [
             {
                 "label": "My Group 1",
                 "group": True,
@@ -394,7 +397,7 @@ class SceneViewsetTestCase(APITestCase):
         query = {
             "name": "Scene Name",
             "category": "map",
-            "tree": COMPLEXE_SCENE_TREE,
+            "tree": complex_scene_tree,
             "baselayer": [],
         }
 
@@ -422,38 +425,38 @@ class SceneViewsetTestCase(APITestCase):
 
         # Now test tree generation
         response = self.client.get(reverse("layerview", args=[scene["slug"]]))
-        layersTree = response.json()
+        layer_tree = response.json()
 
         # Root tree test
-        self.assertEqual(layersTree["title"], scene["name"])
+        self.assertEqual(layer_tree["title"], scene["name"])
         self.assertEqual(
-            layersTree["layersTree"][0]["group"], scene["tree"][0]["label"]
+            layer_tree["layersTree"][0]["group"], scene["tree"][0]["label"]
         )
         self.assertEqual(
-            layersTree["layersTree"][1]["group"], scene["tree"][1]["label"]
+            layer_tree["layersTree"][1]["group"], scene["tree"][1]["label"]
         )
-        self.assertEqual(layersTree["layersTree"][2]["label"], layers[5].name)
+        self.assertEqual(layer_tree["layersTree"][2]["label"], layers[5].name)
 
         # Subgroup test
         self.assertEqual(
-            layersTree["layersTree"][0]["layers"][0]["label"], layers[0].name
+            layer_tree["layersTree"][0]["layers"][0]["label"], layers[0].name
         )
 
         # Test final ordering also
         self.assertEqual(
-            layersTree["layersTree"][0]["layers"][2]["group"],
+            layer_tree["layersTree"][0]["layers"][2]["group"],
             scene["tree"][0]["children"][2]["label"],
         )
 
         # Test last group with layer
         self.assertEqual(
-            layersTree["layersTree"][3]["layers"][0]["label"], layers[6].name
+            layer_tree["layersTree"][3]["layers"][0]["label"], layers[6].name
         )
 
     def test_scene_with_import_file(self):
         layer = Layer.objects.create(source=self.source)
 
-        SCENE_TREE = [
+        scene_tree = [
             {
                 "label": "My Group 1",
                 "group": True,
@@ -464,7 +467,7 @@ class SceneViewsetTestCase(APITestCase):
         query = {
             "name": "Scene Name",
             "category": "map",
-            "tree": json.dumps(SCENE_TREE),
+            "tree": json.dumps(scene_tree),
             "file": io.StringIO("a,b,c\n0,0,0"),
         }
 
@@ -573,8 +576,7 @@ class ModelSourceViewsetAnonymousTestCase(APITestCase):
 
     def test_list_view_no_permission(self):
         group = LayerGroup.objects.create(view=self.scene, label="Test Group")
-
-        [Layer.objects.create(group=group, source=self.source) for x in range(5)]
+        TerraLayerFactory.create_batch(5, group=group, source=self.source)
 
         response = self.client.get(reverse("layer-list"))
         self.assertEqual(response.status_code, status.HTTP_403_FORBIDDEN)

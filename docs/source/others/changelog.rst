@@ -7,7 +7,8 @@ Changelog
 
 **New features**
 
-- Show application screensplash
+- Show application screen splash
+- Configure layers to compare features in external tool
 
 **Improvements:**
 
