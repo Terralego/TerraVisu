@@ -52,6 +52,9 @@ flake8:
 
 lint: black isort flake8
 
+test:
+	docker compose run --rm web ./manage.py test -v 3 --settings=project.settings.tests
+
 deps:
 	docker compose run --rm web bash -c "pip-compile --strip-extras && cd docs && pip-compile --strip-extras && cd .. && pip-compile dev-requirements.in"
 

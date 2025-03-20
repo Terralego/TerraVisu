@@ -10,3 +10,4 @@ factory-boy
 coverage
 pip-tools
 bpython
+tblib

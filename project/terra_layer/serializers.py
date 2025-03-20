@@ -106,11 +106,15 @@ class LayerDetailSerializer(serializers.ModelSerializer):
     style_images = StyleImageSerializer(many=True, read_only=False, required=False)
     comparaison = LayerComparaison(required=False)
 
+    @property
     def validated_data(self):
-        data = super().validated_data()
-        comparaison_data = data.pop("comparaison")
-        if comparaison_data:
-            data.update(comparaison_data)
+        data = super().validated_data
+        if "comparaison" in data:
+            comparaison_data = data.pop("comparaison")
+            if comparaison_data:
+                data["comparaison_url"] = comparaison_data["url"]
+                data["comparaison_field"] = comparaison_data["field"]
+                data["comparaison_separator"] = comparaison_data["separator"]
         return data
 
     @transaction.atomic

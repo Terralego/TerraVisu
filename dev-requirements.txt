@@ -228,6 +228,8 @@ starlette==0.41.3
     # via
     #   -r docs/requirements.txt
     #   sphinx-autobuild
+tblib==3.0.0
+    # via -r dev-requirements.in
 typing-extensions==4.12.2
     # via
     #   -r docs/requirements.txt
