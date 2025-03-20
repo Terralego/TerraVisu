@@ -60,7 +60,7 @@ colorama==0.4.6
     # via
     #   -r docs/requirements.txt
     #   sphinx-autobuild
-coverage==7.6.12
+coverage==7.7.0
     # via -r dev-requirements.in
 curtsies==0.4.2
     # via bpython
@@ -68,7 +68,7 @@ cwcwidth==0.1.9
     # via
     #   bpython
     #   curtsies
-django==4.2.19
+django==4.2.20
     # via
     #   -c requirements.txt
     #   django-debug-toolbar
@@ -191,7 +191,7 @@ sphinx==8.1.3
     #   sphinx-intl
 sphinx-autobuild==2024.10.3
     # via -r docs/requirements.txt
-sphinx-immaterial==0.13.0
+sphinx-immaterial==0.13.4
     # via -r docs/requirements.txt
 sphinx-intl==2.3.1
     # via -r docs/requirements.txt
