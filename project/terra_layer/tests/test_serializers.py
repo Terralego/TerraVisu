@@ -3,7 +3,7 @@ import base64
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 
-from project.geosource.models import Source, Field
+from project.geosource.models import Field, Source
 from project.geosource.tests.factories import PostGISSourceFactory
 from project.terra_layer.models import Layer, StyleImage
 from project.terra_layer.serializers import LayerDetailSerializer

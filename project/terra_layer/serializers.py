@@ -9,8 +9,8 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from rest_framework.reverse import reverse
 
-from .models import CustomStyle, FilterField, Layer, Scene, StyleImage
 from ..geosource.models import Field
+from .models import CustomStyle, FilterField, Layer, Scene, StyleImage
 
 
 class SceneListSerializer(serializers.ModelSerializer):
