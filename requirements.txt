@@ -168,7 +168,7 @@ jsonschema-specifications==2024.10.1
     # via jsonschema
 kombu==5.4.2
     # via celery
-lml==0.1.0
+lml==0.2.0
     # via
     #   pyexcel
     #   pyexcel-io
@@ -194,7 +194,7 @@ pyasn1==0.4.8
     #   rsa
 pycparser==2.22
     # via cffi
-pyexcel==0.7.1
+pyexcel==0.7.2
     # via -r requirements.in
 pyexcel-io==0.6.7
     # via pyexcel
