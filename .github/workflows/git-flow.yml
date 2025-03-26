@@ -1,0 +1,21 @@
+name: Git flow
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  update-develop:
+    name: Merge master into develop on every change
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: merge
+        uses: mtanzi/action-automerge@v1
+        id: merge
+        with:
+          github_token: ${{ github.token }}
+          source: 'master'
+          target: 'develop'
