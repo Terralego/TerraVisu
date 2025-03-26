@@ -18,6 +18,6 @@ jobs:
         uses: mtanzi/action-automerge@v1
         id: merge
         with:
-          github_token: ${{ github.token }}
+          github_token: ${{ secrets.PAT }}
           source: 'master'
           target: 'develop'
