@@ -12,6 +12,8 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.PAT }}
       - name: merge
         uses: mtanzi/action-automerge@v1
         id: merge
