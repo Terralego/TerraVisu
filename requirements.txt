@@ -178,7 +178,7 @@ openid-connect==0.5.0
     # via django-auth-oidc
 packaging==24.2
     # via gunicorn
-pillow==11.1.0
+pillow==11.2.1
     # via
     #   -r requirements.in
     #   django-colorfield
