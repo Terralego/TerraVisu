@@ -144,7 +144,7 @@ ecdsa==0.19.0
     # via python-jose
 elastic-transport==8.15.1
     # via elasticsearch
-elasticsearch==8.17.2
+elasticsearch==9.0.0
     # via -r requirements.in
 filetype==1.2.0
     # via drf-extra-fields
@@ -209,6 +209,7 @@ python-crontab==3.2.0
 python-dateutil==2.9.0.post0
     # via
     #   celery
+    #   elasticsearch
     #   python-crontab
 python-decouple==3.8
     # via -r requirements.in
@@ -249,6 +250,8 @@ text-unidecode==1.3
     # via python-slugify
 texttable==1.7.0
     # via pyexcel
+typing-extensions==4.13.2
+    # via elasticsearch
 tzdata==2024.2
     # via
     #   celery
