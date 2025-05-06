@@ -298,9 +298,7 @@ class GeoJSONSourceSerializer(FileSourceSerializer):
                 _ = row[instance.id_field]  # noqa
             except Exception:
                 msg = f"Can't find identifier field at the record index {i}"
-                raise ValidationError(
-                    msg
-                )
+                raise ValidationError(msg)
 
     def validate(self, data):
         self._validate_field_infos(data)
@@ -458,9 +456,7 @@ class CSVSourceSerializer(FileSourceSerializer):
                 _ = row[instance.id_field]  # noqa
             except KeyError:
                 msg = "Can't find identifier field in one or more records"
-                raise ValidationError(
-                    msg
-                )
+                raise ValidationError(msg)
 
     def validate(self, data):
         # do not use this for now as it cause file creation to bug

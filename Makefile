@@ -42,13 +42,13 @@ sphinx:
 	docker compose run --workdir=/opt/terra-visu/docs --rm web make html -e SPHINXOPTS="-W"
 
 format:
-	docker compose run --remove-orphans --no-deps --rm web ruff format geotrek
+	docker compose run --remove-orphans --no-deps --rm web ruff format project
 
 lint:
-	docker compose run --remove-orphans --no-deps --rm web ruff check --fix geotrek
+	docker compose run --remove-orphans --no-deps --rm web ruff check --fix project
 
 force_lint:
-	docker compose run --remove-orphans --no-deps --rm web ruff check --fix --unsafe-fixes geotrek
+	docker compose run --remove-orphans --no-deps --rm web ruff check --fix --unsafe-fixes project
 
 quality: lint format
 

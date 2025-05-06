@@ -56,9 +56,7 @@ def gen_graduated_color_style(geo_layer, data_field, map_field, prop_config):
         )
     else:
         msg = 'With "graduated" analysis, "boundaries" or "method" should be provided'
-        raise ValueError(
-            msg
-        )
+        raise ValueError(msg)
 
     # Use boundaries to make style
     if boundaries is not None:
