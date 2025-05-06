@@ -226,7 +226,7 @@ elastic-transport==8.15.1
     # via
     #   -c requirements.txt
     #   elasticsearch
-elasticsearch==8.17.2
+elasticsearch==9.0.1
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
