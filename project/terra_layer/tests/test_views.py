@@ -165,7 +165,7 @@ class SceneViewsetTestCase(APITestCase):
             source=source,
             name="Layer",
         )
-
+        layer = Layer.objects.get(id=layer.id)
         query = {
             "name": "Scene Name",
             "category": "map",
@@ -206,7 +206,7 @@ class SceneViewsetTestCase(APITestCase):
             source=source,
             name="Layer",
         )
-
+        layer = Layer.objects.get(id=layer.id)
         query = {
             "name": "Scene Name",
             "category": "map",
