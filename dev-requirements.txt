@@ -82,7 +82,7 @@ factory-boy==3.3.3
     # via -r dev-requirements.in
 faker==25.8.0
     # via factory-boy
-flake8==7.1.2
+flake8==7.2.0
     # via -r dev-requirements.in
 freezegun==1.5.1
     # via -r dev-requirements.in
@@ -130,7 +130,7 @@ pip-tools==7.4.1
     # via -r dev-requirements.in
 platformdirs==4.2.2
     # via black
-pycodestyle==2.12.0
+pycodestyle==2.13.0
     # via flake8
 pydantic==2.10.3
     # via
@@ -145,7 +145,7 @@ pydantic-extra-types==2.10.0
     # via
     #   -r docs/requirements.txt
     #   sphinx-immaterial
-pyflakes==3.2.0
+pyflakes==3.3.1
     # via flake8
 pygments==2.18.0
     # via
