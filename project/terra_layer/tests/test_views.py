@@ -164,7 +164,6 @@ class SceneViewsetTestCase(APITestCase):
         layer = Layer.objects.create(
             source=source,
             name="Layer",
-            id=1,
         )
 
         query = {
@@ -186,7 +185,7 @@ class SceneViewsetTestCase(APITestCase):
             [
                 {
                     "id": "5f3f90d2aa8a14d5bb88c2f0bbf44610",
-                    "layerId": 1,
+                    "layerId": layer.pk,
                     "source": "terra_0",
                     "source-layer": "test_view_2",
                     "advanced_style": {},
@@ -206,7 +205,6 @@ class SceneViewsetTestCase(APITestCase):
         layer = Layer.objects.create(
             source=source,
             name="Layer",
-            id=1,
         )
 
         query = {
@@ -228,7 +226,7 @@ class SceneViewsetTestCase(APITestCase):
             [
                 {
                     "id": "282d40e1ab9a059aa9d6eff431407e76",
-                    "layerId": 1,
+                    "layerId": layer.pk,
                     "type": "raster",
                     "minzoom": 14,
                     "maxzoom": 15,
