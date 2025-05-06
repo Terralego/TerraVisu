@@ -200,7 +200,8 @@ def discretize(geo_layer, field, method, class_count):
     elif method == "equal_interval":
         return discretize_equal_interval(geo_layer, field, class_count)
     else:
-        raise ValueError(f'Unknow discretize method "{method}"')
+        msg = f'Unknow discretize method "{method}"'
+        raise ValueError(msg)
 
 
 def get_style_no_value_condition(key, with_value, with_no_value):
@@ -247,7 +248,8 @@ def circle_boundaries_candidate(min, max):
     if min is None or max is None:
         return []
     elif min <= 0:
-        raise ValueError("Minimum value should be > 0")
+        msg = "Minimum value should be > 0"
+        raise ValueError(msg)
 
     # array of base values in decreasing order in the range [1,10)
     bases = [5, 2.5, 1]

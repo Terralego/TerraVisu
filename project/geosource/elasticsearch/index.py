@@ -47,7 +47,7 @@ class LayerESIndex(ESMixin):
             # If no source, we ignore it. Type will be guessed later.
             return
 
-        logger.info(f"Index creation for layer {self.layer.name}")
+        logger.info("Index creation for layer %s", self.layer.name)
 
         type_mapping = defaultdict(lambda: "text")
         type_mapping["integer"] = "long"

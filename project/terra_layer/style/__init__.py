@@ -141,7 +141,8 @@ def generate_style_from_wizard(geo_layer, config):
                         legend["uid"] = f"{suid}__{map_field}"
                         legends.append(legend)
                 else:
-                    raise ValueError(f'Unhandled analysis type "{analysis}"')
+                    msg = f'Unhandled analysis type "{analysis}"'
+                    raise ValueError(msg)
 
             if variation_type == "radius":
                 if analysis == "categorized":
@@ -149,9 +150,9 @@ def generate_style_from_wizard(geo_layer, config):
                         geo_layer, data_field, prop_config, 0
                     )
                     if generated_style:
-                        map_style.setdefault(paint_or_layout, {})[
-                            map_style_prop
-                        ] = generated_style
+                        map_style.setdefault(paint_or_layout, {})[map_style_prop] = (
+                            generated_style
+                        )
                     """if (
                         map_style[paint_or_layout][map_style_prop]
                         is None
@@ -207,7 +208,8 @@ def generate_style_from_wizard(geo_layer, config):
                         legend["uid"] = f"{suid}__{map_field}"
                         legends.append(legend)
                 else:
-                    raise ValueError(f'Unhandled analysis type "{analysis}"')
+                    msg = f'Unhandled analysis type "{analysis}"'
+                    raise ValueError(msg)
 
             if variation_type == "value":
                 if analysis == "graduated":
@@ -245,9 +247,9 @@ def generate_style_from_wizard(geo_layer, config):
                         geo_layer, data_field, prop_config, 0
                     )
                     if generated_style:
-                        map_style.setdefault(paint_or_layout, {})[
-                            map_style_prop
-                        ] = generated_style
+                        map_style.setdefault(paint_or_layout, {})[map_style_prop] = (
+                            generated_style
+                        )
 
                     if prop_config.get("generate_legend"):
                         color = (
@@ -297,6 +299,7 @@ def generate_style_from_wizard(geo_layer, config):
                         legend["uid"] = f"{suid}__{map_field}"
                         legends.append(legend)
                 else:
-                    raise ValueError(f'Unknow analysis type "{analysis}"')
+                    msg = f'Unknow analysis type "{analysis}"'
+                    raise ValueError(msg)
 
     return (map_style, legends)

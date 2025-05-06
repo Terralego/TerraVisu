@@ -468,9 +468,12 @@ class SceneViewsetTestCase(APITestCase):
             "file": io.StringIO("a,b,c\n0,0,0"),
         }
 
-        with patch("project.terra_layer.views.layers.call_command") as mock_call, patch(
-            "project.terra_layer.views.layers.get_commands",
-            return_value={"load_xls": "fake"},
+        with (
+            patch("project.terra_layer.views.layers.call_command") as mock_call,
+            patch(
+                "project.terra_layer.views.layers.get_commands",
+                return_value={"load_xls": "fake"},
+            ),
         ):
             response = self.client.post(
                 reverse("scene-list"), query, format="multipart"

@@ -3,9 +3,7 @@
 
 django-debug-toolbar
 freezegun
-flake8
-isort
-black
+ruff
 factory-boy
 coverage
 bpython

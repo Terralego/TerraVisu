@@ -19,7 +19,8 @@ class Command(BaseCommand):
         try:
             self.layer = Layer.objects.get(pk=options.get("pk"))
         except Layer.DoesNotExist:
-            raise CommandError("Layer does not exist")
+            msg = "Layer does not exist"
+            raise CommandError(msg)
 
         serialized = LayerDetailSerializer(self.layer).data
         self.clean_ids(serialized)

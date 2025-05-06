@@ -26,8 +26,6 @@ babel==2.15.0
     #   -r docs/requirements.txt
     #   sphinx
     #   sphinx-intl
-black==25.1.0
-    # via -r requirements-dev.in
 blessed==1.20.0
     # via curtsies
 bpython==0.25
@@ -46,7 +44,6 @@ click==8.1.7
     # via
     #   -c requirements.txt
     #   -r docs/requirements.txt
-    #   black
     #   sphinx-intl
     #   uvicorn
 colorama==0.4.6
@@ -75,8 +72,6 @@ factory-boy==3.3.3
     # via -r requirements-dev.in
 faker==25.8.0
     # via factory-boy
-flake8==7.2.0
-    # via -r requirements-dev.in
 freezegun==1.5.1
     # via -r requirements-dev.in
 greenlet==3.0.3
@@ -95,8 +90,6 @@ imagesize==1.4.1
     # via
     #   -r docs/requirements.txt
     #   sphinx
-isort==6.0.1
-    # via -r requirements-dev.in
 jinja2==3.1.6
     # via
     #   -r docs/requirements.txt
@@ -106,22 +99,11 @@ markupsafe==2.1.5
     #   -r docs/requirements.txt
     #   jinja2
     #   sphinx-immaterial
-mccabe==0.7.0
-    # via flake8
-mypy-extensions==1.0.0
-    # via black
 packaging==24.2
     # via
     #   -c requirements.txt
     #   -r docs/requirements.txt
-    #   black
     #   sphinx
-pathspec==0.12.1
-    # via black
-platformdirs==4.2.2
-    # via black
-pycodestyle==2.13.0
-    # via flake8
 pydantic==2.10.3
     # via
     #   -r docs/requirements.txt
@@ -135,8 +117,6 @@ pydantic-extra-types==2.10.0
     # via
     #   -r docs/requirements.txt
     #   sphinx-immaterial
-pyflakes==3.3.1
-    # via flake8
 pygments==2.18.0
     # via
     #   -r docs/requirements.txt
@@ -156,6 +136,8 @@ requests==2.32.3
     #   bpython
     #   sphinx
     #   sphinx-immaterial
+ruff==0.11.8
+    # via -r requirements-dev.in
 setuptools==80.3.1
     # via
     #   -r docs/requirements.txt

@@ -42,7 +42,8 @@ class CeleryCallMethodsMixin:
             self.update_status(task_job)
             return task_job
 
-        raise MethodNotAllowed("One job is still running on this source")
+        msg = "One job is still running on this source"
+        raise MethodNotAllowed(msg)
 
     def run_sync_method(self, method, success_state=states.SUCCESS):
         """Run an object method in a synchrone mode.

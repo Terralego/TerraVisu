@@ -90,6 +90,9 @@ class SourceReporting(models.Model):
     total = models.PositiveIntegerField(default=0)
     errors = models.JSONField(default=list)
 
+    def __str__(self):
+        return f"{self.status}"
+
     def reset(self):
         self.message = ""
         self.started = None
@@ -122,7 +125,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     groups = models.ManyToManyField(Group, blank=True, related_name="geosources")
     report = models.OneToOneField(SourceReporting, on_delete=models.SET_NULL, null=True)
 
-    task_id = models.CharField(null=True, max_length=255, blank=True)
+    task_id = models.CharField(null=False, max_length=255, blank=True, default="")
     task_date = models.DateTimeField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -348,12 +351,12 @@ class Field(models.Model):
     sample = models.JSONField(default=list, encoder=DjangoJSONEncoder, blank=True)
     order = models.IntegerField(default=0)
 
-    def __str__(self):
-        return f"{self.name} ({self.source.name} - {self.data_type})"
-
     class Meta:
         unique_together = ["source", "name"]
         ordering = ("order",)
+
+    def __str__(self):
+        return f"{self.name} ({self.source.name} - {self.data_type})"
 
 
 class PostGISSource(Source):
@@ -419,7 +422,8 @@ class GeoJSONSource(Source):
         try:
             return json.load(self.file)
         except json.JSONDecodeError:
-            raise GeoJSONSourceException("Source's GeoJSON file is not valid")
+            msg = "Source's GeoJSON file is not valid"
+            raise GeoJSONSourceException(msg)
 
     def _get_records(self, limit=None):
         geojson = self.get_file_as_dict()
@@ -571,7 +575,8 @@ class CSVSource(Source):
             )
         # Exception is raised if no parser found
         except (pyexcel.exceptions.FileTypeNotSupported, Exception):
-            raise CSVSourceException("Provided CSV file is invalid")
+            msg = "Provided CSV file is invalid"
+            raise CSVSourceException(msg)
 
     def _get_records(self, limit=None):
         sheet = self.get_file_as_sheet()
@@ -647,7 +652,8 @@ class CSVSource(Source):
                     else int(field)
                 )
             except ValueError:
-                raise CSVSourceException(f"{field} is not a valid coordinate field")
+                msg = f"{field} is not a valid coordinate field"
+                raise CSVSourceException(msg)
 
             c = row[field_index]
             coords.append(c)
@@ -660,9 +666,8 @@ class CSVSource(Source):
                 # some fools use a reversed cartesian coordinates system (╯°□°)╯︵ ┻━┻
                 x, y = coords[0].split(sep) if is_xy else coords[0].split(sep)[::-1]
             except ValueError:
-                raise CSVSourceException(
-                    f'Cannot split coordinate "{coords[0]}" with separator "{sep}"'
-                )
+                msg = f'Cannot split coordinate "{coords[0]}" with separator "{sep}"'
+                raise CSVSourceException(msg)
 
         # correct formated decimal is required for GEOSGeometry
         if not self.settings["decimal_separator"] == "point":
@@ -706,7 +711,8 @@ class CSVSource(Source):
         try:
             return int(coordinate_reference_system.split("_")[1])
         except (IndexError, ValueError):
-            raise CSVSourceException(f"Invalid SRID: {coordinate_reference_system}")
+            msg = f"Invalid SRID: {coordinate_reference_system}"
+            raise CSVSourceException(msg)
 
     # properties are use by serializer for representation (reading operation)
     @property

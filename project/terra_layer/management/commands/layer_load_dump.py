@@ -61,7 +61,8 @@ class Command(BaseCommand):
         try:
             layer_detail_serializer.is_valid(raise_exception=True)
         except Exception as e:
-            raise CommandError(f"A validation error occurred with data: {e}")
+            msg = f"A validation error occurred with data: {e}"
+            raise CommandError(msg)
 
         layer_detail_serializer.save()
 

@@ -21,18 +21,18 @@ from project.geosource.models import (
 from project.geosource.tests.helpers import get_file
 
 
-class MockBackend(object):
+class MockBackend:
     def __init__(self, *args, **kwargs):
         pass
 
     def get(self, id):
-        return """{"result": {"%s": "NOT OK!"}}""" % id
+        return f"""{{"result": {{"{id}": "NOT OK!"}}}}"""
 
     def get_key_for_task(self, id):
         return id
 
 
-class MockAsyncResult(object):
+class MockAsyncResult:
     def __init__(self, task_id, *args, **kwargs):
         self.backend = MockBackend()
 

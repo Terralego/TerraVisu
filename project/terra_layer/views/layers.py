@@ -64,15 +64,13 @@ class SceneViewset(ModelViewSet):
                     # Is layer deleted ?
                     layer = Layer.objects.get(pk=item["geolayer"])
                 except Layer.DoesNotExist:
-                    raise ValidationError(
-                        f"Layer {item['geolayer']} doesn't exists anymore"
-                    )
+                    msg = f"Layer {item['geolayer']} doesn't exists anymore"
+                    raise ValidationError(msg)
 
                 # Is layer owned by another scene ?
                 if layer.group and layer.group.view_id != view_id:
-                    raise ValidationError(
-                        f"Layer {item['geolayer']} can't be stolen from another scene"
-                    )
+                    msg = f"Layer {item['geolayer']} can't be stolen from another scene"
+                    raise ValidationError(msg)
             else:
                 # And we start with the new node
                 self.check_layer_status(view_id, item["children"])
@@ -125,7 +123,8 @@ class LayerViewset(ModelViewSet):
 
     def perform_destroy(self, instance):
         if instance.group:  # Prevent deletion of layer used in any layer tree
-            raise ValidationError("Can't delete a layer linked to a scene")
+            msg = "Can't delete a layer linked to a scene"
+            raise ValidationError(msg)
         super().perform_destroy(instance)
 
     @action(detail=True, methods=["post"])

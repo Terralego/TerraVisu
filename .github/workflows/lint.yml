@@ -14,8 +14,8 @@ env:
   DEBIAN_FRONTEND: noninteractive
 
 jobs:
-  flake8:
-    name: Flake8 check
+  lint:
+    name: Lint check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -29,16 +29,12 @@ jobs:
 
       - name: Install dependencies
         run: |
-          uv pip install -c requirements-dev.txt flake8 isort black
+          uv pip install -c requirements-dev.txt ruff
 
-      - name: Flake8
+      - name: Check linting
         run: |
-          flake8 project
+          ruff check project
 
-      - name: Isort
+      - name: Check format
         run: |
-          isort -c project
-
-      - name: Black
-        run: |
-          black --check project
+          ruff format --check project

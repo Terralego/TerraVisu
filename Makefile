@@ -41,16 +41,16 @@ coverage:
 sphinx:
 	docker compose run --workdir=/opt/terra-visu/docs --rm web make html -e SPHINXOPTS="-W"
 
-black:
-	docker compose run --rm web black project
+format:
+	docker compose run --remove-orphans --no-deps --rm web ruff format geotrek
 
-isort:
-	docker compose run --rm web isort project
+lint:
+	docker compose run --remove-orphans --no-deps --rm web ruff check --fix geotrek
 
-flake8:
-	docker compose run --rm web flake8 project
+force_lint:
+	docker compose run --remove-orphans --no-deps --rm web ruff check --fix --unsafe-fixes geotrek
 
-lint: black isort flake8
+quality: lint format
 
 deps:
 	docker compose run --rm web bash -c "uv pip compile requirements.in -o requirements.txt && cd docs && uv pip compile requirements.in -o requirements.txt && cd .. && uv pip compile requirements-dev.in -o requirements-dev.txt"

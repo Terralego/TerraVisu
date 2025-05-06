@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import sentry_sdk
@@ -241,7 +241,7 @@ SPECTACULAR_SETTINGS = {
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f'redis://{os.getenv("REDIS_HOST", "redis")}:{os.getenv("REDIS_PORT", "6379")}',
+        "LOCATION": f"redis://{os.getenv('REDIS_HOST', 'redis')}:{os.getenv('REDIS_PORT', '6379')}",
     }
 }
 
@@ -338,7 +338,7 @@ CONSTANCE_CONFIG = {
         "choice_email_source_refresh_type",
     ),
     "INSTANCE_EMAIL_SOURCE_LAST_PERIODIC": (
-        datetime.now(tz=timezone.utc),
+        datetime.now(tz=UTC),
         _("Last periodic source refresh report datetime. Do not change it"),
         datetime,
     ),
@@ -551,8 +551,8 @@ if SENTRY_DSN:
 # Override with custom settings
 custom_settings_file = os.getenv("CUSTOM_SETTINGS_FILE")
 try:
-    with open(custom_settings_file, "r") as f:
-        print("Read custom configuration from {}".format(custom_settings_file))
+    with open(custom_settings_file) as f:
+        print(f"Read custom configuration from {custom_settings_file}")
         exec(f.read())
 except:  # NOQA
     pass
