@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import logging
 import os
 from datetime import UTC, datetime, timedelta
 from pathlib import Path
@@ -20,6 +21,8 @@ from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
+
+logger = logging.getLogger(__name__)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -552,7 +555,7 @@ if SENTRY_DSN:
 custom_settings_file = os.getenv("CUSTOM_SETTINGS_FILE")
 try:
     with open(custom_settings_file) as f:
-        print(f"Read custom configuration from {custom_settings_file}")
+        logger.info("Read custom configuration from %s", custom_settings_file)
         exec(f.read())
 except:  # NOQA
     pass

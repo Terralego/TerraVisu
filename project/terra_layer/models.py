@@ -1,4 +1,5 @@
 import json
+import logging
 import uuid
 from hashlib import md5
 
@@ -17,6 +18,8 @@ from project.geosource.models import Field, Source
 from .managers import LayerManager, SceneManager
 from .schema import SCENE_LAYERTREE, JSONSchemaValidator
 from .style import generate_style_from_wizard
+
+logger = logging.getLogger(__name__)
 
 
 def scene_icon_path(instance, filename):
@@ -359,13 +362,15 @@ class Layer(CloneMixin, models.Model):
             if new_source.fields.filter(name=field_name).exists():
                 new_field = new_source.fields.get(name=field_name)
                 if dry_run:
-                    print(f"{filter_field.field.name} replaced by {new_field.name}.")
+                    logger.info(
+                        "%s replaced by %s.", filter_field.field.name, new_field.name
+                    )
                 else:
                     filter_field.field = new_field
                     filter_field.save()
             else:
                 if dry_run:
-                    print(f"Old field {field_name} deleted.")
+                    logger.info("Old field %s deleted.", field_name)
                 else:
                     filter_field.delete()
 
@@ -376,11 +381,11 @@ class Layer(CloneMixin, models.Model):
                 and field.name not in fields_matches.values()
             ):
                 if dry_run:
-                    print(f"New FilterField {field.name} created.")
+                    logger.info("New FilterField %s created.", field.name)
                 else:
                     self.fields_filters.create(field=field)
         if dry_run:
-            print(f"{self.source} replaced by {new_source}.")
+            logger.info("%s replaced by %s.", self.source, new_source)
         else:
             self.source = new_source
             self.save()
