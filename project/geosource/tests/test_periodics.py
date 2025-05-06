@@ -62,11 +62,12 @@ class PeriodicsTestCase(TestCase):
     @mock.patch("elasticsearch.client.IndicesClient.delete")
     @mock.patch("django.utils.timezone.now")
     def test_auto_refresh(self, mock_timezone, mocked_es_delete, mocked_es_create):
-        with mock.patch(
-            "project.geosource.models.Source._refresh_data"
-        ) as mocked, mock.patch(
-            "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
-            return_value=False,
+        with (
+            mock.patch("project.geosource.models.Source._refresh_data") as mocked,
+            mock.patch(
+                "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
+                return_value=False,
+            ),
         ):
             dt = datetime(2020, 1, 2, tzinfo=timezone.utc)
             mock_timezone.return_value = dt
@@ -74,11 +75,12 @@ class PeriodicsTestCase(TestCase):
 
             mocked.assert_not_called()
 
-        with mock.patch(
-            "project.geosource.models.Source._refresh_data"
-        ) as mocked2, mock.patch(
-            "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
-            return_value=False,
+        with (
+            mock.patch("project.geosource.models.Source._refresh_data") as mocked2,
+            mock.patch(
+                "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
+                return_value=False,
+            ),
         ):
             dt = datetime(2020, 1, 10, tzinfo=timezone.utc)
             mock_timezone.return_value = dt
@@ -86,11 +88,12 @@ class PeriodicsTestCase(TestCase):
 
             mocked2.assert_called_once()
 
-        with mock.patch(
-            "project.geosource.models.Source._refresh_data"
-        ) as mocked2, mock.patch(
-            "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
-            return_value=False,
+        with (
+            mock.patch("project.geosource.models.Source._refresh_data") as mocked2,
+            mock.patch(
+                "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
+                return_value=False,
+            ),
         ):
             dt = datetime(2020, 1, 10, tzinfo=timezone.utc)
             mock_timezone.return_value = dt

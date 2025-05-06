@@ -1,9 +1,5 @@
-"""
-All json schema for validation
-"""
-
-import django
 import jsonschema
+from django.core.exceptions import ValidationError
 from django.core.validators import BaseValidator
 
 
@@ -12,9 +8,8 @@ class JSONSchemaValidator(BaseValidator):
         try:
             jsonschema.validate(a, b)
         except jsonschema.exceptions.ValidationError:
-            raise django.core.exceptions.ValidationError(
-                "%(value)s failed JSON schema check", params={"value": a}
-            )
+            msg = f"{a} failed JSON schema check"
+            raise ValidationError(msg)
 
 
 SCENE_LAYERTREE = {

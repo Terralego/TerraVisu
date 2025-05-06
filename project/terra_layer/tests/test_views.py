@@ -164,9 +164,8 @@ class SceneViewsetTestCase(APITestCase):
         layer = Layer.objects.create(
             source=source,
             name="Layer",
-            id=1,
         )
-
+        layer = Layer.objects.get(id=layer.id)
         query = {
             "name": "Scene Name",
             "category": "map",
@@ -185,8 +184,8 @@ class SceneViewsetTestCase(APITestCase):
             json_response["map"]["customStyle"]["layers"],
             [
                 {
-                    "id": "5f3f90d2aa8a14d5bb88c2f0bbf44610",
-                    "layerId": 1,
+                    "id": layer.layer_identifier,
+                    "layerId": layer.pk,
                     "source": "terra_0",
                     "source-layer": "test_view_2",
                     "advanced_style": {},
@@ -206,9 +205,8 @@ class SceneViewsetTestCase(APITestCase):
         layer = Layer.objects.create(
             source=source,
             name="Layer",
-            id=1,
         )
-
+        layer = Layer.objects.get(id=layer.id)
         query = {
             "name": "Scene Name",
             "category": "map",
@@ -227,8 +225,8 @@ class SceneViewsetTestCase(APITestCase):
             json_response["map"]["customStyle"]["layers"],
             [
                 {
-                    "id": "282d40e1ab9a059aa9d6eff431407e76",
-                    "layerId": 1,
+                    "id": layer.layer_identifier,
+                    "layerId": layer.pk,
                     "type": "raster",
                     "minzoom": 14,
                     "maxzoom": 15,
@@ -468,9 +466,12 @@ class SceneViewsetTestCase(APITestCase):
             "file": io.StringIO("a,b,c\n0,0,0"),
         }
 
-        with patch("project.terra_layer.views.layers.call_command") as mock_call, patch(
-            "project.terra_layer.views.layers.get_commands",
-            return_value={"load_xls": "fake"},
+        with (
+            patch("project.terra_layer.views.layers.call_command") as mock_call,
+            patch(
+                "project.terra_layer.views.layers.get_commands",
+                return_value={"load_xls": "fake"},
+            ),
         ):
             response = self.client.post(
                 reverse("scene-list"), query, format="multipart"

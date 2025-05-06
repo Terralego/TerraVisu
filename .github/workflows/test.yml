@@ -24,23 +24,27 @@ jobs:
         run: |
           cp db.env.dist db.env
           cp app.env.dist app.env
+
+          touch .env
+          echo "UID=$UID" >> .env
+          echo "GID=$GID" >> .env
           docker compose build web
 
       - name: Check migrations
         run: |
-          docker compose run --user root --rm web ./manage.py makemigrations --check
+          docker compose run --rm web ./manage.py makemigrations --check
 
       - name: Test migrations
         run: |
-          docker compose run --user root --rm web ./manage.py migrate
+          docker compose run --rm web ./manage.py migrate
 
       - name: Verify translation files
         run: |
-          docker compose run --user root --rm web ./manage.py makemessages -a --no-location --no-obsolete
+          docker compose run --rm web ./manage.py makemessages -a --no-location --no-obsolete
 
       - name: Check initial data
         run: |
-          docker compose run --user root --rm web ./manage.py loaddata project/fixtures/initial.json
+          docker compose run --rm web ./manage.py loaddata project/fixtures/initial.json
 
       - uses: tj-actions/verify-changed-files@v20
         id: verify-changed-files
@@ -57,11 +61,12 @@ jobs:
 
       - name: Tests
         run: |
-          docker compose run --user root --rm web coverage run ./manage.py test --settings=project.settings.tests
+          docker compose run --rm web coverage run --parallel-mode --concurrency=multiprocessing ./manage.py test --settings=project.settings.tests --parallel -v 3
 
       - name: Prepare coverage report
         run: |
-          docker compose run --user root --rm web coverage xml
+          docker compose run --rm web coverage combine
+          docker compose run --rm web coverage xml -o coverage.xml
 
       - uses: codecov/codecov-action@v5
         with:

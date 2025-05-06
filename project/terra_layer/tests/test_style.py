@@ -42,15 +42,15 @@ class StyleTestCase(TestCase):
 
     def test_get_min_max(self):
         geo_layer = self.source.get_layer()
-        self._feature_factory(geo_layer, a=1),
-        self._feature_factory(geo_layer, a=2),
+        (self._feature_factory(geo_layer, a=1),)
+        (self._feature_factory(geo_layer, a=2),)
 
         self.assertEqual(get_min_max(geo_layer, "a"), [False, 1.0, 2.0])
 
     def test_get_positive_min_max(self):
         geo_layer = self.source.get_layer()
-        self._feature_factory(geo_layer, a=1),
-        self._feature_factory(geo_layer, a=2),
+        (self._feature_factory(geo_layer, a=1),)
+        (self._feature_factory(geo_layer, a=2),)
 
         self.assertEqual(get_min_max(geo_layer, "a"), [False, 1.0, 2.0])
 
@@ -199,7 +199,7 @@ class StyleTestCase(TestCase):
 
     def test_no_wizard(self):
         geo_layer = self.source.get_layer()
-        self._feature_factory(geo_layer, a=1),
+        (self._feature_factory(geo_layer, a=1),)
 
         self.layer.main_style = {}
         self.layer.save()
@@ -774,8 +774,8 @@ class StyleTestCase(TestCase):
 
     def test_boundaries_less(self):
         geo_layer = self.source.get_layer()
-        self._feature_factory(geo_layer, a=1),
-        self._feature_factory(geo_layer, a=2),
+        (self._feature_factory(geo_layer, a=1),)
+        (self._feature_factory(geo_layer, a=2),)
 
         self.layer.main_style = {
             "map_style_type": "fill",
@@ -798,8 +798,8 @@ class StyleTestCase(TestCase):
 
     def test_boundaries_1(self):
         geo_layer = self.source.get_layer()
-        self._feature_factory(geo_layer, a=1),
-        self._feature_factory(geo_layer, a=2),
+        (self._feature_factory(geo_layer, a=1),)
+        (self._feature_factory(geo_layer, a=2),)
 
         self.layer.main_style = {
             "map_style_type": "fill",
@@ -840,8 +840,8 @@ class StyleTestCase(TestCase):
 
     def test_boundaries_no_value(self):
         geo_layer = self.source.get_layer()
-        self._feature_factory(geo_layer, a=1),
-        self._feature_factory(geo_layer, a=2),
+        (self._feature_factory(geo_layer, a=1),)
+        (self._feature_factory(geo_layer, a=2),)
 
         self.layer.main_style = {
             "map_style_type": "fill",
@@ -910,8 +910,8 @@ class StyleTestCase(TestCase):
 
     def test_boundaries(self):
         geo_layer = self.source.get_layer()
-        self._feature_factory(geo_layer, a=1),
-        self._feature_factory(geo_layer, a=2),
+        (self._feature_factory(geo_layer, a=1),)
+        (self._feature_factory(geo_layer, a=2),)
 
         self.layer.main_style = {
             "map_style_type": "fill",
@@ -995,8 +995,8 @@ class StyleTestCase(TestCase):
 
     def test_boundaries_with_size(self):
         geo_layer = self.source.get_layer()
-        self._feature_factory(geo_layer, a=1),
-        self._feature_factory(geo_layer, a=2),
+        (self._feature_factory(geo_layer, a=1),)
+        (self._feature_factory(geo_layer, a=2),)
 
         self.layer.main_style = {
             "map_style_type": "line",
@@ -1086,9 +1086,9 @@ class StyleTestCase(TestCase):
 
     def test_boundaries_null_value(self):
         geo_layer = self.source.get_layer()
-        self._feature_factory(geo_layer, a=1),
-        self._feature_factory(geo_layer, a=2),
-        self._feature_factory(geo_layer, a=None),
+        (self._feature_factory(geo_layer, a=1),)
+        (self._feature_factory(geo_layer, a=2),)
+        (self._feature_factory(geo_layer, a=None),)
 
         self.layer.main_style = {
             "map_style_type": "fill",
@@ -1201,8 +1201,8 @@ class StyleTestCase(TestCase):
 
     def test_2equal_interval(self):
         geo_layer = self.source.get_layer()
-        self._feature_factory(geo_layer, a=1),
-        self._feature_factory(geo_layer, a=2),
+        (self._feature_factory(geo_layer, a=1),)
+        (self._feature_factory(geo_layer, a=2),)
 
         self.layer.main_style = {
             "map_style_type": "fill",
@@ -1286,8 +1286,8 @@ class StyleTestCase(TestCase):
 
     def test_2jenks(self):
         geo_layer = self.source.get_layer()
-        self._feature_factory(geo_layer, a=1),
-        self._feature_factory(geo_layer, a=2),
+        (self._feature_factory(geo_layer, a=1),)
+        (self._feature_factory(geo_layer, a=2),)
 
         self.layer.main_style = {
             "map_style_type": "fill",
@@ -1355,8 +1355,8 @@ class StyleTestCase(TestCase):
 
     def test_2quantile(self):
         geo_layer = self.source.get_layer()
-        self._feature_factory(geo_layer, a=1),
-        self._feature_factory(geo_layer, a=2),
+        (self._feature_factory(geo_layer, a=1),)
+        (self._feature_factory(geo_layer, a=2),)
 
         self.layer.main_style = {
             "map_style_type": "fill",
@@ -1878,7 +1878,7 @@ class StyleTestCase(TestCase):
 
         random.seed(33)
         for _ in range(0, 1000):
-            self._feature_factory(geo_layer, a=random.gauss(0, 5)),
+            (self._feature_factory(geo_layer, a=random.gauss(0, 5)),)
 
         self.layer.main_style = {
             "map_style_type": "fill",
@@ -1984,7 +1984,7 @@ class StyleTestCase(TestCase):
 
         random.seed(33)
         for index in range(0, 1000):
-            self._feature_factory(geo_layer, a=random.gauss(0, 5)),
+            (self._feature_factory(geo_layer, a=random.gauss(0, 5)),)
 
         self.layer.main_style = {
             "map_style_type": "fill",
@@ -2094,9 +2094,9 @@ class StyleTestCase(TestCase):
 
         random.seed(33)
         for index in range(0, 1000):
-            self._feature_factory(geo_layer, a=random.gauss(0, 5)),
+            (self._feature_factory(geo_layer, a=random.gauss(0, 5)),)
         for index in range(0, 10):
-            self._feature_factory(geo_layer, a=None),
+            (self._feature_factory(geo_layer, a=None),)
 
         self.layer.main_style = {
             "map_style_type": "fill",
@@ -2240,7 +2240,7 @@ class StyleTestCase(TestCase):
 
         random.seed(33)
         for index in range(0, 1000):
-            self._feature_factory(geo_layer, a=random.gauss(0, 5)),
+            (self._feature_factory(geo_layer, a=random.gauss(0, 5)),)
 
         self.layer.main_style = {
             "map_style_type": "fill",
@@ -2346,7 +2346,7 @@ class StyleTestCase(TestCase):
     def test_graduated_jenks_only_none(self):
         geo_layer = self.source.get_layer()
 
-        self._feature_factory(geo_layer, a=None),
+        (self._feature_factory(geo_layer, a=None),)
 
         self.layer.main_style = {
             "map_style_type": "fill",
@@ -2427,9 +2427,9 @@ class StyleTestCase(TestCase):
 
         random.seed(33)
         for index in range(0, 1000):
-            self._feature_factory(geo_layer, a=random.gauss(0, 5)),
+            (self._feature_factory(geo_layer, a=random.gauss(0, 5)),)
         for index in range(0, 10):
-            self._feature_factory(geo_layer, a=None),
+            (self._feature_factory(geo_layer, a=None),)
 
         self.layer.main_style = {
             "map_style_type": "fill",
@@ -2573,7 +2573,7 @@ class StyleTestCase(TestCase):
 
         random.seed(33)
         for _ in range(0, 1000):
-            self._feature_factory(geo_layer, a=random.gauss(0, 5)),
+            (self._feature_factory(geo_layer, a=random.gauss(0, 5)),)
 
         self.layer.main_style = {
             "map_style_type": "line",
@@ -3240,7 +3240,7 @@ class StyleTestCase(TestCase):
         geo_layer = self.source.get_layer()
         random.seed(33)
         for _ in range(0, 1000):
-            self._feature_factory(geo_layer, a=random.gauss(0, 5)),
+            (self._feature_factory(geo_layer, a=random.gauss(0, 5)),)
 
         self.layer.main_style = {
             "map_style_type": "fill",

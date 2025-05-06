@@ -1,4 +1,5 @@
 import json
+import logging
 import uuid
 from hashlib import md5
 
@@ -17,6 +18,8 @@ from project.geosource.models import Field, Source
 from .managers import LayerManager, SceneManager
 from .schema import SCENE_LAYERTREE, JSONSchemaValidator
 from .style import generate_style_from_wizard
+
+logger = logging.getLogger(__name__)
 
 
 def scene_icon_path(instance, filename):
@@ -56,6 +59,19 @@ class Scene(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     objects = SceneManager()
+
+    class Meta:
+        ordering = ["order"]
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify(self.name)
+
+        super().save(*args, **kwargs)
+        self.tree2models()  # Generate LayerGroups according to the tree
 
     def get_absolute_url(self):
         return reverse("scene-detail", args=[self.pk])
@@ -141,20 +157,10 @@ class Scene(models.Model):
             last_group.update(group_config)
         self.save()
 
-    def save(self, *args, **kwargs):
-        if not self.slug:
-            self.slug = slugify(self.name)
-
-        super().save(*args, **kwargs)
-        self.tree2models()  # Generate LayerGroups according to the tree
-
     @property
     def layers(self):
         """all scene layers"""
         return Layer.objects.filter(group__view=self).order_by("group__order", "order")
-
-    class Meta:
-        ordering = ["order"]
 
 
 class LayerGroup(models.Model):
@@ -232,26 +238,11 @@ class Layer(CloneMixin, models.Model):
 
     objects = LayerManager()
 
-    @property
-    def map_style(self):
-        return self.main_style.get("map_style", self.main_style)
-
     class Meta:
         ordering = ("order", "name")
 
-    def generate_style_and_legend(self, style_config):
-        # Add uid to style if missing
-        if style_config and "uid" not in style_config:
-            style_config["uid"] = str(uuid.uuid4())
-
-        if style_config.get("type") == "wizard":
-            generated_map_style, legend_additions = generate_style_from_wizard(
-                self.source.get_layer(), style_config
-            )
-            style_config["map_style"] = generated_map_style
-            return legend_additions
-
-        return []
+    def __str__(self):
+        return f"Layer ({self.id}) - {self.name} - ({self.layer_identifier})"
 
     def save(self, wizard_update=True, preserve_legend=False, **kwargs):
         super().save(**kwargs)
@@ -327,6 +318,24 @@ class Layer(CloneMixin, models.Model):
 
             self.legends = kept_legend
 
+    @property
+    def map_style(self):
+        return self.main_style.get("map_style", self.main_style)
+
+    def generate_style_and_legend(self, style_config):
+        # Add uid to style if missing
+        if style_config and "uid" not in style_config:
+            style_config["uid"] = str(uuid.uuid4())
+
+        if style_config.get("type") == "wizard":
+            generated_map_style, legend_additions = generate_style_from_wizard(
+                self.source.get_layer(), style_config
+            )
+            style_config["map_style"] = generated_map_style
+            return legend_additions
+
+        return []
+
     def make_clone(self, *args, **kwargs):
         kwargs.setdefault("attrs", {"name": f"{self.name} (" + _("Copy") + ")"})
         obj = super().make_clone(*args, **kwargs)
@@ -339,9 +348,6 @@ class Layer(CloneMixin, models.Model):
         obj.main_style = json.loads(style_text)
         obj.save()
         return obj
-
-    def __str__(self):
-        return f"Layer ({self.id}) - {self.name} - ({self.layer_identifier})"
 
     @transaction.atomic()
     def replace_source(self, new_source, fields_matches=None, dry_run=False):
@@ -356,13 +362,15 @@ class Layer(CloneMixin, models.Model):
             if new_source.fields.filter(name=field_name).exists():
                 new_field = new_source.fields.get(name=field_name)
                 if dry_run:
-                    print(f"{filter_field.field.name} replaced by {new_field.name}.")
+                    logger.info(
+                        "%s replaced by %s.", filter_field.field.name, new_field.name
+                    )
                 else:
                     filter_field.field = new_field
                     filter_field.save()
             else:
                 if dry_run:
-                    print(f"Old field {field_name} deleted.")
+                    logger.info("Old field %s deleted.", field_name)
                 else:
                     filter_field.delete()
 
@@ -373,11 +381,11 @@ class Layer(CloneMixin, models.Model):
                 and field.name not in fields_matches.values()
             ):
                 if dry_run:
-                    print(f"New FilterField {field.name} created.")
+                    logger.info("New FilterField %s created.", field.name)
                 else:
                     self.fields_filters.create(field=field)
         if dry_run:
-            print(f"{self.source} replaced by {new_source}.")
+            logger.info("%s replaced by %s.", self.source, new_source)
         else:
             self.source = new_source
             self.save()
@@ -395,6 +403,9 @@ class CustomStyle(models.Model):
 
     interactions = models.JSONField(default=list)
 
+    def __str__(self):
+        return f"{self.layer.name} - {self.source.name} - {self.layer_identifier}"
+
     @property
     def map_style(self):
         return self.style_config.get("map_style", self.style)
@@ -402,7 +413,7 @@ class CustomStyle(models.Model):
     @property
     def layer_identifier(self):
         return md5(
-            f"{self.source.slug}-{self.source.pk}-{self.pk}".encode("utf-8")
+            f"{self.source.slug}-{self.source.pk}-{self.pk}".encode()
         ).hexdigest()
 
 
@@ -417,7 +428,7 @@ class FilterField(models.Model):
 
     filter_enable = models.BooleanField(default=False)
     filter_settings = models.JSONField(default=dict)
-    format_type = models.CharField(max_length=255, default=None, null=True)
+    format_type = models.CharField(max_length=255, default="", null=False, blank=True)
 
     # Whether the field can be exported
     exportable = models.BooleanField(default=False)
@@ -433,6 +444,9 @@ class FilterField(models.Model):
 
     class Meta:
         ordering = ("order",)
+
+    def __str__(self):
+        return self.label or self.pk
 
 
 def style_image_path(instance, filename):
@@ -450,3 +464,6 @@ class StyleImage(models.Model):
 
     class Meta:
         unique_together = (("name", "layer"),)
+
+    def __str__(self):
+        return self.name

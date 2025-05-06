@@ -122,7 +122,8 @@ class SourceSerializer(PolymorphicModelSerializer):
     def _update_fields(self, source):
         if source.run_sync_method("update_fields", success_state="NEED_SYNC").result:
             return source
-        raise ValidationError("Fields update failed")
+        msg = "Fields update failed"
+        raise ValidationError(msg)
 
     @transaction.atomic
     def create(self, validated_data):
@@ -148,7 +149,8 @@ class SourceSerializer(PolymorphicModelSerializer):
                 if serializer.is_valid():
                     serializer.save()
                 else:
-                    raise ValidationError("Field configuration is not valid")
+                    msg = "Field configuration is not valid"
+                    raise ValidationError(msg)
             except Field.DoesNotExist:
                 pass
 
@@ -218,9 +220,11 @@ class PostGISSourceSerializer(SourceSerializer):
 
             else:
                 geomtype_name = GeometryTypes(data.get("geom_type")).name
-                raise ValidationError(f"No geom field found of type {geomtype_name}")
+                msg = f"No geom field found of type {geomtype_name}"
+                raise ValidationError(msg)
         elif data.get("geom_field") not in first_record:
-            raise ValidationError("Field does not exist in source")
+            msg = "Field does not exist in source"
+            raise ValidationError(msg)
 
         return data
 
@@ -233,7 +237,8 @@ class PostGISSourceSerializer(SourceSerializer):
                 data["db_password"] = self.instance.db_password
             self._first_record(data)
         except Exception:
-            raise ValidationError("Connection informations or query are not valid")
+            msg = "Connection informations or query are not valid"
+            raise ValidationError(msg)
 
     def validate(self, data):
         self._validate_query_connection(data)
@@ -292,9 +297,8 @@ class GeoJSONSourceSerializer(FileSourceSerializer):
             try:
                 _ = row[instance.id_field]  # noqa
             except Exception:
-                raise ValidationError(
-                    f"Can't find identifier field at the record index {i}"
-                )
+                msg = f"Can't find identifier field at the record index {i}"
+                raise ValidationError(msg)
 
     def validate(self, data):
         self._validate_field_infos(data)
@@ -342,7 +346,8 @@ class WMTSSourceSerialize(SourceSerializer):
         try:
             requests.get(url)
         except requests.ConnectionError:
-            raise ValidationError("Can't reach specified tile server. Check your url.")
+            msg = "Can't reach specified tile server. Check your url."
+            raise ValidationError(msg)
 
         return super().validate(data)
 
@@ -450,9 +455,8 @@ class CSVSourceSerializer(FileSourceSerializer):
             try:
                 _ = row[instance.id_field]  # noqa
             except KeyError:
-                raise ValidationError(
-                    "Can't find identifier field in one or more records"
-                )
+                msg = "Can't find identifier field in one or more records"
+                raise ValidationError(msg)
 
     def validate(self, data):
         # do not use this for now as it cause file creation to bug

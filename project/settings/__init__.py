@@ -10,8 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
+import logging
 import os
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from pathlib import Path
 
 import sentry_sdk
@@ -20,6 +21,8 @@ from django.utils.translation import gettext_lazy as _
 from sentry_sdk.integrations.celery import CeleryIntegration
 from sentry_sdk.integrations.django import DjangoIntegration
 from sentry_sdk.integrations.redis import RedisIntegration
+
+logger = logging.getLogger(__name__)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -241,7 +244,7 @@ SPECTACULAR_SETTINGS = {
 CACHES = {
     "default": {
         "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": f'redis://{os.getenv("REDIS_HOST", "redis")}:{os.getenv("REDIS_PORT", "6379")}',
+        "LOCATION": f"redis://{os.getenv('REDIS_HOST', 'redis')}:{os.getenv('REDIS_PORT', '6379')}",
     }
 }
 
@@ -338,7 +341,7 @@ CONSTANCE_CONFIG = {
         "choice_email_source_refresh_type",
     ),
     "INSTANCE_EMAIL_SOURCE_LAST_PERIODIC": (
-        datetime.now(tz=timezone.utc),
+        datetime.now(tz=UTC),
         _("Last periodic source refresh report datetime. Do not change it"),
         datetime,
     ),
@@ -551,8 +554,8 @@ if SENTRY_DSN:
 # Override with custom settings
 custom_settings_file = os.getenv("CUSTOM_SETTINGS_FILE")
 try:
-    with open(custom_settings_file, "r") as f:
-        print("Read custom configuration from {}".format(custom_settings_file))
+    with open(custom_settings_file) as f:
+        logger.info("Read custom configuration from %s", custom_settings_file)
         exec(f.read())
 except:  # NOQA
     pass
