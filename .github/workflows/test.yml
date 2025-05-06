@@ -24,6 +24,7 @@ jobs:
         run: |
           cp db.env.dist db.env
           cp app.env.dist app.env
+          touch .env
           sed -i 's/UID=/UID="$UID"/' .env
           sed -i 's/GID=/GID="$GID"/' .env
           docker compose build web
