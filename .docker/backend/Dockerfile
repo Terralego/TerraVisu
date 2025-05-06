@@ -63,7 +63,7 @@ ENV UV_LINK_MODE=copy
 
 RUN --mount=type=bind,src=./requirements.txt,dst=/requirements.txt \
     --mount=type=cache,target=/opt/geotrek-admin/var/cache/,sharing=locked,uid=1001,gid=1001 \
-    uv pip install -r /requirements.txt
+    uv pip install pip setuptools wheel -U && uv pip install -r /requirements.txt
 
 FROM build AS dev
 
