@@ -184,7 +184,7 @@ class SceneViewsetTestCase(APITestCase):
             json_response["map"]["customStyle"]["layers"],
             [
                 {
-                    "id": "5f3f90d2aa8a14d5bb88c2f0bbf44610",
+                    "id": layer.layer_identifier,
                     "layerId": layer.pk,
                     "source": "terra_0",
                     "source-layer": "test_view_2",
@@ -225,7 +225,7 @@ class SceneViewsetTestCase(APITestCase):
             json_response["map"]["customStyle"]["layers"],
             [
                 {
-                    "id": "282d40e1ab9a059aa9d6eff431407e76",
+                    "id": layer.layer_identifier,
                     "layerId": layer.pk,
                     "type": "raster",
                     "minzoom": 14,
