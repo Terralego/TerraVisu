@@ -17,7 +17,7 @@ attrs==24.2.0
     #   referencing
 billiard==4.2.1
     # via celery
-celery==5.4.0
+celery==5.5.2
     # via
     #   -r requirements.in
     #   django-celery-beat
@@ -166,7 +166,7 @@ jsonschema==4.23.0
     #   drf-spectacular
 jsonschema-specifications==2024.10.1
     # via jsonschema
-kombu==5.4.2
+kombu==5.5.3
     # via celery
 lml==0.2.0
     # via
@@ -249,9 +249,8 @@ text-unidecode==1.3
     # via python-slugify
 texttable==1.7.0
     # via pyexcel
-tzdata==2024.2
+tzdata==2025.2
     # via
-    #   celery
     #   django-celery-beat
     #   kombu
 uritemplate==4.1.1
