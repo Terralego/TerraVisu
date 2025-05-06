@@ -88,7 +88,7 @@ freezegun==1.5.1
     # via -r dev-requirements.in
 greenlet==3.0.3
     # via bpython
-h11==0.14.0
+h11==0.16.0
     # via
     #   -r docs/requirements.txt
     #   uvicorn
