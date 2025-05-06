@@ -65,7 +65,7 @@ omit = [
     "project/wsgi.py",
     "project/asgi.py",
 ]
-data_file = ".coverage"
+data_file = "var/.coverage"
 
 [tool.coverage.report]
 exclude_lines = [

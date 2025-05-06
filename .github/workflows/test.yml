@@ -61,11 +61,12 @@ jobs:
 
       - name: Tests
         run: |
-          docker compose run --rm web coverage run ./manage.py test --settings=project.settings.tests
+          docker compose run --rm web coverage run --parallel-mode --concurrency=multiprocessing ./manage.py test --settings=project.settings.tests --parallel -v 3
 
       - name: Prepare coverage report
         run: |
-          docker compose run --rm web coverage xml
+          docker compose run --rm web coverage combine
+          docker compose run --rm web coverage xml -o coverage.xml
 
       - uses: codecov/codecov-action@v5
         with:
