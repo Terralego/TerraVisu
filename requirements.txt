@@ -91,7 +91,7 @@ django-auth-oidc @ git+https://github.com/Terralego/django-auth-oidc.git@master
     # via -r requirements.in
 django-autoslug==1.9.9
     # via -r requirements.in
-django-celery-beat==2.7.0
+django-celery-beat==2.8.0
     # via -r requirements.in
 django-celery-results==2.6.0
     # via -r requirements.in
