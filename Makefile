@@ -53,7 +53,7 @@ flake8:
 lint: black isort flake8
 
 deps:
-	docker compose run --rm web bash -c "pip-compile --strip-extras && cd docs && pip-compile --strip-extras && cd .. && pip-compile requirements-dev.in"
+	docker compose run --rm web bash -c "uv pip compile requirements.in -o requirements.txt && cd docs && uv pip compile requirements.in -o requirements.txt && cd .. && uv pip compile requirements-dev.in -o requirements-dev.txt"
 
 django:
 	docker compose run --rm web ./manage.py $(filter-out $@,$(MAKECMDGOALS))

@@ -34,7 +34,7 @@ RUN apt-get -y -qq update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives/*
 
-RUN useradd --system docker -u 1001 && mkdir -p /opt/terra-visu && chown docker:docker /opt
+RUN mkdir -p /opt/terra-visu/var/cache && useradd -m -d /opt/terra-visu -s /bin/false -u 1001 docker && chown docker:docker -R /opt
 WORKDIR /opt/terra-visu
 
 COPY .docker/backend/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -56,7 +56,7 @@ RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
 
 USER docker
 
-ENV UV_CACHE_DIR=/opt/terravisu/var/cache/
+ENV UV_CACHE_DIR=/opt/terra-visu/var/cache/
 RUN uv venv /opt/venv
 ENV UV_PYTHON=/opt/venv/bin/python
 ENV UV_LINK_MODE=copy
