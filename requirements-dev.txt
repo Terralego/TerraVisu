@@ -388,10 +388,6 @@ sentry-sdk==2.27.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-setuptools==80.3.1
-    # via
-    #   -c requirements.txt
-    #   terravisu (pyproject.toml)
 simplekml==1.3.6
     # via
     #   -c requirements.txt
