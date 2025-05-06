@@ -27,6 +27,7 @@ jobs:
           touch .env
           sed -i 's/UID=/UID="$UID"/' .env
           sed -i 's/GID=/GID="$GID"/' .env
+          cat .env
           docker compose build web
           chmod 777 ./var ./docs
 
