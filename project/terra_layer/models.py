@@ -428,7 +428,7 @@ class FilterField(models.Model):
 
     filter_enable = models.BooleanField(default=False)
     filter_settings = models.JSONField(default=dict)
-    format_type = models.CharField(max_length=255, default="", null=False)
+    format_type = models.CharField(max_length=255, default="", null=False, blank=True)
 
     # Whether the field can be exported
     exportable = models.BooleanField(default=False)

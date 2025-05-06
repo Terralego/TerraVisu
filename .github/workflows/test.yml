@@ -24,10 +24,11 @@ jobs:
         run: |
           cp db.env.dist db.env
           cp app.env.dist app.env
+          echo "PYTHONWARNINGS=ignore" >> app.env
+
           touch .env
           echo "UID=$UID" >> .env
           echo "GID=$GID" >> .env
-          cat .env
           docker compose build web
 
       - name: Check migrations
