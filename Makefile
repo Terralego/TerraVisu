@@ -53,7 +53,7 @@ force_lint:
 quality: lint format
 
 deps:
-	docker compose run --rm web bash -c "uv pip compile requirements.in -o requirements.txt && cd docs && uv pip compile requirements.in -o requirements.txt && cd .. && uv pip compile requirements-dev.in -o requirements-dev.txt"
+	docker compose run --rm web bash -c "uv pip compile pyproject.toml -o requirements.txt && cd docs && uv pip compile requirements.in -o requirements.txt && cd .. && uv pip compile pyproject.toml --extra dev -c requirements.txt -o requirements-dev.txt"
 
 django:
 	docker compose run --rm web ./manage.py $(filter-out $@,$(MAKECMDGOALS))

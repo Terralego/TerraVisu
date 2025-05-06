@@ -1,9 +1,0 @@
--c requirements.txt
--r docs/requirements.txt
-
-django-debug-toolbar
-freezegun
-ruff
-factory-boy
-coverage
-bpython

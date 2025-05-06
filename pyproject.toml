@@ -1,0 +1,138 @@
+[project]
+version="2024"
+name = "TerraVisu"
+authors = [
+  {name = "Makina Corpus", email = "geobi@makina-corpus.com"}
+]
+maintainers = [
+  {name = "Makina Corpus", email = "geobi@makina-corpus.com"}
+]
+dependencies = [
+    "django==4.2.*",
+    "django-admin-interface",
+    "django-geostore",
+    "psycopg2",
+    "pillow",
+    "gunicorn",
+    "django-crispy-forms",
+    "django-autoslug",
+    "django-clearcache",
+    "django-clone",
+    "crispy-bootstrap5",
+    "django-mapbox-baselayer",
+    "django-cors-headers",
+    "django-constance",
+    "django-filter",
+    "elasticsearch",
+    "celery",
+    "redis",
+    "django-celery-results",
+    "django-celery-beat",
+    "sentry-sdk",
+    "django-polymorphic",
+    "fiona",
+    "pyexcel",
+    "python-decouple",
+    "django-auth-oidc@git+https://github.com/Terralego/django-auth-oidc.git@master",
+    "drf-jwt",
+    "drf-spectacular",
+    "drf-extra-fields",
+    "django-tinymce",
+    "pyproj",
+]
+[project.scripts]
+osm_paths = "osm_paths:main"
+[project.optional-dependencies]
+dev = [
+    "lxml",
+    "tblib",
+    "ruff",
+    "freezegun",
+    "coverage",
+    "factory_boy",
+    "django-extensions",
+    "django-debug-toolbar",
+]
+
+[tool.coverage.run]
+source = [
+    "project"
+]
+omit = [
+   "**/tests/*",
+    "**/settings/*",
+    "**/migrations/*",
+    "project/wsgi.py",
+    "project/asgi.py",
+]
+data_file = ".coverage"
+
+[tool.coverage.report]
+exclude_lines = [
+    "pragma: no cover"
+]
+
+[tool.ruff]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".ipynb_checkpoints",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pyenv",
+    ".pytest_cache",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    ".vscode",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "site-packages",
+    "venv",
+]
+
+# Same as Black.
+line-length = 88
+indent-width = 4
+
+# Assume Python 3.12
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["G", "INT", "E4", "E7", "E9", "F", "DJ", "LOG", "UP", "I", "T10", "EM"]
+ignore = []
+
+
+# Allow fix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+[tool.ruff.format]
+# Like Black, use double quotes for strings.
+quote-style = "double"
+
+# Like Black, indent with spaces, rather than tabs.
+indent-style = "space"
+
+# Like Black, respect magic trailing commas.
+skip-magic-trailing-comma = false
+
+# Like Black, automatically detect the appropriate line ending.
+line-ending = "auto"
+docstring-code-format = true
+docstring-code-line-length = "dynamic"
