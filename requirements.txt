@@ -194,7 +194,7 @@ pyexcel==0.7.3
     # via terravisu (pyproject.toml)
 pyexcel-io==0.6.7
     # via pyexcel
-pyjwt==2.10.0
+pyjwt==2.10.1
     # via drf-jwt
 pyproj==3.7.1
     # via terravisu (pyproject.toml)
