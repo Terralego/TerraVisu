@@ -105,7 +105,7 @@ django-constance==4.3.2
     # via -r requirements.in
 django-cors-headers==4.7.0
     # via -r requirements.in
-django-crispy-forms==2.3
+django-crispy-forms==2.4
     # via
     #   -r requirements.in
     #   crispy-bootstrap5
