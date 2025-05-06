@@ -35,7 +35,7 @@ class Command(BaseCommand):
 
         fields_matches = {}
         if matches:
-            with open(matches, "r") as f:
+            with open(matches) as f:
                 reader = csv.reader(f, delimiter=",")
                 for row in reader:
                     old_name, new_name = row

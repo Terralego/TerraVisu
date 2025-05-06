@@ -9,7 +9,7 @@ def auto_refresh_source():
     countdown = 0
     for source in Source.objects.exclude(status=Source.Status.PENDING):
         if source.should_refresh():
-            logger.info(f"Schedule refresh for source {source}<{source.id}>...")
+            logger.info("Schedule refresh for source %s<%s>...", source, source.id)
             # Delay execution by some minutes to avoid struggling
             try:
                 source.run_async_method("refresh_data", countdown=countdown, force=True)

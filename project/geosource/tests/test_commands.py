@@ -24,11 +24,12 @@ class ResyncAllSourcesTestCase(TestCase):
 
     def test_resync_all_sources(self):
         out = StringIO()
-        with mock.patch(
-            "project.geosource.models.GeoJSONSource.refresh_data"
-        ) as mocked, mock.patch(
-            "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
-            return_value=False,
+        with (
+            mock.patch("project.geosource.models.GeoJSONSource.refresh_data") as mocked,
+            mock.patch(
+                "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
+                return_value=False,
+            ),
         ):
             call_command("resync_all_sources", stdout=out)
 
@@ -49,11 +50,12 @@ class ResyncAllSourcesTestCase(TestCase):
         def side_effect(method, list, **kwargs):
             return "Task"
 
-        with mock.patch(
-            "project.geosource.models.GeoJSONSource.refresh_data"
-        ) as mocked, mock.patch(
-            "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
-            return_value=False,
+        with (
+            mock.patch("project.geosource.models.GeoJSONSource.refresh_data") as mocked,
+            mock.patch(
+                "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
+                return_value=False,
+            ),
         ):
             call_command("resync_source", pk=self.source.id, stdout=out)
         mocked.assert_called_once()
@@ -85,11 +87,12 @@ class ResyncAllSourcesTestCase(TestCase):
 
     def test_resync_all_sources_fail_force(self):
         out = StringIO()
-        with mock.patch(
-            "project.geosource.models.GeoJSONSource.refresh_data"
-        ) as mocked, mock.patch(
-            "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
-            return_value=False,
+        with (
+            mock.patch("project.geosource.models.GeoJSONSource.refresh_data") as mocked,
+            mock.patch(
+                "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
+                return_value=False,
+            ),
         ):
             with mock.patch(
                 "project.geosource.mixins.CeleryCallMethodsMixin.can_sync",

@@ -154,7 +154,7 @@ class LayerDumpTestCase(TestCase):
                     "field": "tutu",
                     "filter_enable": False,
                     "filter_settings": {},
-                    "format_type": None,
+                    "format_type": "",
                     "label": "Test",
                     "order": 0,
                     "shown": False,

@@ -9,12 +9,12 @@ class SpriteValue(models.Model):
 
     slug = models.SlugField(max_length=255, unique=True)
 
-    def __str__(self):
-        return self.slug
-
     class Meta:
         verbose_name = _("Sprite icon")
         verbose_name_plural = _("Sprite icons")
+
+    def __str__(self):
+        return self.slug
 
 
 class ExtraMenuItem(models.Model):
@@ -33,6 +33,10 @@ class ExtraMenuItem(models.Model):
         ),
     )
 
+    class Meta:
+        verbose_name = _("Extra menu item")
+        verbose_name_plural = _("Extra menu items")
+
     def __str__(self):
         return self.label
 
@@ -40,7 +44,3 @@ class ExtraMenuItem(models.Model):
         if not self.pk and not self.slug:
             self.slug = slugify(self.label)
         return super().save(*args, **kwargs)
-
-    class Meta:
-        verbose_name = _("Extra menu item")
-        verbose_name_plural = _("Extra menu items")

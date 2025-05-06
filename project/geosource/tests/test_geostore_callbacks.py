@@ -37,29 +37,24 @@ class GeostoreCallBacksTestCase(TestCase):
         self.assertEqual(feature.geom.srid, 4326)
 
     def test_feature_callback_fail(self):
-        def side_effect(msg):
-            raise ValueError(msg)
+        with self.assertLogs("project.geosource.geostore_callbacks", "WARNING") as log:
+            group = Group.objects.create(name="Group")
+            source = GeoJSONSource.objects.create(
+                name="test",
+                geom_type=GeometryTypes.Point,
+                file=get_file("test.geojson"),
+            )
+            source.groups.add(group)
+            layer = Layer.objects.create(name="test")
 
-        group = Group.objects.create(name="Group")
-        source = GeoJSONSource.objects.create(
-            name="test",
-            geom_type=GeometryTypes.Point,
-            file=get_file("test.geojson"),
-        )
-        source.groups.add(group)
-        layer = Layer.objects.create(name="test")
-        with mock.patch(
-            "project.geosource.geostore_callbacks.logger.warning",
-            side_effect=side_effect,
-        ):
-            with self.assertRaisesRegex(
-                ValueError,
-                "One record was ignored from source, because of "
-                "invalid geometry: {'property': 'Hola'}",
-            ):
-                geostore_callbacks.feature_callback(
-                    source, layer, "id", "Not a Point", {"property": "Hola"}
+            geostore_callbacks.feature_callback(
+                source, layer, "id", "Not a Point", {"property": "Hola"}
+            )
+            self.assertTrue(
+                log.output[0].endswith(
+                    "One record was ignored from source, because of invalid geometry: {'property': 'Hola'}"
                 )
+            )
 
     def test_clean_features(self):
         group = Group.objects.create(name="Group")

@@ -42,22 +42,22 @@ coverage:
 sphinx:
 	docker compose run --workdir=/opt/terra-visu/docs --rm web make html -e SPHINXOPTS="-W"
 
-black:
-	$(DOCKER_COMPOSE_CMD) black project
+format:
+	docker compose run --remove-orphans --no-deps --rm web ruff format project
 
-isort:
-	$(DOCKER_COMPOSE_CMD) isort project
+lint:
+	docker compose run --remove-orphans --no-deps --rm web ruff check --fix project
 
-flake8:
-	$(DOCKER_COMPOSE_CMD) flake8 project
+force_lint:
+	docker compose run --remove-orphans --no-deps --rm web ruff check --fix --unsafe-fixes project
 
-lint: black isort flake8
+quality: lint format
 
 test:
 	$(DOCKER_COMPOSE_CMD) ./manage.py test -v 3 --settings=project.settings.tests
 
 deps:
-	$(DOCKER_COMPOSE_CMD) bash -c "pip-compile --strip-extras && cd docs && pip-compile --strip-extras && cd .. && pip-compile dev-requirements.in"
+	$(DOCKER_COMPOSE_CMD) bash -c  bash -c "uv pip compile pyproject.toml -o requirements.txt && cd docs && uv pip compile requirements.in -o requirements.txt && cd .. && uv pip compile pyproject.toml --extra dev -c requirements.txt -o requirements-dev.txt"
 
 django:
 	$(DOCKER_COMPOSE_CMD) ./manage.py $(filter-out $@,$(MAKECMDGOALS))

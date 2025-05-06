@@ -38,9 +38,10 @@ def feature_callback(geosource, layer, identifier, geometry, attributes):
         )
     except (TypeError, ValueError):
         logger.warning(
-            f"One record was ignored from source, because of invalid geometry: {attributes}"
+            "One record was ignored from source, because of invalid geometry: %s",
+            attributes,
         )
-        return (None, None)
+        return None, None
 
 
 def clear_features(geosource, layer, begin_date):

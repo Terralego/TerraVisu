@@ -4,7 +4,7 @@ logger = logging.getLogger(__name__)
 
 
 def permission_callback(sender, **kwargs):
-    logger.info(f"Updating permissions of {sender.name}")
+    logger.info("Updating permissions of %s", sender.name)
 
     ContentType = sender.apps.get_model("contenttypes.ContentType")
     FunctionalPermission = sender.apps.get_model("accounts.FunctionalPermission")

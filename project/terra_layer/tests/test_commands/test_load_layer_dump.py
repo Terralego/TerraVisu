@@ -36,14 +36,14 @@ class LayerDumpTestCase(TestCase):
 
     def test_command_launch(self):
         out = StringIO()
-        call_command("layer_load_dump", "-file={}".format(self.file), stdout=out)
+        call_command("layer_load_dump", f"-file={self.file}", stdout=out)
         self.assertEqual(Layer.objects.count(), 1)
 
     def test_command_launch_wrong_uuid(self):
         out = StringIO()
         self.layer.uuid = "91c60192-9060-4bf6-b0de-818c5a362d88"
         self.layer.save()
-        call_command("layer_load_dump", "-file={}".format(self.file), stdout=out)
+        call_command("layer_load_dump", f"-file={self.file}", stdout=out)
         self.assertEqual(Layer.objects.count(), 2)
 
     def test_command_launch_command_error(self):
@@ -54,7 +54,7 @@ class LayerDumpTestCase(TestCase):
         self.layer.uuid = "91c60192-9060-4bf6-b0de-818c5a362d88"
         self.layer.save()
         with self.assertRaises(CommandError) as e:
-            call_command("layer_load_dump", "-file={}".format(file), stdout=out)
+            call_command("layer_load_dump", f"-file={file}", stdout=out)
         self.assertEqual(
             str(e.exception),
             "A validation error occurred with data: "
@@ -76,7 +76,7 @@ class LayerDumpTestCase(TestCase):
             "data",
             "multiple_name.json",
         )
-        call_command("layer_load_dump", "-file={}".format(file), stdout=out)
+        call_command("layer_load_dump", f"-file={file}", stdout=out)
         self.scene.refresh_from_db()
         new_layer = Layer.objects.exclude(name="Layer_with_custom_style").get()
         self.assertEqual(

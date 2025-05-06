@@ -6,6 +6,9 @@ on:
     branches:
       - master
 
+permissions:
+  contents: read
+
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -14,42 +17,27 @@ env:
   DEBIAN_FRONTEND: noninteractive
 
 jobs:
-  flake8:
-    name: Flake8 check
+  lint:
+    name: Lint check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/python-cache-requirements
+      - uses: astral-sh/setup-uv@v6
         with:
-          requirements: dev-requirements.txt
+            version: "latest"
+            python-version: "3.12"
+            enable-cache: true
+            cache-suffix: "ruff"
+            activate-environment: true
 
-      - name: Flake8
+      - name: Install dependencies
         run: |
-          flake8 project
+          uv pip install -c requirements-dev.txt ruff
 
-  isort:
-    name: iSort check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/python-cache-requirements
-        with:
-          requirements: dev-requirements.txt
-
-      - name: Isort
+      - name: Check linting
         run: |
-          isort -c project
+          ruff check project
 
-  black:
-    name: Black check
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/python-cache-requirements
-        with:
-          requirements: dev-requirements.txt
-
-      - name: Black
+      - name: Check format
         run: |
-          black --check project
+          ruff format --check project

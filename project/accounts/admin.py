@@ -4,8 +4,8 @@ from django.utils.translation import gettext_lazy as _
 from project.accounts.models import FunctionalPermission, PermanentAccessToken, User
 from project.admin import config_site
 
-admin.site.index_title = f'TerraVisu: {_("Debug panel")}'
-admin.site.site_header = f'TerraVisu: {_("Debug panel")}'
+admin.site.index_title = f"TerraVisu: {_('Debug panel')}"
+admin.site.site_header = f"TerraVisu: {_('Debug panel')}"
 admin.site.index_title = _("Welcome to TerraVisu debug interface.")
 
 admin.site.register(User)

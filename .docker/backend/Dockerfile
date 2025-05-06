@@ -34,8 +34,7 @@ RUN apt-get -y -qq update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /var/cache/apt/archives/*
 
-RUN useradd --system docker
-RUN mkdir -p /opt/terra-visu && chown docker:docker /opt
+RUN mkdir -p /opt/terra-visu/var/cache && useradd -m -d /opt/terra-visu -s /bin/false -u 1001 docker && chown docker:docker -R /opt
 WORKDIR /opt/terra-visu
 
 COPY .docker/backend/entrypoint.sh /usr/local/bin/entrypoint.sh
@@ -45,31 +44,33 @@ EXPOSE 8000
 
 FROM base AS build
 
-RUN apt-get -y -qq update \
-    && apt-get -y -qq install \
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
+    --mount=type=cache,target=/var/lib/apt,sharing=locked \
+    apt-get -y -qq update && apt-get -y -qq install \
     python3-dev \
-    python3-venv \
     build-essential \
     libpq-dev \
-    git \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /var/cache/apt/archives/*
+    git
 
 USER docker
 
-RUN python3 -m venv /opt/venv && /opt/venv/bin/pip install --no-cache-dir --upgrade "pip<24.3" setuptools wheel
+ENV UV_CACHE_DIR=/opt/terra-visu/var/cache/
+RUN uv venv /opt/venv
+ENV UV_PYTHON=/opt/venv/bin/python
+ENV UV_LINK_MODE=copy
 
-COPY requirements.txt /opt/terra-visu/requirements.txt
-RUN /opt/venv/bin/pip install --no-cache-dir --upgrade -r /opt/terra-visu/requirements.txt
+RUN --mount=type=bind,src=./requirements.txt,dst=/requirements.txt \
+    --mount=type=cache,target=/opt/geotrek-admin/var/cache/,sharing=locked,uid=1001,gid=1001 \
+    uv pip install -r /requirements.txt
 
 FROM build AS dev
 
-COPY dev-requirements.txt /opt/terra-visu/dev-requirements.txt
-RUN /opt/venv/bin/pip install --no-cache-dir --upgrade -r /opt/terra-visu/dev-requirements.txt
-COPY .docker/backend/update.sh /usr/local/bin/update.sh
-COPY ../../docs/requirements.txt /opt/terra-visu/doc-requirements.txt
-RUN /opt/venv/bin/pip install --no-cache-dir --upgrade -r /opt/terra-visu/doc-requirements.txt
+RUN --mount=type=bind,src=./requirements-dev.txt,dst=/requirements-dev.txt \
+    --mount=type=bind,src=./docs/requirements.txt,dst=/requirements-doc.txt \
+    --mount=type=cache,target=/opt/terravisu/var/cache/,sharing=locked,uid=1001,gid=1001 \
+    uv pip install -r /requirements-dev.txt -r /requirements-doc.txt
 
 CMD ["/opt/venv/bin/python", "manage.py", "runserver", "0.0.0.0:8000"]
 
@@ -88,13 +89,6 @@ COPY Procfile /opt/terra-visu/Procfile
 COPY .docker/backend/update.sh /usr/local/bin/update.sh
 
 RUN DJANGO_SETTINGS_MODULE=project.settings.tests /opt/venv/bin/python manage.py compilemessages
-
-USER root
-
-RUN apt-get -y -qq update \
-    && apt-get -y -qq full-upgrade \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /var/cache/apt/archives/*
 
 USER docker
 

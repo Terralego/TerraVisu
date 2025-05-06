@@ -21,12 +21,14 @@ from project.geosource.tests.helpers import get_file
 
 
 def mocked_decode():
-    raise UnicodeDecodeError("Wrong")
+    msg = "Wrong"
+    raise UnicodeDecodeError(msg)
 
 
 class MockedBytes(PropertyMock):
     def decode(self):
-        raise UnicodeDecodeError("wrong")
+        msg = "wrong"
+        raise UnicodeDecodeError(msg)
 
 
 @patch("elasticsearch.client.IndicesClient.create")
@@ -380,7 +382,8 @@ class SourceExceptionTestCase(TestCase):
         self, mocked_es_delete, mocked_es_create
     ):
         def side_effect(*args, **kwargs):
-            raise SourceException("Error")
+            msg = "Error"
+            raise SourceException(msg)
 
         source = Source.objects.create(name="mocked-source")
         source._refresh_data = Mock(side_effect=side_effect)

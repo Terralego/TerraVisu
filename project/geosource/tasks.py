@@ -46,9 +46,9 @@ def run_model_object_method(self, app, model, pk, method, success_state=states.S
     Model = apps.get_app_config(app).get_model(model)
     try:
         obj = Model.objects.get(pk=pk)
-        logger.info(f"Call method {method} on {obj}")
+        logger.info("Call method %s on %s", method, obj)
         state = {"action": method, **getattr(obj, method)()}
-        logger.info(f"Method {method} on {obj} ended")
+        logger.info("Method %s on %s ended", method, obj)
 
         self.update_state(state=success_state, meta=state)
 
@@ -61,7 +61,7 @@ def run_model_object_method(self, app, model, pk, method, success_state=states.S
         set_failure_state(
             self, method, f"{method} doesn't exist for object {obj}: {e}", obj
         )
-        logger.error(e, exc_info=True)
+        logger.exception(e)
 
     except Exception as e:
         if hasattr(e, "message"):
@@ -69,7 +69,7 @@ def run_model_object_method(self, app, model, pk, method, success_state=states.S
         else:
             message = f"{e}"
         set_failure_state(self, method, message, obj)
-        logger.error(e, exc_info=True)
+        logger.exception(e)
 
     if config.INSTANCE_EMAIL_SOURCE_TYPE != "periodic":
         email_recipients = get_emails_recipients()

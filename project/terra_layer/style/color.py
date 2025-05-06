@@ -48,15 +48,15 @@ def gen_graduated_color_style(geo_layer, data_field, map_field, prop_config):
     if "boundaries" in prop_config:
         boundaries = prop_config["boundaries"]
         if len(boundaries) < 2:
-            raise ValueError('"boundaries" must be at least a list of two values')
+            msg = '"boundaries" must be at least a list of two values'
+            raise ValueError(msg)
     elif "method" in prop_config:
         boundaries = discretize(
             geo_layer, data_field, prop_config["method"], len(colors)
         )
     else:
-        raise ValueError(
-            'With "graduated" analysis, "boundaries" or "method" should be provided'
-        )
+        msg = 'With "graduated" analysis, "boundaries" or "method" should be provided'
+        raise ValueError(msg)
 
     # Use boundaries to make style
     if boundaries is not None:

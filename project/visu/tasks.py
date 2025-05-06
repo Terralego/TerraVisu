@@ -50,7 +50,9 @@ def periodic_source_refresh_report(*args, **kwargs):
 
     email_recipients = get_emails_recipients()
     logger.debug(
-        f"Periodic source refresh report: {impacted_sources.count()} sources(s), send to {email_recipients}"
+        "Periodic source refresh report: %s sources(s), send to %s",
+        impacted_sources.count(),
+        email_recipients,
     )
     if impacted_sources and email_recipients:
         logo_url = f"{config.INSTANCE_EMAIL_MEDIA_BASE_URL}{get_logo_url()}"
