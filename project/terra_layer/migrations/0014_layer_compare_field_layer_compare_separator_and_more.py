@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("geosource", "0015_alter_source_last_refresh"),
         ("terra_layer", "0013_layer_variables_layergroup_by_variable_and_more"),

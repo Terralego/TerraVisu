@@ -57,7 +57,7 @@ test:
 	$(DOCKER_COMPOSE_CMD) ./manage.py test -v 3 --settings=project.settings.tests
 
 deps:
-	$(DOCKER_COMPOSE_CMD) bash -c  bash -c "uv pip compile pyproject.toml -o requirements.txt && cd docs && uv pip compile requirements.in -o requirements.txt && cd .. && uv pip compile pyproject.toml --extra dev -c requirements.txt -o requirements-dev.txt"
+	$(DOCKER_COMPOSE_CMD) bash -c "uv pip compile pyproject.toml -o requirements.txt && cd docs && uv pip compile requirements.in -o requirements.txt && cd .. && uv pip compile pyproject.toml --extra dev -c requirements.txt -o requirements-dev.txt"
 
 django:
 	$(DOCKER_COMPOSE_CMD) ./manage.py $(filter-out $@,$(MAKECMDGOALS))
