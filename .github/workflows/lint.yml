@@ -19,36 +19,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/python-cache-requirements
+      - uses: astral-sh/setup-uv@v6
         with:
-          requirements: dev-requirements.txt
+            version: "latest"
+            python-version: "3.12"
+            enable-cache: true
+            cache-suffix: "ruff"
+            activate-environment: true
+
+      - name: Install dependencies
+        run: |
+          uv pip install -c requirements-dev.txt flake8 isort black
 
       - name: Flake8
         run: |
           flake8 project
 
-  isort:
-    name: iSort check
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/python-cache-requirements
-        with:
-          requirements: dev-requirements.txt
-
       - name: Isort
         run: |
           isort -c project
-
-  black:
-    name: Black check
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/actions/python-cache-requirements
-        with:
-          requirements: dev-requirements.txt
 
       - name: Black
         run: |
