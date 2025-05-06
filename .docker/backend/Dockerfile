@@ -85,7 +85,6 @@ COPY front/build /opt/frontend
 COPY admin/build /opt/frontend/admin
 COPY project /opt/terra-visu/project
 COPY manage.py /opt/terra-visu/manage.py
-COPY Procfile /opt/terra-visu/Procfile
 COPY .docker/backend/update.sh /usr/local/bin/update.sh
 
 RUN DJANGO_SETTINGS_MODULE=project.settings.tests /opt/venv/bin/python manage.py compilemessages
