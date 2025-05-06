@@ -28,7 +28,7 @@ jobs:
           sed -i 's/UID=/UID="$UID"/' .env
           sed -i 's/GID=/GID="$GID"/' .env
           docker compose build web
-          chmod 777 -r ./var
+          chmod +rwx -r ./var
 
       - name: Check migrations
         run: |
