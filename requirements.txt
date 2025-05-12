@@ -178,7 +178,7 @@ pillow==11.2.1
     # via
     #   terravisu (pyproject.toml)
     #   django-colorfield
-prompt-toolkit==3.0.48
+prompt-toolkit==3.0.51
     # via click-repl
 psycopg2==2.9.10
     # via
