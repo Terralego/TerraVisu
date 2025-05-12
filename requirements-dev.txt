@@ -182,7 +182,7 @@ django-polymorphic==3.1.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-django-timezone-field==7.0
+django-timezone-field==7.1
     # via
     #   -c requirements.txt
     #   django-celery-beat
