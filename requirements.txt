@@ -95,7 +95,7 @@ django-clearcache==1.2.1
     # via terravisu (pyproject.toml)
 django-clone==5.3.3
     # via terravisu (pyproject.toml)
-django-colorfield==0.11.0
+django-colorfield==0.14.0
     # via django-admin-interface
 django-constance==4.3.2
     # via terravisu (pyproject.toml)
