@@ -105,7 +105,7 @@ django-crispy-forms==2.4
     # via
     #   terravisu (pyproject.toml)
     #   crispy-bootstrap5
-django-filter==24.3
+django-filter==25.1
     # via
     #   terravisu (pyproject.toml)
     #   djangorestframework-gis
