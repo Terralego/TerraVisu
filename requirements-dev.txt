@@ -9,7 +9,7 @@ asgiref==3.8.1
     #   -c requirements.txt
     #   django
     #   django-cors-headers
-attrs==24.2.0
+attrs==25.3.0
     # via
     #   -c requirements.txt
     #   fiona
