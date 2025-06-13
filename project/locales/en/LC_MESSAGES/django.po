@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-19 17:16+0100\n"
+"POT-Creation-Date: 2025-06-13 14:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -491,6 +491,15 @@ msgstr ""
 msgid "Layer identifier"
 msgstr ""
 
+msgid "Layer"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Feature"
+msgstr ""
+
 msgid "Map"
 msgstr ""
 
@@ -507,6 +516,30 @@ msgid "Separator to generate query params from field values."
 msgstr ""
 
 msgid "Copy"
+msgstr ""
+
+msgid "Report status"
+msgstr ""
+
+msgid "Reports statuses"
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
+msgid "Created at"
+msgstr ""
+
+msgid "Report"
+msgstr ""
+
+msgid "Reports"
+msgstr ""
+
+msgid "Report file"
+msgstr ""
+
+msgid "Report files"
 msgstr ""
 
 msgid "'tiles' should not be filled for mapbox base layers."
