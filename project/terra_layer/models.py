@@ -7,12 +7,14 @@ from autoslug import AutoSlugField
 from django.db import models, transaction
 from django.db.models import TextChoices
 from django.utils.text import slugify
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from django.views.generic.dates import timezone_today
+from geostore.models import Feature
 from mapbox_baselayer.models import MapBaseLayer
 from model_clone import CloneMixin
 from rest_framework.reverse import reverse
 
+from project.accounts.models import User
 from project.geosource.models import Field, Source
 
 from .managers import LayerManager, SceneManager
@@ -457,6 +459,9 @@ class FilterField(models.Model):
     # Whether the field is displayed by default in table
     display = models.BooleanField(default=True)
 
+    # Whether this field should appear in report form
+    report_order = models.IntegerField(blank=True, null=True)
+
     # Config for all non handled things
     settings = models.JSONField(default=dict)
 
@@ -485,3 +490,55 @@ class StyleImage(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ReportStatus(models.Model):
+    label = models.CharField(max_length=255)
+
+    class Meta:
+        verbose_name = _("Report status")
+        verbose_name_plural = _("Reports statuses")
+
+    def __str__(self):
+        return self.label
+
+
+class Report(models.Model):
+    layer = models.ForeignKey(Layer, on_delete=models.CASCADE, related_name="reports")
+    feature = models.ForeignKey(
+        Feature, on_delete=models.CASCADE, related_name="reports"
+    )
+    status = models.ForeignKey(
+        ReportStatus, on_delete=models.PROTECT, related_name="reports"
+    )
+    content = models.JSONField(verbose_name=_("Content"))
+    user = models.ForeignKey(User, on_delete=models.PROTECT, null=True, blank=True)
+    email = models.EmailField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+
+    class Meta:
+        verbose_name = _("Report")
+        verbose_name_plural = _("Reports")
+
+    def __str__(self):
+        return f"{_('Report')} {self.pk}"
+
+    def get_email(self):
+        return self.user.email if self.user else self.email
+
+
+class ReportFile(models.Model):
+    report = models.ForeignKey(
+        Report,
+        on_delete=models.CASCADE,
+        related_name="files",
+    )
+    file = models.FileField(upload_to="report_files/")
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("Report file")
+        verbose_name_plural = _("Report files")
+
+    def __str__(self):
+        return self.file.name

@@ -45,3 +45,37 @@ class SceneAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "slug", "category", "custom_icon", "order")
     list_filter = ("category",)
     search_fields = ("id", "name", "slug")
+
+
+class ReportAdmin(admin.ModelAdmin):
+    list_display = ("created_at", "status", "display_email", "display_layer")
+    readonly_fields = (
+        "display_feature",
+        "created_at",
+        "display_email",
+        "display_layer",
+        "content",
+    )
+    exclude = ("feature", "layer", "email", "user")
+
+    def display_layer(self, obj):
+        return obj.layer.name
+
+    display_layer.short_description = _("Layer")
+
+    def display_email(self, obj):
+        return obj.get_email()
+
+    display_email.short_description = _("Email")
+
+    def display_feature(self, obj):
+        main_field = getattr(obj.layer.main_field, "name", None)
+        if main_field:
+            return obj.feature.properties.get(main_field, None)
+        return None
+
+    display_feature.short_description = _("Feature")
+
+
+class ReportStatusAdmin(admin.ModelAdmin):
+    list_display = ("label",)
