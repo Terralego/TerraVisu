@@ -153,6 +153,7 @@ class LayerDumpTestCase(TestCase):
                     "filter_settings": {},
                     "format_type": "",
                     "label": "Test",
+                    "report_order": None,
                     "order": 0,
                     "shown": False,
                 }
