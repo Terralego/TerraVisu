@@ -459,9 +459,6 @@ class FilterField(models.Model):
     # Whether the field is displayed by default in table
     display = models.BooleanField(default=True)
 
-    # Whether this field should appear in report form
-    report_order = models.IntegerField(blank=True, null=True)
-
     # Config for all non handled things
     settings = models.JSONField(default=dict)
 
@@ -503,7 +500,41 @@ class ReportStatus(models.Model):
         return self.label
 
 
+class ReportConfig(models.Model):
+    label = models.CharField(max_length=255)
+    layer = models.ForeignKey(
+        Layer, on_delete=models.CASCADE, related_name="report_configs"
+    )
+    fields = models.ManyToManyField(
+        Field,
+        through="ReportField",
+        related_name="report_configs",
+        verbose_name=_("Fields"),
+    )
+
+    class Meta:
+        verbose_name = _("Report config")
+        verbose_name_plural = _("Reports configs")
+
+    def __str__(self):
+        return self.label
+
+
+class ReportField(models.Model):
+    config = models.ForeignKey(ReportConfig, on_delete=models.CASCADE)
+    field = models.ForeignKey(Field, on_delete=models.CASCADE, verbose_name=_("Field"))
+    order = models.IntegerField(verbose_name=_("Order"))
+
+    class Meta:
+        verbose_name = _("Report field")
+        verbose_name_plural = _("Reports fields")
+
+    def __str__(self):
+        return f"{_('Report field')} {self.order}"
+
+
 class Report(models.Model):
+    config = models.ForeignKey(ReportConfig, on_delete=models.SET_NULL, null=True)
     layer = models.ForeignKey(Layer, on_delete=models.CASCADE, related_name="reports")
     feature = models.ForeignKey(
         Feature, on_delete=models.CASCADE, related_name="reports"
