@@ -521,8 +521,15 @@ class ReportConfig(models.Model):
 
 
 class ReportField(models.Model):
-    config = models.ForeignKey(ReportConfig, on_delete=models.CASCADE)
-    field = models.ForeignKey(Field, on_delete=models.CASCADE, verbose_name=_("Field"))
+    config = models.ForeignKey(
+        ReportConfig, on_delete=models.CASCADE, related_name="report_fields"
+    )
+    field = models.ForeignKey(
+        Field,
+        on_delete=models.CASCADE,
+        verbose_name=_("Field"),
+        related_name="report_fields",
+    )
     order = models.IntegerField(verbose_name=_("Order"))
 
     class Meta:
@@ -534,8 +541,7 @@ class ReportField(models.Model):
 
 
 class Report(models.Model):
-    config = models.ForeignKey(ReportConfig, on_delete=models.SET_NULL, null=True)
-    layer = models.ForeignKey(Layer, on_delete=models.CASCADE, related_name="reports")
+    config = models.ForeignKey(ReportConfig, on_delete=models.PROTECT, null=True)
     feature = models.ForeignKey(
         Feature, on_delete=models.CASCADE, related_name="reports"
     )

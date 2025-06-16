@@ -22,7 +22,14 @@ from rest_framework.viewsets import ModelViewSet
 from project.geosource.models import FieldTypes, WMTSSource
 
 from ..filters import LayerFilterSet, SceneFilterSet
-from ..models import CustomStyle, FilterField, Layer, LayerGroup, Scene, StyleImage
+from ..models import (
+    CustomStyle,
+    FilterField,
+    Layer,
+    LayerGroup,
+    Scene,
+    StyleImage,
+)
 from ..permissions import LayerPermission, ScenePermission
 from ..serializers import (
     LayerDetailSerializer,
@@ -146,6 +153,7 @@ class SceneTreeAPIView(APIView):
         "layers",
         (
             Layer.objects.select_related("source").prefetch_related(
+                "report_configs",
                 Prefetch(
                     "fields_filters",
                     FilterField.objects.filter(shown=True).select_related("field"),
@@ -537,6 +545,7 @@ class SceneTreeAPIView(APIView):
                 "form": self.get_filter_forms_for_layer(layer),
             },
             "source_credit": layer.source.credit,
+            "report_configs": self.get_report_configs_for_layer(layer),
         }
 
         # Set the exportable status of the layer if any filter fields is exportable
@@ -577,6 +586,20 @@ class SceneTreeAPIView(APIView):
             # Respect filter defined order
             filter_list.sort(key=lambda f: f.get("order", 0))
             return filter_list
+
+    def get_report_configs_for_layer(self, layer):
+        report_configs = []
+        for report_config in layer.report_configs.all():
+            config = {"label": report_config.label, "fields": []}
+            for report_field in report_config.fields.all():
+                config["fields"].append(
+                    {
+                        "order": report_field.order,
+                        "sourceFieldId": report_field.pk,
+                    }
+                )
+            report_configs.append(config)
+        return report_configs
 
     @cached_property
     def authorized_sources(self):
