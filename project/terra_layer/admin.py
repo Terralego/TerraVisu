@@ -124,3 +124,8 @@ class ReportFieldAdmin(admin.ModelAdmin):
         return obj.field.label
 
     display_field.short_description = _("Field")
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset = queryset.order_by("config", "order")
+        return queryset
