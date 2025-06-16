@@ -4,7 +4,15 @@ from geostore.models import Feature
 from geostore.models import Layer as GeostoreLayer
 from model_clone import CloneModelAdmin
 
-from project.terra_layer.models import Layer, Scene, StyleImage
+from project.terra_layer.models import (
+    Layer,
+    Report,
+    ReportConfig,
+    ReportField,
+    ReportStatus,
+    Scene,
+    StyleImage,
+)
 
 
 class StyleImageInline(admin.TabularInline):
@@ -47,6 +55,12 @@ class SceneAdmin(admin.ModelAdmin):
     search_fields = ("id", "name", "slug")
 
 
+@admin.register(ReportStatus)
+class ReportStatusAdmin(admin.ModelAdmin):
+    list_display = ("label",)
+
+
+@admin.register(Report)
 class ReportAdmin(admin.ModelAdmin):
     list_display = ("created_at", "status", "display_email", "display_layer")
     readonly_fields = (
@@ -77,5 +91,36 @@ class ReportAdmin(admin.ModelAdmin):
     display_feature.short_description = _("Feature")
 
 
-class ReportStatusAdmin(admin.ModelAdmin):
-    list_display = ("label",)
+@admin.register(ReportConfig)
+class ReportConfigAdmin(admin.ModelAdmin):
+    list_display = (
+        "label",
+        "display_layer",
+    )
+    readonly_fields = ("fields",)
+
+    def display_layer(self, obj):
+        return obj.layer.name
+
+    display_layer.short_description = _("Layer")
+
+
+@admin.register(ReportField)
+class ReportFieldAdmin(admin.ModelAdmin):
+    list_display = (
+        "display_field",
+        "config",
+        "order",
+        "display_layer",
+    )
+    list_filter = ("config",)
+
+    def display_layer(self, obj):
+        return obj.config.layer.name
+
+    display_layer.short_description = _("Layer")
+
+    def display_field(self, obj):
+        return obj.field.label
+
+    display_field.short_description = _("Field")
