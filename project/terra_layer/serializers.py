@@ -10,7 +10,15 @@ from rest_framework.fields import SerializerMethodField
 from rest_framework.reverse import reverse
 from rest_framework.serializers import ModelSerializer, PrimaryKeyRelatedField
 
-from .models import CustomStyle, FilterField, Layer, Scene, StyleImage
+from .models import (
+    CustomStyle,
+    FilterField,
+    Layer,
+    ReportConfig,
+    ReportField,
+    Scene,
+    StyleImage,
+)
 
 
 class SceneListSerializer(ModelSerializer):
@@ -80,6 +88,22 @@ class StyleImageSerializer(ModelSerializer):
         read_only_fields = ("slug", "file")
 
 
+class ReportFieldSerializer(ModelSerializer):
+    sourceFieldId = PrimaryKeyRelatedField(source="field", read_only=True)
+
+    class Meta:
+        model = ReportField
+        fields = ("order", "sourceFieldId")
+
+
+class ReportConfigSerializer(ModelSerializer):
+    fields = ReportFieldSerializer(many=True, source="report_fields")
+
+    class Meta:
+        model = ReportConfig
+        fields = ("label", "fields")
+
+
 class LayerListSerializer(ModelSerializer):
     class Meta:
         model = Layer
@@ -97,14 +121,12 @@ class LayerDetailSerializer(ModelSerializer):
     extra_styles = CustomStyleSerializer(many=True, read_only=True)
     group = PrimaryKeyRelatedField(read_only=True)
     style_images = StyleImageSerializer(many=True, read_only=False, required=False)
+    report_configs = ReportConfigSerializer(many=True, read_only=False, required=False)
 
     @transaction.atomic
     def create(self, validated_data):
-        style_images = (
-            validated_data.pop("style_images", [])
-            if validated_data.get("style_images")
-            else []
-        )
+        style_images = validated_data.pop("style_images", [])
+        report_configs = validated_data.pop("report_configs", [])
         instance = super().create(validated_data)
         for image_data in style_images:
             StyleImage.objects.create(layer=instance, **image_data)
@@ -112,6 +134,8 @@ class LayerDetailSerializer(ModelSerializer):
         # Update m2m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
         self._update_nested(instance, "extra_styles", CustomStyleSerializer)
+        for report_config in report_configs:
+            self._update_nested(instance, "report_configs", ReportConfigSerializer)
         instance.save()
 
         return instance
@@ -125,6 +149,7 @@ class LayerDetailSerializer(ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         style_images = validated_data.pop("style_images", [])
+        report_configs = validated_data.pop("report_configs", [])
         instance = super().update(instance, validated_data)
 
         # Delete first
@@ -144,6 +169,8 @@ class LayerDetailSerializer(ModelSerializer):
         # Update m1m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
         self._update_nested(instance, "extra_styles", CustomStyleSerializer)
+        for report_config in report_configs:
+            self._update_nested(instance, "report_configs", ReportConfigSerializer)
 
         instance.save()
 
