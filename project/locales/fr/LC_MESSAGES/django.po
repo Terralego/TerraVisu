@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-25 12:51+0100\n"
+"POT-Creation-Date: 2025-06-16 12:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -569,6 +569,18 @@ msgstr ""
 msgid "Layer identifier"
 msgstr "Identifiant de la couche"
 
+msgid "Layer"
+msgstr "Couche"
+
+msgid "Email"
+msgstr "Courriel"
+
+msgid "Feature"
+msgstr "Objet"
+
+msgid "Field"
+msgstr "Champ"
+
 msgid "Map"
 msgstr "Carte"
 
@@ -577,6 +589,48 @@ msgstr "Histoire"
 
 msgid "Copy"
 msgstr "Copie"
+
+msgid "Report status"
+msgstr "Statut du signalement"
+
+msgid "Reports statuses"
+msgstr "Statuts des signalements"
+
+msgid "Fields"
+msgstr ""
+
+msgid "Report config"
+msgstr "Configuration de signalement"
+
+msgid "Reports configs"
+msgstr "Configurations des signalements"
+
+msgid "Order"
+msgstr "Ordre"
+
+msgid "Report field"
+msgstr "Champ de signalement"
+
+msgid "Reports fields"
+msgstr "Champs des signalements"
+
+msgid "Content"
+msgstr "Contenu"
+
+msgid "Created at"
+msgstr "Créé le"
+
+msgid "Report"
+msgstr "Signalement"
+
+msgid "Reports"
+msgstr "Signalements"
+
+msgid "Report file"
+msgstr "Pièce jointe à un signalement"
+
+msgid "Report files"
+msgstr "Pièces jointes aux signalements"
 
 msgid "'tiles' should not be filled for mapbox base layers."
 msgstr "'tiles' ne doit pas être saisi pour les fonds de plan mapbox."
