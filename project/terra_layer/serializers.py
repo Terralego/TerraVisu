@@ -8,8 +8,8 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from rest_framework.reverse import reverse
+from project.geosource.models import Field
 
-from ..geosource.models import Field
 from .models import (
     CustomStyle,
     FilterField,
@@ -89,19 +89,20 @@ class StyleImageSerializer(serializers.ModelSerializer):
 
 
 class ReportFieldSerializer(serializers.ModelSerializer):
-    sourceFieldId = serializers.PrimaryKeyRelatedField(source="field", read_only=True)
+    sourceFieldId = serializers.PrimaryKeyRelatedField(source="field", queryset=Field.objects.all())
 
     class Meta:
         model = ReportField
-        fields = ("order", "sourceFieldId")
+        fields = ("id", "order", "sourceFieldId")
 
 
 class ReportConfigSerializer(serializers.ModelSerializer):
-    fields = ReportFieldSerializer(many=True, source="report_fields")
+    id = serializers.IntegerField(required=False, allow_null=True)
+    report_fields = ReportFieldSerializer(many=True)
 
     class Meta:
         model = ReportConfig
-        fields = ("label", "fields")
+        fields = ("id", "label", "report_fields")
 
 
 class LayerListSerializer(serializers.ModelSerializer):
@@ -158,8 +159,9 @@ class LayerDetailSerializer(serializers.ModelSerializer):
         # Update m2m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
         self._update_nested(instance, "extra_styles", CustomStyleSerializer)
-        for report_config in report_configs:
-            self._update_nested(instance, "report_configs", ReportConfigSerializer)
+        # Handle nested ReportConfig(s)
+        self._create_or_update_report_configs(instance, report_configs)
+
         instance.save()
 
         return instance
@@ -193,8 +195,8 @@ class LayerDetailSerializer(serializers.ModelSerializer):
         # Update m1m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
         self._update_nested(instance, "extra_styles", CustomStyleSerializer)
-        for report_config in report_configs:
-            self._update_nested(instance, "report_configs", ReportConfigSerializer)
+        # Handle nested ReportConfig(s)
+        self._create_or_update_report_configs(instance, report_configs)
 
         instance.save()
 
@@ -202,7 +204,6 @@ class LayerDetailSerializer(serializers.ModelSerializer):
 
     def _update_nested(self, instance, field, serializer):
         getattr(instance, field).all().delete()
-
         for value in self.initial_data.get(field, []):
             obj = serializer(data=value)
             if obj.is_valid(raise_exception=True):
@@ -217,6 +218,38 @@ class LayerDetailSerializer(serializers.ModelSerializer):
             obj = serializer(data=value)
             if obj.is_valid(raise_exception=True):
                 obj.save(layer=instance)
+
+    def update_report_fields(self, report_config, report_fields):
+        report_config.report_fields.all().delete()
+        for report_field_data in report_fields:
+            ReportField.objects.create(
+                field=report_field_data["field"],
+                order=report_field_data["order"],
+                config=report_config,
+            )
+
+    def _create_or_update_report_configs(self, instance, report_configs):
+        for report_config_data in report_configs:
+            config_pk = report_config_data.pop("id", None)
+            # For update
+            if (
+                config_pk
+                and ReportConfig.objects.filter(pk=config_pk, layer=instance).exists()
+            ):
+                existing_config = ReportConfig.objects.get(pk=config_pk, layer=instance)
+                existing_config.label=report_config_data["label"]
+                existing_config.save()
+                self.update_report_fields(
+                    existing_config, report_config_data["report_fields"]
+                )
+            # For create
+            else:
+                new_report_config = ReportConfig.objects.create(
+                    label=report_config_data["label"], layer=instance
+                )
+                self.update_report_fields(
+                    new_report_config, report_config_data["report_fields"]
+                )
 
     class Meta:
         model = Layer

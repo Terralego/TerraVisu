@@ -20,6 +20,8 @@ from project.terra_layer.models import (
     FilterField,
     Layer,
     LayerGroup,
+    ReportConfig,
+    ReportField,
     Scene,
     StyleImage,
 )
@@ -896,3 +898,56 @@ class LayerViewSetAPITestCase(APITestCase):
         # StyleImage should be changed
         self.assertEqual(StyleImage.objects.count(), 1)
         self.assertIn("Test2", response.json().get("style_images")[0].get("name"))
+
+    def test_create_and_update_report_config(self):
+        """On update on layer viewset, new report configs should be created"""
+        field1 = self.layer.source.fields.create(
+            name="_test_field1", label="test_label1", data_type=FieldTypes.String.value
+        )
+        field2 = self.layer.source.fields.create(
+            name="_test_field2", label="test_label2", data_type=FieldTypes.String.value
+        )
+        response = self.client.patch(
+            reverse("layer-detail", args=[self.layer.pk]),
+            {
+                "report_configs": [
+                    {
+                        "label": "Test report config",
+                        "report_fields": [
+                            {"order": 1, "sourceFieldId": field1.pk},
+                            {"order": 2, "sourceFieldId": field2.pk},
+                        ],
+                    }
+                ],
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
+        self.assertEqual(ReportConfig.objects.count(), 1)
+        self.assertEqual(ReportField.objects.count(), 2)
+        self.assertIn(
+            "Test report config", response.json().get("report_configs")[0].get("label")
+        )
+
+        config_id = ReportConfig.objects.first().pk
+        field_id = ReportField.objects.last().pk
+        # Update : second field became only field
+        response = self.client.patch(
+            reverse("layer-detail", args=[self.layer.pk]),
+            {
+                "report_configs": [
+                    {
+                        "id": config_id,
+                        "label": "Test report config 2",
+                        "report_fields": [
+                            {"id": field_id, "order": 1, "sourceFieldId": field2.pk}
+                        ],
+                    }
+                ],
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
+        self.assertEqual(ReportConfig.objects.count(), 1)
+        self.assertEqual(ReportField.objects.count(), 1)
+        self.assertIn(
+            "Test report config 2", response.json().get("report_configs")[0].get("label")
+        )
