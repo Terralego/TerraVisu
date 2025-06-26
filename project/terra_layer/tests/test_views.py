@@ -674,6 +674,12 @@ class SceneTreeAPITestCase(APITestCase):
         # relationship is between geolayer and group, not "terralayer"
         geo_layer = source.get_layer()
         group.authorized_layers.add(geo_layer)
+        field = layer.source.fields.create(
+            name="_test_field1", label="test_label1", data_type=FieldTypes.String.value
+        )
+        report_config = ReportConfig.objects.create(label="Report config", layer=layer)
+        ReportField.objects.create(config=report_config, field=field, order=1)
+        ReportField.objects.create(config=report_config, field=field, order=2)
 
         self.client.force_authenticate(self.user)
         with self.assertNumQueries(44):
@@ -693,7 +699,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer = Layer.objects.create(
             name="public_layer", source=source, group=self.layer_group
         )
-        with self.assertNumQueries(46):
+        with self.assertNumQueries(45):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
         with self.assertNumQueries(9):
@@ -702,7 +708,7 @@ class SceneTreeAPITestCase(APITestCase):
         # updating layer to trigger cache reset
         layer.name = "new_name"
         layer.save()
-        with self.assertNumQueries(38):
+        with self.assertNumQueries(37):
             # still differences in original query number because callbacks auto create geostore layers and groups
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
@@ -949,5 +955,6 @@ class LayerViewSetAPITestCase(APITestCase):
         self.assertEqual(ReportConfig.objects.count(), 1)
         self.assertEqual(ReportField.objects.count(), 1)
         self.assertIn(
-            "Test report config 2", response.json().get("report_configs")[0].get("label")
+            "Test report config 2",
+            response.json().get("report_configs")[0].get("label"),
         )

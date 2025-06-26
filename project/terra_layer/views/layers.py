@@ -153,7 +153,6 @@ class SceneTreeAPIView(APIView):
         "layers",
         (
             Layer.objects.select_related("source").prefetch_related(
-                "report_configs",
                 Prefetch(
                     "fields_filters",
                     FilterField.objects.filter(shown=True).select_related("field"),

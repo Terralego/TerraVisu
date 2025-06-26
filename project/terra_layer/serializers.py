@@ -237,7 +237,7 @@ class LayerDetailSerializer(serializers.ModelSerializer):
                 and ReportConfig.objects.filter(pk=config_pk, layer=instance).exists()
             ):
                 existing_config = ReportConfig.objects.get(pk=config_pk, layer=instance)
-                existing_config.label=report_config_data["label"]
+                existing_config.label = report_config_data["label"]
                 existing_config.save()
                 self.update_report_fields(
                     existing_config, report_config_data["report_fields"]

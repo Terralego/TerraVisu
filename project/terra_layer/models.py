@@ -549,8 +549,7 @@ class Report(models.Model):
         ReportStatus, on_delete=models.PROTECT, related_name="reports"
     )
     content = models.JSONField(verbose_name=_("Content"))
-    user = models.ForeignKey(User, on_delete=models.PROTECT, null=True, blank=True)
-    email = models.EmailField(blank=True)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
 
     class Meta:
@@ -560,22 +559,17 @@ class Report(models.Model):
     def __str__(self):
         return f"{_('Report')} {self.pk}"
 
-    def get_email(self):
-        return self.user.email if self.user else self.email
 
-
-class ReportFile(models.Model):
-    report = models.ForeignKey(
-        Report,
-        on_delete=models.CASCADE,
-        related_name="files",
-    )
-    file = models.FileField(upload_to="report_files/")
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = _("Report file")
-        verbose_name_plural = _("Report files")
-
-    def __str__(self):
-        return self.file.name
+# Todo for when adding Report form
+# class ReportFile(models.Model):
+#     report = models.ForeignKey(
+#         Report,
+#         on_delete=models.CASCADE,
+#         related_name="files",
+#     )
+#     file = models.FileField(upload_to="report_files/")
+#     uploaded_at = models.DateTimeField(auto_now_add=True)
+#
+#     class Meta:
+#         verbose_name = _("Report file")
+#         verbose_name_plural = _("Report files")

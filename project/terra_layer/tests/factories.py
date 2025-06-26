@@ -1,7 +1,19 @@
 import factory
+from django.contrib.gis.geos import Point
+from geostore.models import Feature
+
+from project.accounts.tests.factories import UserFactory
 
 from ...geosource.tests.factories import PostGISSourceFactory
-from ..models import Layer, LayerGroup, Scene, StyleImage
+from ..models import (
+    Layer,
+    LayerGroup,
+    Report,
+    ReportConfig,
+    ReportStatus,
+    Scene,
+    StyleImage,
+)
 
 
 class SceneFactory(factory.django.DjangoModelFactory):
@@ -27,6 +39,23 @@ class LayerFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Layer
 
+    @factory.post_generation
+    def _set_layer_identifier(obj, create, extracted, **kwargs):
+        # Set a mock layer_identifier directly on the instance
+        obj.layer_identifier = f"test-layer-{obj.pk}"
+
+
+class FeatureFactory(factory.django.DjangoModelFactory):
+    geom = factory.LazyFunction(lambda: Point(0, 0))
+    identifier = factory.LazyFunction(lambda: str(factory.Faker("uuid4")))
+    properties = factory.Dict(
+        {"name": factory.Faker("word"), "description": factory.Faker("sentence")}
+    )
+    layer = factory.SubFactory("geostore.tests.factories.LayerFactory")
+
+    class Meta:
+        model = Feature
+
 
 class StyleImageFactory(factory.django.DjangoModelFactory):
     name = factory.Faker("name")
@@ -34,3 +63,34 @@ class StyleImageFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = StyleImage
+
+
+class ReportConfigFactory(factory.django.DjangoModelFactory):
+    label = factory.Sequence(lambda n: f"Config {n}")
+    layer = factory.SubFactory(LayerFactory)
+
+    class Meta:
+        model = ReportConfig
+
+
+class ReportStatusFactory(factory.django.DjangoModelFactory):
+    label = factory.Faker("name")
+
+    class Meta:
+        model = ReportStatus
+
+
+class ReportFactory(factory.django.DjangoModelFactory):
+    config = factory.SubFactory(ReportConfigFactory)
+    feature = factory.SubFactory(FeatureFactory)
+    status = factory.SubFactory(ReportStatusFactory)
+    content = factory.Dict(
+        {
+            "field1": factory.Faker("text", max_nb_chars=100),
+            "field2": factory.Faker("text", max_nb_chars=100),
+        }
+    )
+    user = factory.SubFactory(UserFactory)
+
+    class Meta:
+        model = Report
