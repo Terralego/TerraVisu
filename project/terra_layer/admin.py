@@ -84,7 +84,7 @@ class ReportAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        queryset.select_related('status', 'config', 'config__layer', 'user')
+        queryset.select_related("status", "config", "config__layer", "user")
         return queryset
 
     # Todo
@@ -112,8 +112,9 @@ class ReportConfigAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        queryset.select_related('layer')
+        queryset.select_related("layer")
         return queryset
+
 
 @admin.register(ReportField)
 class ReportFieldAdmin(admin.ModelAdmin):
@@ -137,5 +138,7 @@ class ReportFieldAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        queryset = queryset.select_related('config', 'config__layer', 'field').order_by("config", "order")
+        queryset = queryset.select_related("config", "config__layer", "field").order_by(
+            "config", "order"
+        )
         return queryset
