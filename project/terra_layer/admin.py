@@ -82,6 +82,11 @@ class ReportAdmin(admin.ModelAdmin):
 
     display_email.short_description = _("Email")
 
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset.select_related('status', 'config', 'config__layer', 'user')
+        return queryset
+
     # Todo
     # def display_feature(self, obj):
     #     main_field = getattr(obj.layer.main_field, "name", None)
@@ -105,6 +110,10 @@ class ReportConfigAdmin(admin.ModelAdmin):
 
     display_layer.short_description = _("Layer")
 
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset.select_related('layer')
+        return queryset
 
 @admin.register(ReportField)
 class ReportFieldAdmin(admin.ModelAdmin):
@@ -128,5 +137,5 @@ class ReportFieldAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        queryset = queryset.order_by("config", "order")
+        queryset = queryset.select_related('config', 'config__layer', 'field').order_by("config", "order")
         return queryset
