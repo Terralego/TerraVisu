@@ -4,11 +4,9 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('terra_layer', '0014_layer_compare_field_layer_compare_separator_and_more'),
-        ('terra_layer', '0015_alter_filterfield_format_type'),
+        ("terra_layer", "0014_layer_compare_field_layer_compare_separator_and_more"),
+        ("terra_layer", "0015_alter_filterfield_format_type"),
     ]
 
-    operations = [
-    ]
+    operations = []
