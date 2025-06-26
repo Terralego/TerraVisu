@@ -559,8 +559,7 @@ class Report(models.Model):
     def __str__(self):
         return f"{_('Report')} {self.pk}"
 
-
-# Todo for when adding Report form
+#  Todo when adding Report form
 # class ReportFile(models.Model):
 #     report = models.ForeignKey(
 #         Report,

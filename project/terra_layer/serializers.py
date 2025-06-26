@@ -204,6 +204,7 @@ class LayerDetailSerializer(serializers.ModelSerializer):
 
     def _update_nested(self, instance, field, serializer):
         getattr(instance, field).all().delete()
+
         for value in self.initial_data.get(field, []):
             obj = serializer(data=value)
             if obj.is_valid(raise_exception=True):
