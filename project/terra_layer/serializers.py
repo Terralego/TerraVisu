@@ -8,6 +8,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from rest_framework.reverse import reverse
+
 from project.geosource.models import Field
 
 from .models import (
@@ -89,7 +90,9 @@ class StyleImageSerializer(serializers.ModelSerializer):
 
 
 class ReportFieldSerializer(serializers.ModelSerializer):
-    sourceFieldId = serializers.PrimaryKeyRelatedField(source="field", queryset=Field.objects.all())
+    sourceFieldId = serializers.PrimaryKeyRelatedField(
+        source="field", queryset=Field.objects.all()
+    )
 
     class Meta:
         model = ReportField
