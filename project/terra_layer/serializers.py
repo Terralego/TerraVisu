@@ -9,8 +9,17 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from rest_framework.reverse import reverse
 
-from ..geosource.models import Field
-from .models import CustomStyle, FilterField, Layer, Scene, StyleImage
+from project.geosource.models import Field
+
+from .models import (
+    CustomStyle,
+    FilterField,
+    Layer,
+    ReportConfig,
+    ReportField,
+    Scene,
+    StyleImage,
+)
 
 
 class SceneListSerializer(serializers.ModelSerializer):
@@ -80,6 +89,25 @@ class StyleImageSerializer(serializers.ModelSerializer):
         read_only_fields = ("slug", "file")
 
 
+class ReportFieldSerializer(serializers.ModelSerializer):
+    sourceFieldId = serializers.PrimaryKeyRelatedField(
+        source="field", queryset=Field.objects.all()
+    )
+
+    class Meta:
+        model = ReportField
+        fields = ("id", "order", "sourceFieldId")
+
+
+class ReportConfigSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False, allow_null=True)
+    report_fields = ReportFieldSerializer(many=True)
+
+    class Meta:
+        model = ReportConfig
+        fields = ("id", "label", "report_fields")
+
+
 class LayerListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Layer
@@ -109,6 +137,7 @@ class LayerDetailSerializer(serializers.ModelSerializer):
     extra_styles = CustomStyleSerializer(many=True, read_only=True)
     group = serializers.PrimaryKeyRelatedField(read_only=True)
     style_images = StyleImageSerializer(many=True, read_only=False, required=False)
+    report_configs = ReportConfigSerializer(many=True, read_only=False, required=False)
     comparaison = LayerComparaison(required=False)
 
     @property
@@ -124,11 +153,8 @@ class LayerDetailSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        style_images = (
-            validated_data.pop("style_images", [])
-            if validated_data.get("style_images")
-            else []
-        )
+        style_images = validated_data.pop("style_images", [])
+        report_configs = validated_data.pop("report_configs", [])
         instance = super().create(validated_data)
         for image_data in style_images:
             StyleImage.objects.create(layer=instance, **image_data)
@@ -136,6 +162,9 @@ class LayerDetailSerializer(serializers.ModelSerializer):
         # Update m2m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
         self._update_nested(instance, "extra_styles", CustomStyleSerializer)
+        # Handle nested ReportConfig(s)
+        self._create_or_update_report_configs(instance, report_configs)
+
         instance.save()
 
         return instance
@@ -149,6 +178,7 @@ class LayerDetailSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         style_images = validated_data.pop("style_images", [])
+        report_configs = validated_data.pop("report_configs", [])
         instance = super().update(instance, validated_data)
 
         # Delete first
@@ -168,6 +198,8 @@ class LayerDetailSerializer(serializers.ModelSerializer):
         # Update m1m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
         self._update_nested(instance, "extra_styles", CustomStyleSerializer)
+        # Handle nested ReportConfig(s)
+        self._create_or_update_report_configs(instance, report_configs)
 
         instance.save()
 
@@ -190,6 +222,38 @@ class LayerDetailSerializer(serializers.ModelSerializer):
             obj = serializer(data=value)
             if obj.is_valid(raise_exception=True):
                 obj.save(layer=instance)
+
+    def update_report_fields(self, report_config, report_fields):
+        report_config.report_fields.all().delete()
+        for report_field_data in report_fields:
+            ReportField.objects.create(
+                field=report_field_data["field"],
+                order=report_field_data["order"],
+                config=report_config,
+            )
+
+    def _create_or_update_report_configs(self, instance, report_configs):
+        for report_config_data in report_configs:
+            config_pk = report_config_data.pop("id", None)
+            # For update
+            if (
+                config_pk
+                and ReportConfig.objects.filter(pk=config_pk, layer=instance).exists()
+            ):
+                existing_config = ReportConfig.objects.get(pk=config_pk, layer=instance)
+                existing_config.label = report_config_data["label"]
+                existing_config.save()
+                self.update_report_fields(
+                    existing_config, report_config_data["report_fields"]
+                )
+            # For create
+            else:
+                new_report_config = ReportConfig.objects.create(
+                    label=report_config_data["label"], layer=instance
+                )
+                self.update_report_fields(
+                    new_report_config, report_config_data["report_fields"]
+                )
 
     class Meta:
         model = Layer
