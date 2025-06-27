@@ -144,7 +144,7 @@ django-clone==5.3.3
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-django-colorfield==0.11.0
+django-colorfield==0.14.0
     # via
     #   -c requirements.txt
     #   django-admin-interface
