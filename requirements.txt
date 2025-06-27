@@ -81,7 +81,7 @@ django==4.2.23
     #   drf-extra-fields
     #   drf-jwt
     #   drf-spectacular
-django-admin-interface==0.30.0
+django-admin-interface==0.30.1
     # via terravisu (pyproject.toml)
 django-auth-oidc @ git+https://github.com/Terralego/django-auth-oidc.git@b4d5724c41dd4158b1703da11036264a26319a01
     # via terravisu (pyproject.toml)
