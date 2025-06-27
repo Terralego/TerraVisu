@@ -128,7 +128,7 @@ django-autoslug==1.9.9
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-django-celery-beat==2.8.0
+django-celery-beat==2.8.1
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)

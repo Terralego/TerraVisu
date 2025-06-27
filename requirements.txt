@@ -87,7 +87,7 @@ django-auth-oidc @ git+https://github.com/Terralego/django-auth-oidc.git@b4d5724
     # via terravisu (pyproject.toml)
 django-autoslug==1.9.9
     # via terravisu (pyproject.toml)
-django-celery-beat==2.8.0
+django-celery-beat==2.8.1
     # via terravisu (pyproject.toml)
 django-celery-results==2.6.0
     # via terravisu (pyproject.toml)
