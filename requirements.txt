@@ -212,7 +212,7 @@ python-slugify==8.0.4
     # via django-admin-interface
 pyyaml==6.0.2
     # via drf-spectacular
-redis==5.2.1
+redis==6.2.0
     # via terravisu (pyproject.toml)
 referencing==0.36.2
     # via
