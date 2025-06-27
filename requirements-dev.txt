@@ -266,7 +266,7 @@ jsonschema==4.23.0
     #   -c requirements.txt
     #   django-geostore
     #   drf-spectacular
-jsonschema-specifications==2024.10.1
+jsonschema-specifications==2025.4.1
     # via
     #   -c requirements.txt
     #   jsonschema
