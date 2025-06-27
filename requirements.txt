@@ -128,7 +128,7 @@ djangorestframework==3.15.2
     #   drf-extra-fields
     #   drf-jwt
     #   drf-spectacular
-djangorestframework-gis==1.1
+djangorestframework-gis==1.2.0
     # via django-geostore
 drf-extra-fields==3.7.0
     # via terravisu (pyproject.toml)
