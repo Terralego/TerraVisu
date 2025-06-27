@@ -115,7 +115,7 @@ django-mapbox-baselayer==1.0.0
     # via terravisu (pyproject.toml)
 django-polymorphic==3.1.0
     # via terravisu (pyproject.toml)
-django-timezone-field==7.0
+django-timezone-field==7.1
     # via django-celery-beat
 django-tinymce==4.1.0
     # via terravisu (pyproject.toml)
@@ -160,7 +160,7 @@ jsonschema==4.23.0
     # via
     #   django-geostore
     #   drf-spectacular
-jsonschema-specifications==2024.10.1
+jsonschema-specifications==2025.4.1
     # via jsonschema
 kombu==5.5.3
     # via celery
