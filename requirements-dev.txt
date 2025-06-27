@@ -368,7 +368,7 @@ referencing==0.36.2
     #   -c requirements.txt
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.3
+requests==2.32.4
     # via
     #   -c requirements.txt
     #   django-geostore
