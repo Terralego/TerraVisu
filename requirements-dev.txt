@@ -418,7 +418,7 @@ tzdata==2025.2
     #   -c requirements.txt
     #   django-celery-beat
     #   kombu
-uritemplate==4.1.1
+uritemplate==4.2.0
     # via
     #   -c requirements.txt
     #   drf-spectacular
