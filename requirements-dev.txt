@@ -363,7 +363,7 @@ redis==5.2.1
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-referencing==0.35.1
+referencing==0.36.2
     # via
     #   -c requirements.txt
     #   jsonschema
