@@ -13,7 +13,7 @@ attrs==25.3.0
     #   referencing
 billiard==4.2.1
     # via celery
-celery==5.5.2
+celery==5.5.3
     # via
     #   terravisu (pyproject.toml)
     #   django-celery-beat
