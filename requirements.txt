@@ -51,7 +51,7 @@ cligj==0.7.2
     # via fiona
 conditional==2.0
     # via django-clone
-crispy-bootstrap5==2025.4
+crispy-bootstrap5==2025.6
     # via terravisu (pyproject.toml)
 cron-descriptor==1.4.5
     # via django-celery-beat
@@ -156,7 +156,7 @@ idna==3.10
     # via requests
 inflection==0.5.1
     # via drf-spectacular
-jsonschema==4.23.0
+jsonschema==4.24.0
     # via
     #   django-geostore
     #   drf-spectacular
