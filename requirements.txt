@@ -93,7 +93,7 @@ django-celery-results==2.6.0
     # via terravisu (pyproject.toml)
 django-clearcache==1.2.1
     # via terravisu (pyproject.toml)
-django-clone==5.3.3
+django-clone==5.5.0
     # via terravisu (pyproject.toml)
 django-colorfield==0.14.0
     # via django-admin-interface
