@@ -232,7 +232,7 @@ elasticsearch==8.17.2
     #   terravisu (pyproject.toml)
 factory-boy==3.3.3
     # via terravisu (pyproject.toml)
-faker==25.8.0
+faker==37.4.0
     # via factory-boy
 filetype==1.2.0
     # via
