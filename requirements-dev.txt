@@ -270,7 +270,7 @@ jsonschema-specifications==2025.4.1
     # via
     #   -c requirements.txt
     #   jsonschema
-kombu==5.5.3
+kombu==5.5.4
     # via
     #   -c requirements.txt
     #   celery

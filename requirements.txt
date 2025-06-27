@@ -162,7 +162,7 @@ jsonschema==4.24.0
     #   drf-spectacular
 jsonschema-specifications==2025.4.1
     # via jsonschema
-kombu==5.5.3
+kombu==5.5.4
     # via celery
 lml==0.2.0
     # via
