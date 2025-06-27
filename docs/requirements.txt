@@ -103,7 +103,7 @@ typing-extensions==4.12.2
     #   pydantic-core
     #   pydantic-extra-types
     #   sphinx-immaterial
-urllib3==2.2.3
+urllib3==2.5.0
     # via
     #   -c ../requirements.txt
     #   requests
