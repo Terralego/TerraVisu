@@ -298,8 +298,9 @@ CONSTANCE_CONFIG = {
     "INSTANCE_LOGO": ("/static_dj/img/logo.webp", _("Logo"), "image_field"),
     "INSTANCE_LOGO_FRONTEND_URL": ("/", _("Logo frontend URL"), str),
     "INSTANCE_FAVICON": ("/static_dj/img/favicon.ico", _("Favicon"), "image_field"),
+    "INSTANCE_SPLASHSCREEN_ENABLED": (False, _("Splashscreen enabled"), bool),
     "INSTANCE_SPLASHSCREEN": (
-        "/static_dj/img/splashscreen.png",
+        "/static_dj/img/logo.webp",
         _("Splashscreen"),
         "image_field",
     ),
@@ -418,6 +419,7 @@ CONSTANCE_CONFIG_FIELDSETS = (
                 "INSTANCE_LOGO",
                 "INSTANCE_LOGO_FRONTEND_URL",
                 "INSTANCE_FAVICON",
+                "INSTANCE_SPLASHSCREEN_ENABLED",
                 "INSTANCE_SPLASHSCREEN",
                 "INSTANCE_CREDITS",
                 "INSTANCE_INFO_CONTENT",

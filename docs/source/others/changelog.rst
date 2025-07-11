@@ -2,8 +2,13 @@
 Changelog
 ==========
 
-2024.06.0+dev  (XXXX-XX-XX)
----------------------------
+2025.07.00.pre1 (2025-07-11)
+----------------------------
+
+**New features**
+
+- Show application screen splash
+- Configure layers to compare features in external tool
 
 **Improvements:**
 

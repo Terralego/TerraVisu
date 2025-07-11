@@ -38,6 +38,7 @@ RUN mkdir -p /opt/terra-visu/var/cache && useradd -m -d /opt/terra-visu -s /bin/
 WORKDIR /opt/terra-visu
 
 COPY .docker/backend/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY .docker/backend/update.sh /usr/local/bin/update.sh
 
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
 EXPOSE 8000
@@ -85,10 +86,9 @@ COPY front/build /opt/frontend
 COPY admin/build /opt/frontend/admin
 COPY project /opt/terra-visu/project
 COPY manage.py /opt/terra-visu/manage.py
-COPY .docker/backend/update.sh /usr/local/bin/update.sh
 
 RUN DJANGO_SETTINGS_MODULE=project.settings.tests /opt/venv/bin/python manage.py compilemessages
 
 USER docker
 
-CMD ["/opt/venv/bin/gunicorn", "project.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "$GUNICORN_WORKERS", "--timeout", "$GUNICORN_TIMEOUT"]
+CMD /opt/venv/bin/gunicorn project.wsgi:application --bind 0.0.0.0:8000 --workers=$GUNICORN_WORKERS --timeout=$GUNICORN_TIMEOUT

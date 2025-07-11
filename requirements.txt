@@ -2,7 +2,7 @@
 #    uv pip compile pyproject.toml -o requirements.txt
 amqp==5.3.1
     # via kombu
-asgiref==3.9.0
+asgiref==3.9.1
     # via
     #   django
     #   django-cors-headers
@@ -19,7 +19,7 @@ celery==5.5.3
     #   django-celery-beat
     #   django-celery-results
     #   django-geostore
-certifi==2024.8.30
+certifi==2025.7.9
     # via
     #   elastic-transport
     #   fiona
@@ -139,7 +139,7 @@ drf-spectacular==0.28.0
     # via terravisu (pyproject.toml)
 ecdsa==0.19.1
     # via python-jose
-elastic-transport==8.15.1
+elastic-transport==8.17.1
     # via elasticsearch
 elasticsearch==8.17.2
     # via terravisu (pyproject.toml)

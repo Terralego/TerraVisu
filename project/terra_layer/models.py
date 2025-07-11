@@ -235,7 +235,25 @@ class Layer(CloneMixin, models.Model):
     fields = models.ManyToManyField(Field, through="FilterField")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-
+    compare_url = models.URLField(
+        blank=True,
+        help_text=_("URL to compare feature from this layer to another one."),
+        null=False,
+    )
+    compare_field = models.ForeignKey(
+        Field,
+        null=True,
+        on_delete=models.SET_NULL,
+        related_name="is_compare_of",
+        help_text=_("Source field to get value to compare."),
+        blank=True,
+    )
+    compare_separator = models.CharField(
+        max_length=1,
+        default="",
+        blank=True,
+        help_text=_("Separator to generate query params from field values."),
+    )
     objects = LayerManager()
 
     class Meta:

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-25 12:51+0100\n"
+"POT-Creation-Date: 2025-03-19 17:16+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -244,6 +244,9 @@ msgstr "URL du logo de l'application"
 
 msgid "Favicon"
 msgstr "Favicon"
+
+msgid "Splashscreen enabled"
+msgstr "Logo de démarrage activé"
 
 msgid "Splashscreen"
 msgstr "Logo de démarrage"
@@ -574,6 +577,16 @@ msgstr "Carte"
 
 msgid "Story"
 msgstr "Histoire"
+
+msgid "URL to compare feature from this layer to another one."
+msgstr "URL pour comparer les objets de cette couche entre eux."
+
+msgid "Source field to get value to compare."
+msgstr "Champ de la source de donnée à utiliser pour la comparaison."
+
+msgid "Separator to generate query params from field values."
+msgstr ""
+"Séparateur à utiliser pour les valeurs de champs des objets à comparer."
 
 msgid "Copy"
 msgstr "Copie"
