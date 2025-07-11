@@ -309,7 +309,7 @@ psycopg2==2.9.10
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
     #   django-geostore
-pyasn1==0.4.8
+pyasn1==0.6.1
     # via
     #   -c requirements.txt
     #   python-jose
@@ -348,7 +348,7 @@ python-decouple==3.8
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-python-jose==3.4.0
+python-jose==3.5.0
     # via
     #   -c requirements.txt
     #   openid-connect
