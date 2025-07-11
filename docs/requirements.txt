@@ -97,8 +97,9 @@ sphinxcontrib-serializinghtml==1.1.10
     # via sphinx
 starlette==0.41.3
     # via sphinx-autobuild
-typing-extensions==4.12.2
+typing-extensions==4.14.1
     # via
+    #   -c ../requirements.txt
     #   pydantic
     #   pydantic-core
     #   pydantic-extra-types
