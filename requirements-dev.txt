@@ -307,7 +307,7 @@ psycopg2==2.9.10
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
     #   django-geostore
-pyasn1==0.6.1
+pyasn1==0.4.8
     # via
     #   -c requirements.txt
     #   python-jose
