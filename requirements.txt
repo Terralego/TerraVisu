@@ -201,7 +201,7 @@ pyjwt==2.10.1
     # via drf-jwt
 pyproj==3.7.1
     # via terravisu (pyproject.toml)
-python-crontab==3.2.0
+python-crontab==3.3.0
     # via django-celery-beat
 python-dateutil==2.9.0.post0
     # via

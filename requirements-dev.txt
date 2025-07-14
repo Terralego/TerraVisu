@@ -334,7 +334,7 @@ pyproj==3.7.1
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-python-crontab==3.2.0
+python-crontab==3.3.0
     # via
     #   -c requirements.txt
     #   django-celery-beat
