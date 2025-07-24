@@ -489,15 +489,10 @@ class StyleImage(models.Model):
         return self.name
 
 
-class ReportStatus(models.Model):
-    label = models.CharField(max_length=255)
-
-    class Meta:
-        verbose_name = _("Report status")
-        verbose_name_plural = _("Reports statuses")
-
-    def __str__(self):
-        return self.label
+class ReportStatus(models.TextChoices):
+    PENDING = "PENDING", _("Pending")
+    ACCEPTED = "ACCEPTED", _("Accepted")
+    REJECTED = "REJECTED", _("Rejected")
 
 
 class ReportConfig(models.Model):
@@ -515,6 +510,7 @@ class ReportConfig(models.Model):
     class Meta:
         verbose_name = _("Report config")
         verbose_name_plural = _("Reports configs")
+        unique_together = ["label", "layer"]
 
     def __str__(self):
         return self.label
@@ -541,15 +537,19 @@ class ReportField(models.Model):
 
 
 class Report(models.Model):
-    config = models.ForeignKey(ReportConfig, on_delete=models.PROTECT, null=True)
+    config = models.ForeignKey(ReportConfig, on_delete=models.SET_NULL, null=True)
     feature = models.ForeignKey(
         Feature, on_delete=models.CASCADE, related_name="reports"
     )
-    status = models.ForeignKey(
-        ReportStatus, on_delete=models.PROTECT, related_name="reports"
+    layer = models.ForeignKey(Layer, on_delete=models.CASCADE, related_name="reports")
+    status = models.CharField(
+        max_length=8,
+        choices=ReportStatus.choices,
+        default=ReportStatus.PENDING,
+        verbose_name=_("Report status"),
     )
     content = models.JSONField(verbose_name=_("Content"))
-    user = models.ForeignKey(User, on_delete=models.PROTECT)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
 
     class Meta:

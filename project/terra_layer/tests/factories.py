@@ -10,7 +10,6 @@ from ..models import (
     LayerGroup,
     Report,
     ReportConfig,
-    ReportStatus,
     Scene,
     StyleImage,
 )
@@ -73,17 +72,9 @@ class ReportConfigFactory(factory.django.DjangoModelFactory):
         model = ReportConfig
 
 
-class ReportStatusFactory(factory.django.DjangoModelFactory):
-    label = factory.Faker("name")
-
-    class Meta:
-        model = ReportStatus
-
-
 class ReportFactory(factory.django.DjangoModelFactory):
     config = factory.SubFactory(ReportConfigFactory)
     feature = factory.SubFactory(FeatureFactory)
-    status = factory.SubFactory(ReportStatusFactory)
     content = factory.Dict(
         {
             "field1": factory.Faker("text", max_nb_chars=100),
@@ -91,6 +82,7 @@ class ReportFactory(factory.django.DjangoModelFactory):
         }
     )
     user = factory.SubFactory(UserFactory)
+    layer = factory.SelfAttribute("config.layer")
 
     class Meta:
         model = Report

@@ -1,4 +1,5 @@
 from django.test import TestCase
+from django.utils.translation import gettext_lazy as _
 
 from ...geosource.models import FieldTypes
 from ...geosource.tests.factories import PostGISSourceFactory
@@ -189,9 +190,9 @@ class ReportTestCase(TestCase):
 
     def test_models_str(self):
         self.assertEqual(str(self.report), f"Report {self.report.pk}")
-        self.assertEqual(str(self.report.status), self.report.status.label)
+        self.assertEqual(str(self.report.status.label), _("Pending"))
         self.assertEqual(str(self.report.config), self.report.config.label)
         self.assertEqual(
             str(self.report.config.report_fields.first()),
-            f"Report field {self.report_field.pk}",
+            f"Report field {self.report_field.order}",
         )

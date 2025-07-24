@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-26 09:10+0000\n"
+"POT-Creation-Date: 2025-07-24 08:32+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -518,10 +518,10 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
-msgid "Report status"
+msgid "Accepted"
 msgstr ""
 
-msgid "Reports statuses"
+msgid "Rejected"
 msgstr ""
 
 msgid "Fields"
@@ -540,6 +540,9 @@ msgid "Report field"
 msgstr ""
 
 msgid "Reports fields"
+msgstr ""
+
+msgid "Report status"
 msgstr ""
 
 msgid "Content"

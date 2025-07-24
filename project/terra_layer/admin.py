@@ -9,7 +9,6 @@ from project.terra_layer.models import (
     Report,
     ReportConfig,
     ReportField,
-    ReportStatus,
     Scene,
     StyleImage,
 )
@@ -53,11 +52,6 @@ class SceneAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "slug", "category", "custom_icon", "order")
     list_filter = ("category",)
     search_fields = ("id", "name", "slug")
-
-
-@admin.register(ReportStatus)
-class ReportStatusAdmin(admin.ModelAdmin):
-    list_display = ("label",)
 
 
 @admin.register(Report)
