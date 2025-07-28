@@ -4,6 +4,7 @@ from geostore.models import Feature
 
 from project.accounts.tests.factories import UserFactory
 
+from ...geosource.models import Field
 from ...geosource.tests.factories import PostGISSourceFactory
 from ..models import (
     Layer,
@@ -31,9 +32,18 @@ class LayerGroupFactory(factory.django.DjangoModelFactory):
     view = factory.SubFactory(SceneFactory)
 
 
+class FieldFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Field
+
+    source = factory.SubFactory(PostGISSourceFactory)
+    name = factory.Faker("word")
+
+
 class LayerFactory(factory.django.DjangoModelFactory):
     name = factory.Faker("name")
     source = factory.SubFactory(PostGISSourceFactory)
+    main_field = factory.SubFactory(FieldFactory)
 
     class Meta:
         model = Layer
@@ -42,6 +52,11 @@ class LayerFactory(factory.django.DjangoModelFactory):
     def _set_layer_identifier(obj, create, extracted, **kwargs):
         # Set a mock layer_identifier directly on the instance
         obj.layer_identifier = f"test-layer-{obj.pk}"
+
+    @factory.post_generation
+    def _set_source(obj, create, extracted, **kwargs):
+        # Ensure layer and main_field have same source
+        obj.source = obj.main_field.source
 
 
 class FeatureFactory(factory.django.DjangoModelFactory):

@@ -20,6 +20,9 @@ class LayerAdminTesCase(TestCase):
             order=1,
             field=field,
         )
+        main_field_name = getattr(cls.report.layer.main_field, "name")
+        cls.report.feature.properties[main_field_name] = "test_displayed_feature_name"
+        cls.report.feature.save()
 
     def setUp(self):
         self.client.force_login(self.user)
@@ -39,3 +42,10 @@ class LayerAdminTesCase(TestCase):
     def test_reportfield_list(self):
         response = self.client.get("/debug/terra_layer/reportfield/")
         self.assertEqual(response.status_code, 200)
+
+    def test_report_change(self):
+        response = self.client.get(
+            f"/debug/terra_layer/report/{self.report.pk}/change/"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "test_displayed_feature_name")

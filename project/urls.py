@@ -22,7 +22,6 @@ router.register(r"user", UserViewsSet, basename="user")
 router.register(r"groups", GroupViewSet, basename="group")
 router.register(r"permissions", FunctionalPermissionViewSet, basename="permission")
 
-
 urlpatterns = [
     path("tinymce/", include("tinymce.urls")),
     path("config/clearcache/", include("clearcache.urls")),

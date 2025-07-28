@@ -27,8 +27,13 @@ from project.terra_layer.models import (
 )
 from project.terra_layer.utils import get_scene_tree_cache_key
 
+from .factories import (
+    FeatureFactory,
+    ReportConfigFactory,
+    SceneFactory,
+    StyleImageFactory,
+)
 from .factories import LayerFactory as TerraLayerFactory
-from .factories import SceneFactory, StyleImageFactory
 
 
 class SceneViewsetTestCase(APITestCase):
@@ -958,3 +963,34 @@ class LayerViewSetAPITestCase(APITestCase):
             "Test report config 2",
             response.json().get("report_configs")[0].get("label"),
         )
+
+
+class ReportCreateAPIViewTestCase(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.feature = FeatureFactory()
+        cls.report_config = ReportConfigFactory()
+        cls.user = SuperUserFactory()
+
+    def test_create_report(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": {"example": "data"},
+        }
+
+        response = self.client.post(reverse("report-create-view"), query)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_report_unauthorized(self):
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": {"example": "content"},
+        }
+
+        response = self.client.post(reverse("report-create-view"), query)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

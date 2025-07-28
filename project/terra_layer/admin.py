@@ -58,7 +58,7 @@ class SceneAdmin(admin.ModelAdmin):
 class ReportAdmin(admin.ModelAdmin):
     list_display = ("created_at", "status", "display_email", "display_layer")
     readonly_fields = (
-        # "display_feature",
+        "display_feature",
         "created_at",
         "display_email",
         "display_layer",
@@ -81,14 +81,11 @@ class ReportAdmin(admin.ModelAdmin):
         queryset.select_related("status", "config", "config__layer", "user")
         return queryset
 
-    # Todo
-    # def display_feature(self, obj):
-    #     main_field = getattr(obj.layer.main_field, "name", None)
-    #     if main_field:
-    #         return obj.feature.properties.get(main_field, None)
-    #     return None
+    def display_feature(self, obj):
+        main_field = getattr(obj.layer.main_field, "name", None)
+        return obj.feature.properties.get(main_field, None) if main_field else None
 
-    # display_feature.short_description = _("Feature")
+    display_feature.short_description = _("Feature")
 
 
 @admin.register(ReportConfig)

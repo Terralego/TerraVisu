@@ -15,6 +15,7 @@ from .models import (
     CustomStyle,
     FilterField,
     Layer,
+    Report,
     ReportConfig,
     ReportField,
     Scene,
@@ -87,6 +88,12 @@ class StyleImageSerializer(serializers.ModelSerializer):
         model = StyleImage
         exclude = ("layer",)
         read_only_fields = ("slug", "file")
+
+
+class ReportSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Report
+        fields = ["config", "feature", "layer", "content"]
 
 
 class ReportFieldSerializer(serializers.ModelSerializer):
