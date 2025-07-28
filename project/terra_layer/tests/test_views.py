@@ -20,13 +20,20 @@ from project.terra_layer.models import (
     FilterField,
     Layer,
     LayerGroup,
+    ReportConfig,
+    ReportField,
     Scene,
     StyleImage,
 )
 from project.terra_layer.utils import get_scene_tree_cache_key
 
+from .factories import (
+    FeatureFactory,
+    ReportConfigFactory,
+    SceneFactory,
+    StyleImageFactory,
+)
 from .factories import LayerFactory as TerraLayerFactory
-from .factories import SceneFactory, StyleImageFactory
 
 
 class SceneViewsetTestCase(APITestCase):
@@ -672,9 +679,15 @@ class SceneTreeAPITestCase(APITestCase):
         # relationship is between geolayer and group, not "terralayer"
         geo_layer = source.get_layer()
         group.authorized_layers.add(geo_layer)
+        field = layer.source.fields.create(
+            name="_test_field1", label="test_label1", data_type=FieldTypes.String.value
+        )
+        report_config = ReportConfig.objects.create(label="Report config", layer=layer)
+        ReportField.objects.create(config=report_config, field=field, order=1)
+        ReportField.objects.create(config=report_config, field=field, order=2)
 
         self.client.force_authenticate(self.user)
-        with self.assertNumQueries(42):
+        with self.assertNumQueries(44):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
         with self.assertNumQueries(10):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
@@ -683,7 +696,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer.name = "new_name"
         layer.save()
 
-        with self.assertNumQueries(40):
+        with self.assertNumQueries(42):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
     def test_cache_cleared_after_public_layer_update(self):
@@ -691,7 +704,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer = Layer.objects.create(
             name="public_layer", source=source, group=self.layer_group
         )
-        with self.assertNumQueries(44):
+        with self.assertNumQueries(45):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
         with self.assertNumQueries(9):
@@ -700,7 +713,7 @@ class SceneTreeAPITestCase(APITestCase):
         # updating layer to trigger cache reset
         layer.name = "new_name"
         layer.save()
-        with self.assertNumQueries(36):
+        with self.assertNumQueries(37):
             # still differences in original query number because callbacks auto create geostore layers and groups
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
@@ -896,3 +909,88 @@ class LayerViewSetAPITestCase(APITestCase):
         # StyleImage should be changed
         self.assertEqual(StyleImage.objects.count(), 1)
         self.assertIn("Test2", response.json().get("style_images")[0].get("name"))
+
+    def test_create_and_update_report_config(self):
+        """On update on layer viewset, new report configs should be created"""
+        field1 = self.layer.source.fields.create(
+            name="_test_field1", label="test_label1", data_type=FieldTypes.String.value
+        )
+        field2 = self.layer.source.fields.create(
+            name="_test_field2", label="test_label2", data_type=FieldTypes.String.value
+        )
+        response = self.client.patch(
+            reverse("layer-detail", args=[self.layer.pk]),
+            {
+                "report_configs": [
+                    {
+                        "label": "Test report config",
+                        "report_fields": [
+                            {"order": 1, "sourceFieldId": field1.pk},
+                            {"order": 2, "sourceFieldId": field2.pk},
+                        ],
+                    }
+                ],
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
+        self.assertEqual(ReportConfig.objects.count(), 1)
+        self.assertEqual(ReportField.objects.count(), 2)
+        self.assertIn(
+            "Test report config", response.json().get("report_configs")[0].get("label")
+        )
+
+        config_id = ReportConfig.objects.first().pk
+        field_id = ReportField.objects.last().pk
+        # Update : second field became only field
+        response = self.client.patch(
+            reverse("layer-detail", args=[self.layer.pk]),
+            {
+                "report_configs": [
+                    {
+                        "id": config_id,
+                        "label": "Test report config 2",
+                        "report_fields": [
+                            {"id": field_id, "order": 1, "sourceFieldId": field2.pk}
+                        ],
+                    }
+                ],
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
+        self.assertEqual(ReportConfig.objects.count(), 1)
+        self.assertEqual(ReportField.objects.count(), 1)
+        self.assertIn(
+            "Test report config 2",
+            response.json().get("report_configs")[0].get("label"),
+        )
+
+
+class ReportCreateAPIViewTestCase(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.feature = FeatureFactory()
+        cls.report_config = ReportConfigFactory()
+        cls.user = SuperUserFactory()
+
+    def test_create_report(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": {"example": "data"},
+        }
+
+        response = self.client.post(reverse("report-create-view"), query)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+    def test_create_report_unauthorized(self):
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": {"example": "content"},
+        }
+
+        response = self.client.post(reverse("report-create-view"), query)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)

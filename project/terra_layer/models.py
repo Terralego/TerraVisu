@@ -7,12 +7,14 @@ from autoslug import AutoSlugField
 from django.db import models, transaction
 from django.db.models import TextChoices
 from django.utils.text import slugify
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from django.views.generic.dates import timezone_today
+from geostore.models import Feature
 from mapbox_baselayer.models import MapBaseLayer
 from model_clone import CloneMixin
 from rest_framework.reverse import reverse
 
+from project.accounts.models import User
 from project.geosource.models import Field, Source
 
 from .managers import LayerManager, SceneManager
@@ -485,3 +487,89 @@ class StyleImage(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class ReportStatus(models.TextChoices):
+    PENDING = "PENDING", _("Pending")
+    ACCEPTED = "ACCEPTED", _("Accepted")
+    REJECTED = "REJECTED", _("Rejected")
+
+
+class ReportConfig(models.Model):
+    label = models.CharField(max_length=255)
+    layer = models.ForeignKey(
+        Layer, on_delete=models.CASCADE, related_name="report_configs"
+    )
+    fields = models.ManyToManyField(
+        Field,
+        through="ReportField",
+        related_name="report_configs",
+        verbose_name=_("Fields"),
+    )
+
+    class Meta:
+        verbose_name = _("Report config")
+        verbose_name_plural = _("Reports configs")
+        unique_together = ["label", "layer"]
+
+    def __str__(self):
+        return self.label
+
+
+class ReportField(models.Model):
+    config = models.ForeignKey(
+        ReportConfig, on_delete=models.CASCADE, related_name="report_fields"
+    )
+    field = models.ForeignKey(
+        Field,
+        on_delete=models.CASCADE,
+        verbose_name=_("Field"),
+        related_name="report_fields",
+    )
+    order = models.IntegerField(verbose_name=_("Order"))
+
+    class Meta:
+        verbose_name = _("Report field")
+        verbose_name_plural = _("Reports fields")
+
+    def __str__(self):
+        return f"{_('Report field')} {self.order}"
+
+
+class Report(models.Model):
+    config = models.ForeignKey(ReportConfig, on_delete=models.SET_NULL, null=True)
+    feature = models.ForeignKey(
+        Feature, on_delete=models.CASCADE, related_name="reports"
+    )
+    layer = models.ForeignKey(Layer, on_delete=models.CASCADE, related_name="reports")
+    status = models.CharField(
+        max_length=8,
+        choices=ReportStatus.choices,
+        default=ReportStatus.PENDING,
+        verbose_name=_("Report status"),
+    )
+    content = models.JSONField(verbose_name=_("Content"))
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+
+    class Meta:
+        verbose_name = _("Report")
+        verbose_name_plural = _("Reports")
+
+    def __str__(self):
+        return f"{_('Report')} {self.pk}"
+
+
+#  Todo when adding Report form
+# class ReportFile(models.Model):
+#     report = models.ForeignKey(
+#         Report,
+#         on_delete=models.CASCADE,
+#         related_name="files",
+#     )
+#     file = models.FileField(upload_to="report_files/")
+#     uploaded_at = models.DateTimeField(auto_now_add=True)
+#
+#     class Meta:
+#         verbose_name = _("Report file")
+#         verbose_name_plural = _("Report files")
