@@ -244,7 +244,7 @@ fiona==1.10.1
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
     #   django-geostore
-freezegun==1.5.3
+freezegun==1.5.4
     # via terravisu (pyproject.toml)
 gpxpy==1.6.2
     # via
