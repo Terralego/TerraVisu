@@ -170,6 +170,7 @@ STATICFILES_DIRS = [
 
 MEDIA_URL = "media/"
 MEDIA_ROOT = PROJECT_DIR / "public" / "media"
+PRIVATE_MEDIA_ROOT = PROJECT_DIR / "private" / "media"
 ADMIN_ROOT = PROJECT_DIR / "public" / "admin"
 
 # Default primary key field type

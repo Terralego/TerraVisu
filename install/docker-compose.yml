@@ -73,6 +73,7 @@ services:
       - elasticsearch
     volumes:
       - ./public:/var/www/
+      - ./private:/private_files/
       - ./conf/nginx.conf:/etc/nginx/conf.d/default.conf
 
 volumes:

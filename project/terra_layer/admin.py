@@ -1,4 +1,7 @@
+from pathlib import Path
+
 from django.contrib import admin
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from geostore.models import Feature
 from geostore.models import Layer as GeostoreLayer
@@ -63,6 +66,7 @@ class ReportAdmin(admin.ModelAdmin):
         "display_email",
         "display_layer",
         "content",
+        "display_files",
     )
     exclude = ("feature", "layer", "email", "user")
 
@@ -76,9 +80,25 @@ class ReportAdmin(admin.ModelAdmin):
 
     display_email.short_description = _("Email")
 
+    def display_files(self, obj):
+        files_links = []
+        for report_file in obj.files.all():
+            files_links.append(
+                format_html(
+                    '&#128196; <a href="{}">{}</a><br>',
+                    "/" + report_file.file.url,
+                    Path(report_file.file.name).name,
+                )
+            )
+        return format_html("".join(files_links))
+
+    display_files.short_description = _("Files")
+
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        queryset.select_related("status", "config", "config__layer", "user")
+        queryset.prefetch_related("files").select_related(
+            "status", "config", "config__layer", "user"
+        )
         return queryset
 
     def display_feature(self, obj):

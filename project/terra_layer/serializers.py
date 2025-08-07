@@ -1,5 +1,7 @@
 import json
+import mimetypes
 
+import magic
 from django.db import transaction
 from django.utils.translation import gettext as _
 from drf_extra_fields.fields import Base64ImageField
@@ -18,6 +20,7 @@ from .models import (
     Report,
     ReportConfig,
     ReportField,
+    ReportFile,
     Scene,
     StyleImage,
 )
@@ -90,10 +93,60 @@ class StyleImageSerializer(serializers.ModelSerializer):
         read_only_fields = ("slug", "file")
 
 
+class ReportFileSerializer(serializers.ModelSerializer):
+    file = serializers.FileField()
+
+    class Meta:
+        model = ReportFile
+        fields = ["file"]
+
+    def validate_file(self, value):
+        max_size = 5 * 1024 * 1024  # 5 MB
+        if value.size > max_size:
+            big_file_message = "File size cannot exceed 5MB"
+            raise serializers.ValidationError(big_file_message)
+        # Check for allowed extensions in filename
+        allowed_extensions = [".jpg", ".jpeg", ".png", ".pdf", ".zip"]
+        wrong_extension_message = (
+            f"File type not allowed. Allowed types: {', '.join(allowed_extensions)}"
+        )
+        file_extension = value.name.lower().split(".")[-1]
+        if f".{file_extension}" not in allowed_extensions:
+            raise serializers.ValidationError(wrong_extension_message)
+        # Check for allowed extensions in file content
+        value.seek(0)
+        file_mimetype = magic.from_buffer(value.read(), mime=True)
+        file_mimetype_allowed = f".{file_extension}" in mimetypes.guess_all_extensions(
+            file_mimetype
+        )
+        if not file_mimetype_allowed:
+            raise ValidationError(wrong_extension_message)
+        return value
+
+
 class ReportSerializer(serializers.ModelSerializer):
+    files = ReportFileSerializer(many=True, required=False)
+
     class Meta:
         model = Report
-        fields = ["config", "feature", "layer", "content"]
+        fields = ["config", "feature", "layer", "content", "files"]
+
+    def create(self, validated_data):
+        files = self.initial_data.pop("files", [])
+        if len(files) > 3:
+            too_many_files_message = "This request cannot contain more than 3 files."
+            raise serializers.ValidationError(too_many_files_message)
+        report = super().create(validated_data)
+        # Create ReportFile instances for each uploaded file
+        for file in files:
+            obj = ReportFileSerializer(
+                data={
+                    "file": file,
+                }
+            )
+            if obj.is_valid(raise_exception=True):
+                obj.save(report=report)
+        return report
 
 
 class ReportFieldSerializer(serializers.ModelSerializer):

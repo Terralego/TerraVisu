@@ -2,6 +2,10 @@ from geostore.views import FeatureViewSet, LayerGroupViewsSet, LayerViewSet
 from mapbox_baselayer.models import MapBaseLayer
 from rest_framework import generics, viewsets
 from rest_framework.decorators import action
+from rest_framework.parsers import (
+    JSONParser,
+    MultiPartParser,
+)
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 
@@ -39,6 +43,7 @@ class ReportCreateAPIView(generics.CreateAPIView):
     model = Report
     serializer_class = ReportSerializer
     permission_classes = [IsAuthenticated]
+    parser_classes = [MultiPartParser, JSONParser]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-07-28 11:06+0000\n"
+"POT-Creation-Date: 2025-08-06 07:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -578,6 +578,9 @@ msgstr "Couche"
 msgid "Email"
 msgstr "Courriel"
 
+msgid "Files"
+msgstr "Documents"
+
 msgid "Feature"
 msgstr "Objet"
 
@@ -641,6 +644,12 @@ msgstr "Signalement"
 
 msgid "Reports"
 msgstr "Signalements"
+
+msgid "Report file"
+msgstr "Document du signalement"
+
+msgid "Report files"
+msgstr "Documents des signalements"
 
 msgid "'tiles' should not be filled for mapbox base layers."
 msgstr "'tiles' ne doit pas être saisi pour les fonds de plan mapbox."
