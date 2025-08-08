@@ -3,7 +3,11 @@ from django.test import TestCase
 from project.accounts.tests.factories import SuperUserFactory
 from project.geosource.models import FieldTypes
 from project.terra_layer.models import ReportField
-from project.terra_layer.tests.factories import LayerFactory, ReportFactory
+from project.terra_layer.tests.factories import (
+    LayerFactory,
+    ReportFactory,
+    ReportFileFactory,
+)
 
 
 class LayerAdminTesCase(TestCase):
@@ -12,6 +16,7 @@ class LayerAdminTesCase(TestCase):
         LayerFactory.create_batch(10)
         cls.user = SuperUserFactory.create()
         cls.report = ReportFactory.create(user=cls.user)
+        cls.report_file = ReportFileFactory(report=cls.report)
         field = cls.report.config.layer.source.fields.create(
             name="test_field", label="test_label", data_type=FieldTypes.String.value
         )
@@ -49,3 +54,4 @@ class LayerAdminTesCase(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, "test_displayed_feature_name")
+        self.assertContains(response, self.report_file.file.name)

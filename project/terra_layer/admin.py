@@ -65,10 +65,10 @@ class ReportAdmin(admin.ModelAdmin):
         "created_at",
         "display_email",
         "display_layer",
-        "content",
+        "display_content",
         "display_files",
     )
-    exclude = ("feature", "layer", "email", "user")
+    exclude = ("feature", "layer", "email", "user", "content")
 
     def display_layer(self, obj):
         return obj.config.layer.name
@@ -93,6 +93,21 @@ class ReportAdmin(admin.ModelAdmin):
         return format_html("".join(files_links))
 
     display_files.short_description = _("Files")
+
+    def display_content(self, obj):
+        content = "<table>"
+        content += "<tr>"
+        for form_field in obj.content.keys():
+            content += f"<th>{form_field}</th>"
+        content += "</tr>"
+        content += "<tr>"
+        for form_value in obj.content.values():
+            content += f"<td>{form_value}</td>"
+        content += "</tr>"
+        content += "</table>"
+        return format_html("".join(content))
+
+    display_content.short_description = _("Content")
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)

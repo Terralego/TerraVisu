@@ -1,14 +1,16 @@
 import base64
 import io
 import json
+from unittest import mock
 from unittest.mock import patch
 
 from django.contrib.auth.models import Group
 from django.core.cache import cache
-from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.files.uploadedfile import InMemoryUploadedFile, SimpleUploadedFile
 from django.test import RequestFactory
 from django.urls import reverse
 from geostore.tests.factories import LayerFactory
+from PIL import Image
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -22,6 +24,7 @@ from project.terra_layer.models import (
     LayerGroup,
     ReportConfig,
     ReportField,
+    ReportFile,
     Scene,
     StyleImage,
 )
@@ -972,6 +975,30 @@ class ReportCreateAPIViewTestCase(APITestCase):
         cls.report_config = ReportConfigFactory()
         cls.user = SuperUserFactory()
 
+    def get_small_uploaded_image(self):
+        file = io.BytesIO()
+        image = Image.new("RGB", size=(20, 40), color=(155, 0, 0))
+        image.save(file, "jpeg")
+        file.name = "small.jpg"
+        file.seek(0)
+        return SimpleUploadedFile(file.name, file.read(), content_type="image/jpeg")
+
+    def get_uploaded_image_with_mismatched_extension(self):
+        file = io.BytesIO()
+        image = Image.new("RGB", size=(20, 40), color=(155, 0, 0))
+        image.save(file, "jpeg")
+        file.name = "small.png"
+        file.seek(0)
+        return SimpleUploadedFile(file.name, file.read(), content_type="image/png")
+
+    def get_uploaded_image_with_forbidden_extension(self):
+        file = io.BytesIO()
+        image = Image.new("RGB", size=(20, 40), color=(155, 0, 0))
+        image.save(file, "gif")
+        file.name = "small.gif"
+        file.seek(0)
+        return SimpleUploadedFile(file.name, file.read(), content_type="image/gif")
+
     def test_create_report(self):
         self.client.force_authenticate(self.user)
         query = {
@@ -994,3 +1021,106 @@ class ReportCreateAPIViewTestCase(APITestCase):
 
         response = self.client.post(reverse("report-create-view"), query)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_create_report_with_files(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": json.dumps({"example": "content"}),
+            "files": [self.get_small_uploaded_image()],
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, format="multipart"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(ReportFile.objects.count(), 1)
+        file = ReportFile.objects.first()
+        self.assertEqual(str(file), f"Report file {file.pk}")
+        self.assertRegex(file.file.url, r"^private/report_files/small.*\.jpg$")
+        self.assertRegex(file.file.name, r"^report_files/small.*\.jpg$")
+        # Delete file after test (also removes it from disk)
+        file.delete()
+
+    @mock.patch("django.core.files.uploadhandler.MemoryFileUploadHandler.file_complete")
+    def test_cannot_create_report_with_big_file(self, mock_file_complete):
+        self.client.force_authenticate(self.user)
+        mock_file_complete.return_value = InMemoryUploadedFile(
+            file=b"",
+            field_name=None,
+            name="big.png",
+            content_type="image/png",
+            size=6 * 1024 * 1024,  # 6 MB file
+            charset=None,
+        )
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": json.dumps({"example": "content"}),
+            "files": [self.get_small_uploaded_image()],
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, format="multipart"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("File size cannot exceed 5MB", str(response.content))
+
+    def test_cannot_create_report_with_too_many_files(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": json.dumps({"example": "content"}),
+            "files": [
+                self.get_small_uploaded_image(),
+                self.get_small_uploaded_image(),
+                self.get_small_uploaded_image(),
+                self.get_small_uploaded_image(),
+            ],
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, format="multipart"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn(
+            "This request cannot contain more than 3 files.", str(response.content)
+        )
+
+    def test_cannot_create_report_with_forbidden_extension(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": json.dumps({"example": "content"}),
+            "files": [self.get_uploaded_image_with_forbidden_extension()],
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, format="multipart"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn(
+            "File type not allowed. Allowed types: .jpg, .jpeg, .png, .pdf, .zip",
+            str(response.content),
+        )
+
+    def test_cannot_create_report_with_mismatched_extension(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": json.dumps({"example": "content"}),
+            "files": [self.get_uploaded_image_with_mismatched_extension()],
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, format="multipart"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn(
+            "File type not allowed. Allowed types: .jpg, .jpeg, .png, .pdf, .zip",
+            str(response.content),
+        )

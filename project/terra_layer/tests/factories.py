@@ -11,6 +11,7 @@ from ..models import (
     LayerGroup,
     Report,
     ReportConfig,
+    ReportFile,
     Scene,
     StyleImage,
 )
@@ -101,3 +102,11 @@ class ReportFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = Report
+
+
+class ReportFileFactory(factory.django.DjangoModelFactory):
+    report = factory.SubFactory(ReportFactory)
+    file = factory.django.FileField()
+
+    class Meta:
+        model = ReportFile

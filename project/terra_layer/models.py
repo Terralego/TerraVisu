@@ -2,7 +2,6 @@ import json
 import logging
 import uuid
 from hashlib import md5
-from pathlib import Path
 
 from autoslug import AutoSlugField
 from django.db import models, transaction
@@ -579,10 +578,6 @@ class ReportFile(models.Model):
 
     def __str__(self):
         return f"{_('Report file')} {self.pk}"
-
-    @property
-    def filename(self):
-        return Path(self.file.name).name
 
 
 @receiver(post_delete, sender=ReportFile)

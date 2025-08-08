@@ -132,7 +132,9 @@ class ReportSerializer(serializers.ModelSerializer):
         fields = ["config", "feature", "layer", "content", "files"]
 
     def create(self, validated_data):
-        files = self.initial_data.pop("files", [])
+        files = []
+        if "files" in self.initial_data:
+            files = self.initial_data.pop("files", [])
         if len(files) > 3:
             too_many_files_message = "This request cannot contain more than 3 files."
             raise serializers.ValidationError(too_many_files_message)
