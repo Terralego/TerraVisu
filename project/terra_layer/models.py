@@ -529,6 +529,7 @@ class ReportField(models.Model):
         verbose_name=_("Field"),
         related_name="report_fields",
     )
+    required = models.BooleanField(default=False, verbose_name=_("Required"))
     order = models.IntegerField(verbose_name=_("Order"))
 
     class Meta:

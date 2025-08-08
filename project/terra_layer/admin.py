@@ -144,12 +144,7 @@ class ReportConfigAdmin(admin.ModelAdmin):
 
 @admin.register(ReportField)
 class ReportFieldAdmin(admin.ModelAdmin):
-    list_display = (
-        "display_field",
-        "config",
-        "order",
-        "display_layer",
-    )
+    list_display = ("display_field", "config", "order", "display_layer", "required")
     list_filter = ("config",)
 
     def display_layer(self, obj):

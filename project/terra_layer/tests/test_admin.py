@@ -29,6 +29,12 @@ class LayerAdminTesCase(TestCase):
         cls.report.feature.properties[main_field_name] = "test_displayed_feature_name"
         cls.report.feature.save()
 
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        # Remove file from disk
+        cls.report_file.delete()
+
     def setUp(self):
         self.client.force_login(self.user)
 
