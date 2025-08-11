@@ -28,6 +28,7 @@ from ..models import (
     Layer,
     LayerGroup,
     ReportConfig,
+    ReportField,
     Scene,
     StyleImage,
 )
@@ -169,7 +170,13 @@ class SceneTreeAPIView(APIView):
                 "extra_styles__source",
                 Prefetch(
                     "report_configs",
-                    ReportConfig.objects.all().prefetch_related("report_fields"),
+                    ReportConfig.objects.prefetch_related(
+                        Prefetch(
+                            "report_fields",
+                            queryset=ReportField.objects.select_related("field"),
+                            to_attr="prefetched_report_fields",
+                        ),
+                    ),
                     to_attr="prefetched_report_configs",
                 ),
             )
@@ -596,11 +603,14 @@ class SceneTreeAPIView(APIView):
         report_configs = []
         for report_config in layer.prefetched_report_configs:
             config = {"label": report_config.label, "fields": []}
-            for report_field in report_config.report_fields.all():
+            for report_field in report_config.prefetched_report_fields:
                 config["fields"].append(
                     {
                         "order": report_field.order,
                         "sourceFieldId": report_field.field_id,
+                        "value": report_field.field.name,
+                        "label": report_field.field.label,
+                        "format_type": TYPE_MAP[report_field.field.data_type],
                         "required": report_field.required,
                     }
                 )
