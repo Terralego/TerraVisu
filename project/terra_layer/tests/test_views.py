@@ -5,6 +5,7 @@ from unittest import mock
 from unittest.mock import patch
 
 from django.contrib.auth.models import Group
+from django.core import mail
 from django.core.cache import cache
 from django.core.files.uploadedfile import InMemoryUploadedFile, SimpleUploadedFile
 from django.test import RequestFactory
@@ -973,7 +974,7 @@ class ReportCreateAPIViewTestCase(APITestCase):
     def setUpTestData(cls):
         cls.feature = FeatureFactory()
         cls.report_config = ReportConfigFactory()
-        cls.user = SuperUserFactory()
+        cls.user = SuperUserFactory(is_report_and_declaration_manager=True)
 
     def get_small_uploaded_image(self):
         file = io.BytesIO()
@@ -1007,9 +1008,11 @@ class ReportCreateAPIViewTestCase(APITestCase):
             "layer": self.report_config.layer.pk,
             "content": {"example": "data"},
         }
-
+        self.assertEqual(len(mail.outbox), 0)
         response = self.client.post(reverse("report-create-view"), query)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, "New report submitted")
 
     def test_create_report_unauthorized(self):
         query = {

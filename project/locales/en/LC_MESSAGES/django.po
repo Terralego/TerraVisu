@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-08 15:16+0000\n"
+"POT-Creation-Date: 2025-08-12 11:50+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,6 +57,14 @@ msgstr ""
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
+msgstr ""
+
+msgid "Report and declaration manager"
+msgstr ""
+
+msgid ""
+"Designates whether this user needs to receive email notifications about "
+"incoming reports and declarations."
 msgstr ""
 
 msgid "date joined"
@@ -494,6 +502,9 @@ msgstr ""
 msgid "Layer"
 msgstr ""
 
+msgid "Deleted user"
+msgstr ""
+
 msgid "Email"
 msgstr ""
 
@@ -554,6 +565,9 @@ msgstr ""
 msgid "Reports fields"
 msgstr ""
 
+msgid "Report configuration"
+msgstr ""
+
 msgid "Report status"
 msgstr ""
 
@@ -582,6 +596,49 @@ msgid "'tiles' should be filled for raster and vector base layers."
 msgstr ""
 
 msgid "'map_box_url' should not be filled for raster and vector base layers."
+msgstr ""
+
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
+"Your report regarding layer \"%(layer)s\" has been changed to status "
+"%(status)s.\n"
+"\n"
+"%(administrators_message)s\n"
+"\n"
+"Regards,\n"
+"\n"
+"The %(instance_title)s team\n"
+"\n"
+msgstr ""
+
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
+"A new report regarding layer \"%(layer)s\" has been submitted.\n"
+"\n"
+"You can consult it at : %(url)s\n"
+"\n"
+"Regards,\n"
+"\n"
+"The %(instance_title)s team\n"
+"\n"
+msgstr ""
+
+msgid "New report submitted"
+msgstr ""
+
+msgid "Optional message to send user on status change"
+msgstr ""
+
+msgid "Administrators message"
+msgstr ""
+
+msgid "Your report has been updated"
 msgstr ""
 
 msgid "Sprite icon"

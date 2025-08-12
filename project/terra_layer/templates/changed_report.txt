@@ -1,0 +1,14 @@
+{% load i18n %}
+
+{% blocktranslate with layer=layer status=status administrators_message=administrators_message instance_title=instance_title %}
+Hi,
+
+Your report regarding layer "{{ layer }}" has been changed to status {{ status }}.
+
+{{ administrators_message }}
+
+Regards,
+
+The {{ instance_title }} team
+
+{% endblocktranslate %}

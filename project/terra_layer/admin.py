@@ -15,6 +15,7 @@ from project.terra_layer.models import (
     Scene,
     StyleImage,
 )
+from project.terra_layer.views.forms import ReportAdminForm
 
 
 class StyleImageInline(admin.TabularInline):
@@ -60,7 +61,9 @@ class SceneAdmin(admin.ModelAdmin):
 @admin.register(Report)
 class ReportAdmin(admin.ModelAdmin):
     list_display = ("created_at", "status", "display_email", "display_layer")
+    list_filter = ("status",)
     readonly_fields = (
+        "config",
         "display_feature",
         "created_at",
         "display_email",
@@ -68,7 +71,8 @@ class ReportAdmin(admin.ModelAdmin):
         "display_content",
         "display_files",
     )
-    exclude = ("feature", "layer", "email", "user", "content")
+    form = ReportAdminForm
+    exclude = ("config", "feature", "layer", "email", "user", "content")
 
     def display_layer(self, obj):
         return obj.config.layer.name
@@ -76,7 +80,7 @@ class ReportAdmin(admin.ModelAdmin):
     display_layer.short_description = _("Layer")
 
     def display_email(self, obj):
-        return obj.user.email
+        return obj.user.email if obj.user else _("Deleted user")
 
     display_email.short_description = _("Email")
 

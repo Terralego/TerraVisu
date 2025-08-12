@@ -541,11 +541,21 @@ class ReportField(models.Model):
 
 
 class Report(models.Model):
-    config = models.ForeignKey(ReportConfig, on_delete=models.SET_NULL, null=True)
-    feature = models.ForeignKey(
-        Feature, on_delete=models.CASCADE, related_name="reports"
+    config = models.ForeignKey(
+        ReportConfig,
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name=_("Report configuration"),
     )
-    layer = models.ForeignKey(Layer, on_delete=models.CASCADE, related_name="reports")
+    feature = models.ForeignKey(
+        Feature,
+        on_delete=models.CASCADE,
+        related_name="reports",
+        verbose_name=_("Feature"),
+    )
+    layer = models.ForeignKey(
+        Layer, on_delete=models.CASCADE, related_name="reports", verbose_name=_("Layer")
+    )
     status = models.CharField(
         max_length=8,
         choices=ReportStatus.choices,
