@@ -91,12 +91,23 @@ class ReportConfigFactory(factory.django.DjangoModelFactory):
 class ReportFactory(factory.django.DjangoModelFactory):
     config = factory.SubFactory(ReportConfigFactory)
     feature = factory.SubFactory(FeatureFactory)
-    content = factory.Dict(
+    content = [
         {
-            "field1": factory.Faker("text", max_nb_chars=100),
-            "field2": factory.Faker("text", max_nb_chars=100),
-        }
-    )
+            "sourceFieldId": 345,
+            "value": "my_field_1",
+            "label": "The Field One",
+            "content": "Some example content for testing purposes",
+        },
+        {
+            "sourceFieldId": 123,
+            "value": "my_field_2",
+            "label": "The Field Two",
+            "content": "Some example content for testing purposes with additional information that provides context",
+        },
+        {
+            "free_comment": "Another example with some extra information that was provided after the fields"
+        },
+    ]
     user = factory.SubFactory(UserFactory)
     layer = factory.SelfAttribute("config.layer")
 

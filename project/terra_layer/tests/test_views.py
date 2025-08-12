@@ -975,6 +975,23 @@ class ReportCreateAPIViewTestCase(APITestCase):
         cls.feature = FeatureFactory()
         cls.report_config = ReportConfigFactory()
         cls.user = SuperUserFactory(is_report_and_declaration_manager=True)
+        cls.valid_report_data = [
+            {
+                "sourceFieldId": 345,
+                "value": "my_field_1",
+                "label": "The Field One",
+                "content": "Some example content for testing purposes",
+            },
+            {
+                "sourceFieldId": 123,
+                "value": "my_field_2",
+                "label": "The Field Two",
+                "content": "Some example content for testing purposes with additional information that provides context",
+            },
+            {
+                "free_comment": "Another example with some extra information that was provided after the fields"
+            },
+        ]
 
     def get_small_uploaded_image(self):
         file = io.BytesIO()
@@ -1006,10 +1023,12 @@ class ReportCreateAPIViewTestCase(APITestCase):
             "config": self.report_config.pk,
             "feature": self.feature.pk,
             "layer": self.report_config.layer.pk,
-            "content": {"example": "data"},
+            "content": self.valid_report_data,
         }
         self.assertEqual(len(mail.outbox), 0)
-        response = self.client.post(reverse("report-create-view"), query)
+        response = self.client.post(
+            reverse("report-create-view"), query, content_type="application/json"
+        )
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "New report submitted")
@@ -1019,11 +1038,94 @@ class ReportCreateAPIViewTestCase(APITestCase):
             "config": self.report_config.pk,
             "feature": self.feature.pk,
             "layer": self.report_config.layer.pk,
-            "content": {"example": "content"},
+            "content": self.valid_report_data,
         }
 
         response = self.client.post(reverse("report-create-view"), query)
         self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_cannot_create_report_with_wrong_content(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": {"example": "data"},
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn(
+            "Field \\'content\\' must be a list of items.", str(response.content)
+        )
+
+    def test_cannot_create_report_with_wrong_content_2(self):
+        self.client.force_authenticate(self.user)
+        invalid_report_data = [
+            {
+                "sourceFieldId": "not an int",
+                "value": "my_field_1",
+                "label": "The Field One",
+                "content": "Some example content for testing purposes",
+            }
+        ]
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": invalid_report_data,
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn(
+            "At index 0 of field \\'content\\': \\'sourceFieldId\\' must be an integer.",
+            str(response.content),
+        )
+
+    def test_cannot_create_report_with_empty_content(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": [],
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("Field \\'content\\' cannot be empty.", str(response.content))
+
+    def test_cannot_create_report_with_wrong_content_field(self):
+        self.client.force_authenticate(self.user)
+        invalid_report_data = [
+            {
+                "unknown_field": 345,
+                "value": "my_field_1",
+                "label": "The Field One",
+                "content": "Some example content for testing purposes",
+            },
+            {
+                "free_comment": "Another example with some extra information that was provided after the fields"
+            },
+        ]
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": invalid_report_data,
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn(
+            "Item at index 0 of field \\'content\\' is missing required field: \\'sourceFieldId\\'",
+            str(response.content),
+        )
 
     def test_create_report_with_files(self):
         self.client.force_authenticate(self.user)
@@ -1031,7 +1133,7 @@ class ReportCreateAPIViewTestCase(APITestCase):
             "config": self.report_config.pk,
             "feature": self.feature.pk,
             "layer": self.report_config.layer.pk,
-            "content": json.dumps({"example": "content"}),
+            "content": json.dumps(self.valid_report_data),
             "files": [self.get_small_uploaded_image()],
         }
         response = self.client.post(
@@ -1061,7 +1163,7 @@ class ReportCreateAPIViewTestCase(APITestCase):
             "config": self.report_config.pk,
             "feature": self.feature.pk,
             "layer": self.report_config.layer.pk,
-            "content": json.dumps({"example": "content"}),
+            "content": json.dumps(self.valid_report_data),
             "files": [self.get_small_uploaded_image()],
         }
         response = self.client.post(
@@ -1076,7 +1178,7 @@ class ReportCreateAPIViewTestCase(APITestCase):
             "config": self.report_config.pk,
             "feature": self.feature.pk,
             "layer": self.report_config.layer.pk,
-            "content": json.dumps({"example": "content"}),
+            "content": json.dumps(self.valid_report_data),
             "files": [
                 self.get_small_uploaded_image(),
                 self.get_small_uploaded_image(),
@@ -1098,7 +1200,7 @@ class ReportCreateAPIViewTestCase(APITestCase):
             "config": self.report_config.pk,
             "feature": self.feature.pk,
             "layer": self.report_config.layer.pk,
-            "content": json.dumps({"example": "content"}),
+            "content": json.dumps(self.valid_report_data),
             "files": [self.get_uploaded_image_with_forbidden_extension()],
         }
         response = self.client.post(
@@ -1116,7 +1218,7 @@ class ReportCreateAPIViewTestCase(APITestCase):
             "config": self.report_config.pk,
             "feature": self.feature.pk,
             "layer": self.report_config.layer.pk,
-            "content": json.dumps({"example": "content"}),
+            "content": json.dumps(self.valid_report_data),
             "files": [self.get_uploaded_image_with_mismatched_extension()],
         }
         response = self.client.post(

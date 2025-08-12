@@ -131,6 +131,40 @@ class ReportSerializer(serializers.ModelSerializer):
         model = Report
         fields = ["config", "feature", "layer", "content", "files"]
 
+    def validate_content(self, value):
+        """
+        The 'content' field which should be a list of dictionaries
+        with keys : "sourceFieldId", "value", "label", "content"   OR   "free_comment"
+        """
+        if not isinstance(value, list):
+            error_message = "Field 'content' must be a list of items."
+            raise ValidationError(error_message)
+
+        if len(value) == 0:
+            error_message = "Field 'content' cannot be empty."
+            raise ValidationError(error_message)
+
+        required_fields = ["sourceFieldId", "value", "label", "content"]
+
+        for i, item in enumerate(value):
+            # Check for required fields
+            if "free_comment" in item and len(item) == 1:
+                break
+
+            for field in required_fields:
+                if field not in item:
+                    error_message = f"Item at index {i} of field 'content' is missing required field: '{field}'"
+                    raise ValidationError(error_message)
+
+            try:
+                source_field_id = int(item["sourceFieldId"])
+                item["sourceFieldId"] = source_field_id
+            except (ValueError, TypeError):
+                error_message = f"At index {i} of field 'content': 'sourceFieldId' must be an integer."
+                raise ValidationError(error_message)
+
+        return value
+
     def create(self, validated_data):
         files = []
         if "files" in self.initial_data:

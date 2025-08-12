@@ -99,14 +99,15 @@ class ReportAdmin(admin.ModelAdmin):
     display_files.short_description = _("Files")
 
     def display_content(self, obj):
+        free_comment_string = _("Free comment")
         content = "<table>"
         content += "<tr>"
-        for form_field in obj.content.keys():
-            content += f"<th>{form_field}</th>"
+        for field in obj.content:
+            content += f"<th>{field.get('label', free_comment_string)}</th>"
         content += "</tr>"
         content += "<tr>"
-        for form_value in obj.content.values():
-            content += f"<td>{form_value}</td>"
+        for field in obj.content:
+            content += f"<td>{field.get('content', field.get('free_comment'))}</td>"
         content += "</tr>"
         content += "</table>"
         return format_html("".join(content))
