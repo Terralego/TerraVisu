@@ -37,18 +37,15 @@ class ReportAdminForm(forms.ModelForm):
                 "administrators_message": self.cleaned_data.get(
                     "administrators_message", ""
                 ),
-                "instance_title": config.INSTANCE_TITLE,
+                "report_mail_signature": config.REPORT_MAIL_SIGNATURE,
             }
             txt_template = get_template("changed_report.txt")
             txt_message = txt_template.render(context=context)
-            # html_template = get_template("emails/sources_periodic_report/email.html")
-            # html_message = html_template.render(context)
             send_mail(
                 _("Your report has been updated"),
                 txt_message,
                 None,
                 recipient_list=[instance.user.email],
-                #    html_message=html_message,
                 fail_silently=True,
             )
         return instance

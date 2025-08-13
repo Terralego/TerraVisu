@@ -7,6 +7,7 @@ from geostore.models import Feature
 from geostore.models import Layer as GeostoreLayer
 from model_clone import CloneModelAdmin
 
+from project.admin import config_site
 from project.terra_layer.models import (
     Layer,
     Report,
@@ -168,3 +169,6 @@ class ReportFieldAdmin(admin.ModelAdmin):
             "config", "order"
         )
         return queryset
+
+
+config_site.register(Report, ReportAdmin)

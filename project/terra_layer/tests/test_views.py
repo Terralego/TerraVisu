@@ -686,9 +686,12 @@ class SceneTreeAPITestCase(APITestCase):
         field = layer.source.fields.create(
             name="_test_field1", label="test_label1", data_type=FieldTypes.String.value
         )
+        field_2 = layer.source.fields.create(
+            name="_test_field2", label="test_label2", data_type=FieldTypes.String.value
+        )
         report_config = ReportConfig.objects.create(label="Report config", layer=layer)
         ReportField.objects.create(config=report_config, field=field, order=1)
-        ReportField.objects.create(config=report_config, field=field, order=2)
+        ReportField.objects.create(config=report_config, field=field_2, order=2)
 
         self.client.force_authenticate(self.user)
         with self.assertNumQueries(46):

@@ -1,7 +1,6 @@
 {% load i18n %}
 
-
-{% blocktranslate with layer=layer url=url instance_title=instance_title %}
+{% blocktranslate with layer=layer url=url report_mail_signature=report_mail_signature %}
 Hi,
 
 A new report regarding layer "{{ layer }}" has been submitted.
@@ -10,6 +9,6 @@ You can consult it at : {{ url }}
 
 Regards,
 
-The {{ instance_title }} team
+{{ report_mail_signature }}
 
 {% endblocktranslate %}

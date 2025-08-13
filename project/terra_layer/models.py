@@ -5,7 +5,7 @@ from hashlib import md5
 
 from autoslug import AutoSlugField
 from django.db import models, transaction
-from django.db.models import TextChoices
+from django.db.models import TextChoices, UniqueConstraint
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.utils.text import slugify
@@ -514,6 +514,12 @@ class ReportConfig(models.Model):
         verbose_name = _("Report config")
         verbose_name_plural = _("Reports configs")
         unique_together = ["label", "layer"]
+        constraints = [
+            UniqueConstraint(
+                fields=["label", "layer"],
+                name="unique_together_reportconfig_label_layer",
+            )
+        ]
 
     def __str__(self):
         return self.label
@@ -535,6 +541,12 @@ class ReportField(models.Model):
     class Meta:
         verbose_name = _("Report field")
         verbose_name_plural = _("Reports fields")
+        constraints = [
+            UniqueConstraint(
+                fields=["field", "config"],
+                name="unique_together_reportfield_field_config",
+            )
+        ]
 
     def __str__(self):
         return f"{_('Report field')} {self.order}"

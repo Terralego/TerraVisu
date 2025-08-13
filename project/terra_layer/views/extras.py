@@ -71,16 +71,14 @@ class ReportCreateAPIView(generics.CreateAPIView):
                 "layer": report.layer.name,
                 "instance_title": config.INSTANCE_TITLE,
                 "url": self.get_report_full_url(report),
+                "report_mail_signature": config.REPORT_MAIL_SIGNATURE,
             }
             txt_template = get_template("new_report.txt")
             txt_message = txt_template.render(context=context)
-            # html_template = get_template("emails/sources_periodic_report/email.html")
-            # html_message = html_template.render(context)
             send_mail(
                 _("New report submitted"),
                 txt_message,
                 f"noreply@{self.request.get_host()}",
                 recipient_list=report_managers_emails,
-                #    html_message=html_message,
                 fail_silently=True,
             )

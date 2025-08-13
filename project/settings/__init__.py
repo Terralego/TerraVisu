@@ -409,6 +409,11 @@ CONSTANCE_CONFIG = {
         _("Maximum longitude coordinate for nominatim viewbox"),
         "float_field",
     ),
+    "REPORT_MAIL_SIGNATURE": (
+        "",
+        _("Signature at the end of Reports or Declarations notifications e-mails"),
+        str,
+    ),
 }
 
 CONSTANCE_CONFIG_FIELDSETS = (
@@ -492,6 +497,7 @@ CONSTANCE_CONFIG_FIELDSETS = (
                 "NOMINATIM_VIEWBOX_MIN_LONG",
                 "NOMINATIM_VIEWBOX_MAX_LAT",
                 "NOMINATIM_VIEWBOX_MAX_LONG",
+                "REPORT_MAIL_SIGNATURE",
             ),
             "collapse": False,
         },
