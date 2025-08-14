@@ -23,6 +23,7 @@ RUN apt-get -y -qq update \
     ca-certificates \
     python3 \
     libpq5 \
+    libmagic1 \
     binutils \
     libproj-dev \
     gdal-bin \

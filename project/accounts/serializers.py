@@ -36,6 +36,7 @@ class UserSerializer(serializers.ModelSerializer):
             "is_active",
             "is_staff",
             "is_superuser",
+            "is_report_and_declaration_manager",
             "date_joined",
             "last_login",
             "groups",

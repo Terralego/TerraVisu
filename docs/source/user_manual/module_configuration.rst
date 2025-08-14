@@ -51,6 +51,7 @@ Options permettant d'activier ou paramétrer des fonctionnalités supplémentair
 - ``NOMINATIM_VIEWBOX_MIN_LONG`` : Longitude minimum pour l'option 'viewbox' de Nominatim
 - ``NOMINATIM_VIEWBOX_MAX_LAT`` : Latitude maximum pour l'option 'viewbox' de Nominatim
 - ``NOMINATIM_VIEWBOX_MAX_LONG`` : Longitude maximum pour l'option 'viewbox' de Nominatim
+- ``REPORT_MAIL_SIGNATURE`` : Signature insérée à la fin des e-mails de notification concernant les Signalements et Déclarations
 
 General options
 ~~~~~~~~~~~~~~~~

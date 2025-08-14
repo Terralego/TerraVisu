@@ -1,14 +1,17 @@
 import base64
 import io
 import json
+from unittest import mock
 from unittest.mock import patch
 
 from django.contrib.auth.models import Group
+from django.core import mail
 from django.core.cache import cache
-from django.core.files.uploadedfile import SimpleUploadedFile
+from django.core.files.uploadedfile import InMemoryUploadedFile, SimpleUploadedFile
 from django.test import RequestFactory
 from django.urls import reverse
 from geostore.tests.factories import LayerFactory
+from PIL import Image
 from rest_framework import status
 from rest_framework.test import APITestCase
 
@@ -20,13 +23,21 @@ from project.terra_layer.models import (
     FilterField,
     Layer,
     LayerGroup,
+    ReportConfig,
+    ReportField,
+    ReportFile,
     Scene,
     StyleImage,
 )
 from project.terra_layer.utils import get_scene_tree_cache_key
 
+from .factories import (
+    FeatureFactory,
+    ReportConfigFactory,
+    SceneFactory,
+    StyleImageFactory,
+)
 from .factories import LayerFactory as TerraLayerFactory
-from .factories import SceneFactory, StyleImageFactory
 
 
 class SceneViewsetTestCase(APITestCase):
@@ -672,9 +683,18 @@ class SceneTreeAPITestCase(APITestCase):
         # relationship is between geolayer and group, not "terralayer"
         geo_layer = source.get_layer()
         group.authorized_layers.add(geo_layer)
+        field = layer.source.fields.create(
+            name="_test_field1", label="test_label1", data_type=FieldTypes.String.value
+        )
+        field_2 = layer.source.fields.create(
+            name="_test_field2", label="test_label2", data_type=FieldTypes.String.value
+        )
+        report_config = ReportConfig.objects.create(label="Report config", layer=layer)
+        ReportField.objects.create(config=report_config, field=field, order=1)
+        ReportField.objects.create(config=report_config, field=field_2, order=2)
 
         self.client.force_authenticate(self.user)
-        with self.assertNumQueries(42):
+        with self.assertNumQueries(46):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
         with self.assertNumQueries(10):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
@@ -683,7 +703,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer.name = "new_name"
         layer.save()
 
-        with self.assertNumQueries(40):
+        with self.assertNumQueries(44):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
     def test_cache_cleared_after_public_layer_update(self):
@@ -691,7 +711,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer = Layer.objects.create(
             name="public_layer", source=source, group=self.layer_group
         )
-        with self.assertNumQueries(44):
+        with self.assertNumQueries(46):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
         with self.assertNumQueries(9):
@@ -700,7 +720,7 @@ class SceneTreeAPITestCase(APITestCase):
         # updating layer to trigger cache reset
         layer.name = "new_name"
         layer.save()
-        with self.assertNumQueries(36):
+        with self.assertNumQueries(38):
             # still differences in original query number because callbacks auto create geostore layers and groups
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
@@ -896,3 +916,319 @@ class LayerViewSetAPITestCase(APITestCase):
         # StyleImage should be changed
         self.assertEqual(StyleImage.objects.count(), 1)
         self.assertIn("Test2", response.json().get("style_images")[0].get("name"))
+
+    def test_create_and_update_report_config(self):
+        """On update on layer viewset, new report configs should be created"""
+        field1 = self.layer.source.fields.create(
+            name="_test_field1", label="test_label1", data_type=FieldTypes.String.value
+        )
+        field2 = self.layer.source.fields.create(
+            name="_test_field2", label="test_label2", data_type=FieldTypes.String.value
+        )
+        response = self.client.patch(
+            reverse("layer-detail", args=[self.layer.pk]),
+            {
+                "report_configs": [
+                    {
+                        "label": "Test report config",
+                        "report_fields": [
+                            {"order": 1, "sourceFieldId": field1.pk},
+                            {"order": 2, "sourceFieldId": field2.pk},
+                        ],
+                    }
+                ],
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
+        self.assertEqual(ReportConfig.objects.count(), 1)
+        self.assertEqual(ReportField.objects.count(), 2)
+        self.assertIn(
+            "Test report config", response.json().get("report_configs")[0].get("label")
+        )
+
+        config_id = ReportConfig.objects.first().pk
+        field_id = ReportField.objects.last().pk
+        # Update : second field became only field
+        response = self.client.patch(
+            reverse("layer-detail", args=[self.layer.pk]),
+            {
+                "report_configs": [
+                    {
+                        "id": config_id,
+                        "label": "Test report config 2",
+                        "report_fields": [
+                            {"id": field_id, "order": 1, "sourceFieldId": field2.pk}
+                        ],
+                    }
+                ],
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
+        self.assertEqual(ReportConfig.objects.count(), 1)
+        self.assertEqual(ReportField.objects.count(), 1)
+        self.assertIn(
+            "Test report config 2",
+            response.json().get("report_configs")[0].get("label"),
+        )
+
+
+class ReportCreateAPIViewTestCase(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.feature = FeatureFactory()
+        cls.report_config = ReportConfigFactory()
+        cls.user = SuperUserFactory(is_report_and_declaration_manager=True)
+        cls.valid_report_data = [
+            {
+                "sourceFieldId": 345,
+                "value": "my_field_1",
+                "label": "The Field One",
+                "content": "Some example content for testing purposes",
+            },
+            {
+                "sourceFieldId": 123,
+                "value": "my_field_2",
+                "label": "The Field Two",
+                "content": "Some example content for testing purposes with additional information that provides context",
+            },
+            {
+                "free_comment": "Another example with some extra information that was provided after the fields"
+            },
+        ]
+
+    def get_small_uploaded_image(self):
+        file = io.BytesIO()
+        image = Image.new("RGB", size=(20, 40), color=(155, 0, 0))
+        image.save(file, "jpeg")
+        file.name = "small.jpg"
+        file.seek(0)
+        return SimpleUploadedFile(file.name, file.read(), content_type="image/jpeg")
+
+    def get_uploaded_image_with_mismatched_extension(self):
+        file = io.BytesIO()
+        image = Image.new("RGB", size=(20, 40), color=(155, 0, 0))
+        image.save(file, "jpeg")
+        file.name = "small.png"
+        file.seek(0)
+        return SimpleUploadedFile(file.name, file.read(), content_type="image/png")
+
+    def get_uploaded_image_with_forbidden_extension(self):
+        file = io.BytesIO()
+        image = Image.new("RGB", size=(20, 40), color=(155, 0, 0))
+        image.save(file, "gif")
+        file.name = "small.gif"
+        file.seek(0)
+        return SimpleUploadedFile(file.name, file.read(), content_type="image/gif")
+
+    def test_create_report(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": self.valid_report_data,
+        }
+        self.assertEqual(len(mail.outbox), 0)
+        response = self.client.post(
+            reverse("report-create-view"), query, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, "New report submitted")
+
+    def test_create_report_unauthorized(self):
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": self.valid_report_data,
+        }
+
+        response = self.client.post(reverse("report-create-view"), query)
+        self.assertEqual(response.status_code, status.HTTP_401_UNAUTHORIZED)
+
+    def test_cannot_create_report_with_wrong_content(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": {"example": "data"},
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn(
+            "Field \\'content\\' must be a list of items.", str(response.content)
+        )
+
+    def test_cannot_create_report_with_wrong_content_2(self):
+        self.client.force_authenticate(self.user)
+        invalid_report_data = [
+            {
+                "sourceFieldId": "not an int",
+                "value": "my_field_1",
+                "label": "The Field One",
+                "content": "Some example content for testing purposes",
+            }
+        ]
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": invalid_report_data,
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn(
+            "At index 0 of field \\'content\\': \\'sourceFieldId\\' must be an integer.",
+            str(response.content),
+        )
+
+    def test_cannot_create_report_with_empty_content(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": [],
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("Field \\'content\\' cannot be empty.", str(response.content))
+
+    def test_cannot_create_report_with_wrong_content_field(self):
+        self.client.force_authenticate(self.user)
+        invalid_report_data = [
+            {
+                "unknown_field": 345,
+                "value": "my_field_1",
+                "label": "The Field One",
+                "content": "Some example content for testing purposes",
+            },
+            {
+                "free_comment": "Another example with some extra information that was provided after the fields"
+            },
+        ]
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": invalid_report_data,
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn(
+            "Item at index 0 of field \\'content\\' is missing required field: \\'sourceFieldId\\'",
+            str(response.content),
+        )
+
+    def test_create_report_with_files(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": json.dumps(self.valid_report_data),
+            "files": [self.get_small_uploaded_image()],
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, format="multipart"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(ReportFile.objects.count(), 1)
+        file = ReportFile.objects.first()
+        self.assertEqual(str(file), f"Report file {file.pk}")
+        self.assertRegex(file.file.url, r"^private/report_files/small.*\.jpg$")
+        self.assertRegex(file.file.name, r"^report_files/small.*\.jpg$")
+        # Delete file after test (also removes it from disk)
+        file.delete()
+
+    @mock.patch("django.core.files.uploadhandler.MemoryFileUploadHandler.file_complete")
+    def test_cannot_create_report_with_big_file(self, mock_file_complete):
+        self.client.force_authenticate(self.user)
+        mock_file_complete.return_value = InMemoryUploadedFile(
+            file=b"",
+            field_name=None,
+            name="big.png",
+            content_type="image/png",
+            size=6 * 1024 * 1024,  # 6 MB file
+            charset=None,
+        )
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": json.dumps(self.valid_report_data),
+            "files": [self.get_small_uploaded_image()],
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, format="multipart"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn("File size cannot exceed 5MB", str(response.content))
+
+    def test_cannot_create_report_with_too_many_files(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": json.dumps(self.valid_report_data),
+            "files": [
+                self.get_small_uploaded_image(),
+                self.get_small_uploaded_image(),
+                self.get_small_uploaded_image(),
+                self.get_small_uploaded_image(),
+            ],
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, format="multipart"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn(
+            "This request cannot contain more than 3 files.", str(response.content)
+        )
+
+    def test_cannot_create_report_with_forbidden_extension(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": json.dumps(self.valid_report_data),
+            "files": [self.get_uploaded_image_with_forbidden_extension()],
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, format="multipart"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn(
+            "File type not allowed. Allowed types: .jpg, .jpeg, .png, .pdf, .zip",
+            str(response.content),
+        )
+
+    def test_cannot_create_report_with_mismatched_extension(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "config": self.report_config.pk,
+            "feature": self.feature.pk,
+            "layer": self.report_config.layer.pk,
+            "content": json.dumps(self.valid_report_data),
+            "files": [self.get_uploaded_image_with_mismatched_extension()],
+        }
+        response = self.client.post(
+            reverse("report-create-view"), query, format="multipart"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn(
+            "File type not allowed. Allowed types: .jpg, .jpeg, .png, .pdf, .zip",
+            str(response.content),
+        )

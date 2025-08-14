@@ -22,7 +22,16 @@ from rest_framework.viewsets import ModelViewSet
 from project.geosource.models import FieldTypes, WMTSSource
 
 from ..filters import LayerFilterSet, SceneFilterSet
-from ..models import CustomStyle, FilterField, Layer, LayerGroup, Scene, StyleImage
+from ..models import (
+    CustomStyle,
+    FilterField,
+    Layer,
+    LayerGroup,
+    ReportConfig,
+    ReportField,
+    Scene,
+    StyleImage,
+)
 from ..permissions import LayerPermission, ScenePermission
 from ..serializers import (
     LayerDetailSerializer,
@@ -159,6 +168,17 @@ class SceneTreeAPIView(APIView):
                     to_attr="filters_enabled",
                 ),
                 "extra_styles__source",
+                Prefetch(
+                    "report_configs",
+                    ReportConfig.objects.prefetch_related(
+                        Prefetch(
+                            "report_fields",
+                            queryset=ReportField.objects.select_related("field"),
+                            to_attr="prefetched_report_fields",
+                        ),
+                    ),
+                    to_attr="prefetched_report_configs",
+                ),
             )
         ),
     )
@@ -537,6 +557,7 @@ class SceneTreeAPIView(APIView):
                 "form": self.get_filter_forms_for_layer(layer),
             },
             "source_credit": layer.source.credit,
+            "report_configs": self.get_report_configs_for_layer(layer),
         }
 
         # Set the exportable status of the layer if any filter fields is exportable
@@ -577,6 +598,24 @@ class SceneTreeAPIView(APIView):
             # Respect filter defined order
             filter_list.sort(key=lambda f: f.get("order", 0))
             return filter_list
+
+    def get_report_configs_for_layer(self, layer):
+        report_configs = []
+        for report_config in layer.prefetched_report_configs:
+            config = {"label": report_config.label, "fields": []}
+            for report_field in report_config.prefetched_report_fields:
+                config["fields"].append(
+                    {
+                        "order": report_field.order,
+                        "sourceFieldId": report_field.field_id,
+                        "value": report_field.field.name,
+                        "label": report_field.field.label,
+                        "format_type": TYPE_MAP[report_field.field.data_type],
+                        "required": report_field.required,
+                    }
+                )
+            report_configs.append(config)
+        return report_configs
 
     @cached_property
     def authorized_sources(self):

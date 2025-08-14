@@ -2,6 +2,14 @@
 Changelog
 ==========
 
+2025.07.00.pre1+dev (XXXX-XX-XX)
+--------------------------------
+
+**New fetaures**
+
+- Add API endpoints and backend for Report functionality (for users to provide feedback about data layers)
+
+
 2025.07.00.pre1 (2025-07-11)
 ----------------------------
 
