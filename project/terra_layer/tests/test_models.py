@@ -190,7 +190,7 @@ class ReportTestCase(TestCase):
 
     def test_models_str(self):
         self.assertEqual(str(self.report), f"Report {self.report.pk}")
-        self.assertEqual(str(self.report.status.label), _("Pending"))
+        self.assertEqual(str(self.report.status.label), _("New"))
         self.assertEqual(str(self.report.config), self.report.config.label)
         self.assertEqual(
             str(self.report.config.report_fields.first()),

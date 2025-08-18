@@ -1,0 +1,14 @@
+{% load i18n %}
+
+{% blocktranslate with url=url report_mail_signature=report_mail_signature %}
+Hi,
+
+A new declaration has been submitted.
+
+You can consult it at : {{ url }}
+
+Regards,
+
+{{ report_mail_signature }}
+
+{% endblocktranslate %}

@@ -4,6 +4,7 @@ import uuid
 from hashlib import md5
 
 from autoslug import AutoSlugField
+from django.contrib.gis.db import models as gis_models
 from django.db import models, transaction
 from django.db.models import TextChoices, UniqueConstraint
 from django.db.models.signals import post_delete
@@ -492,7 +493,8 @@ class StyleImage(models.Model):
         return self.name
 
 
-class ReportStatus(models.TextChoices):
+class Status(models.TextChoices):
+    NEW = "NEW", _("New")
     PENDING = "PENDING", _("Pending")
     ACCEPTED = "ACCEPTED", _("Accepted")
     REJECTED = "REJECTED", _("Rejected")
@@ -570,8 +572,8 @@ class Report(models.Model):
     )
     status = models.CharField(
         max_length=8,
-        choices=ReportStatus.choices,
-        default=ReportStatus.PENDING,
+        choices=Status.choices,
+        default=Status.NEW,
         verbose_name=_("Report status"),
     )
     content = models.JSONField(verbose_name=_("Content"))
@@ -605,7 +607,91 @@ class ReportFile(models.Model):
 
 @receiver(post_delete, sender=ReportFile)
 def report_file_post_delete_handler(sender, **kwargs):
-    photo = kwargs["instance"]
-    if photo and photo.file:
-        storage, path = photo.file.storage, photo.file.path
+    file = kwargs["instance"]
+    if file and file.file:
+        storage, path = file.file.storage, file.file.path
+        storage.delete(path)
+
+
+class DeclarationConfig(models.Model):
+    title = models.CharField(
+        max_length=255,
+        default=_("Declaration form"),
+        help_text=_("Title of the declaration form"),
+    )
+
+    class Meta:
+        verbose_name = _("Declaration config")
+        verbose_name_plural = _("Declaration configs")
+
+    def __str__(self):
+        return self.title if self.title else _("Declaration config")
+
+
+class DeclarationField(models.Model):
+    config = models.ForeignKey(
+        DeclarationConfig, on_delete=models.CASCADE, related_name="declaration_fields"
+    )
+    title = models.CharField(
+        max_length=255, help_text=_("Display title for this field")
+    )
+    helptext = models.TextField(
+        blank=True, help_text=_("Help text to guide users when filling this field")
+    )
+
+    class Meta:
+        verbose_name = _("Declaration field")
+        verbose_name_plural = _("Declaration fields")
+
+    def __str__(self):
+        return f"{_('Declaration field')} '{self.title}'"
+
+
+class Declaration(models.Model):
+    geom = gis_models.PointField(verbose_name=_("Position"))
+    status = models.CharField(
+        max_length=8,
+        choices=Status.choices,
+        default=Status.NEW,
+        verbose_name=_("Declaration status"),
+    )
+    content = models.JSONField(verbose_name=_("Content"))
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, verbose_name=_("User")
+    )
+    email = models.EmailField(verbose_name=_("Submitter email"), blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+
+    class Meta:
+        verbose_name = _("Declaration")
+        verbose_name_plural = _("Declarations")
+
+    def __str__(self):
+        return f"{_('Declaration')} {self.pk}"
+
+
+class DeclarationFile(models.Model):
+    declaration = models.ForeignKey(
+        Declaration,
+        on_delete=models.CASCADE,
+        related_name="files",
+    )
+    file = models.FileField(
+        upload_to="declaration_files", storage=private_media_storage
+    )
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("Declaration file")
+        verbose_name_plural = _("Declaration files")
+
+    def __str__(self):
+        return f"{_('Declaration file')} {self.pk}"
+
+
+@receiver(post_delete, sender=DeclarationFile)
+def declaration_file_post_delete_handler(sender, **kwargs):
+    file = kwargs["instance"]
+    if file and file.file:
+        storage, path = file.file.storage, file.file.path
         storage.delete(path)

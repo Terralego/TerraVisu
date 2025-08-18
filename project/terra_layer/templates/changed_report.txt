@@ -3,7 +3,7 @@
 {% blocktranslate with layer=layer status=status administrators_message=administrators_message report_mail_signature=report_mail_signature %}
 Hi,
 
-Your report regarding layer "{{ layer }}" has been changed to status {{ status }}.
+Your report regarding layer "{{ layer }}" has been changed to status "{{ status }}".
 
 {{ administrators_message }}
 

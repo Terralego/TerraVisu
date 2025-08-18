@@ -15,6 +15,10 @@ from project.geosource.models import Field
 
 from .models import (
     CustomStyle,
+    Declaration,
+    DeclarationConfig,
+    DeclarationField,
+    DeclarationFile,
     FilterField,
     Layer,
     Report,
@@ -93,12 +97,8 @@ class StyleImageSerializer(serializers.ModelSerializer):
         read_only_fields = ("slug", "file")
 
 
-class ReportFileSerializer(serializers.ModelSerializer):
+class FileSerializerMixin:
     file = serializers.FileField()
-
-    class Meta:
-        model = ReportFile
-        fields = ["file"]
 
     def validate_file(self, value):
         max_size = 5 * 1024 * 1024  # 5 MB
@@ -124,17 +124,14 @@ class ReportFileSerializer(serializers.ModelSerializer):
         return value
 
 
-class ReportSerializer(serializers.ModelSerializer):
-    files = ReportFileSerializer(many=True, required=False)
-
-    class Meta:
-        model = Report
-        fields = ["config", "feature", "layer", "content", "files"]
+class JSONContentValidatorMixin:
+    required_fields = []
+    integer_fields = []
 
     def validate_content(self, value):
         """
         The 'content' field which should be a list of dictionaries
-        with keys : "sourceFieldId", "value", "label", "content"   OR   "free_comment"
+        with keys : "title", "value",   OR   "free_comment"
         """
         if not isinstance(value, list):
             error_message = "Field 'content' must be a list of items."
@@ -144,26 +141,43 @@ class ReportSerializer(serializers.ModelSerializer):
             error_message = "Field 'content' cannot be empty."
             raise ValidationError(error_message)
 
-        required_fields = ["sourceFieldId", "value", "label", "content"]
-
         for i, item in enumerate(value):
             # Check for required fields
             if "free_comment" in item and len(item) == 1:
                 break
 
-            for field in required_fields:
+            for field in self.required_fields:
                 if field not in item:
                     error_message = f"Item at index {i} of field 'content' is missing required field: '{field}'"
                     raise ValidationError(error_message)
 
-            try:
-                source_field_id = int(item["sourceFieldId"])
-                item["sourceFieldId"] = source_field_id
-            except (ValueError, TypeError):
-                error_message = f"At index {i} of field 'content': 'sourceFieldId' must be an integer."
-                raise ValidationError(error_message)
+            for integer_field_key in self.integer_fields:
+                try:
+                    integer_value = int(item[integer_field_key])
+                    item[integer_field_key] = integer_value
+                except (ValueError, TypeError):
+                    error_message = f"At index {i} of field 'content': '{integer_field_key}' must be an integer."
+                    raise ValidationError(error_message)
 
         return value
+
+
+class ReportFileSerializer(FileSerializerMixin, serializers.ModelSerializer):
+    class Meta:
+        model = ReportFile
+        fields = ["file"]
+
+
+class ReportSerializer(JSONContentValidatorMixin, serializers.ModelSerializer):
+    files = ReportFileSerializer(many=True, required=False)
+    # The 'content' field which should be a list of dictionaries
+    # with keys : "sourceFieldId", "value", "label", "content"   OR   "free_comment"
+    required_fields = ["sourceFieldId", "value", "label", "content"]
+    integer_fields = ["sourceFieldId"]
+
+    class Meta:
+        model = Report
+        fields = ["config", "feature", "layer", "content", "files"]
 
     def create(self, validated_data):
         files = []
@@ -452,3 +466,53 @@ class MapBaseLayerSerializer(serializers.ModelSerializer):
             "tiles",
             "tilejson_url",
         )
+
+
+class DeclarationFieldSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeclarationField
+        fields = ["title", "helptext"]
+
+
+class DeclarationConfigSerializer(serializers.ModelSerializer):
+    declaration_fields = DeclarationFieldSerializer(many=True)
+
+    class Meta:
+        model = DeclarationConfig
+        fields = ["title", "declaration_fields"]
+
+
+class DeclarationFileSerializer(FileSerializerMixin, serializers.ModelSerializer):
+    class Meta:
+        model = DeclarationFile
+        fields = ["file"]
+
+
+class DeclarationSerializer(JSONContentValidatorMixin, serializers.ModelSerializer):
+    files = DeclarationFileSerializer(many=True, required=False)
+    # The 'content' field which should be a list of dictionaries
+    # with keys : "title", "value"   OR   "free_comment"
+    required_fields = ["title", "value"]
+
+    class Meta:
+        model = Declaration
+        fields = ["content", "files", "email", "geom"]
+
+    def create(self, validated_data):
+        files = []
+        if "files" in self.initial_data:
+            files = self.initial_data.pop("files", [])
+        if len(files) > 3:
+            too_many_files_message = "This request cannot contain more than 3 files."
+            raise serializers.ValidationError(too_many_files_message)
+        declaration = super().create(validated_data)
+        # Create DeclarationFile instances for each uploaded file
+        for file in files:
+            obj = DeclarationFileSerializer(
+                data={
+                    "file": file,
+                }
+            )
+            if obj.is_valid(raise_exception=True):
+                obj.save(declaration=declaration)
+        return declaration

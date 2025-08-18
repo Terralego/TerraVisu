@@ -9,6 +9,9 @@ from model_clone import CloneModelAdmin
 
 from project.admin import config_site
 from project.terra_layer.models import (
+    Declaration,
+    DeclarationConfig,
+    DeclarationField,
     Layer,
     Report,
     ReportConfig,
@@ -16,7 +19,7 @@ from project.terra_layer.models import (
     Scene,
     StyleImage,
 )
-from project.terra_layer.views.forms import ReportAdminForm
+from project.terra_layer.views.forms import DeclarationAdminForm, ReportAdminForm
 
 
 class StyleImageInline(admin.TabularInline):
@@ -72,8 +75,23 @@ class ReportAdmin(admin.ModelAdmin):
         "display_content",
         "display_files",
     )
+    fields = (
+        "config",
+        "created_at",
+        "display_email",
+        "display_layer",
+        "display_feature",
+        "display_content",
+        "display_files",
+        "status",
+        "administrators_message",
+    )
     form = ReportAdminForm
     exclude = ("config", "feature", "layer", "email", "user", "content")
+
+    def has_add_permission(self, request):
+        # Creation through API only
+        return False
 
     def display_layer(self, obj):
         return obj.config.layer.name
@@ -124,7 +142,11 @@ class ReportAdmin(admin.ModelAdmin):
 
     def display_feature(self, obj):
         main_field = getattr(obj.layer.main_field, "name", None)
-        return obj.feature.properties.get(main_field, None) if main_field else None
+        return (
+            obj.feature.properties.get(main_field, None)
+            if main_field
+            else obj.feature.pk
+        )
 
     display_feature.short_description = _("Feature")
 
@@ -172,3 +194,109 @@ class ReportFieldAdmin(admin.ModelAdmin):
 
 
 config_site.register(Report, ReportAdmin)
+
+
+class DeclarationAdmin(admin.ModelAdmin):
+    list_display = ("created_at", "status", "display_email_list")
+    list_filter = ("status",)
+    form = DeclarationAdminForm
+    readonly_fields = (
+        "created_at",
+        "display_user",
+        "display_email_detail",
+        "display_content",
+        "display_files",
+    )
+    # Reorder all fields including those from AdminForm
+    fields = (
+        "created_at",
+        "display_user",
+        "display_email_detail",
+        "display_content",
+        "geom",
+        "display_files",
+        "status",
+        "administrators_message",
+    )
+    exclude = ("user", "email", "content")
+
+    def has_add_permission(self, request):
+        # Creation through API only
+        return False
+
+    def display_user(self, obj):
+        return obj.user.email if obj.user else _("No user")
+
+    display_user.short_description = _("User")
+
+    def display_email_list(self, obj):
+        return obj.user.email if obj.user else obj.email
+
+    display_email_list.short_description = _("Email")
+
+    def display_email_detail(self, obj):
+        return obj.email if obj.email else _("See user")
+
+    display_email_detail.short_description = _("Email")
+
+    def display_files(self, obj):
+        files_links = []
+        for declaration_file in obj.files.all():
+            files_links.append(
+                format_html(
+                    '&#128196; <a href="{}">{}</a><br>',
+                    "/" + declaration_file.file.url,
+                    Path(declaration_file.file.name).name,
+                )
+            )
+        return format_html("".join(files_links))
+
+    display_files.short_description = _("Files")
+
+    def display_content(self, obj):
+        free_comment_string = _("Free comment")
+        content = "<table>"
+        content += "<tr>"
+        for field in obj.content:
+            content += f"<th>{field.get('title', free_comment_string)}</th>"
+        content += "</tr>"
+        content += "<tr>"
+        for field in obj.content:
+            content += f"<td>{field.get('value', field.get('free_comment'))}</td>"
+        content += "</tr>"
+        content += "</table>"
+        return format_html("".join(content))
+
+    display_content.short_description = _("Content")
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset.prefetch_related("files").select_related("status", "user")
+        return queryset
+
+
+config_site.register(Declaration, DeclarationAdmin)
+
+
+class DeclarationFieldInline(admin.TabularInline):
+    model = DeclarationField
+    fields = (
+        "title",
+        "helptext",
+    )
+    extra = 1
+
+
+class DeclarationConfigAdmin(admin.ModelAdmin):
+    list_display = ("title",)
+    inlines = [DeclarationFieldInline]
+
+    def has_add_permission(self, request):
+        # There can be only one config
+        perms = super().has_add_permission(request)
+        if perms and DeclarationField.objects.exists():
+            perms = False  # Disallow creating a new config if there is one already
+        return perms
+
+
+config_site.register(DeclarationConfig, DeclarationConfigAdmin)
