@@ -6,7 +6,7 @@ from hashlib import md5
 from autoslug import AutoSlugField
 from django.contrib.gis.db import models as gis_models
 from django.db import models, transaction
-from django.db.models import TextChoices, UniqueConstraint
+from django.db.models import Q, TextChoices, UniqueConstraint
 from django.db.models.signals import post_delete
 from django.dispatch import receiver
 from django.utils.text import slugify
@@ -537,6 +537,11 @@ class ReportField(models.Model):
         verbose_name=_("Field"),
         related_name="report_fields",
     )
+    helptext = models.TextField(
+        blank=True,
+        help_text=_("Help text to guide users when filling this field"),
+        verbose_name=_("Help text"),
+    )
     required = models.BooleanField(default=False, verbose_name=_("Required"))
     order = models.IntegerField(verbose_name=_("Order"))
 
@@ -636,7 +641,9 @@ class DeclarationField(models.Model):
         max_length=255, help_text=_("Display title for this field")
     )
     helptext = models.TextField(
-        blank=True, help_text=_("Help text to guide users when filling this field")
+        blank=True,
+        help_text=_("Help text to guide users when filling this field"),
+        verbose_name=_("Help text"),
     )
 
     class Meta:
@@ -695,3 +702,34 @@ def declaration_file_post_delete_handler(sender, **kwargs):
     if file and file.file:
         storage, path = file.file.storage, file.file.path
         storage.delete(path)
+
+
+class ManagerMessage(models.Model):
+    text = models.TextField(verbose_name=_("Message"))
+    sent_at = models.DateTimeField(auto_now_add=True)
+    report = models.ForeignKey(
+        Report,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="report_manager_messages",
+    )
+    declaration = models.ForeignKey(
+        Declaration,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="declaration_manager_messages",
+    )
+
+    class Meta:
+        verbose_name = _("Manager message")
+        verbose_name_plural = _("Manager messages")
+        ordering = ["sent_at"]
+        constraints = [
+            models.CheckConstraint(
+                check=Q(declaration__isnull=False) ^ Q(report__isnull=False),
+                name="manager_message_has_report_xor_declaration",
+            )
+        ]
+
+    def __str__(self):
+        return f"{_('Manager message')} {self.pk}"

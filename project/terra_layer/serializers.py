@@ -206,7 +206,7 @@ class ReportFieldSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ReportField
-        fields = ("id", "order", "sourceFieldId", "required")
+        fields = ("id", "order", "sourceFieldId", "required", "helptext")
 
 
 class ReportConfigSerializer(serializers.ModelSerializer):

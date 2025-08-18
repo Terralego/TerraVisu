@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-18 14:40+0000\n"
+"POT-Creation-Date: 2025-08-18 16:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -523,10 +523,16 @@ msgstr ""
 msgid "Feature"
 msgstr ""
 
+msgid "Manager messages"
+msgstr ""
+
 msgid "Field"
 msgstr ""
 
 msgid "No user"
+msgstr ""
+
+msgid "Deleted email"
 msgstr ""
 
 msgid "See user"
@@ -566,6 +572,12 @@ msgid "Report config"
 msgstr ""
 
 msgid "Reports configs"
+msgstr ""
+
+msgid "Help text to guide users when filling this field"
+msgstr ""
+
+msgid "Help text"
 msgstr ""
 
 msgid "Required"
@@ -616,9 +628,6 @@ msgstr ""
 msgid "Display title for this field"
 msgstr ""
 
-msgid "Help text to guide users when filling this field"
-msgstr ""
-
 msgid "Declaration field"
 msgstr ""
 
@@ -644,6 +653,12 @@ msgid "Declaration file"
 msgstr ""
 
 msgid "Declaration files"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Manager message"
 msgstr ""
 
 msgid "'tiles' should not be filled for mapbox base layers."
@@ -728,7 +743,7 @@ msgstr ""
 msgid "Optional message to send user on status change"
 msgstr ""
 
-msgid "Administrators message"
+msgid "Managers message"
 msgstr ""
 
 msgid "Your report has been updated"

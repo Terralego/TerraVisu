@@ -1,6 +1,7 @@
 from pathlib import Path
 
 from django.contrib import admin
+from django.utils.formats import date_format
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from geostore.models import Feature
@@ -66,6 +67,7 @@ class SceneAdmin(admin.ModelAdmin):
 class ReportAdmin(admin.ModelAdmin):
     list_display = ("created_at", "status", "display_email", "display_layer")
     list_filter = ("status",)
+    form = ReportAdminForm
     readonly_fields = (
         "config",
         "display_feature",
@@ -74,6 +76,7 @@ class ReportAdmin(admin.ModelAdmin):
         "display_layer",
         "display_content",
         "display_files",
+        "display_managers_messages",
     )
     fields = (
         "config",
@@ -83,10 +86,10 @@ class ReportAdmin(admin.ModelAdmin):
         "display_feature",
         "display_content",
         "display_files",
+        "display_managers_messages",
+        "managers_message",
         "status",
-        "administrators_message",
     )
-    form = ReportAdminForm
     exclude = ("config", "feature", "layer", "email", "user", "content")
 
     def has_add_permission(self, request):
@@ -135,7 +138,7 @@ class ReportAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        queryset.prefetch_related("files").select_related(
+        queryset.prefetch_related("files", "report_manager_messages").select_related(
             "status", "config", "config__layer", "user"
         )
         return queryset
@@ -149,6 +152,22 @@ class ReportAdmin(admin.ModelAdmin):
         )
 
     display_feature.short_description = _("Feature")
+
+    def display_managers_messages(self, obj):
+        content = "<table>"
+        content += "<tr>"
+        messages = obj.report_manager_messages.all()
+        for message in messages:
+            content += f"<th>{date_format(message.sent_at)}</th>"
+        content += "</tr>"
+        content += "<tr>"
+        for message in messages:
+            content += f"<td>{message.text}</td>"
+        content += "</tr>"
+        content += "</table>"
+        return format_html("".join(content))
+
+    display_managers_messages.short_description = _("Manager messages")
 
 
 @admin.register(ReportConfig)
@@ -206,6 +225,7 @@ class DeclarationAdmin(admin.ModelAdmin):
         "display_email_detail",
         "display_content",
         "display_files",
+        "display_managers_messages",
     )
     # Reorder all fields including those from AdminForm
     fields = (
@@ -215,8 +235,9 @@ class DeclarationAdmin(admin.ModelAdmin):
         "display_content",
         "geom",
         "display_files",
+        "display_managers_messages",
+        "managers_message",
         "status",
-        "administrators_message",
     )
     exclude = ("user", "email", "content")
 
@@ -230,7 +251,13 @@ class DeclarationAdmin(admin.ModelAdmin):
     display_user.short_description = _("User")
 
     def display_email_list(self, obj):
-        return obj.user.email if obj.user else obj.email
+        return (
+            obj.user.email
+            if obj.user
+            else obj.email
+            if obj.email
+            else _("Deleted email")
+        )
 
     display_email_list.short_description = _("Email")
 
@@ -269,9 +296,27 @@ class DeclarationAdmin(admin.ModelAdmin):
 
     display_content.short_description = _("Content")
 
+    def display_managers_messages(self, obj):
+        content = "<table>"
+        content += "<tr>"
+        messages = obj.declaration_manager_messages.all()
+        for message in messages:
+            content += f"<th>{date_format(message.sent_at)}</th>"
+        content += "</tr>"
+        content += "<tr>"
+        for message in messages:
+            content += f"<td>{message.text}</td>"
+        content += "</tr>"
+        content += "</table>"
+        return format_html("".join(content))
+
+    display_managers_messages.short_description = _("Manager messages")
+
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        queryset.prefetch_related("files").select_related("status", "user")
+        queryset.prefetch_related(
+            "files", "declaration_manager_messages"
+        ).select_related("status", "user")
         return queryset
 
 

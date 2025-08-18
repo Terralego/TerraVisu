@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-18 14:38+0000\n"
+"POT-Creation-Date: 2025-08-18 16:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -608,11 +608,17 @@ msgstr "Contenu"
 msgid "Feature"
 msgstr "Objet"
 
+msgid "Manager messages"
+msgstr "Messages des gestionnaires"
+
 msgid "Field"
 msgstr "Champ"
 
 msgid "No user"
 msgstr "Pas d'utilisateur"
+
+msgid "Deleted email"
+msgstr "Email supprimé"
 
 msgid "See user"
 msgstr "Voir utilisateur"
@@ -653,6 +659,12 @@ msgstr "Configuration de signalement"
 
 msgid "Reports configs"
 msgstr "Configurations des signalements"
+
+msgid "Help text to guide users when filling this field"
+msgstr "Description pour guider les utilisateurs dans le remplissage du champ"
+
+msgid "Help text"
+msgstr "Description"
 
 msgid "Required"
 msgstr "Requis"
@@ -702,9 +714,6 @@ msgstr "Configurations des déclarations"
 msgid "Display title for this field"
 msgstr "Titre du champ"
 
-msgid "Help text to guide users when filling this field"
-msgstr "Description pour guider les utilisateurs dans le remplissage du champ"
-
 msgid "Declaration field"
 msgstr "Champ du formulaire de déclaration"
 
@@ -731,6 +740,12 @@ msgstr "Document de la déclaration"
 
 msgid "Declaration files"
 msgstr "Documents de la déclaration"
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Manager message"
+msgstr "Message des gestionnaires"
 
 msgid "'tiles' should not be filled for mapbox base layers."
 msgstr "'tiles' ne doit pas être saisi pour les fonds de plan mapbox."
@@ -863,8 +878,8 @@ msgstr ""
 "Message optionnel à transmettre à l'utilisateur qui a soumis le signalement, "
 "lors du changement de status"
 
-msgid "Administrators message"
-msgstr "Message des administrateurs"
+msgid "Managers message"
+msgstr "Message des gestionnaires"
 
 msgid "Your report has been updated"
 msgstr "Votre signalement a été mis à jour"
