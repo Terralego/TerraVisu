@@ -1,6 +1,9 @@
+import csv
 from pathlib import Path
 
+from django.conf import settings
 from django.contrib import admin
+from django.http import HttpResponse
 from django.utils.formats import date_format
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
@@ -215,9 +218,37 @@ class ReportFieldAdmin(admin.ModelAdmin):
 config_site.register(Report, ReportAdmin)
 
 
+class MonthYearFilter(admin.SimpleListFilter):
+    title = _("Creation month")
+    parameter_name = "created_month_year"
+
+    def lookups(self, request, model_admin):
+        dates = model_admin.model.objects.dates("created_at", "month", order="DESC")
+
+        choices = []
+        for date_obj in dates:
+            month_year = f"{date_obj.year}-{date_obj.month:02d}"
+            month_display = date_format(date_obj).split(" ")[1].capitalize()
+            month_year_display = f"{month_display} {date_obj.year}"
+            choices.append((month_year, month_year_display))
+
+        return choices
+
+    def queryset(self, request, queryset):
+        if self.value():
+            month_year = request.GET.get(self.parameter_name)
+            if month_year:
+                year, month = month_year.split("-")
+                year = int(year)
+                month = int(month)
+                return queryset.filter(created_at__year=year, created_at__month=month)
+
+        return queryset
+
+
 class DeclarationAdmin(admin.ModelAdmin):
     list_display = ("created_at", "status", "display_email_list")
-    list_filter = ("status",)
+    list_filter = ("status", MonthYearFilter)
     form = DeclarationAdminForm
     readonly_fields = (
         "created_at",
@@ -240,6 +271,7 @@ class DeclarationAdmin(admin.ModelAdmin):
         "status",
     )
     exclude = ("user", "email", "content")
+    actions = ["export_as_csv"]
 
     def has_add_permission(self, request):
         # Creation through API only
@@ -311,6 +343,78 @@ class DeclarationAdmin(admin.ModelAdmin):
         return format_html("".join(content))
 
     display_managers_messages.short_description = _("Manager messages")
+
+    def export_as_csv(self, request, queryset):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="declarations.csv"'
+        scheme = "https" if settings.SSL_ENABLED else "http"
+        server_name = request.get_host()
+        writer = csv.writer(response)
+
+        # Write header row
+        header = [
+            _("ID"),
+            _("Created at"),
+            _("Status"),
+            _("Email"),
+            _("Latitude"),
+            _("Longitude"),
+            _("Content"),
+            _("Files"),
+            _("Manager messages"),
+        ]
+        writer.writerow(header)
+
+        for declaration in queryset.prefetch_related(
+            "files", "declaration_manager_messages"
+        ).select_related("user"):
+            email = (
+                declaration.user.email
+                if declaration.user
+                else (declaration.email if declaration.email else _("Deleted email"))
+            )
+
+            latitude = declaration.geom.y if declaration.geom else ""
+            longitude = declaration.geom.x if declaration.geom else ""
+
+            # Format content fields
+            content_fields = []
+            if declaration.content:
+                for field in declaration.content:
+                    title = field.get("title", _("Free comment"))
+                    value = field.get("value", field.get("free_comment", ""))
+                    content_fields.append(f"{title}: {value}")
+            content_str = " | ".join(content_fields)
+
+            file_urls = []
+            for declaration_file in declaration.files.all():
+                full_file_url = f"{scheme}://{server_name}/{declaration_file.file.url}"
+                file_urls.append(full_file_url)
+            files_str = " | ".join(file_urls)
+
+            messages = []
+            for message in declaration.declaration_manager_messages.all():
+                messages.append(
+                    f"{message.sent_at.strftime('%d/%m/%Y')}: {message.text}"
+                )
+            messages_str = " | ".join(messages)
+
+            row = [
+                declaration.pk,
+                declaration.created_at.strftime("%d/%m/%Y %H:%M"),
+                declaration.get_status_display(),
+                email,
+                latitude,
+                longitude,
+                content_str,
+                files_str,
+                messages_str,
+            ]
+            writer.writerow(row)
+
+        return response
+
+    export_as_csv.short_description = _("Export selected declarations as CSV")
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)

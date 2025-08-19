@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-18 16:48+0000\n"
+"POT-Creation-Date: 2025-08-19 08:38+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -614,6 +614,9 @@ msgstr "Messages des gestionnaires"
 msgid "Field"
 msgstr "Champ"
 
+msgid "Creation month"
+msgstr "Mois de création"
+
 msgid "No user"
 msgstr "Pas d'utilisateur"
 
@@ -622,6 +625,24 @@ msgstr "Email supprimé"
 
 msgid "See user"
 msgstr "Voir utilisateur"
+
+msgid "ID"
+msgstr "Identifiant"
+
+msgid "Created at"
+msgstr "Créé le"
+
+msgid "Status"
+msgstr "Status"
+
+msgid "Latitude"
+msgstr "Latitude"
+
+msgid "Longitude"
+msgstr "Longitude"
+
+msgid "Export selected declarations as CSV"
+msgstr "Exporter les déclarations sélectionnées comme CSV"
 
 msgid "Map"
 msgstr "Carte"
@@ -683,9 +704,6 @@ msgstr "Configuration du signalement"
 
 msgid "Report status"
 msgstr "Statut du signalement"
-
-msgid "Created at"
-msgstr "Créé le"
 
 msgid "Report"
 msgstr "Signalement"
