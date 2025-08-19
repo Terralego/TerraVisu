@@ -94,6 +94,9 @@ class ReportAdminTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "Your report has been updated")
+        manager_message = ManagerMessage.objects.filter(report=self.report).first()
+        self.assertEqual(manager_message.text, "Your report has been treated")
+        self.assertEqual(str(manager_message), f"Manager message {manager_message.pk}")
 
 
 class DeclarationAdminTestCase(TestCase):

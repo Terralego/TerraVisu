@@ -324,7 +324,6 @@ class DeclarationAdmin(admin.ModelAdmin):
         server_name = request.get_host()
         writer = csv.writer(response)
 
-        # Write header row
         header = [
             _("ID"),
             _("Created at"),
@@ -340,7 +339,7 @@ class DeclarationAdmin(admin.ModelAdmin):
 
         for declaration in queryset.prefetch_related(
             "files", "declaration_manager_messages"
-        ).select_related("user"):
+        ).select_related("user", "status"):
             email = (
                 declaration.user.email
                 if declaration.user
@@ -350,7 +349,6 @@ class DeclarationAdmin(admin.ModelAdmin):
             latitude = declaration.geom.y if declaration.geom else ""
             longitude = declaration.geom.x if declaration.geom else ""
 
-            # Format content fields
             content_fields = []
             if declaration.content:
                 for field in declaration.content:

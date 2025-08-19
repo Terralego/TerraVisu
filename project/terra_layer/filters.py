@@ -42,14 +42,12 @@ class MonthYearFilter(admin.SimpleListFilter):
 
     def lookups(self, request, model_admin):
         dates = model_admin.model.objects.dates("created_at", "month", order="DESC")
-
         choices = []
         for date_obj in dates:
             month_year = f"{date_obj.year}-{date_obj.month:02d}"
             month_display = date_format(date_obj).split(" ")[1].capitalize()
             month_year_display = f"{month_display} {date_obj.year}"
             choices.append((month_year, month_year_display))
-
         return choices
 
     def queryset(self, request, queryset):
@@ -60,5 +58,4 @@ class MonthYearFilter(admin.SimpleListFilter):
                 year = int(year)
                 month = int(month)
                 return queryset.filter(created_at__year=year, created_at__month=month)
-
         return queryset
