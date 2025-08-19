@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-19 08:38+0000\n"
+"POT-Creation-Date: 2025-08-19 13:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -614,9 +614,6 @@ msgstr "Messages des gestionnaires"
 msgid "Field"
 msgstr "Champ"
 
-msgid "Creation month"
-msgstr "Mois de création"
-
 msgid "No user"
 msgstr "Pas d'utilisateur"
 
@@ -643,6 +640,9 @@ msgstr "Longitude"
 
 msgid "Export selected declarations as CSV"
 msgstr "Exporter les déclarations sélectionnées comme CSV"
+
+msgid "Creation month"
+msgstr "Mois de création"
 
 msgid "Map"
 msgstr "Carte"

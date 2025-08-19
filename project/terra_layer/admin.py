@@ -12,6 +12,7 @@ from geostore.models import Layer as GeostoreLayer
 from model_clone import CloneModelAdmin
 
 from project.admin import config_site
+from project.terra_layer.filters import MonthYearFilter
 from project.terra_layer.models import (
     Declaration,
     DeclarationConfig,
@@ -69,7 +70,7 @@ class SceneAdmin(admin.ModelAdmin):
 @admin.register(Report)
 class ReportAdmin(admin.ModelAdmin):
     list_display = ("created_at", "status", "display_email", "display_layer")
-    list_filter = ("status",)
+    list_filter = ("status", MonthYearFilter)
     form = ReportAdminForm
     readonly_fields = (
         "config",
@@ -216,34 +217,6 @@ class ReportFieldAdmin(admin.ModelAdmin):
 
 
 config_site.register(Report, ReportAdmin)
-
-
-class MonthYearFilter(admin.SimpleListFilter):
-    title = _("Creation month")
-    parameter_name = "created_month_year"
-
-    def lookups(self, request, model_admin):
-        dates = model_admin.model.objects.dates("created_at", "month", order="DESC")
-
-        choices = []
-        for date_obj in dates:
-            month_year = f"{date_obj.year}-{date_obj.month:02d}"
-            month_display = date_format(date_obj).split(" ")[1].capitalize()
-            month_year_display = f"{month_display} {date_obj.year}"
-            choices.append((month_year, month_year_display))
-
-        return choices
-
-    def queryset(self, request, queryset):
-        if self.value():
-            month_year = request.GET.get(self.parameter_name)
-            if month_year:
-                year, month = month_year.split("-")
-                year = int(year)
-                month = int(month)
-                return queryset.filter(created_at__year=year, created_at__month=month)
-
-        return queryset
 
 
 class DeclarationAdmin(admin.ModelAdmin):

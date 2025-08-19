@@ -655,7 +655,7 @@ class DeclarationField(models.Model):
         verbose_name_plural = _("Declaration fields")
 
     def __str__(self):
-        return f"{_('Declaration field')} '{self.title}'"
+        return self.title if self.title else f"{_('Declaration field')} {self.pk}"
 
 
 class Declaration(models.Model):

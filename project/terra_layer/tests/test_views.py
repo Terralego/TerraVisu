@@ -20,6 +20,8 @@ from project.geosource.models import FieldTypes, PostGISSource, Source, WMTSSour
 from project.geosource.tests.factories import PostGISSourceFactory
 from project.terra_layer.models import (
     CustomStyle,
+    Declaration,
+    DeclarationFile,
     FilterField,
     Layer,
     LayerGroup,
@@ -32,12 +34,40 @@ from project.terra_layer.models import (
 from project.terra_layer.utils import get_scene_tree_cache_key
 
 from .factories import (
+    DeclarationFieldFactory,
     FeatureFactory,
     ReportConfigFactory,
     SceneFactory,
     StyleImageFactory,
 )
 from .factories import LayerFactory as TerraLayerFactory
+
+
+def get_small_uploaded_image():
+    file = io.BytesIO()
+    image = Image.new("RGB", size=(20, 40), color=(155, 0, 0))
+    image.save(file, "jpeg")
+    file.name = "small.jpg"
+    file.seek(0)
+    return SimpleUploadedFile(file.name, file.read(), content_type="image/jpeg")
+
+
+def get_uploaded_image_with_mismatched_extension():
+    file = io.BytesIO()
+    image = Image.new("RGB", size=(20, 40), color=(155, 0, 0))
+    image.save(file, "jpeg")
+    file.name = "small.png"
+    file.seek(0)
+    return SimpleUploadedFile(file.name, file.read(), content_type="image/png")
+
+
+def get_uploaded_image_with_forbidden_extension():
+    file = io.BytesIO()
+    image = Image.new("RGB", size=(20, 40), color=(155, 0, 0))
+    image.save(file, "gif")
+    file.name = "small.gif"
+    file.seek(0)
+    return SimpleUploadedFile(file.name, file.read(), content_type="image/gif")
 
 
 class SceneViewsetTestCase(APITestCase):
@@ -996,30 +1026,6 @@ class ReportCreateAPIViewTestCase(APITestCase):
             },
         ]
 
-    def get_small_uploaded_image(self):
-        file = io.BytesIO()
-        image = Image.new("RGB", size=(20, 40), color=(155, 0, 0))
-        image.save(file, "jpeg")
-        file.name = "small.jpg"
-        file.seek(0)
-        return SimpleUploadedFile(file.name, file.read(), content_type="image/jpeg")
-
-    def get_uploaded_image_with_mismatched_extension(self):
-        file = io.BytesIO()
-        image = Image.new("RGB", size=(20, 40), color=(155, 0, 0))
-        image.save(file, "jpeg")
-        file.name = "small.png"
-        file.seek(0)
-        return SimpleUploadedFile(file.name, file.read(), content_type="image/png")
-
-    def get_uploaded_image_with_forbidden_extension(self):
-        file = io.BytesIO()
-        image = Image.new("RGB", size=(20, 40), color=(155, 0, 0))
-        image.save(file, "gif")
-        file.name = "small.gif"
-        file.seek(0)
-        return SimpleUploadedFile(file.name, file.read(), content_type="image/gif")
-
     def test_create_report(self):
         self.client.force_authenticate(self.user)
         query = {
@@ -1137,7 +1143,7 @@ class ReportCreateAPIViewTestCase(APITestCase):
             "feature": self.feature.pk,
             "layer": self.report_config.layer.pk,
             "content": json.dumps(self.valid_report_data),
-            "files": [self.get_small_uploaded_image()],
+            "files": [get_small_uploaded_image()],
         }
         response = self.client.post(
             reverse("report-create-view"), query, format="multipart"
@@ -1167,7 +1173,7 @@ class ReportCreateAPIViewTestCase(APITestCase):
             "feature": self.feature.pk,
             "layer": self.report_config.layer.pk,
             "content": json.dumps(self.valid_report_data),
-            "files": [self.get_small_uploaded_image()],
+            "files": [get_small_uploaded_image()],
         }
         response = self.client.post(
             reverse("report-create-view"), query, format="multipart"
@@ -1183,10 +1189,10 @@ class ReportCreateAPIViewTestCase(APITestCase):
             "layer": self.report_config.layer.pk,
             "content": json.dumps(self.valid_report_data),
             "files": [
-                self.get_small_uploaded_image(),
-                self.get_small_uploaded_image(),
-                self.get_small_uploaded_image(),
-                self.get_small_uploaded_image(),
+                get_small_uploaded_image(),
+                get_small_uploaded_image(),
+                get_small_uploaded_image(),
+                get_small_uploaded_image(),
             ],
         }
         response = self.client.post(
@@ -1204,7 +1210,7 @@ class ReportCreateAPIViewTestCase(APITestCase):
             "feature": self.feature.pk,
             "layer": self.report_config.layer.pk,
             "content": json.dumps(self.valid_report_data),
-            "files": [self.get_uploaded_image_with_forbidden_extension()],
+            "files": [get_uploaded_image_with_forbidden_extension()],
         }
         response = self.client.post(
             reverse("report-create-view"), query, format="multipart"
@@ -1222,7 +1228,7 @@ class ReportCreateAPIViewTestCase(APITestCase):
             "feature": self.feature.pk,
             "layer": self.report_config.layer.pk,
             "content": json.dumps(self.valid_report_data),
-            "files": [self.get_uploaded_image_with_mismatched_extension()],
+            "files": [get_uploaded_image_with_mismatched_extension()],
         }
         response = self.client.post(
             reverse("report-create-view"), query, format="multipart"
@@ -1232,3 +1238,112 @@ class ReportCreateAPIViewTestCase(APITestCase):
             "File type not allowed. Allowed types: .jpg, .jpeg, .png, .pdf, .zip",
             str(response.content),
         )
+
+
+class DeclarationAPIViewTestCase(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.declaration_field_1 = DeclarationFieldFactory()
+        cls.declaration_config = cls.declaration_field_1.config
+        cls.declaration_field_2 = DeclarationFieldFactory(config=cls.declaration_config)
+        cls.user = SuperUserFactory(is_report_and_declaration_manager=True)
+        cls.valid_declaration_content = [
+            {
+                "title": "The title of the field",
+                "value": "Some message sent by a user though the feedback system",
+            },
+            {
+                "title": "The Field Two",
+                "value": "Some example content for testing purposes with additional information that provides context",
+            },
+            {
+                "free_comment": "Another example with some extra information that was provided after the fields"
+            },
+        ]
+        cls.valid_declaration_geom = {
+            "type": "Point",
+            "coordinates": [6.851806864142417, 43.58039085560784],
+        }
+
+    def test_config_view(self):
+        response = self.client.get(reverse("declaration-config-detail-view"))
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        expected_config = {
+            "title": f"{self.declaration_config.title}",
+            "declaration_fields": [
+                {
+                    "title": f"{self.declaration_field_1.title}",
+                    "helptext": f"{self.declaration_field_1.helptext}",
+                },
+                {
+                    "title": f"{self.declaration_field_2.title}",
+                    "helptext": f"{self.declaration_field_2.helptext}",
+                },
+            ],
+        }
+        self.assertJSONEqual(
+            json.dumps(expected_config),
+            response.content.decode(),
+        )
+        self.assertEqual(str(self.declaration_config), self.declaration_config.title)
+        self.assertEqual(str(self.declaration_field_1), self.declaration_field_1.title)
+
+    def test_create_authentified_declaration_with_file(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "content": json.dumps(self.valid_declaration_content),
+            "geom": json.dumps(self.valid_declaration_geom),
+            "files": [get_small_uploaded_image()],
+        }
+        response = self.client.post(
+            reverse("declaration-create-view"), query, format="multipart"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, "New declaration submitted")
+        self.assertEqual(
+            Declaration.objects.filter(user=self.user, email="").count(), 1
+        )
+        self.assertEqual(DeclarationFile.objects.count(), 1)
+        file = DeclarationFile.objects.first()
+        self.assertEqual(str(file), f"Declaration file {file.pk}")
+        self.assertRegex(file.file.url, r"^private/declaration_files/small.*\.jpg$")
+        self.assertRegex(file.file.name, r"^declaration_files/small.*\.jpg$")
+        # Delete file after test (also removes it from disk)
+        file.delete()
+
+    def test_cannot_create_declaration_with_too_many_files(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "content": json.dumps(self.valid_declaration_content),
+            "geom": json.dumps(self.valid_declaration_geom),
+            "files": [
+                get_small_uploaded_image(),
+                get_small_uploaded_image(),
+                get_small_uploaded_image(),
+                get_small_uploaded_image(),
+            ],
+        }
+        response = self.client.post(
+            reverse("declaration-create-view"), query, format="multipart"
+        )
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertIn(
+            "This request cannot contain more than 3 files.", str(response.content)
+        )
+
+    def test_create_unauthentified_declaration(self):
+        query = {
+            "content": json.dumps(self.valid_declaration_content),
+            "geom": json.dumps(self.valid_declaration_geom),
+            "email": "atest@email.ad",
+        }
+        response = self.client.post(
+            reverse("declaration-create-view"), query, format="multipart"
+        )
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        self.assertEqual(
+            Declaration.objects.filter(user=None, email="atest@email.ad").count(), 1
+        )
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(mail.outbox[0].subject, "New declaration submitted")

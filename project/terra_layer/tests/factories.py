@@ -7,8 +7,13 @@ from project.accounts.tests.factories import UserFactory
 from ...geosource.models import Field
 from ...geosource.tests.factories import PostGISSourceFactory
 from ..models import (
+    Declaration,
+    DeclarationConfig,
+    DeclarationField,
+    DeclarationFile,
     Layer,
     LayerGroup,
+    ManagerMessage,
     Report,
     ReportConfig,
     ReportFile,
@@ -121,3 +126,62 @@ class ReportFileFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = ReportFile
+
+
+class DeclarationConfigFactory(factory.django.DjangoModelFactory):
+    title = factory.Sequence(lambda n: f"Config {n}")
+
+    class Meta:
+        model = DeclarationConfig
+
+
+class DeclarationFieldFactory(factory.django.DjangoModelFactory):
+    config = factory.SubFactory(DeclarationConfigFactory)
+    title = factory.Sequence(lambda n: f"Declaration field {n}")
+    helptext = factory.Sequence(lambda n: f"Some help text for declaration field {n}")
+
+    class Meta:
+        model = DeclarationField
+
+
+class ManagerMessageFactory(factory.django.DjangoModelFactory):
+    text = "Test text"
+
+    class Meta:
+        model = ManagerMessage
+
+
+class DeclarationFactory(factory.django.DjangoModelFactory):
+    geom = factory.LazyFunction(lambda: Point(10000, 200000))
+    content = [
+        {
+            "title": "The title of the field",
+            "value": "Some message sent by a user though the feedback system",
+        },
+        {
+            "title": "The Field Two",
+            "value": "Some example content for testing purposes with additional information that provides context",
+        },
+        {
+            "free_comment": "Another example with some extra information that was provided after the fields"
+        },
+    ]
+
+    class Meta:
+        model = Declaration
+
+
+class AuthentifiedDeclarationFactory(DeclarationFactory):
+    user = factory.SubFactory(UserFactory)
+
+
+class UnauthentifiedDeclarationFactory(DeclarationFactory):
+    email = "test@email.fr"
+
+
+class DeclarationFileFactory(factory.django.DjangoModelFactory):
+    declaration = factory.SubFactory(UnauthentifiedDeclarationFactory)
+    file = factory.django.FileField()
+
+    class Meta:
+        model = DeclarationFile
