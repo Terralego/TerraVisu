@@ -20,6 +20,7 @@ from project.terra_layer.models import Declaration, DeclarationConfig, Report
 from project.terra_layer.serializers import (
     DeclarationConfigSerializer,
     DeclarationSerializer,
+    GeostoreFeatureSerializer,
     ReportSerializer,
 )
 
@@ -34,6 +35,11 @@ class GeostoreLayerViewSet(LayerViewSet):
 
 class GeostoreFeatureViewSet(FeatureViewSet):
     permission_classes = (ReadOnly,)
+    serializer_class = GeostoreFeatureSerializer
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        return qs.prefetch_related("reports")
 
 
 class GeostoreLayerGroupViewsSet(LayerGroupViewsSet):

@@ -3,8 +3,10 @@ import mimetypes
 
 import magic
 from django.db import transaction
+from django.utils.formats import date_format
 from django.utils.translation import gettext as _
 from drf_extra_fields.fields import Base64ImageField
+from geostore.serializers import FeatureSerializer
 from mapbox_baselayer.models import BaseLayerTile, MapBaseLayer
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -170,6 +172,7 @@ class ReportFileSerializer(FileSerializerMixin, serializers.ModelSerializer):
 
 class ReportSerializer(JSONContentValidatorMixin, serializers.ModelSerializer):
     files = ReportFileSerializer(many=True, required=False)
+    layer = serializers.PrimaryKeyRelatedField(read_only=True)
     # The 'content' field which should be a list of dictionaries
     # with keys : "sourceFieldId", "value", "label", "content"   OR   "free_comment"
     required_fields = ["sourceFieldId", "value", "label", "content"]
@@ -466,6 +469,20 @@ class MapBaseLayerSerializer(serializers.ModelSerializer):
             "tiles",
             "tilejson_url",
         )
+
+
+class GeostoreFeatureSerializer(FeatureSerializer):
+    reports = serializers.SerializerMethodField()
+
+    def get_reports(self, obj):
+        reports = obj.reports.order_by("-created_at")
+        reports_data = {"count": len(reports), "creation_dates": []}
+        for report in reports:
+            reports_data["creation_dates"].append(date_format(report.created_at))
+        return reports_data
+
+    class Meta(FeatureSerializer.Meta):
+        fields = FeatureSerializer.Meta.fields + ("reports",)
 
 
 class DeclarationFieldSerializer(serializers.ModelSerializer):

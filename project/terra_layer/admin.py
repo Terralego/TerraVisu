@@ -71,6 +71,7 @@ class SceneAdmin(admin.ModelAdmin):
 class ReportAdmin(admin.ModelAdmin):
     list_display = ("created_at", "status", "display_email", "display_layer")
     list_filter = ("status", MonthYearFilter)
+    ordering = ["-created_at"]
     form = ReportAdminForm
     readonly_fields = (
         "config",
@@ -223,6 +224,7 @@ class DeclarationAdmin(admin.ModelAdmin):
     list_display = ("created_at", "status", "display_email_list")
     list_filter = ("status", MonthYearFilter)
     form = DeclarationAdminForm
+    ordering = ["-created_at"]
     readonly_fields = (
         "created_at",
         "display_user",
@@ -339,7 +341,7 @@ class DeclarationAdmin(admin.ModelAdmin):
 
         for declaration in queryset.prefetch_related(
             "files", "declaration_manager_messages"
-        ).select_related("user", "status"):
+        ).select_related("user"):
             email = (
                 declaration.user.email
                 if declaration.user

@@ -561,7 +561,7 @@ class ReportField(models.Model):
 
 class Report(models.Model):
     """
-     /!\/!\ Make sure to update SQL view 'report_view' through a migration when updating this model /!\/!\
+    !!!! Make sure to update SQL view 'report_view' through a migration when updating this model !!!!
     """
 
     config = models.ForeignKey(
@@ -595,6 +595,11 @@ class Report(models.Model):
 
     def __str__(self):
         return f"{_('Report')} {self.pk}"
+
+    def save(self, *args, **kwargs):
+        if not hasattr(self, "layer") and self.config:
+            self.layer = self.config.layer
+        super().save(*args, **kwargs)
 
 
 class ReportFile(models.Model):
