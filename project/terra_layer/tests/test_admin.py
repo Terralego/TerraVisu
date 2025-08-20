@@ -87,6 +87,7 @@ class ReportAdminTestCase(TestCase):
         response = self.client.post(
             f"/debug/terra_layer/report/{self.report.pk}/change/",
             {
+                "geom": '{"type": "Point", "coordinates": [6.851806864142417, 43.58039085560784]}',
                 "status": "ACCEPTED",
                 "managers_message": "Your report has been treated",
             },

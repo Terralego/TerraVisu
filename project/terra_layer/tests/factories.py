@@ -67,7 +67,7 @@ class LayerFactory(factory.django.DjangoModelFactory):
 
 class FeatureFactory(factory.django.DjangoModelFactory):
     geom = factory.LazyFunction(lambda: Point(0, 0))
-    identifier = factory.LazyFunction(lambda: str(factory.Faker("uuid4")))
+    identifier = factory.Faker("word")
     properties = factory.Dict(
         {"name": factory.Faker("word"), "description": factory.Faker("sentence")}
     )

@@ -180,7 +180,7 @@ class ReportSerializer(JSONContentValidatorMixin, serializers.ModelSerializer):
 
     class Meta:
         model = Report
-        fields = ["config", "feature", "layer", "content", "files"]
+        fields = ["config", "feature", "layer", "content", "files", "geom"]
 
     def create(self, validated_data):
         files = []

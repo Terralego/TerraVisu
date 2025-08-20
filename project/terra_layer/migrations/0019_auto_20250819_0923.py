@@ -7,7 +7,7 @@ class Migration(migrations.Migration):
     dependencies = [
         (
             "terra_layer",
-            "0018_declaration_declarationconfig_reportfield_helptext_and_more",
+            "0018_declaration_declarationconfig_report_geom_and_more",
         ),
     ]
 
@@ -20,6 +20,7 @@ class Migration(migrations.Migration):
                 r.created_at,
                 r.status,
                 r.content,
+                r.geom,
                 COALESCE(u.email, 'Deleted user') as user_email,
                 l.name as layer_name,
                 l.id as layer_id,

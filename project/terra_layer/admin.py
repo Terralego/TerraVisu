@@ -90,6 +90,7 @@ class ReportAdmin(admin.ModelAdmin):
         "display_layer",
         "display_feature",
         "display_content",
+        "geom",
         "display_files",
         "display_managers_messages",
         "managers_message",

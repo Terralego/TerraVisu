@@ -4,6 +4,7 @@ import json
 from unittest import mock
 from unittest.mock import patch
 
+import freezegun
 from django.contrib.auth.models import Group
 from django.core import mail
 from django.core.cache import cache
@@ -37,6 +38,7 @@ from .factories import (
     DeclarationFieldFactory,
     FeatureFactory,
     ReportConfigFactory,
+    ReportFactory,
     SceneFactory,
     StyleImageFactory,
 )
@@ -1031,7 +1033,6 @@ class ReportCreateAPIViewTestCase(APITestCase):
         query = {
             "config": self.report_config.pk,
             "feature": self.feature.pk,
-            "layer": self.report_config.layer.pk,
             "content": self.valid_report_data,
         }
         self.assertEqual(len(mail.outbox), 0)
@@ -1046,7 +1047,6 @@ class ReportCreateAPIViewTestCase(APITestCase):
         query = {
             "config": self.report_config.pk,
             "feature": self.feature.pk,
-            "layer": self.report_config.layer.pk,
             "content": self.valid_report_data,
         }
 
@@ -1058,7 +1058,6 @@ class ReportCreateAPIViewTestCase(APITestCase):
         query = {
             "config": self.report_config.pk,
             "feature": self.feature.pk,
-            "layer": self.report_config.layer.pk,
             "content": {"example": "data"},
         }
         response = self.client.post(
@@ -1082,7 +1081,6 @@ class ReportCreateAPIViewTestCase(APITestCase):
         query = {
             "config": self.report_config.pk,
             "feature": self.feature.pk,
-            "layer": self.report_config.layer.pk,
             "content": invalid_report_data,
         }
         response = self.client.post(
@@ -1099,7 +1097,6 @@ class ReportCreateAPIViewTestCase(APITestCase):
         query = {
             "config": self.report_config.pk,
             "feature": self.feature.pk,
-            "layer": self.report_config.layer.pk,
             "content": [],
         }
         response = self.client.post(
@@ -1124,7 +1121,6 @@ class ReportCreateAPIViewTestCase(APITestCase):
         query = {
             "config": self.report_config.pk,
             "feature": self.feature.pk,
-            "layer": self.report_config.layer.pk,
             "content": invalid_report_data,
         }
         response = self.client.post(
@@ -1138,12 +1134,16 @@ class ReportCreateAPIViewTestCase(APITestCase):
 
     def test_create_report_with_files(self):
         self.client.force_authenticate(self.user)
+        valid_geom = {
+            "type": "Point",
+            "coordinates": [6.851806864142417, 43.58039085560784],
+        }
         query = {
             "config": self.report_config.pk,
             "feature": self.feature.pk,
-            "layer": self.report_config.layer.pk,
             "content": json.dumps(self.valid_report_data),
             "files": [get_small_uploaded_image()],
+            "geom": json.dumps(valid_geom),
         }
         response = self.client.post(
             reverse("report-create-view"), query, format="multipart"
@@ -1171,7 +1171,6 @@ class ReportCreateAPIViewTestCase(APITestCase):
         query = {
             "config": self.report_config.pk,
             "feature": self.feature.pk,
-            "layer": self.report_config.layer.pk,
             "content": json.dumps(self.valid_report_data),
             "files": [get_small_uploaded_image()],
         }
@@ -1186,7 +1185,6 @@ class ReportCreateAPIViewTestCase(APITestCase):
         query = {
             "config": self.report_config.pk,
             "feature": self.feature.pk,
-            "layer": self.report_config.layer.pk,
             "content": json.dumps(self.valid_report_data),
             "files": [
                 get_small_uploaded_image(),
@@ -1208,7 +1206,6 @@ class ReportCreateAPIViewTestCase(APITestCase):
         query = {
             "config": self.report_config.pk,
             "feature": self.feature.pk,
-            "layer": self.report_config.layer.pk,
             "content": json.dumps(self.valid_report_data),
             "files": [get_uploaded_image_with_forbidden_extension()],
         }
@@ -1226,7 +1223,6 @@ class ReportCreateAPIViewTestCase(APITestCase):
         query = {
             "config": self.report_config.pk,
             "feature": self.feature.pk,
-            "layer": self.report_config.layer.pk,
             "content": json.dumps(self.valid_report_data),
             "files": [get_uploaded_image_with_mismatched_extension()],
         }
@@ -1237,6 +1233,21 @@ class ReportCreateAPIViewTestCase(APITestCase):
         self.assertIn(
             "File type not allowed. Allowed types: .jpg, .jpeg, .png, .pdf, .zip",
             str(response.content),
+        )
+
+    @freezegun.freeze_time("2025-01-01 00:00:00")
+    def test_feature_api_shows_reports(self):
+        report = ReportFactory()
+        feature = report.feature
+        response = self.client.get(
+            reverse(
+                "feature-detail",
+                kwargs={"layer": feature.layer.pk, "identifier": feature.identifier},
+            )
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(
+            response.json()["reports"], {"count": 1, "creation_dates": ["Jan. 1, 2025"]}
         )
 
 

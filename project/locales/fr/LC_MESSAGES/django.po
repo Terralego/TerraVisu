@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-19 13:00+0000\n"
+"POT-Creation-Date: 2025-08-20 09:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -699,6 +699,9 @@ msgstr "Champ de signalement"
 msgid "Reports fields"
 msgstr "Champs des signalements"
 
+msgid "Position"
+msgstr "Position"
+
 msgid "Report configuration"
 msgstr "Configuration du signalement"
 
@@ -737,9 +740,6 @@ msgstr "Champ du formulaire de déclaration"
 
 msgid "Declaration fields"
 msgstr "Champs du formulaire de déclaration"
-
-msgid "Position"
-msgstr "Position"
 
 msgid "Declaration status"
 msgstr "Statut de la déclaration"
