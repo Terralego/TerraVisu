@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-13 09:01+0000\n"
+"POT-Creation-Date: 2025-08-20 09:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -138,7 +138,7 @@ msgid "Warning"
 msgstr "Alerte"
 
 msgid "Pending"
-msgstr "En attente"
+msgstr "En cours"
 
 msgid "Need sync"
 msgstr "À synchroniser"
@@ -591,7 +591,7 @@ msgid "Layer"
 msgstr "Couche"
 
 msgid "Deleted user"
-msgstr "Utilisteur supprimé"
+msgstr "Utilisateur supprimé"
 
 msgid "Email"
 msgstr "Courriel"
@@ -608,8 +608,41 @@ msgstr "Contenu"
 msgid "Feature"
 msgstr "Objet"
 
+msgid "Manager messages"
+msgstr "Messages des gestionnaires"
+
 msgid "Field"
 msgstr "Champ"
+
+msgid "No user"
+msgstr "Pas d'utilisateur"
+
+msgid "Deleted email"
+msgstr "Email supprimé"
+
+msgid "See user"
+msgstr "Voir utilisateur"
+
+msgid "ID"
+msgstr "Identifiant"
+
+msgid "Created at"
+msgstr "Créé le"
+
+msgid "Status"
+msgstr "Statut"
+
+msgid "Latitude"
+msgstr "Latitude"
+
+msgid "Longitude"
+msgstr "Longitude"
+
+msgid "Export selected declarations as CSV"
+msgstr "Exporter les déclarations sélectionnées en CSV"
+
+msgid "Creation month"
+msgstr "Mois de création"
 
 msgid "Map"
 msgstr "Carte"
@@ -630,6 +663,9 @@ msgstr ""
 msgid "Copy"
 msgstr "Copie"
 
+msgid "New"
+msgstr "Nouveau"
+
 msgid "Accepted"
 msgstr "Accepté"
 
@@ -645,6 +681,12 @@ msgstr "Configuration de signalement"
 msgid "Reports configs"
 msgstr "Configurations des signalements"
 
+msgid "Help text to guide users when filling this field"
+msgstr "Description pour guider les utilisateurs dans le remplissage du champ"
+
+msgid "Help text"
+msgstr "Description"
+
 msgid "Required"
 msgstr "Requis"
 
@@ -657,14 +699,14 @@ msgstr "Champ de signalement"
 msgid "Reports fields"
 msgstr "Champs des signalements"
 
+msgid "Position"
+msgstr "Position"
+
 msgid "Report configuration"
 msgstr "Configuration du signalement"
 
 msgid "Report status"
 msgstr "Statut du signalement"
-
-msgid "Created at"
-msgstr "Créé le"
 
 msgid "Report"
 msgstr "Signalement"
@@ -677,6 +719,51 @@ msgstr "Document du signalement"
 
 msgid "Report files"
 msgstr "Documents des signalements"
+
+msgid "Declaration form"
+msgstr "Formulaire de déclaration"
+
+msgid "Title of the declaration form"
+msgstr "Titre du formulaire de déclaration"
+
+msgid "Declaration config"
+msgstr "Configuration des déclarations"
+
+msgid "Declaration configs"
+msgstr "Configurations des déclarations"
+
+msgid "Display title for this field"
+msgstr "Titre du champ"
+
+msgid "Declaration field"
+msgstr "Champ du formulaire de déclaration"
+
+msgid "Declaration fields"
+msgstr "Champs du formulaire de déclaration"
+
+msgid "Declaration status"
+msgstr "Statut de la déclaration"
+
+msgid "Submitter email"
+msgstr "Email du déclarant"
+
+msgid "Declaration"
+msgstr "Déclaration"
+
+msgid "Declarations"
+msgstr "Déclarations"
+
+msgid "Declaration file"
+msgstr "Document de la déclaration"
+
+msgid "Declaration files"
+msgstr "Documents de la déclaration"
+
+msgid "Message"
+msgstr "Message"
+
+msgid "Manager message"
+msgstr "Message des gestionnaires"
 
 msgid "'tiles' should not be filled for mapbox base layers."
 msgstr "'tiles' ne doit pas être saisi pour les fonds de plan mapbox."
@@ -697,8 +784,34 @@ msgid ""
 "\n"
 "Hi,\n"
 "\n"
+"Your declaration has been changed to status \"%(status)s\".\n"
+"\n"
+"%(administrators_message)s\n"
+"\n"
+"Regards,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+msgstr ""
+"\n"
+"Bonjour,\n"
+"\n"
+"Votre déclaration a été passée au statut \"%(status)s\".\n"
+"\n"
+"%(administrators_message)s\n"
+"\n"
+"Cordialement,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
 "Your report regarding layer \"%(layer)s\" has been changed to status "
-"%(status)s.\n"
+"\"%(status)s\".\n"
 "\n"
 "%(administrators_message)s\n"
 "\n"
@@ -711,9 +824,35 @@ msgstr ""
 "Bonjour,\n"
 "\n"
 "Votre signalement concernant la couche de données \"%(layer)s\" a été passé "
-"au status %(status)s.\n"
+"au statut %(status)s.\n"
 "\n"
 "%(administrators_message)s\n"
+"\n"
+"Cordialement,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
+"A new declaration has been submitted.\n"
+"\n"
+"You can consult it at : %(url)s\n"
+"\n"
+"Regards,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+msgstr ""
+"\n"
+"Bonjour,\n"
+"\n"
+"Une déclaration a été reçue.\n"
+"\n"
+"Vous pouvez la consulter ici : %(url)s\n"
 "\n"
 "Cordialement,\n"
 "\n"
@@ -749,16 +888,22 @@ msgstr ""
 msgid "New report submitted"
 msgstr "Nouveau signalement reçu"
 
+msgid "New declaration submitted"
+msgstr "Nouvelle déclaration reçue"
+
 msgid "Optional message to send user on status change"
 msgstr ""
 "Message optionnel à transmettre à l'utilisateur qui a soumis le signalement, "
-"lors du changement de status"
+"lors du changement de statut"
 
-msgid "Administrators message"
-msgstr "Message des administrateurs"
+msgid "Managers message"
+msgstr "Message des gestionnaires"
 
 msgid "Your report has been updated"
 msgstr "Votre signalement a été mis à jour"
+
+msgid "Your declaration has been updated"
+msgstr "Votre déclaration a été mise à jour"
 
 msgid "Sprite icon"
 msgstr "Icône de 'sprite'"

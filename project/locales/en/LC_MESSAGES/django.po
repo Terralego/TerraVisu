@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-13 09:01+0000\n"
+"POT-Creation-Date: 2025-08-20 09:52+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -523,7 +523,40 @@ msgstr ""
 msgid "Feature"
 msgstr ""
 
+msgid "Manager messages"
+msgstr ""
+
 msgid "Field"
+msgstr ""
+
+msgid "No user"
+msgstr ""
+
+msgid "Deleted email"
+msgstr ""
+
+msgid "See user"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "Created at"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Latitude"
+msgstr ""
+
+msgid "Longitude"
+msgstr ""
+
+msgid "Export selected declarations as CSV"
+msgstr ""
+
+msgid "Creation month"
 msgstr ""
 
 msgid "Map"
@@ -544,6 +577,9 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
+msgid "New"
+msgstr ""
+
 msgid "Accepted"
 msgstr ""
 
@@ -559,6 +595,12 @@ msgstr ""
 msgid "Reports configs"
 msgstr ""
 
+msgid "Help text to guide users when filling this field"
+msgstr ""
+
+msgid "Help text"
+msgstr ""
+
 msgid "Required"
 msgstr ""
 
@@ -571,13 +613,13 @@ msgstr ""
 msgid "Reports fields"
 msgstr ""
 
+msgid "Position"
+msgstr ""
+
 msgid "Report configuration"
 msgstr ""
 
 msgid "Report status"
-msgstr ""
-
-msgid "Created at"
 msgstr ""
 
 msgid "Report"
@@ -590,6 +632,51 @@ msgid "Report file"
 msgstr ""
 
 msgid "Report files"
+msgstr ""
+
+msgid "Declaration form"
+msgstr ""
+
+msgid "Title of the declaration form"
+msgstr ""
+
+msgid "Declaration config"
+msgstr ""
+
+msgid "Declaration configs"
+msgstr ""
+
+msgid "Display title for this field"
+msgstr ""
+
+msgid "Declaration field"
+msgstr ""
+
+msgid "Declaration fields"
+msgstr ""
+
+msgid "Declaration status"
+msgstr ""
+
+msgid "Submitter email"
+msgstr ""
+
+msgid "Declaration"
+msgstr ""
+
+msgid "Declarations"
+msgstr ""
+
+msgid "Declaration file"
+msgstr ""
+
+msgid "Declaration files"
+msgstr ""
+
+msgid "Message"
+msgstr ""
+
+msgid "Manager message"
 msgstr ""
 
 msgid "'tiles' should not be filled for mapbox base layers."
@@ -609,10 +696,40 @@ msgid ""
 "\n"
 "Hi,\n"
 "\n"
-"Your report regarding layer \"%(layer)s\" has been changed to status "
-"%(status)s.\n"
+"Your declaration has been changed to status \"%(status)s\".\n"
 "\n"
 "%(administrators_message)s\n"
+"\n"
+"Regards,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+msgstr ""
+
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
+"Your report regarding layer \"%(layer)s\" has been changed to status "
+"\"%(status)s\".\n"
+"\n"
+"%(administrators_message)s\n"
+"\n"
+"Regards,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+msgstr ""
+
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
+"A new declaration has been submitted.\n"
+"\n"
+"You can consult it at : %(url)s\n"
 "\n"
 "Regards,\n"
 "\n"
@@ -638,13 +755,19 @@ msgstr ""
 msgid "New report submitted"
 msgstr ""
 
+msgid "New declaration submitted"
+msgstr ""
+
 msgid "Optional message to send user on status change"
 msgstr ""
 
-msgid "Administrators message"
+msgid "Managers message"
 msgstr ""
 
 msgid "Your report has been updated"
+msgstr ""
+
+msgid "Your declaration has been updated"
 msgstr ""
 
 msgid "Sprite icon"

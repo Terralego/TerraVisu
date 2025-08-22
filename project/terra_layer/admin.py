@@ -1,6 +1,10 @@
+import csv
 from pathlib import Path
 
+from django.conf import settings
 from django.contrib import admin
+from django.http import HttpResponse
+from django.utils.formats import date_format
 from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from geostore.models import Feature
@@ -8,7 +12,11 @@ from geostore.models import Layer as GeostoreLayer
 from model_clone import CloneModelAdmin
 
 from project.admin import config_site
+from project.terra_layer.filters import MonthYearFilter
 from project.terra_layer.models import (
+    Declaration,
+    DeclarationConfig,
+    DeclarationField,
     Layer,
     Report,
     ReportConfig,
@@ -16,7 +24,7 @@ from project.terra_layer.models import (
     Scene,
     StyleImage,
 )
-from project.terra_layer.views.forms import ReportAdminForm
+from project.terra_layer.views.forms import DeclarationAdminForm, ReportAdminForm
 
 
 class StyleImageInline(admin.TabularInline):
@@ -62,7 +70,9 @@ class SceneAdmin(admin.ModelAdmin):
 @admin.register(Report)
 class ReportAdmin(admin.ModelAdmin):
     list_display = ("created_at", "status", "display_email", "display_layer")
-    list_filter = ("status",)
+    list_filter = ("status", MonthYearFilter)
+    ordering = ["-created_at"]
+    form = ReportAdminForm
     readonly_fields = (
         "config",
         "display_feature",
@@ -71,9 +81,26 @@ class ReportAdmin(admin.ModelAdmin):
         "display_layer",
         "display_content",
         "display_files",
+        "display_managers_messages",
     )
-    form = ReportAdminForm
+    fields = (
+        "config",
+        "created_at",
+        "display_email",
+        "display_layer",
+        "display_feature",
+        "display_content",
+        "geom",
+        "display_files",
+        "display_managers_messages",
+        "managers_message",
+        "status",
+    )
     exclude = ("config", "feature", "layer", "email", "user", "content")
+
+    def has_add_permission(self, request):
+        # Creation through API only
+        return False
 
     def display_layer(self, obj):
         return obj.config.layer.name
@@ -117,16 +144,36 @@ class ReportAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        queryset.prefetch_related("files").select_related(
+        queryset.prefetch_related("files", "report_manager_messages").select_related(
             "status", "config", "config__layer", "user"
         )
         return queryset
 
     def display_feature(self, obj):
         main_field = getattr(obj.layer.main_field, "name", None)
-        return obj.feature.properties.get(main_field, None) if main_field else None
+        return (
+            obj.feature.properties.get(main_field, None)
+            if main_field
+            else obj.feature.pk
+        )
 
     display_feature.short_description = _("Feature")
+
+    def display_managers_messages(self, obj):
+        content = "<table>"
+        content += "<tr>"
+        messages = obj.report_manager_messages.all()
+        for message in messages:
+            content += f"<th>{date_format(message.sent_at)}</th>"
+        content += "</tr>"
+        content += "<tr>"
+        for message in messages:
+            content += f"<td>{message.text}</td>"
+        content += "</tr>"
+        content += "</table>"
+        return format_html("".join(content))
+
+    display_managers_messages.short_description = _("Manager messages")
 
 
 @admin.register(ReportConfig)
@@ -172,3 +219,207 @@ class ReportFieldAdmin(admin.ModelAdmin):
 
 
 config_site.register(Report, ReportAdmin)
+
+
+class DeclarationAdmin(admin.ModelAdmin):
+    list_display = ("created_at", "status", "display_email_list")
+    list_filter = ("status", MonthYearFilter)
+    form = DeclarationAdminForm
+    ordering = ["-created_at"]
+    readonly_fields = (
+        "created_at",
+        "display_user",
+        "display_email_detail",
+        "display_content",
+        "display_files",
+        "display_managers_messages",
+    )
+    # Reorder all fields including those from AdminForm
+    fields = (
+        "created_at",
+        "display_user",
+        "display_email_detail",
+        "display_content",
+        "geom",
+        "display_files",
+        "display_managers_messages",
+        "managers_message",
+        "status",
+    )
+    exclude = ("user", "email", "content")
+    actions = ["export_as_csv"]
+
+    def has_add_permission(self, request):
+        # Creation through API only
+        return False
+
+    def display_user(self, obj):
+        return obj.user.email if obj.user else _("No user")
+
+    display_user.short_description = _("User")
+
+    def display_email_list(self, obj):
+        return (
+            obj.user.email
+            if obj.user
+            else obj.email
+            if obj.email
+            else _("Deleted email")
+        )
+
+    display_email_list.short_description = _("Email")
+
+    def display_email_detail(self, obj):
+        return obj.email if obj.email else _("See user")
+
+    display_email_detail.short_description = _("Email")
+
+    def display_files(self, obj):
+        files_links = []
+        for declaration_file in obj.files.all():
+            files_links.append(
+                format_html(
+                    '&#128196; <a href="{}">{}</a><br>',
+                    "/" + declaration_file.file.url,
+                    Path(declaration_file.file.name).name,
+                )
+            )
+        return format_html("".join(files_links))
+
+    display_files.short_description = _("Files")
+
+    def display_content(self, obj):
+        free_comment_string = _("Free comment")
+        content = "<table>"
+        content += "<tr>"
+        for field in obj.content:
+            content += f"<th>{field.get('title', free_comment_string)}</th>"
+        content += "</tr>"
+        content += "<tr>"
+        for field in obj.content:
+            content += f"<td>{field.get('value', field.get('free_comment'))}</td>"
+        content += "</tr>"
+        content += "</table>"
+        return format_html("".join(content))
+
+    display_content.short_description = _("Content")
+
+    def display_managers_messages(self, obj):
+        content = "<table>"
+        content += "<tr>"
+        messages = obj.declaration_manager_messages.all()
+        for message in messages:
+            content += f"<th>{date_format(message.sent_at)}</th>"
+        content += "</tr>"
+        content += "<tr>"
+        for message in messages:
+            content += f"<td>{message.text}</td>"
+        content += "</tr>"
+        content += "</table>"
+        return format_html("".join(content))
+
+    display_managers_messages.short_description = _("Manager messages")
+
+    def export_as_csv(self, request, queryset):
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = 'attachment; filename="declarations.csv"'
+        scheme = "https" if settings.SSL_ENABLED else "http"
+        server_name = request.get_host()
+        writer = csv.writer(response)
+
+        header = [
+            _("ID"),
+            _("Created at"),
+            _("Status"),
+            _("Email"),
+            _("Latitude"),
+            _("Longitude"),
+            _("Content"),
+            _("Files"),
+            _("Manager messages"),
+        ]
+        writer.writerow(header)
+
+        for declaration in queryset.prefetch_related(
+            "files", "declaration_manager_messages"
+        ).select_related("user"):
+            email = (
+                declaration.user.email
+                if declaration.user
+                else (declaration.email if declaration.email else _("Deleted email"))
+            )
+
+            latitude = declaration.geom.y if declaration.geom else ""
+            longitude = declaration.geom.x if declaration.geom else ""
+
+            content_fields = []
+            if declaration.content:
+                for field in declaration.content:
+                    title = field.get("title", _("Free comment"))
+                    value = field.get("value", field.get("free_comment", ""))
+                    content_fields.append(f"{title}: {value}")
+            content_str = " | ".join(content_fields)
+
+            file_urls = []
+            for declaration_file in declaration.files.all():
+                full_file_url = f"{scheme}://{server_name}/{declaration_file.file.url}"
+                file_urls.append(full_file_url)
+            files_str = " | ".join(file_urls)
+
+            messages = []
+            for message in declaration.declaration_manager_messages.all():
+                messages.append(
+                    f"{message.sent_at.strftime('%d/%m/%Y')}: {message.text}"
+                )
+            messages_str = " | ".join(messages)
+
+            row = [
+                declaration.pk,
+                declaration.created_at.strftime("%d/%m/%Y %H:%M"),
+                declaration.get_status_display(),
+                email,
+                latitude,
+                longitude,
+                content_str,
+                files_str,
+                messages_str,
+            ]
+            writer.writerow(row)
+
+        return response
+
+    export_as_csv.short_description = _("Export selected declarations as CSV")
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        queryset.prefetch_related(
+            "files", "declaration_manager_messages"
+        ).select_related("status", "user")
+        return queryset
+
+
+config_site.register(Declaration, DeclarationAdmin)
+
+
+class DeclarationFieldInline(admin.TabularInline):
+    model = DeclarationField
+    fields = (
+        "title",
+        "helptext",
+    )
+    extra = 1
+
+
+class DeclarationConfigAdmin(admin.ModelAdmin):
+    list_display = ("title",)
+    inlines = [DeclarationFieldInline]
+
+    def has_add_permission(self, request):
+        # There can be only one config
+        perms = super().has_add_permission(request)
+        if perms and DeclarationField.objects.exists():
+            perms = False  # Disallow creating a new config if there is one already
+        return perms
+
+
+config_site.register(DeclarationConfig, DeclarationConfigAdmin)
