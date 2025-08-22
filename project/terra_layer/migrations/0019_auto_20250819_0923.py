@@ -36,6 +36,7 @@ class Migration(migrations.Migration):
                 END as feature_display,
                 -- Count of related files
                 COUNT(DISTINCT rf.id) as files_count,
+                STRING_AGG(DISTINCT rf.file, ', ' ORDER BY rf.file) as file_names,
                 -- Count of manager messages
                 COUNT(DISTINCT rmm.id) as manager_messages_count,
                 -- Latest manager message
