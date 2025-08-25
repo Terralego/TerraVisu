@@ -28,7 +28,7 @@ class EmailSendingForm(gis_forms.ModelForm):
             send_mail(
                 mail_title,
                 txt_message,
-                None,
+                None,  # uses DEFAULT_FROM_EMAIL
                 recipient_list=recipients,
                 fail_silently=True,
             )

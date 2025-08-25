@@ -77,7 +77,7 @@ class NotifyManagersViewMixin:
             send_mail(
                 title,
                 txt_message,
-                f"noreply@{self.request.get_host()}",
+                None,  # uses DEFAULT_FROM_EMAIL
                 recipient_list=report_managers_emails,
                 fail_silently=True,
             )
