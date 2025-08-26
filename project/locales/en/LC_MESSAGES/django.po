@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-20 09:52+0000\n"
+"POT-Creation-Date: 2025-08-26 14:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -502,13 +502,7 @@ msgstr ""
 msgid "Layer identifier"
 msgstr ""
 
-msgid "Layer"
-msgstr ""
-
-msgid "Deleted user"
-msgstr ""
-
-msgid "Email"
+msgid "Status changes"
 msgstr ""
 
 msgid "Files"
@@ -520,10 +514,16 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
-msgid "Feature"
+msgid "Layer"
 msgstr ""
 
-msgid "Manager messages"
+msgid "Deleted user"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Feature"
 msgstr ""
 
 msgid "Field"
@@ -673,10 +673,16 @@ msgstr ""
 msgid "Declaration files"
 msgstr ""
 
-msgid "Message"
+msgid "Manager message"
 msgstr ""
 
-msgid "Manager message"
+msgid "Status before update"
+msgstr ""
+
+msgid "Status after update"
+msgstr ""
+
+msgid "Status change"
 msgstr ""
 
 msgid "'tiles' should not be filled for mapbox base layers."

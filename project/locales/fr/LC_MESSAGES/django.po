@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-20 09:52+0000\n"
+"POT-Creation-Date: 2025-08-26 14:20+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -587,14 +587,8 @@ msgstr ""
 msgid "Layer identifier"
 msgstr "Identifiant de la couche"
 
-msgid "Layer"
-msgstr "Couche"
-
-msgid "Deleted user"
-msgstr "Utilisateur supprimé"
-
-msgid "Email"
-msgstr "Courriel"
+msgid "Status changes"
+msgstr "Changements de statut"
 
 msgid "Files"
 msgstr "Documents"
@@ -605,11 +599,17 @@ msgstr "Commentaire libre"
 msgid "Content"
 msgstr "Contenu"
 
+msgid "Layer"
+msgstr "Couche"
+
+msgid "Deleted user"
+msgstr "Utilisateur supprimé"
+
+msgid "Email"
+msgstr "Courriel"
+
 msgid "Feature"
 msgstr "Objet"
-
-msgid "Manager messages"
-msgstr "Messages des gestionnaires"
 
 msgid "Field"
 msgstr "Champ"
@@ -759,11 +759,17 @@ msgstr "Document de la déclaration"
 msgid "Declaration files"
 msgstr "Documents de la déclaration"
 
-msgid "Message"
-msgstr "Message"
-
 msgid "Manager message"
 msgstr "Message des gestionnaires"
+
+msgid "Status before update"
+msgstr "Statut avant la mise à jour"
+
+msgid "Status after update"
+msgstr "Statut après la mise à jour"
+
+msgid "Status change"
+msgstr "Changement de statut"
 
 msgid "'tiles' should not be filled for mapbox base layers."
 msgstr "'tiles' ne doit pas être saisi pour les fonds de plan mapbox."

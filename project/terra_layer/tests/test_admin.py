@@ -7,15 +7,15 @@ from django.test import TestCase
 
 from project.accounts.tests.factories import SuperUserFactory
 from project.geosource.models import FieldTypes
-from project.terra_layer.models import ManagerMessage, ReportField
+from project.terra_layer.models import ReportField, StatusChange
 from project.terra_layer.tests.factories import (
     AuthentifiedDeclarationFactory,
     DeclarationFieldFactory,
     DeclarationFileFactory,
     LayerFactory,
-    ManagerMessageFactory,
     ReportFactory,
     ReportFileFactory,
+    StatusChangeFactory,
     UnauthentifiedDeclarationFactory,
 )
 
@@ -51,7 +51,7 @@ class ReportAdminTestCase(TestCase):
         main_field_name = getattr(cls.report.layer.main_field, "name")
         cls.report.feature.properties[main_field_name] = "test_displayed_feature_name"
         cls.report.feature.save()
-        ManagerMessageFactory(report=cls.report)
+        StatusChangeFactory(report=cls.report)
 
     @classmethod
     def tearDownClass(cls):
@@ -95,9 +95,11 @@ class ReportAdminTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "Your report has been updated")
-        manager_message = ManagerMessage.objects.filter(report=self.report).last()
-        self.assertEqual(manager_message.text, "Your report has been treated")
-        self.assertEqual(str(manager_message), f"Manager message {manager_message.pk}")
+        status_change = StatusChange.objects.filter(report=self.report).last()
+        self.assertEqual(status_change.message, "Your report has been treated")
+        self.assertEqual(status_change.status_before, "NEW")
+        self.assertEqual(status_change.status_after, "ACCEPTED")
+        self.assertEqual(str(status_change), f"Status change {status_change.pk}")
 
 
 class DeclarationAdminTestCase(TestCase):
@@ -112,7 +114,7 @@ class DeclarationAdminTestCase(TestCase):
         cls.declaration_file = DeclarationFileFactory(
             declaration=cls.declaration_no_user
         )
-        ManagerMessageFactory(declaration=cls.declaration_no_user)
+        StatusChangeFactory(declaration=cls.declaration_no_user)
 
     @classmethod
     def tearDownClass(cls):
@@ -165,11 +167,11 @@ class DeclarationAdminTestCase(TestCase):
         self.assertEqual(response.status_code, 302)
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "Your declaration has been updated")
-        manager_message = ManagerMessage.objects.filter(
+        status_change = StatusChange.objects.filter(
             declaration=self.declaration
         ).first()
-        self.assertEqual(manager_message.text, "Your declaration has been treated")
-        self.assertEqual(str(manager_message), f"Manager message {manager_message.pk}")
+        self.assertEqual(status_change.message, "Your declaration has been treated")
+        self.assertEqual(str(status_change), f"Status change {status_change.pk}")
 
     def test_export_csv_data_formatting(self):
         response = self.client.post(
@@ -197,7 +199,7 @@ class DeclarationAdminTestCase(TestCase):
             "Longitude",
             "Content",
             "Files",
-            "Manager messages",
+            "Status changes",
         ]
         self.assertEqual(rows[0], expected_header)
         self.assertEqual(len(rows), 3)
@@ -213,4 +215,4 @@ class DeclarationAdminTestCase(TestCase):
         expected_content = "The title of the field: Some message sent by a user though the feedback system | The Field Two: Some example content for testing purposes with additional information that provides context | Free comment: Another example with some extra information that was provided after the fields"
         self.assertEqual(data_row[6], expected_content)
         self.assertIn(self.declaration_file.file.name, data_row[7])
-        self.assertEqual(data_row[8], "01/01/2025: Test text")
+        self.assertEqual(data_row[8], "01/01/2025 (New → Accepted): Test text")
