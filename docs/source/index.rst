@@ -6,7 +6,7 @@
 Welcome to TerraVisu's documentation!
 =====================================
 
-.. image:: ./_static/logo_color.png
+.. image:: ./_static/logo_color_origine.png
 
 .. toctree::
    :maxdepth: 2
@@ -45,60 +45,63 @@ Welcome to TerraVisu's documentation!
    others/authors.rst
    others/changelog.rst   
 
-User Manual
-------------
+🚀 User Manual
+---------------
 
 We have a few places for you to get started:
 
-🚀 `Plateforme TerraVisu <user_manual/user_guide.html>`_
+`Plateforme TerraVisu <user_manual/user_guide.html>`_
   Discover everything you need to know about TerraVisu.
 
-🚀 `Outil d'administration <user_manual/admin_user_guide.html>`_
+`Outil d'administration <user_manual/admin_user_guide.html>`_
   Using the back-office for the first time? We have the manual to get you started.
 
-Installation & Configuration
------------------------------
+`Module de configuration <user_manual/module_configuration.html>`_
+  Want to customize TerraVisu to your needs? The configuration guide shows you how.
+
+🔧 Installation & Configuration
+---------------------------------
 
 Need to know how something works? Here are a few of the most important reference docs:
 
-🔧 `Install instruction <installation_configuration/install.html>`_
+`Install instruction <installation_configuration/install.html>`_
   Learn about the requirements and install instructions.
 
-🔧 `Configuration <installation_configuration/configuration.html>`_
+`Configuration <installation_configuration/configuration.html>`_
   Learn how to set your environment variables.
 
-🔧 `Troubleshooting <installation_configuration/troubleshooting.html>`_
+`Troubleshooting <installation_configuration/troubleshooting.html>`_
   Learn how to fix common problems.
 
-Contribute
------------
+✨  Contribute
+---------------
 
 Need to get something specific done? These guides provide step-by-step instructions in key areas to get you up to speed faster:
 
-✨ `Contributing <contribute/contributing.html>`_
+`Contributing <contribute/contributing.html>`_
   Discover how to contribute to this project.
 
-✨ `Development <contribute/development.html>`_
+`Development <contribute/development.html>`_
   Overview of all the main commands of developement.
 
-✨ `Translating <contribute/translating.html>`_
+`Translating <contribute/translating.html>`_
   Feel free to translate our doc.
 
-✨ `Documentation <contribute/documentation.html>`_
+`Documentation <contribute/documentation.html>`_
   Get familiar with some of the more advanced topics of building and deploying documentation with Read the Docs.
 
-✨ `Design <contribute/design.html>`_
+`Design <contribute/design.html>`_
   Information about the architecture and main components
 
-Others
--------
+📝 Others
+----------
 
 Learn about the authors and browse the changelog:
 
-📝 `Authors <others/authors.html>`_
+`Authors <others/authors.html>`_
   Learn more about the authors.
 
-📝 `Changelog <others/changelog.html>`_
+`Changelog <others/changelog.html>`_
   Overview of all notable changes made to the project. 
 
 Indices and tables
