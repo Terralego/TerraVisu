@@ -12,7 +12,7 @@ TerraVisu — Documentation
 .. raw:: html
 
    <div style="margin:1.2rem 0; text-align:center;">
-     <a href="user_manual/user_guide.html" style="margin:0 .4rem;">🚀 Get Started</a> ·
+     <a href="user_manual/user_guide.html" style="margin:0 .4rem;">🚀 Get Started (fr)</a> ·
      <a href="installation_configuration/install.html" style="margin:0 .4rem;">🔧 Install</a> ·
      <a href="contribute/contributing.html" style="margin:0 .4rem;">✨ Contribute</a>
    </div>
@@ -55,8 +55,8 @@ TerraVisu — Documentation
    others/changelog.rst
 
 
-🚀 Getting Started
---------------------
+🚀 Getting Started (fr)
+------------------------
 
 - :doc:`Discover the TerraVisu platform <user_manual/user_guide>`
 - :doc:`First steps with the admin interface <user_manual/admin_user_guide>`
