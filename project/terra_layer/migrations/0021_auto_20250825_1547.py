@@ -9,7 +9,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunSQL("DROP VIEW IF EXISTS report_view;"),
+        migrations.RunSQL(
+            "DROP VIEW IF EXISTS report_view;", reverse_sql=migrations.RunSQL.noop
+        ),
         migrations.RunSQL(
             sql="""
             CREATE VIEW report_view AS
@@ -37,22 +39,23 @@ class Migration(migrations.Migration):
                 STRING_AGG(DISTINCT rf.file, ', ' ORDER BY rf.file) as file_names,
                 -- Count of status changes
                 COUNT(DISTINCT sc.id) as status_changes_count,
-                -- Latest status changes
-                (
-                    SELECT sc_latest.message 
-                    FROM terra_layer_statuschange sc_latest 
-                    WHERE sc_latest.report_id = r.id 
-                    ORDER BY sc_latest.updated_at DESC 
-                    LIMIT 1
-                ) as latest_status_change,
-                -- Latest status change date
-                (
-                    SELECT sc_latest.updated_at 
-                    FROM terra_layer_statuschange sc_latest 
-                    WHERE sc_latest.report_id = r.id 
-                    ORDER BY sc_latest.updated_at DESC 
-                    LIMIT 1
-                ) as latest_status_change_date
+                -- All status changes with dates, messages, and before->after info
+                CASE
+                    WHEN COUNT(sc.id) = 0 THEN NULL
+                    ELSE STRING_AGG(
+                        CONCAT(
+                            sc.updated_at::TEXT, 
+                            ' | ', 
+                            COALESCE(sc.status_before, ''), 
+                            ' -> ', 
+                            COALESCE(sc.status_after, ''), 
+                            ' | ', 
+                            COALESCE(sc.message, '')
+                        ), 
+                        ' || ' 
+                        ORDER BY sc.updated_at ASC
+                    )
+                END as status_changes_history
             FROM terra_layer_report r
             LEFT JOIN accounts_user u ON r.user_id = u.id
             LEFT JOIN terra_layer_reportconfig rc ON r.config_id = rc.id
