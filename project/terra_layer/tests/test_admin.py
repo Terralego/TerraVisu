@@ -37,7 +37,7 @@ class LayerAdminTesCase(TestCase):
 class ReportAdminTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.user = SuperUserFactory.create(is_report_and_declaration_manager=True)
+        cls.user = SuperUserFactory.create(is_report_manager=True)
         cls.report = ReportFactory.create(user=cls.user)
         cls.report_file = ReportFileFactory(report=cls.report)
         field = cls.report.config.layer.source.fields.create(
@@ -106,7 +106,7 @@ class DeclarationAdminTestCase(TestCase):
     @classmethod
     @freezegun.freeze_time("2025-01-01 00:00:00")
     def setUpTestData(cls):
-        cls.user = SuperUserFactory.create(is_report_and_declaration_manager=True)
+        cls.user = SuperUserFactory.create(is_declaration_manager=True)
         cls.declaration_field_1 = DeclarationFieldFactory()
         cls.declaration_config = cls.declaration_field_1.config
         cls.declaration = AuthentifiedDeclarationFactory()

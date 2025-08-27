@@ -35,12 +35,20 @@ class User(AbstractBaseUser, PermissionsMixin):
             "Unselect this instead of deleting accounts."
         ),
     )
-    is_report_and_declaration_manager = models.BooleanField(
-        _("Report and declaration manager"),
+    is_report_manager = models.BooleanField(
+        _("Report manager"),
         default=False,
         help_text=_(
             "Designates whether this user needs to receive email notifications "
-            "about incoming reports and declarations."
+            "about incoming reports, and monthly reports summary."
+        ),
+    )
+    is_declaration_manager = models.BooleanField(
+        _("Declaration manager"),
+        default=False,
+        help_text=_(
+            "Designates whether this user needs to receive email notifications "
+            "about incoming declarations, and monthly declarations summary."
         ),
     )
     date_joined = models.DateTimeField(_("date joined"), auto_now_add=True)
