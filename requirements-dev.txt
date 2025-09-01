@@ -79,7 +79,7 @@ crispy-bootstrap5==2025.6
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-cron-descriptor==1.4.5
+cron-descriptor==2.0.5
     # via
     #   -c requirements.txt
     #   django-celery-beat
