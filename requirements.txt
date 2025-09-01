@@ -122,7 +122,7 @@ django-tinymce==4.1.0
     # via terravisu (pyproject.toml)
 django-token-tools==0.2.0
     # via django-geostore
-djangorestframework==3.16.0
+djangorestframework==3.16.1
     # via
     #   django-geostore
     #   djangorestframework-gis
