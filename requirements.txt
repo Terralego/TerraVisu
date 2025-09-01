@@ -141,7 +141,7 @@ ecdsa==0.19.1
     # via python-jose
 elastic-transport==8.17.1
     # via elasticsearch
-elasticsearch==8.17.2
+elasticsearch==9.1.0
     # via terravisu (pyproject.toml)
 filetype==1.2.0
     # via drf-extra-fields
