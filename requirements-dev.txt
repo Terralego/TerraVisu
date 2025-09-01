@@ -195,7 +195,7 @@ django-token-tools==0.2.0
     # via
     #   -c requirements.txt
     #   django-geostore
-djangorestframework==3.16.0
+djangorestframework==3.16.1
     # via
     #   -c requirements.txt
     #   django-geostore
