@@ -73,13 +73,13 @@ conditional==2.0
     # via
     #   -c requirements.txt
     #   django-clone
-coverage==7.9.2
+coverage==7.10.6
     # via terravisu (pyproject.toml)
 crispy-bootstrap5==2025.6
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-cron-descriptor==1.4.5
+cron-descriptor==2.0.5
     # via
     #   -c requirements.txt
     #   django-celery-beat
