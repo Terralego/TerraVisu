@@ -157,7 +157,7 @@ idna==3.10
     # via requests
 inflection==0.5.1
     # via drf-spectacular
-jsonschema==4.25.0
+jsonschema==4.25.1
     # via
     #   django-geostore
     #   drf-spectacular
