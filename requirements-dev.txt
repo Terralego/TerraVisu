@@ -262,7 +262,7 @@ inflection==0.5.1
     # via
     #   -c requirements.txt
     #   drf-spectacular
-jsonschema==4.25.0
+jsonschema==4.25.1
     # via
     #   -c requirements.txt
     #   django-geostore
