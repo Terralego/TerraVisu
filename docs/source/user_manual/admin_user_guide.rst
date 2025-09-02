@@ -186,7 +186,8 @@ Les informations à renseigner à minima, lors de la création d’une nouvelle 
 .. image :: ../_static/images/admin/admin_source_creation_geojson.png
 
 .. note::
-    Les fichiers **Shapefile** doivent être fournis sous la forme d’une archive zippée contenant l’ensemble des fichiers (``.shp``, ``.prj``, ``.shx``, ``.dbf``, etc).
+   - Les fichiers GeoJSON doivent avoir le SRID 4326
+   - Les fichiers **Shapefile** doivent être fournis sous la forme d’une archive zippée contenant l’ensemble des fichiers (``.shp``, ``.prj``, ``.shx``, ``.dbf``, etc).
 
 CSV
 ^^^^
@@ -461,6 +462,28 @@ Le nombre d’éléments retournés par le filtre est une aide précieuse pour s
 .. image :: ../_static/images/admin/admin_couche_definition_filtrage2.png
 
 Le filtre appliqué à la source de données dans la couche est immédiatement répercuté dans la fenêtre de filtre côté interface du visualiseur cartographique. 
+
+Métadonnées
+^^^^^^^^^^^^^^
+
+Il est possible de renseigner un texte descriptif lié à une couche.  
+Ce texte sera affiché dans les outils de la couche (icône ``i``).  
+
+Il peut servir à préciser la méthodologie utilisée, la provenance des données, leur millésime, le fournisseur, le créateur, etc.  
+
+L’éditeur de texte enrichi permet :  
+
+- de mettre en forme du texte (gras, italique, souligné, barré) ;
+- de créer des listes à puces ou numérotées ;
+- d’insérer un lien hypertexte.  
+
+Pour ajouter un média (image, vidéo), il est nécessaire de basculer sur l’éditeur **HTML**.
+
+.. image :: ../_static/images/admin/admin_couche_definition_metadonnees.png
+
+.. note::
+   Ne pas oublier d'activer l'option "Activer la description dans l'arbre des couches"
+
 
 Onglet ICÔNES
 ~~~~~~~~~~~~~~
@@ -988,6 +1011,9 @@ Onglet MINI-FICHE
 
 La mini-fiche est une fiche structurée présentant des informations associées à un objet de la couche. Celle-ci s’ouvre au clic sur l’objet en question. 
 
+Mode simple
+^^^^^^^^^^^^^^
+
 La mini-fiche n’est pas active par défaut. 
 
 .. image :: ../_static/images/admin/admin_couche_minifiche.png
@@ -1006,6 +1032,9 @@ A la différence de l’info-bulle, l’utilisateur peut ajouter des titres de s
 
 Lorsque le label d’un champ est renommé à un endroit de l’application, il est renommé partout ailleurs.
 
+Mode expert
+^^^^^^^^^^^^^^
+
 Le :guilabel:`Mode expert` permet d’aller plus loin dans le paramétrage de la fiche en codant le contenu en `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_. 
 
 Le code est généré à partir de ce qui existe dans le mode avec assistant, en revanche l’inverse n’est pas vrai. C’est à dire que le mode avec assistant n’est pas synchronisé avec le :guilabel:`Mode expert`.
@@ -1013,6 +1042,20 @@ Le code est généré à partir de ce qui existe dans le mode avec assistant, en
 Ce mode avancé s’adresse à des utilisateurs développeurs. Il peut être intéressant de l’utiliser pour ajouter du texte coloré, des liens hypertexte ou des images.
 
 .. image :: ../_static/images/admin/admin_couche_minifiche_expert.png
+
+Comparaison d'entités
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Il est possible de créer une URL permettant de comparer plusieurs entités.  
+
+Modèle d’URL :  
+
+``https://fiches.sud-foncier-eco.fr/comparer?eae={{ids}}``  
+
+Dans ce modèle, l’URL de comparaison est générée automatiquement et affichée dans le tableau lorsque plusieurs éléments sont sélectionnés.  
+Le paramètre ``{{ids}}`` doit être remplacé par la liste des identifiants des entités sélectionnées.
+
+.. image :: ../_static/images/admin/admin_couche_minifiche_comparaison.png
 
 Onglet FILTRE
 ~~~~~~~~~~~~~~

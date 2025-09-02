@@ -2,6 +2,13 @@
 Changelog
 ==========
 
+2025.07.00.pre1+dev (XXXX-XX-XX)
+---------------------------------
+
+**Documentation:**
+
+- Update doc with new features (ref #894)
+
 2025.07.00.pre1 (2025-07-11)
 ----------------------------
 

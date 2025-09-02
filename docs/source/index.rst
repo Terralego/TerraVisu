@@ -1,17 +1,26 @@
-.. TerraVisu documentation master file, created by
-   sphinx-quickstart on Thu Dec  8 09:39:04 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
+TerraVisu — Documentation
+=========================
 
-Welcome to TerraVisu's documentation!
-=====================================
+.. image:: ./_static/logo_color_origine.png
+   :alt: TerraVisu
+   :align: center
 
-.. image:: ./_static/logo_color.png
+.. raw:: html
+
+   <p style="text-align:center;">A mapping platform to explore, analyze and share your territorial data.</p>
+
+.. raw:: html
+
+   <div style="margin:1.2rem 0; text-align:center;">
+     <a href="user_manual/user_guide.html" style="margin:0 .4rem;">🚀 Get Started (fr)</a> ·
+     <a href="installation_configuration/install.html" style="margin:0 .4rem;">🔧 Install</a> ·
+     <a href="contribute/contributing.html" style="margin:0 .4rem;">✨ Contribute</a>
+   </div>
 
 .. toctree::
    :maxdepth: 2
    :hidden:
-   :caption: 🚀 User manual
+   :caption: 🚀 User Guide
 
    user_manual/user_guide.rst
    user_manual/admin_user_guide.rst
@@ -24,7 +33,7 @@ Welcome to TerraVisu's documentation!
 
    installation_configuration/install.rst
    installation_configuration/configuration.rst
-   installation_configuration/troubleshooting.rst   
+   installation_configuration/troubleshooting.rst
 
 .. toctree::
    :maxdepth: 2
@@ -38,72 +47,40 @@ Welcome to TerraVisu's documentation!
    contribute/design.rst
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :hidden:
    :caption: 📝 Others
 
    others/authors.rst
-   others/changelog.rst   
+   others/changelog.rst
 
-User Manual
-------------
 
-We have a few places for you to get started:
+🚀 Getting Started (fr)
+------------------------
 
-🚀 `Plateforme TerraVisu <user_manual/user_guide.html>`_
-  Discover everything you need to know about TerraVisu.
+- :doc:`Discover the TerraVisu platform <user_manual/user_guide>`
+- :doc:`First steps with the admin interface <user_manual/admin_user_guide>`
+- :doc:`Customize your modules <user_manual/module_configuration>`
 
-🚀 `Outil d'administration <user_manual/admin_user_guide.html>`_
-  Using the back-office for the first time? We have the manual to get you started.
+🔧 Install & Configure
+------------------------
 
-Installation & Configuration
------------------------------
+- :doc:`Requirements & installation guide <installation_configuration/install>`
+- :doc:`Configuration and environment variables <installation_configuration/configuration>`
+- :doc:`Troubleshooting common issues <installation_configuration/troubleshooting>`
 
-Need to know how something works? Here are a few of the most important reference docs:
+✨ Contribute
+---------------
 
-🔧 `Install instruction <installation_configuration/install.html>`_
-  Learn about the requirements and install instructions.
+- :doc:`How to contribute <contribute/contributing>`
+- :doc:`Development: commands and best practices <contribute/development>`
+- :doc:`Translate the documentation <contribute/translating>`
+- :doc:`Write and publish the documentation <contribute/documentation>`
+- :doc:`Design & architecture overview <contribute/design>`
 
-🔧 `Configuration <installation_configuration/configuration.html>`_
-  Learn how to set your environment variables.
+📝 Resources
+--------------
 
-🔧 `Troubleshooting <installation_configuration/troubleshooting.html>`_
-  Learn how to fix common problems.
+- :doc:`Authors <others/authors>`
+- :doc:`Changelog <others/changelog>`
 
-Contribute
------------
-
-Need to get something specific done? These guides provide step-by-step instructions in key areas to get you up to speed faster:
-
-✨ `Contributing <contribute/contributing.html>`_
-  Discover how to contribute to this project.
-
-✨ `Development <contribute/development.html>`_
-  Overview of all the main commands of developement.
-
-✨ `Translating <contribute/translating.html>`_
-  Feel free to translate our doc.
-
-✨ `Documentation <contribute/documentation.html>`_
-  Get familiar with some of the more advanced topics of building and deploying documentation with Read the Docs.
-
-✨ `Design <contribute/design.html>`_
-  Information about the architecture and main components
-
-Others
--------
-
-Learn about the authors and browse the changelog:
-
-📝 `Authors <others/authors.html>`_
-  Learn more about the authors.
-
-📝 `Changelog <others/changelog.html>`_
-  Overview of all notable changes made to the project. 
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
