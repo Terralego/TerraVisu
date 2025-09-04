@@ -39,7 +39,7 @@ class EmailSendingForm(gis_forms.ModelForm):
 
 
 class ReportAdminForm(EmailSendingForm):
-    geom = gis_forms.PointField(widget=gis_forms.OSMWidget)
+    geom = gis_forms.PointField(widget=gis_forms.OSMWidget, required=False)
 
     def get_email_context(self, instance):
         context = {

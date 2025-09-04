@@ -142,7 +142,7 @@ class ReportAndDeclarationDisplayMixin:
 
 @admin.register(Report)
 class ReportAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
-    list_display = ("created_at", "status", "display_email", "display_layer")
+    list_display = ("display_id", "created_at", "status", "display_email", "display_layer")
     status_changes_field = "report_status_changes"
     content_title_field = "label"
     content_value_field = "content"
@@ -179,9 +179,14 @@ class ReportAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
         return False
 
     def display_layer(self, obj):
-        return obj.config.layer.name
+        return obj.layer.name
 
     display_layer.short_description = _("Layer")
+
+    def display_id(self, obj):
+        return f"{_("Report")} {obj.id}"
+
+    display_id.short_description = _("Report")
 
     def display_email(self, obj):
         return obj.user.email if obj.user else _("Deleted user")
@@ -253,7 +258,7 @@ config_site.register(Report, ReportAdmin)
 
 
 class DeclarationAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
-    list_display = ("created_at", "status", "display_email_list")
+    list_display = ("display_id", "created_at", "status", "display_email_list")
     list_filter = ("status", MonthYearFilter)
     status_changes_field = "declaration_status_changes"
     content_title_field = "title"
@@ -287,6 +292,11 @@ class DeclarationAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
     def has_add_permission(self, request):
         # Creation through API only
         return False
+
+    def display_id(self, obj):
+        return f"{_("Declaration")} {obj.id}"
+
+    display_id.short_description = _("Declaration")
 
     def display_user(self, obj):
         return obj.user.email if obj.user else _("No user")

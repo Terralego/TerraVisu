@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-27 14:15+0000\n"
+"POT-Creation-Date: 2025-09-04 08:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -525,6 +525,9 @@ msgstr ""
 msgid "Layer"
 msgstr ""
 
+msgid "Report"
+msgstr ""
+
 msgid "Deleted user"
 msgstr ""
 
@@ -535,6 +538,9 @@ msgid "Feature"
 msgstr ""
 
 msgid "Field"
+msgstr ""
+
+msgid "Declaration"
 msgstr ""
 
 msgid "No user"
@@ -565,6 +571,9 @@ msgid "Export selected declarations as CSV"
 msgstr ""
 
 msgid "Creation month"
+msgstr ""
+
+msgid "Monthly reports summary"
 msgstr ""
 
 msgid "Map"
@@ -630,9 +639,6 @@ msgstr ""
 msgid "Report status"
 msgstr ""
 
-msgid "Report"
-msgstr ""
-
 msgid "Reports"
 msgstr ""
 
@@ -667,9 +673,6 @@ msgid "Declaration status"
 msgstr ""
 
 msgid "Submitter email"
-msgstr ""
-
-msgid "Declaration"
 msgstr ""
 
 msgid "Declarations"
@@ -764,6 +767,47 @@ msgid ""
 "\n"
 "%(report_mail_signature)s\n"
 "\n"
+msgstr ""
+
+#, python-format
+msgid ""
+"Hi,\n"
+"\n"
+"Please find below the monthly summary of created and updated reports on "
+"%(instance_title)s."
+msgstr ""
+
+#, python-format
+msgid "REPORTS CREATED IN %(last_month)s (%(created_count)s IN TOTAL)"
+msgstr ""
+
+#, python-format
+msgid "▶ No new reports created in %(last_month)s"
+msgstr ""
+
+#, python-format
+msgid "REPORTS UPDATED IN %(last_month)s (%(updated_count)s IN TOTAL)"
+msgstr ""
+
+#, python-format
+msgid "▶ No updated reports in %(last_month)s"
+msgstr ""
+
+msgid "updated at"
+msgstr ""
+
+msgid "REPORTS DISTRIBUTION"
+msgstr ""
+
+#, python-format
+msgid "In %(last_month)s (%(created_count)s in total) :"
+msgstr ""
+
+#, python-format
+msgid "From the start (%(total_count)s in total) :"
+msgstr ""
+
+msgid "Regards,"
 msgstr ""
 
 msgid "New report submitted"

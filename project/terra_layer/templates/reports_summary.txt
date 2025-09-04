@@ -1,0 +1,45 @@
+{% load i18n %}
+
+{% blocktranslate %}Hi,
+
+Please find below the monthly summary of created and updated reports on {{ instance_title }}.{% endblocktranslate %}
+
+
+{% blocktranslate with last_month=last_month|upper %}REPORTS CREATED IN {{ last_month }} ({{ created_count }} IN TOTAL){% endblocktranslate %}
+─────────────────────────────────────────────────────────────────────────────
+{% if created_count == 0 %}{% blocktranslate %}▶ No new reports created in {{ last_month }}{% endblocktranslate %}{% else %}{% for layer_name, features in grouped_created.items %}
+{{ layer_name }}{% for feature_name, reports in features.items %}
+   │
+   └── {{ feature_name }}{% for report in reports %}
+          │
+          ├── {% trans "Report" %} {{ report.id }}    {{ report.created_at|date:"d/m/Y H:i" }}    {{ report.status }}
+          │   ▶ {{ report.url }}{% endfor %}{% endfor %}
+{% endfor %}{% endif %}
+
+{% blocktranslate with last_month=last_month|upper %}REPORTS UPDATED IN {{ last_month }} ({{ updated_count }} IN TOTAL){% endblocktranslate %}
+─────────────────────────────────────────────────────────────────────────────
+{% if updated_count == 0 %}{% blocktranslate %}▶ No updated reports in {{ last_month }}{% endblocktranslate %}{% else %}{% for layer_name, features in grouped_updated.items %}
+{{ layer_name }}{% for feature_name, reports in features.items %}
+   │
+   └── {{ feature_name }}{% for report in reports %}
+          │
+          ├── {% trans "Report" %} {{ report.id }}    {% trans "updated at" %} {{ report.last_updated_at|date:"d/m/Y H:i" }}    {{ report.status }}
+          │   ▶ {{ report.url }}{% endfor %}{% endfor %}
+{% endfor %}{% endif %}
+
+{% trans "REPORTS DISTRIBUTION" %}
+─────────────────────────────────────────────────────────────────────────────
+
+{% blocktranslate %}In {{ last_month }} ({{ created_count }} in total) :{% endblocktranslate %}
+{% for status_label, count in monthly_distribution.items %}
+   • {{ status_label }} : {{ count }}{% endfor %}
+
+{% blocktranslate %}From the start ({{ total_count }} in total) :{% endblocktranslate %}
+{% for status_label, count in total_distribution.items %}
+   • {{ status_label }} : {{ count }}{% endfor %}
+
+
+
+{% trans "Regards," %}
+
+{{ report_mail_signature }}
