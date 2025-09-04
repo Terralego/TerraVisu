@@ -10,40 +10,214 @@ from django.utils.formats import date_format
 from django.utils.translation import gettext as _
 
 from project.accounts.models import User
-from project.terra_layer.models import Report, Status, StatusChange
+from project.terra_layer.models import Declaration, Report, Status, StatusChange
 
 
-class Command(BaseCommand):
-    """Management command to send monthly reports summary emails to managers."""
+class BaseSummaryHandler:
+    """Abstract base class to implement for both Report and Declaration models."""
 
-    help = (
-        "Send monthly summary email with reports created and updated in the last month"
-    )
+    model_class = None
+    admin_url_name = None
+    manager_field = None
+    template_name = None
+    subject_prefix = None
+    status_change_field = None
 
-    def add_arguments(self, parser):
-        parser.add_argument(
-            "--language",
-            type=str,
-            default="en",
-            help="Language for the summary email",
-        )
-
-    def get_report_admin_url(self, report):
-        """Generate admin URL for a report."""
+    def get_admin_url(self, instance):
+        """Generate admin URL for an instance."""
         server_name = settings.ALLOWED_HOSTS[-1]
-        report_admin_url = reverse(
-            "config_site:terra_layer_report_change",
-            args=(report.pk,),
+        admin_url = reverse(self.admin_url_name, args=(instance.pk,))
+        return f"https://{server_name}{admin_url}"
+
+    def get_manager_emails(self):
+        """Get email addresses of managers for this model."""
+        filter_kwargs = {self.manager_field: True}
+        return list(
+            User.objects.filter(**filter_kwargs).values_list("email", flat=True)
         )
-        return f"https://{server_name}{report_admin_url}"
+
+    def get_created_last_month(self, last_month):
+        """Get instances created in the last month."""
+        return self.model_class.objects.filter(
+            created_at__month=last_month.month,
+            created_at__year=last_month.year,
+        )
+
+    def get_updated_last_month(self, last_month):
+        """Get instances updated in the last month."""
+        filter_kwargs = {
+            f"{self.status_change_field}__isnull": False,
+            "updated_at__month": last_month.month,
+            "updated_at__year": last_month.year,
+        }
+
+        latest_status_updates = (
+            StatusChange.objects.filter(**filter_kwargs)
+            .select_related(self.status_change_field)
+            .order_by(self.status_change_field, "-updated_at")
+            .distinct(self.status_change_field)
+        )
+
+        # Store last update date on instance for later display.
+        instances = []
+        for status_change in latest_status_updates:
+            instance = getattr(status_change, self.status_change_field)
+            instance.last_updated_at = status_change.updated_at
+            instances.append(instance)
+
+        return instances
+
+    def extract_as_json_data(self, instances, language, date_field="created_at"):
+        """Extract instances as data for email template."""
+        instances_data = []
+
+        for instance in instances:
+            with translation.override(language):
+                status_display = instance.get_status_display()
+
+            instance_date = getattr(instance, date_field)
+
+            instance_data = {
+                "id": instance.pk,
+                date_field: instance_date,
+                "status": status_display,
+                "url": self.get_admin_url(instance),
+            }
+            instances_data.append(instance_data)
+
+        return instances_data
 
     def get_status_distribution(self, queryset, language):
-        """Get distribution of report statuses for a queryset."""
+        """Get distribution of statuses for a queryset."""
         distribution = {}
         with translation.override(language):
             for status_code, status_label in Status.choices:
                 distribution[status_label] = queryset.filter(status=status_code).count()
         return distribution
+
+    def prepare_email_context(
+        self, last_month, created_instances, updated_instances, all_instances, language
+    ):
+        """Prepare context data for the email template."""
+        with translation.override(language):
+            last_month_display = date_format(last_month, "F")
+
+        return {
+            "last_month": last_month_display,
+            "created_count": len(created_instances),
+            "updated_count": len(updated_instances),
+            "total_count": all_instances.count(),
+            "created": self.extract_as_json_data(
+                created_instances, language, "created_at"
+            ),
+            "updated": self.extract_as_json_data(
+                updated_instances, language, "last_updated_at"
+            ),
+            "instance_title": config.INSTANCE_TITLE,
+            "report_mail_signature": config.REPORT_MAIL_SIGNATURE,
+            "monthly_distribution": self.get_status_distribution(
+                self.model_class.objects.filter(
+                    created_at__month=last_month.month,
+                    created_at__year=last_month.year,
+                ),
+                language,
+            ),
+            "total_distribution": self.get_status_distribution(all_instances, language),
+        }
+
+    def send_summary_email(self, context, managers_emails, language):
+        """Send the summary email to managers."""
+        if not managers_emails:
+            return 0
+
+        with translation.override(language):
+            subject_prefix = _(self.subject_prefix)
+            full_subject = f"{subject_prefix} - {config.INSTANCE_TITLE}"
+            template = get_template(self.template_name)
+            message = template.render(context=context)
+
+        return send_mail(
+            subject=full_subject,
+            message=message,
+            from_email=None,  # uses DEFAULT_FROM_EMAIL
+            recipient_list=managers_emails,
+            fail_silently=True,
+        )
+
+    def create_and_send_summary_email(self, last_month, language):
+        """Process and send summary emails for a Declaration or Report models."""
+        # Get data
+        all_instances = self.model_class.objects.all()
+        created_instances = self.get_created_last_month(last_month)
+        updated_instances = self.get_updated_last_month(last_month)
+        managers_emails = self.get_manager_emails()
+
+        # Prepare and send email
+        context = self.prepare_email_context(
+            last_month=last_month,
+            created_instances=created_instances,
+            updated_instances=updated_instances,
+            all_instances=all_instances,
+            language=language,
+        )
+
+        sent_emails = self.send_summary_email(context, managers_emails, language)
+
+        return sent_emails
+
+
+class DeclarationSummaryHandler(BaseSummaryHandler):
+    """Summary handler for Declaration model."""
+
+    model_class = Declaration
+    admin_url_name = "config_site:terra_layer_declaration_change"
+    manager_field = "is_declaration_manager"
+    template_name = "declarations_summary.txt"
+    subject_prefix = "Monthly declarations summary"
+    status_change_field = "declaration"
+
+
+class ReportSummaryHandler(BaseSummaryHandler):
+    """Summary handler for Report model."""
+
+    model_class = Report
+    admin_url_name = "config_site:terra_layer_report_change"
+    manager_field = "is_report_manager"
+    template_name = "reports_summary.txt"
+    subject_prefix = "Monthly reports summary"
+    status_change_field = "report"
+
+    def get_created_last_month(self, last_month):
+        """Override method with optimized queries."""
+        return (
+            super()
+            .get_created_last_month(last_month)
+            .select_related("layer", "layer__main_field")
+            .order_by("layer", "feature")
+        )
+
+    def get_updated_last_month(self, last_month):
+        """Override method with optimized queries."""
+        filter_kwargs = {
+            "report__isnull": False,
+            "updated_at__month": last_month.month,
+            "updated_at__year": last_month.year,
+        }
+
+        latest_status_updates = (
+            StatusChange.objects.filter(**filter_kwargs)
+            .select_related("report", "report__layer", "report__layer__main_field")
+            .order_by("report", "-updated_at")
+            .distinct("report")
+        )
+
+        reports = []
+        for status_change in latest_status_updates:
+            report = status_change.report
+            report.last_updated_at = status_change.updated_at
+            reports.append(report)
+
+        return reports
 
     def get_display_name(self, layer):
         """Get display name for a layer."""
@@ -76,105 +250,63 @@ class Command(BaseCommand):
             with translation.override(language):
                 status_display = report.get_status_display()
 
-            # Determine the date to use
             report_date = getattr(report, date_field)
 
             report_data = {
                 "id": report.pk,
                 date_field: report_date,
                 "status": status_display,
-                "url": self.get_report_admin_url(report),
+                "url": self.get_admin_url(report),
             }
             grouped_reports[layer_display][feature_display].append(report_data)
 
         return grouped_reports
 
-    def get_reports_created_last_month(self, last_month):
-        """Get reports created in the last month."""
-        return (
-            Report.objects.filter(
-                created_at__month=last_month.month,
-                created_at__year=last_month.year,
-            )
-            .select_related("layer", "layer__main_field")
-            .order_by("layer", "feature")
-        )
-
-    def get_reports_updated_last_month(self, last_month):
-        """Get reports updated in the last month with their latest status changes."""
-        latest_status_updates = (
-            StatusChange.objects.filter(
-                report__isnull=False,
-                updated_at__month=last_month.month,
-                updated_at__year=last_month.year,
-            )
-            .select_related("report", "report__layer", "report__layer__main_field")
-            .order_by("report", "-updated_at")
-            .distinct("report")
-        )
-
-        # Attach the update date to each report for easier processing
-        reports = []
-        for status_change in latest_status_updates:
-            report = status_change.report
-            report.last_updated_at = status_change.updated_at
-            reports.append(report)
-
-        return reports
-
-    def get_manager_emails(self):
-        """Get email addresses of all report managers."""
-        return list(
-            User.objects.filter(is_report_manager=True).values_list("email", flat=True)
-        )
-
     def prepare_email_context(
-        self, last_month, created_reports, updated_reports, all_reports, language
+        self, last_month, created_instances, updated_instances, all_instances, language
     ):
-        """Prepare context data for the email template."""
+        """Prepare context data for the report email template."""
         with translation.override(language):
             last_month_display = date_format(last_month, "F")
 
         return {
             "last_month": last_month_display,
-            "created_count": len(created_reports),
-            "updated_count": len(updated_reports),
-            "total_count": all_reports.count(),
+            "created_count": len(created_instances),
+            "updated_count": len(updated_instances),
+            "total_count": all_instances.count(),
             "grouped_created": self.group_reports_by_layer_and_feature(
-                created_reports, language, "created_at"
+                created_instances, language, "created_at"
             ),
             "grouped_updated": self.group_reports_by_layer_and_feature(
-                updated_reports, language, "last_updated_at"
+                updated_instances, language, "last_updated_at"
             ),
             "instance_title": config.INSTANCE_TITLE,
             "report_mail_signature": config.REPORT_MAIL_SIGNATURE,
             "monthly_distribution": self.get_status_distribution(
-                Report.objects.filter(
+                self.model_class.objects.filter(
                     created_at__month=last_month.month,
                     created_at__year=last_month.year,
                 ),
                 language,
             ),
-            "total_distribution": self.get_status_distribution(all_reports, language),
+            "total_distribution": self.get_status_distribution(all_instances, language),
         }
 
-    def send_summary_email(self, context, managers_emails, language):
-        """Send the summary email to managers."""
-        if not managers_emails:
-            return 0
 
-        with translation.override(language):
-            subject_prefix = _('Monthly reports summary')
-            full_subject = f"{subject_prefix} - {config.INSTANCE_TITLE}"
-            txt_template = get_template("reports_summary.txt")
-            message = txt_template.render(context=context)
+class Command(BaseCommand):
+    """Management command to send monthly summary emails to managers. This should run on the first day of every month."""
 
-        return send_mail(
-            subject=full_subject,
-            message=message,
-            from_email=None,  # uses DEFAULT_FROM_EMAIL
-            recipient_list=managers_emails,
-            fail_silently=True,
+    help = (
+        "Send monthly summary emails with reports and declarations "
+        "created and updated in the last month. This should run on the first day of every month."
+    )
+
+    def add_arguments(self, parser):
+        parser.add_argument(
+            "--language",
+            type=str,
+            default="en",
+            help="Language for the summary email",
         )
 
     def handle(self, *args, **options):
@@ -184,30 +316,22 @@ class Command(BaseCommand):
         # Calculate last month
         last_month = timezone.now() - relativedelta(months=1)
 
-        # Get data
-        all_reports = Report.objects.all()
-        created_reports = list(self.get_reports_created_last_month(last_month))
-        updated_reports = self.get_reports_updated_last_month(last_month)
-        managers_emails = self.get_manager_emails()
-
-        # Prepare email context
-        context = self.prepare_email_context(
-            last_month=last_month,
-            created_reports=created_reports,
-            updated_reports=updated_reports,
-            all_reports=all_reports,
-            language=language,
+        # Process Reports
+        sent_emails = ReportSummaryHandler().create_and_send_summary_email(
+            last_month, language
         )
-
-        # Send emails
-        sent_emails = self.send_summary_email(context, managers_emails, language)
-
-        # Output result
         self.stdout.write(
-            self.style.SUCCESS(f"Successfully sent {sent_emails} summary emails.")
+            self.style.SUCCESS(
+                f"Successfully sent {sent_emails} declaration summary emails."
+            )
         )
 
-        if not managers_emails:
-            self.stdout.write(
-                self.style.WARNING("No report managers found. No emails sent.")
+        # Process Declarations
+        sent_emails = DeclarationSummaryHandler().create_and_send_summary_email(
+            last_month, language
+        )
+        self.stdout.write(
+            self.style.SUCCESS(
+                f"Successfully sent {sent_emails} declaration summary emails."
             )
+        )

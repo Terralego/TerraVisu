@@ -142,7 +142,13 @@ class ReportAndDeclarationDisplayMixin:
 
 @admin.register(Report)
 class ReportAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
-    list_display = ("display_id", "created_at", "status", "display_email", "display_layer")
+    list_display = (
+        "display_id",
+        "created_at",
+        "status",
+        "display_email",
+        "display_layer",
+    )
     status_changes_field = "report_status_changes"
     content_title_field = "label"
     content_value_field = "content"
@@ -184,7 +190,7 @@ class ReportAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
     display_layer.short_description = _("Layer")
 
     def display_id(self, obj):
-        return f"{_("Report")} {obj.id}"
+        return f"{_('Report')} {obj.id}"
 
     display_id.short_description = _("Report")
 
@@ -294,7 +300,7 @@ class DeclarationAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
         return False
 
     def display_id(self, obj):
-        return f"{_("Declaration")} {obj.id}"
+        return f"{_('Declaration')} {obj.id}"
 
     display_id.short_description = _("Declaration")
 
