@@ -1,3 +1,5 @@
+from io import StringIO
+
 import freezegun
 from constance.test import override_config
 from django.core import mail
@@ -204,7 +206,10 @@ class SummaryEmailCommandTestCase(TestCase):
         self.report5 = ReportFactory()
         self.declaration3 = DeclarationFactory()
         # Run the command
-        call_command("send_reports_and_declarations_summary_emails", language="fr")
+        output = StringIO()
+        call_command(
+            "send_reports_and_declarations_summary_emails", language="fr", stdout=output
+        )
 
         # Should have sent 2 emails (reports + declarations)
         self.assertEqual(len(mail.outbox), 2)
@@ -241,5 +246,8 @@ class SummaryEmailCommandTestCase(TestCase):
         User.objects.filter(is_report_manager=True).delete()
         User.objects.filter(is_declaration_manager=True).delete()
         mail.outbox.clear()
-        call_command("send_reports_and_declarations_summary_emails", language="fr")
+        output = StringIO()
+        call_command(
+            "send_reports_and_declarations_summary_emails", language="fr", stdout=output
+        )
         self.assertEqual(len(mail.outbox), 0)

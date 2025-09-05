@@ -20,7 +20,6 @@ class BaseSummaryHandler:
     admin_url_name = None
     manager_field = None
     template_name = None
-    subject_prefix = None
     status_change_field = None
 
     def get_admin_url(self, instance):
@@ -125,16 +124,29 @@ class BaseSummaryHandler:
             "total_distribution": self.get_status_distribution(all_instances, language),
         }
 
-    def send_summary_email(self, context, managers_emails, language):
+    def send_summary_email(
+        self, context, managers_emails, language, dry_run=False, stdout=None
+    ):
         """Send the summary email to managers."""
         if not managers_emails:
             return 0
 
         with translation.override(language):
-            subject_prefix = _(self.subject_prefix)
+            subject_prefix = self.get_subject_prefix()
             full_subject = f"{subject_prefix} - {config.INSTANCE_TITLE}"
             template = get_template(self.template_name)
             message = template.render(context=context)
+
+        if dry_run:
+            stdout.write(f"\n{'=' * 50}")
+            stdout.write(
+                f"DRY RUN - Email would be sent to: {', '.join(managers_emails)}"
+            )
+            stdout.write(f"Subject: {full_subject}")
+            stdout.write(f"{'=' * 50}")
+            stdout.write(message)
+            stdout.write(f"{'=' * 50}\n")
+            return len(managers_emails)
 
         return send_mail(
             subject=full_subject,
@@ -144,7 +156,9 @@ class BaseSummaryHandler:
             fail_silently=True,
         )
 
-    def create_and_send_summary_email(self, last_month, language):
+    def create_and_send_summary_email(
+        self, last_month, language, dry_run=False, stdout=None
+    ):
         """Process and send summary emails for a Declaration or Report models."""
         # Get data
         all_instances = self.model_class.objects.all()
@@ -161,7 +175,9 @@ class BaseSummaryHandler:
             language=language,
         )
 
-        sent_emails = self.send_summary_email(context, managers_emails, language)
+        sent_emails = self.send_summary_email(
+            context, managers_emails, language, dry_run, stdout
+        )
 
         return sent_emails
 
@@ -173,8 +189,10 @@ class DeclarationSummaryHandler(BaseSummaryHandler):
     admin_url_name = "config_site:terra_layer_declaration_change"
     manager_field = "is_declaration_manager"
     template_name = "declarations_summary.txt"
-    subject_prefix = _("Monthly declarations summary")
     status_change_field = "declaration"
+
+    def get_subject_prefix(self):
+        return _("Monthly declarations summary")
 
 
 class ReportSummaryHandler(BaseSummaryHandler):
@@ -184,8 +202,10 @@ class ReportSummaryHandler(BaseSummaryHandler):
     admin_url_name = "config_site:terra_layer_report_change"
     manager_field = "is_report_manager"
     template_name = "reports_summary.txt"
-    subject_prefix = _("Monthly reports summary")
     status_change_field = "report"
+
+    def get_subject_prefix(self):
+        return _("Monthly reports summary")
 
     def get_created_last_month(self, last_month):
         """Override method with optimized queries."""
@@ -308,27 +328,33 @@ class Command(BaseCommand):
             default="en",
             help="Language for the summary email",
         )
+        parser.add_argument(
+            "--dry-run",
+            action="store_true",
+            help="Print rendered emails to terminal instead of sending them",
+        )
 
     def handle(self, *args, **options):
         """Main command handler."""
         language = options["language"]
+        dry_run = options["dry_run"]
 
         # Calculate last month
         last_month = timezone.now() - relativedelta(months=1)
 
         # Process Reports
         sent_emails = ReportSummaryHandler().create_and_send_summary_email(
-            last_month, language
+            last_month, language, dry_run, self.stdout
         )
         self.stdout.write(
             self.style.SUCCESS(
-                f"Successfully sent {sent_emails} declaration summary emails."
+                f"Successfully sent {sent_emails} report summary emails."
             )
         )
 
         # Process Declarations
         sent_emails = DeclarationSummaryHandler().create_and_send_summary_email(
-            last_month, language
+            last_month, language, dry_run, self.stdout
         )
         self.stdout.write(
             self.style.SUCCESS(
