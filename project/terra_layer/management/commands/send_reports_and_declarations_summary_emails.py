@@ -132,7 +132,7 @@ class BaseSummaryHandler:
             return 0
 
         with translation.override(language):
-            subject_prefix = self.get_subject_prefix()
+            subject_prefix = _(self.subject_prefix)
             full_subject = f"{subject_prefix} - {config.INSTANCE_TITLE}"
             template = get_template(self.template_name)
             message = template.render(context=context)
@@ -189,10 +189,8 @@ class DeclarationSummaryHandler(BaseSummaryHandler):
     admin_url_name = "config_site:terra_layer_declaration_change"
     manager_field = "is_declaration_manager"
     template_name = "declarations_summary.txt"
+    subject_prefix = _("Monthly declarations summary")
     status_change_field = "declaration"
-
-    def get_subject_prefix(self):
-        return _("Monthly declarations summary")
 
 
 class ReportSummaryHandler(BaseSummaryHandler):
@@ -202,10 +200,8 @@ class ReportSummaryHandler(BaseSummaryHandler):
     admin_url_name = "config_site:terra_layer_report_change"
     manager_field = "is_report_manager"
     template_name = "reports_summary.txt"
+    subject_prefix = _("Monthly reports summary")
     status_change_field = "report"
-
-    def get_subject_prefix(self):
-        return _("Monthly reports summary")
 
     def get_created_last_month(self, last_month):
         """Override method with optimized queries."""
