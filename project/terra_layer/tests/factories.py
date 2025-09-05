@@ -13,11 +13,11 @@ from ..models import (
     DeclarationFile,
     Layer,
     LayerGroup,
-    ManagerMessage,
     Report,
     ReportConfig,
     ReportFile,
     Scene,
+    StatusChange,
     StyleImage,
 )
 
@@ -144,11 +144,13 @@ class DeclarationFieldFactory(factory.django.DjangoModelFactory):
         model = DeclarationField
 
 
-class ManagerMessageFactory(factory.django.DjangoModelFactory):
-    text = "Test text"
+class StatusChangeFactory(factory.django.DjangoModelFactory):
+    message = "Test text"
+    status_before = "NEW"
+    status_after = "ACCEPTED"
 
     class Meta:
-        model = ManagerMessage
+        model = StatusChange
 
 
 class DeclarationFactory(factory.django.DjangoModelFactory):

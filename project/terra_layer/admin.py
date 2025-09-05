@@ -22,6 +22,7 @@ from project.terra_layer.models import (
     ReportConfig,
     ReportField,
     Scene,
+    Status,
     StyleImage,
 )
 from project.terra_layer.views.forms import DeclarationAdminForm, ReportAdminForm
@@ -67,59 +68,53 @@ class SceneAdmin(admin.ModelAdmin):
     search_fields = ("id", "name", "slug")
 
 
-@admin.register(Report)
-class ReportAdmin(admin.ModelAdmin):
-    list_display = ("created_at", "status", "display_email", "display_layer")
-    list_filter = ("status", MonthYearFilter)
-    ordering = ["-created_at"]
-    form = ReportAdminForm
-    readonly_fields = (
-        "config",
-        "display_feature",
-        "created_at",
-        "display_email",
-        "display_layer",
-        "display_content",
-        "display_files",
-        "display_managers_messages",
-    )
-    fields = (
-        "config",
-        "created_at",
-        "display_email",
-        "display_layer",
-        "display_feature",
-        "display_content",
-        "geom",
-        "display_files",
-        "display_managers_messages",
-        "managers_message",
-        "status",
-    )
-    exclude = ("config", "feature", "layer", "email", "user", "content")
+class ReportAndDeclarationDisplayMixin:
+    """Mixin to add status change display functionality to ModelAdmin classes."""
 
-    def has_add_permission(self, request):
-        # Creation through API only
-        return False
+    status_changes_field = None
+    content_title_field = None
+    content_value_field = None
 
-    def display_layer(self, obj):
-        return obj.config.layer.name
+    def display_status_changes(self, obj):
+        status_changes = getattr(obj, self.status_changes_field).order_by("updated_at")
 
-    display_layer.short_description = _("Layer")
+        content = ["<table>"]
 
-    def display_email(self, obj):
-        return obj.user.email if obj.user else _("Deleted user")
+        # Header row with dates
+        content.append("<tr>")
+        for status_change in status_changes:
+            content.append(
+                f"<th>{date_format(status_change.updated_at)} - {status_change.updated_at.time().strftime('%Hh%M')}</th>"
+            )
+        content.append("</tr>")
 
-    display_email.short_description = _("Email")
+        # Status transition row
+        content.append("<tr>")
+        for status_change in status_changes:
+            status_before = getattr(Status, status_change.status_before).label
+            status_after = getattr(Status, status_change.status_after).label
+            content.append(f"<td>{status_before} → {status_after}</td>")
+        content.append("</tr>")
+
+        # Message row
+        content.append("<tr>")
+        for status_change in status_changes:
+            content.append(f"<td>{status_change.message or '-'}</td>")
+        content.append("</tr>")
+
+        content.append("</table>")
+        return format_html("".join(content))
+
+    display_status_changes.short_description = _("Status changes")
 
     def display_files(self, obj):
         files_links = []
-        for report_file in obj.files.all():
+        for file in obj.files.order_by("uploaded_at"):
             files_links.append(
                 format_html(
                     '&#128196; <a href="{}">{}</a><br>',
-                    "/" + report_file.file.url,
-                    Path(report_file.file.name).name,
+                    "/" + file.file.url,
+                    Path(file.file.name).name,
                 )
             )
         return format_html("".join(files_links))
@@ -131,20 +126,82 @@ class ReportAdmin(admin.ModelAdmin):
         content = "<table>"
         content += "<tr>"
         for field in obj.content:
-            content += f"<th>{field.get('label', free_comment_string)}</th>"
+            content += (
+                f"<th>{field.get(self.content_title_field, free_comment_string)}</th>"
+            )
         content += "</tr>"
         content += "<tr>"
         for field in obj.content:
-            content += f"<td>{field.get('content', field.get('free_comment'))}</td>"
+            content += f"<td>{field.get(self.content_value_field, field.get('free_comment'))}</td>"
         content += "</tr>"
         content += "</table>"
         return format_html("".join(content))
 
     display_content.short_description = _("Content")
 
+
+@admin.register(Report)
+class ReportAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
+    list_display = (
+        "display_id",
+        "created_at",
+        "status",
+        "display_email",
+        "display_layer",
+    )
+    status_changes_field = "report_status_changes"
+    content_title_field = "label"
+    content_value_field = "content"
+    list_filter = ("status", MonthYearFilter)
+    ordering = ["-created_at"]
+    form = ReportAdminForm
+    readonly_fields = (
+        "config",
+        "display_feature",
+        "created_at",
+        "display_email",
+        "display_layer",
+        "display_content",
+        "display_files",
+        "display_status_changes",
+    )
+    fields = (
+        "config",
+        "created_at",
+        "display_email",
+        "display_layer",
+        "display_feature",
+        "display_content",
+        "geom",
+        "display_files",
+        "display_status_changes",
+        "status",
+        "managers_message",
+    )
+    exclude = ("config", "feature", "layer", "email", "user", "content")
+
+    def has_add_permission(self, request):
+        # Creation through API only
+        return False
+
+    def display_layer(self, obj):
+        return obj.layer.name
+
+    display_layer.short_description = _("Layer")
+
+    def display_id(self, obj):
+        return f"{_('Report')} {obj.id}"
+
+    display_id.short_description = _("Report")
+
+    def display_email(self, obj):
+        return obj.user.email if obj.user else _("Deleted user")
+
+    display_email.short_description = _("Email")
+
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        queryset.prefetch_related("files", "report_manager_messages").select_related(
+        queryset.prefetch_related("files", "declaration_status_changes").select_related(
             "status", "config", "config__layer", "user"
         )
         return queryset
@@ -159,25 +216,10 @@ class ReportAdmin(admin.ModelAdmin):
 
     display_feature.short_description = _("Feature")
 
-    def display_managers_messages(self, obj):
-        content = "<table>"
-        content += "<tr>"
-        messages = obj.report_manager_messages.all()
-        for message in messages:
-            content += f"<th>{date_format(message.sent_at)}</th>"
-        content += "</tr>"
-        content += "<tr>"
-        for message in messages:
-            content += f"<td>{message.text}</td>"
-        content += "</tr>"
-        content += "</table>"
-        return format_html("".join(content))
-
-    display_managers_messages.short_description = _("Manager messages")
-
 
 @admin.register(ReportConfig)
 class ReportConfigAdmin(admin.ModelAdmin):
+    status_changes_field = "declaration_status_changes"
     list_display = (
         "label",
         "display_layer",
@@ -221,18 +263,22 @@ class ReportFieldAdmin(admin.ModelAdmin):
 config_site.register(Report, ReportAdmin)
 
 
-class DeclarationAdmin(admin.ModelAdmin):
-    list_display = ("created_at", "status", "display_email_list")
+class DeclarationAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
+    list_display = ("display_id", "created_at", "status", "display_email_list")
     list_filter = ("status", MonthYearFilter)
+    status_changes_field = "declaration_status_changes"
+    content_title_field = "title"
+    content_value_field = "value"
     form = DeclarationAdminForm
     ordering = ["-created_at"]
+
     readonly_fields = (
         "created_at",
         "display_user",
         "display_email_detail",
         "display_content",
         "display_files",
-        "display_managers_messages",
+        "display_status_changes",
     )
     # Reorder all fields including those from AdminForm
     fields = (
@@ -242,9 +288,9 @@ class DeclarationAdmin(admin.ModelAdmin):
         "display_content",
         "geom",
         "display_files",
-        "display_managers_messages",
-        "managers_message",
+        "display_status_changes",
         "status",
+        "managers_message",
     )
     exclude = ("user", "email", "content")
     actions = ["export_as_csv"]
@@ -252,6 +298,11 @@ class DeclarationAdmin(admin.ModelAdmin):
     def has_add_permission(self, request):
         # Creation through API only
         return False
+
+    def display_id(self, obj):
+        return f"{_('Declaration')} {obj.id}"
+
+    display_id.short_description = _("Declaration")
 
     def display_user(self, obj):
         return obj.user.email if obj.user else _("No user")
@@ -274,52 +325,6 @@ class DeclarationAdmin(admin.ModelAdmin):
 
     display_email_detail.short_description = _("Email")
 
-    def display_files(self, obj):
-        files_links = []
-        for declaration_file in obj.files.all():
-            files_links.append(
-                format_html(
-                    '&#128196; <a href="{}">{}</a><br>',
-                    "/" + declaration_file.file.url,
-                    Path(declaration_file.file.name).name,
-                )
-            )
-        return format_html("".join(files_links))
-
-    display_files.short_description = _("Files")
-
-    def display_content(self, obj):
-        free_comment_string = _("Free comment")
-        content = "<table>"
-        content += "<tr>"
-        for field in obj.content:
-            content += f"<th>{field.get('title', free_comment_string)}</th>"
-        content += "</tr>"
-        content += "<tr>"
-        for field in obj.content:
-            content += f"<td>{field.get('value', field.get('free_comment'))}</td>"
-        content += "</tr>"
-        content += "</table>"
-        return format_html("".join(content))
-
-    display_content.short_description = _("Content")
-
-    def display_managers_messages(self, obj):
-        content = "<table>"
-        content += "<tr>"
-        messages = obj.declaration_manager_messages.all()
-        for message in messages:
-            content += f"<th>{date_format(message.sent_at)}</th>"
-        content += "</tr>"
-        content += "<tr>"
-        for message in messages:
-            content += f"<td>{message.text}</td>"
-        content += "</tr>"
-        content += "</table>"
-        return format_html("".join(content))
-
-    display_managers_messages.short_description = _("Manager messages")
-
     def export_as_csv(self, request, queryset):
         response = HttpResponse(content_type="text/csv")
         response["Content-Disposition"] = 'attachment; filename="declarations.csv"'
@@ -336,12 +341,12 @@ class DeclarationAdmin(admin.ModelAdmin):
             _("Longitude"),
             _("Content"),
             _("Files"),
-            _("Manager messages"),
+            _("Status changes"),
         ]
         writer.writerow(header)
 
         for declaration in queryset.prefetch_related(
-            "files", "declaration_manager_messages"
+            "files", "declaration_status_changes"
         ).select_related("user"):
             email = (
                 declaration.user.email
@@ -366,12 +371,14 @@ class DeclarationAdmin(admin.ModelAdmin):
                 file_urls.append(full_file_url)
             files_str = " | ".join(file_urls)
 
-            messages = []
-            for message in declaration.declaration_manager_messages.all():
-                messages.append(
-                    f"{message.sent_at.strftime('%d/%m/%Y')}: {message.text}"
+            status_changes_str = []
+            for status_change in declaration.declaration_status_changes.all():
+                status_before = getattr(Status, status_change.status_before).label
+                status_after = getattr(Status, status_change.status_after).label
+                status_changes_str.append(
+                    f"{status_change.updated_at.strftime('%d/%m/%Y')} ({status_before} → {status_after}): {status_change.message}"
                 )
-            messages_str = " | ".join(messages)
+            status_changes_str = " | ".join(status_changes_str)
 
             row = [
                 declaration.pk,
@@ -382,7 +389,7 @@ class DeclarationAdmin(admin.ModelAdmin):
                 longitude,
                 content_str,
                 files_str,
-                messages_str,
+                status_changes_str,
             ]
             writer.writerow(row)
 
@@ -392,9 +399,9 @@ class DeclarationAdmin(admin.ModelAdmin):
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
-        queryset.prefetch_related(
-            "files", "declaration_manager_messages"
-        ).select_related("status", "user")
+        queryset.prefetch_related("files", "declaration_status_changes").select_related(
+            "status", "user"
+        )
         return queryset
 
 

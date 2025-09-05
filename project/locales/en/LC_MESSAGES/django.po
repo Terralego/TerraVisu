@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-20 09:52+0000\n"
+"POT-Creation-Date: 2025-09-05 15:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -59,12 +59,20 @@ msgid ""
 "instead of deleting accounts."
 msgstr ""
 
-msgid "Report and declaration manager"
+msgid "Report manager"
 msgstr ""
 
 msgid ""
 "Designates whether this user needs to receive email notifications about "
-"incoming reports and declarations."
+"incoming reports, and monthly reports summary."
+msgstr ""
+
+msgid "Declaration manager"
+msgstr ""
+
+msgid ""
+"Designates whether this user needs to receive email notifications about "
+"incoming declarations, and monthly declarations summary."
 msgstr ""
 
 msgid "date joined"
@@ -502,13 +510,7 @@ msgstr ""
 msgid "Layer identifier"
 msgstr ""
 
-msgid "Layer"
-msgstr ""
-
-msgid "Deleted user"
-msgstr ""
-
-msgid "Email"
+msgid "Status changes"
 msgstr ""
 
 msgid "Files"
@@ -520,13 +522,25 @@ msgstr ""
 msgid "Content"
 msgstr ""
 
+msgid "Layer"
+msgstr ""
+
+msgid "Report"
+msgstr ""
+
+msgid "Deleted user"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
 msgid "Feature"
 msgstr ""
 
-msgid "Manager messages"
+msgid "Field"
 msgstr ""
 
-msgid "Field"
+msgid "Declaration"
 msgstr ""
 
 msgid "No user"
@@ -557,6 +571,15 @@ msgid "Export selected declarations as CSV"
 msgstr ""
 
 msgid "Creation month"
+msgstr ""
+
+msgid "Monthly declarations summary"
+msgstr ""
+
+msgid "Monthly reports summary"
+msgstr ""
+
+msgid "Object"
 msgstr ""
 
 msgid "Map"
@@ -622,9 +645,6 @@ msgstr ""
 msgid "Report status"
 msgstr ""
 
-msgid "Report"
-msgstr ""
-
 msgid "Reports"
 msgstr ""
 
@@ -661,9 +681,6 @@ msgstr ""
 msgid "Submitter email"
 msgstr ""
 
-msgid "Declaration"
-msgstr ""
-
 msgid "Declarations"
 msgstr ""
 
@@ -673,10 +690,16 @@ msgstr ""
 msgid "Declaration files"
 msgstr ""
 
-msgid "Message"
+msgid "Manager message"
 msgstr ""
 
-msgid "Manager message"
+msgid "Status before update"
+msgstr ""
+
+msgid "Status after update"
+msgstr ""
+
+msgid "Status change"
 msgstr ""
 
 msgid "'tiles' should not be filled for mapbox base layers."
@@ -724,6 +747,47 @@ msgstr ""
 
 #, python-format
 msgid ""
+"Hi,\n"
+"\n"
+"Please find below the monthly summary of created and updated declarations on "
+"%(instance_title)s."
+msgstr ""
+
+#, python-format
+msgid "DECLARATIONS CREATED IN %(last_month)s (%(created_count)s IN TOTAL)"
+msgstr ""
+
+#, python-format
+msgid "▶ No new declarations created in %(last_month)s"
+msgstr ""
+
+#, python-format
+msgid "DECLARATIONS UPDATED IN %(last_month)s (%(updated_count)s IN TOTAL)"
+msgstr ""
+
+#, python-format
+msgid "▶ No updated declarations in %(last_month)s"
+msgstr ""
+
+msgid "updated at"
+msgstr ""
+
+msgid "DECLARATIONS DISTRIBUTION"
+msgstr ""
+
+#, python-format
+msgid "In %(last_month)s (%(created_count)s in total) :"
+msgstr ""
+
+#, python-format
+msgid "From the start (%(total_count)s in total) :"
+msgstr ""
+
+msgid "Regards,"
+msgstr ""
+
+#, python-format
+msgid ""
 "\n"
 "Hi,\n"
 "\n"
@@ -750,6 +814,33 @@ msgid ""
 "\n"
 "%(report_mail_signature)s\n"
 "\n"
+msgstr ""
+
+#, python-format
+msgid ""
+"Hi,\n"
+"\n"
+"Please find below the monthly summary of created and updated reports on "
+"%(instance_title)s."
+msgstr ""
+
+#, python-format
+msgid "REPORTS CREATED IN %(last_month)s (%(created_count)s IN TOTAL)"
+msgstr ""
+
+#, python-format
+msgid "▶ No new reports created in %(last_month)s"
+msgstr ""
+
+#, python-format
+msgid "REPORTS UPDATED IN %(last_month)s (%(updated_count)s IN TOTAL)"
+msgstr ""
+
+#, python-format
+msgid "▶ No updated reports in %(last_month)s"
+msgstr ""
+
+msgid "REPORTS DISTRIBUTION"
 msgstr ""
 
 msgid "New report submitted"

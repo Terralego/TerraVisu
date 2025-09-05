@@ -68,17 +68,17 @@ class NotifyManagersViewMixin:
         return f"{scheme}://{server_name}{admin_url}"
 
     def send_email_to_managers(self, template_name, context, title):
-        report_managers_emails = User.objects.filter(
-            is_report_and_declaration_manager=True
+        managers_emails = User.objects.filter(
+            **{f"is_{self.model._meta.model_name}_manager": True}
         ).values_list("email", flat=True)
-        if report_managers_emails:
+        if managers_emails:
             txt_template = get_template(template_name)
             txt_message = txt_template.render(context=context)
             send_mail(
                 title,
                 txt_message,
                 None,  # uses DEFAULT_FROM_EMAIL
-                recipient_list=report_managers_emails,
+                recipient_list=managers_emails,
                 fail_silently=True,
             )
 
