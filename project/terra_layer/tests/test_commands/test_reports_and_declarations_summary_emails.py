@@ -48,11 +48,7 @@ class SummaryEmailCommandTestCase(TestCase):
         self.report3.feature.save()
 
         self.report4 = ReportFactory(status=Status.REJECTED)
-        main_field_name = self.report4.layer.main_field.name
-        report4_feature_properties = self.report4.feature.properties
-        report4_feature_properties[main_field_name] = "Third feature"
-        self.report4.feature.properties = report4_feature_properties
-        self.report4.feature.save()
+        self.feature = self.report4.feature
         self.report4.layer.name = "Other layer"
         self.report4.layer.save()
 
@@ -91,7 +87,7 @@ class SummaryEmailCommandTestCase(TestCase):
         "\n"
         "Other layer\n"
         "   │\n"
-        "   └── Third feature\n"
+        "   └── Object " +str(self.feature.pk)+"\n"
         "          │\n"
         "          ├── Report "+str(self.report4.pk)+"    09/10/2025 00:00    Rejected\n"
         "          │   ▶ https://testserver.com/config/terra_layer/report/"+str(self.report4.pk)+"/change/\n"
@@ -192,6 +188,18 @@ class SummaryEmailCommandTestCase(TestCase):
         "Regards,\n"
         "\n"
         "Test Team\n")
+        self.DECLARATION_HEADER = ("==================================================\n"
+        "Sent 1 report summary emails.\n"
+        "\n"
+        "==================================================\n"
+        "DRY RUN - Email would be sent to: declaration_manager@test.com\n"
+        "Subject: Monthly declarations summary - TerraVisu Test\n"
+        "==================================================\n")
+        self.REPORT_HEADER = ("\n"
+        "==================================================\n"
+        "DRY RUN - Email would be sent to: report_manager@test.com\n"
+        "Subject: Monthly reports summary - TerraVisu Test\n"
+        "==================================================\n")
         # fmt: on
 
     @freezegun.freeze_time("2025-11-10 00:00:00")
@@ -238,6 +246,41 @@ class SummaryEmailCommandTestCase(TestCase):
         actual_lines = content.splitlines()
         for i, expected_line in enumerate(expected_lines):
             self.assertEqual(expected_line, actual_lines[i])
+
+    @freezegun.freeze_time("2025-11-10 00:00:00")
+    @override_settings(
+        ALLOWED_HOSTS=["testserver.com"],
+        EMAIL_BACKEND="django.core.mail.backends.locmem.EmailBackend",
+    )
+    @override_config(INSTANCE_TITLE="TerraVisu Test", REPORT_MAIL_SIGNATURE="Test Team")
+    def test_summary_email_dry_run_command_execution(self):
+        """Test that the command executes properly with dry run mode."""
+        # Not included because not from last month
+        self.report5 = ReportFactory()
+        self.declaration3 = DeclarationFactory()
+        # Run the command
+        output = StringIO()
+        call_command(
+            "send_reports_and_declarations_summary_emails",
+            language="en",
+            dry_run=True,
+            stdout=output,
+        )
+
+        # Check content
+        output_lines = output.getvalue().splitlines()
+
+        expected_sections = [
+            self.REPORT_HEADER.splitlines(),
+            self.REPORT_EMAIL.splitlines(),
+            self.DECLARATION_HEADER.splitlines(),
+            self.DECLARATION_EMAIL.splitlines(),
+        ]
+
+        expected_lines = [line for section in expected_sections for line in section]
+
+        for i, (expected, actual) in enumerate(zip(expected_lines, output_lines)):
+            self.assertEqual(expected, actual, f"Line {i + 1} mismatch")
 
     def test_no_managers_no_emails(self):
         """Test that no emails are sent when no managers exist."""

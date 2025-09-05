@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-05 12:32+0000\n"
+"POT-Creation-Date: 2025-09-05 15:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -665,6 +665,9 @@ msgstr "Récapitulatif mensuel des déclarations"
 
 msgid "Monthly reports summary"
 msgstr "Récapitulatif mensuel des signalements"
+
+msgid "Object"
+msgstr "Objet"
 
 msgid "Map"
 msgstr "Carte"

@@ -243,8 +243,13 @@ class ReportSummaryHandler(BaseSummaryHandler):
         """Get display value for a feature."""
         feature_main_field = getattr(report.layer.main_field, "name", None)
         if feature_main_field:
-            return report.feature.properties.get(feature_main_field, report.feature.pk)
-        return str(report.feature.pk)
+            feature_main_field_value = report.feature.properties.get(
+                feature_main_field, None
+            )
+            if feature_main_field_value:
+                return feature_main_field_value
+        object_str = _("Object")
+        return f"{object_str} {report.feature.pk}"
 
     def group_reports_by_layer_and_feature(
         self, reports, language, date_field="created_at"
@@ -342,18 +347,10 @@ class Command(BaseCommand):
         sent_emails = ReportSummaryHandler().create_and_send_summary_email(
             last_month, language, dry_run, self.stdout
         )
-        self.stdout.write(
-            self.style.SUCCESS(
-                f"Successfully sent {sent_emails} report summary emails."
-            )
-        )
+        self.stdout.write(f"Sent {sent_emails} report summary emails.")
 
         # Process Declarations
         sent_emails = DeclarationSummaryHandler().create_and_send_summary_email(
             last_month, language, dry_run, self.stdout
         )
-        self.stdout.write(
-            self.style.SUCCESS(
-                f"Successfully sent {sent_emails} declaration summary emails."
-            )
-        )
+        self.stdout.write(f"Sent {sent_emails} declaration summary emails.")
