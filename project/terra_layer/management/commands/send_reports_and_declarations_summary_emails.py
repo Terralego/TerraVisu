@@ -173,7 +173,7 @@ class DeclarationSummaryHandler(BaseSummaryHandler):
     admin_url_name = "config_site:terra_layer_declaration_change"
     manager_field = "is_declaration_manager"
     template_name = "declarations_summary.txt"
-    subject_prefix = "Monthly declarations summary"
+    subject_prefix = _("Monthly declarations summary")
     status_change_field = "declaration"
 
 
@@ -184,7 +184,7 @@ class ReportSummaryHandler(BaseSummaryHandler):
     admin_url_name = "config_site:terra_layer_report_change"
     manager_field = "is_report_manager"
     template_name = "reports_summary.txt"
-    subject_prefix = "Monthly reports summary"
+    subject_prefix = _("Monthly reports summary")
     status_change_field = "report"
 
     def get_created_last_month(self, last_month):
