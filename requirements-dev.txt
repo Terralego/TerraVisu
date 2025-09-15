@@ -314,7 +314,7 @@ pyasn1==0.6.1
     #   -c requirements.txt
     #   python-jose
     #   rsa
-pycparser==2.22
+pycparser==2.23
     # via
     #   -c requirements.txt
     #   cffi
