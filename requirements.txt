@@ -161,7 +161,7 @@ jsonschema==4.25.1
     # via
     #   django-geostore
     #   drf-spectacular
-jsonschema-specifications==2025.4.1
+jsonschema-specifications==2025.9.1
     # via jsonschema
 kombu==5.5.4
     # via celery
