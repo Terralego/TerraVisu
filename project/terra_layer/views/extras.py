@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from geostore.views import FeatureViewSet, LayerGroupViewsSet, LayerViewSet
 from mapbox_baselayer.models import MapBaseLayer
-from rest_framework import generics, viewsets
+from rest_framework import generics, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.parsers import (
     JSONParser,
@@ -89,6 +89,17 @@ class ReportCreateAPIView(NotifyManagersViewMixin, generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, JSONParser]
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        report = self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            {"Created report": report.pk},
+            status=status.HTTP_201_CREATED,
+            headers=headers,
+        )
+
     def perform_create(self, serializer):
         report = serializer.save(user=self.request.user)
         context = {
@@ -100,6 +111,7 @@ class ReportCreateAPIView(NotifyManagersViewMixin, generics.CreateAPIView):
         self.send_email_to_managers(
             "new_report.txt", context, _("New report submitted")
         )
+        return report
 
 
 class DeclarationConfigDetailAPIView(generics.RetrieveAPIView):
@@ -121,6 +133,17 @@ class DeclarationCreateAPIView(NotifyManagersViewMixin, generics.CreateAPIView):
     parser_classes = [MultiPartParser, JSONParser]
     permission_classes = [AllowAny]
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        declaration = self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            {"Created declaration": declaration.pk},
+            status=status.HTTP_201_CREATED,
+            headers=headers,
+        )
+
     def perform_create(self, serializer):
         user = None
         if not self.request.user.is_anonymous:
@@ -136,3 +159,4 @@ class DeclarationCreateAPIView(NotifyManagersViewMixin, generics.CreateAPIView):
             context,
             _("New declaration submitted"),
         )
+        return declaration
