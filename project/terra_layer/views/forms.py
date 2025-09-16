@@ -7,9 +7,9 @@ from django.utils.translation import gettext_lazy as _
 
 from project.terra_layer.models import (
     Declaration,
-    ManagerMessage,
     Report,
     Status,
+    StatusChange,
 )
 
 
@@ -20,6 +20,10 @@ class EmailSendingForm(gis_forms.ModelForm):
         help_text=_("Optional message to send user on status change"),
         label=_("Managers message"),
     )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.status_before = self.instance.status
 
     def send_email(self, template_name, mail_title, context, recipients):
         if recipients:
@@ -35,7 +39,7 @@ class EmailSendingForm(gis_forms.ModelForm):
 
 
 class ReportAdminForm(EmailSendingForm):
-    geom = gis_forms.PointField(widget=gis_forms.OSMWidget)
+    geom = gis_forms.PointField(widget=gis_forms.OSMWidget, required=False)
 
     def get_email_context(self, instance):
         context = {
@@ -59,8 +63,12 @@ class ReportAdminForm(EmailSendingForm):
                 recipients,
             )
         managers_message = self.cleaned_data.get("managers_message", "")
-        if managers_message:
-            ManagerMessage.objects.create(text=managers_message, report=instance)
+        StatusChange.objects.create(
+            message=managers_message,
+            report=instance,
+            status_before=self.status_before,
+            status_after=instance.status,
+        )
         return instance
 
     class Meta:
@@ -97,9 +105,13 @@ class DeclarationAdminForm(EmailSendingForm):
                 context,
                 recipients,
             )
-        managers_message = self.cleaned_data.get("managers_message", "")
-        if managers_message:
-            ManagerMessage.objects.create(text=managers_message, declaration=instance)
+            managers_message = self.cleaned_data.get("managers_message", "")
+            StatusChange.objects.create(
+                message=managers_message,
+                declaration=instance,
+                status_before=self.status_before,
+                status_after=instance.status,
+            )
         return instance
 
     class Meta:

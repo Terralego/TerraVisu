@@ -602,7 +602,11 @@ class SceneTreeAPIView(APIView):
     def get_report_configs_for_layer(self, layer):
         report_configs = []
         for report_config in layer.prefetched_report_configs:
-            config = {"label": report_config.label, "fields": []}
+            config = {
+                "label": report_config.label,
+                "id": report_config.id,
+                "fields": [],
+            }
             for report_field in report_config.prefetched_report_fields:
                 config["fields"].append(
                     {

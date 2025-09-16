@@ -1009,7 +1009,7 @@ class ReportCreateAPIViewTestCase(APITestCase):
     def setUpTestData(cls):
         cls.feature = FeatureFactory()
         cls.report_config = ReportConfigFactory()
-        cls.user = SuperUserFactory(is_report_and_declaration_manager=True)
+        cls.user = SuperUserFactory(is_report_manager=True)
         cls.valid_report_data = [
             {
                 "sourceFieldId": 345,
@@ -1257,7 +1257,7 @@ class DeclarationAPIViewTestCase(APITestCase):
         cls.declaration_field_1 = DeclarationFieldFactory()
         cls.declaration_config = cls.declaration_field_1.config
         cls.declaration_field_2 = DeclarationFieldFactory(config=cls.declaration_config)
-        cls.user = SuperUserFactory(is_report_and_declaration_manager=True)
+        cls.user = SuperUserFactory(is_declaration_manager=True)
         cls.valid_declaration_content = [
             {
                 "title": "The title of the field",

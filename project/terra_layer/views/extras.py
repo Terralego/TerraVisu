@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from geostore.views import FeatureViewSet, LayerGroupViewsSet, LayerViewSet
 from mapbox_baselayer.models import MapBaseLayer
-from rest_framework import generics, viewsets
+from rest_framework import generics, status, viewsets
 from rest_framework.decorators import action
 from rest_framework.parsers import (
     JSONParser,
@@ -68,17 +68,17 @@ class NotifyManagersViewMixin:
         return f"{scheme}://{server_name}{admin_url}"
 
     def send_email_to_managers(self, template_name, context, title):
-        report_managers_emails = User.objects.filter(
-            is_report_and_declaration_manager=True
+        managers_emails = User.objects.filter(
+            **{f"is_{self.model._meta.model_name}_manager": True}
         ).values_list("email", flat=True)
-        if report_managers_emails:
+        if managers_emails:
             txt_template = get_template(template_name)
             txt_message = txt_template.render(context=context)
             send_mail(
                 title,
                 txt_message,
                 None,  # uses DEFAULT_FROM_EMAIL
-                recipient_list=report_managers_emails,
+                recipient_list=managers_emails,
                 fail_silently=True,
             )
 
@@ -88,6 +88,17 @@ class ReportCreateAPIView(NotifyManagersViewMixin, generics.CreateAPIView):
     serializer_class = ReportSerializer
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, JSONParser]
+
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        report = self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            {"Created report": report.pk},
+            status=status.HTTP_201_CREATED,
+            headers=headers,
+        )
 
     def perform_create(self, serializer):
         report = serializer.save(user=self.request.user)
@@ -100,6 +111,7 @@ class ReportCreateAPIView(NotifyManagersViewMixin, generics.CreateAPIView):
         self.send_email_to_managers(
             "new_report.txt", context, _("New report submitted")
         )
+        return report
 
 
 class DeclarationConfigDetailAPIView(generics.RetrieveAPIView):
@@ -121,6 +133,17 @@ class DeclarationCreateAPIView(NotifyManagersViewMixin, generics.CreateAPIView):
     parser_classes = [MultiPartParser, JSONParser]
     permission_classes = [AllowAny]
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        declaration = self.perform_create(serializer)
+        headers = self.get_success_headers(serializer.data)
+        return Response(
+            {"Created declaration": declaration.pk},
+            status=status.HTTP_201_CREATED,
+            headers=headers,
+        )
+
     def perform_create(self, serializer):
         user = None
         if not self.request.user.is_anonymous:
@@ -136,3 +159,4 @@ class DeclarationCreateAPIView(NotifyManagersViewMixin, generics.CreateAPIView):
             context,
             _("New declaration submitted"),
         )
+        return declaration
