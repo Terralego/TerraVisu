@@ -83,7 +83,7 @@ cron-descriptor==2.0.6
     # via
     #   -c requirements.txt
     #   django-celery-beat
-cryptography==45.0.6
+cryptography==46.0.1
     # via
     #   -c requirements.txt
     #   pyjwt
