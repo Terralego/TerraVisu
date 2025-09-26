@@ -342,6 +342,8 @@ class LayerDetailSerializer(serializers.ModelSerializer):
             ReportField.objects.create(
                 field=report_field_data["field"],
                 order=report_field_data["order"],
+                helptext=report_field_data["helptext"],
+                required=report_field_data.get("required", False),
                 config=report_config,
             )
 

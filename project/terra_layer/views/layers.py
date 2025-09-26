@@ -616,6 +616,7 @@ class SceneTreeAPIView(APIView):
                         "label": report_field.field.label,
                         "format_type": TYPE_MAP[report_field.field.data_type],
                         "required": report_field.required,
+                        "helptext": report_field.helptext,
                     }
                 )
             report_configs.append(config)
