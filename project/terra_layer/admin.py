@@ -180,6 +180,13 @@ class ReportAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
     )
     exclude = ("config", "feature", "layer", "email", "user", "content")
 
+    def get_fields(self, request, obj=None):
+        fields = list(super().get_fields(request, obj))
+        # Only show geom if it has a value
+        if obj and not obj.geom:
+            fields.remove("geom")
+        return fields
+
     def has_add_permission(self, request):
         # Creation through API only
         return False

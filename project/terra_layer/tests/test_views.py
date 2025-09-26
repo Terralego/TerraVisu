@@ -964,8 +964,17 @@ class LayerViewSetAPITestCase(APITestCase):
                     {
                         "label": "Test report config",
                         "report_fields": [
-                            {"order": 1, "sourceFieldId": field1.pk},
-                            {"order": 2, "sourceFieldId": field2.pk},
+                            {
+                                "order": 1,
+                                "sourceFieldId": field1.pk,
+                                "helptext": "This is a field",
+                            },
+                            {
+                                "order": 2,
+                                "sourceFieldId": field2.pk,
+                                "helptext": "This is a field",
+                                "required": True,
+                            },
                         ],
                     }
                 ],
@@ -979,7 +988,10 @@ class LayerViewSetAPITestCase(APITestCase):
         )
 
         config_id = ReportConfig.objects.first().pk
-        field_id = ReportField.objects.last().pk
+        field = ReportField.objects.last()
+        field_id = field.pk
+        self.assertEqual(field.helptext, "This is a field")
+        self.assertEqual(field.required, True)
         # Update : second field became only field
         response = self.client.patch(
             reverse("layer-detail", args=[self.layer.pk]),
@@ -989,7 +1001,12 @@ class LayerViewSetAPITestCase(APITestCase):
                         "id": config_id,
                         "label": "Test report config 2",
                         "report_fields": [
-                            {"id": field_id, "order": 1, "sourceFieldId": field2.pk}
+                            {
+                                "id": field_id,
+                                "order": 1,
+                                "sourceFieldId": field2.pk,
+                                "helptext": "This is a field",
+                            }
                         ],
                     }
                 ],
