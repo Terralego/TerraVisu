@@ -139,7 +139,7 @@ drf-spectacular==0.28.0
     # via terravisu (pyproject.toml)
 ecdsa==0.19.1
     # via python-jose
-elastic-transport==8.17.1
+elastic-transport==9.1.0
     # via elasticsearch
 elasticsearch==8.17.2
     # via terravisu (pyproject.toml)
