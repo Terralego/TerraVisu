@@ -280,7 +280,7 @@ lml==0.2.0
     #   -c requirements.txt
     #   pyexcel
     #   pyexcel-io
-lxml==6.0.1
+lxml==6.0.2
     # via terravisu (pyproject.toml)
 mercantile==1.2.1
     # via
