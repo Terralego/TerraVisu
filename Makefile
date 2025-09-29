@@ -18,7 +18,7 @@ build_admin:
 
 build_front:
 	docker compose -f .docker/frontend/docker-compose.yml pull
-	docker compose -f .docker/frontend/docker-compose.yml run --rm front bash -c "git config --global url.\"https://github.com/\".insteadOf ssh://git@github.com/ && npm ci --production && npm run build"
+	docker compose -f .docker/frontend/docker-compose.yml run --rm front bash -c "git config --global url.\"https://github.com/\".insteadOf ssh://git@github.com/ && npm ci --legacy-peer-deps --production && npm run build"
 	find ./public -maxdepth 1 -type f -exec rm {} \;
 	if [ -e ./public/static ]; then rm -r ./public/static ./public/images ./public/locales; fi
 	mv ./front/build/* ./public/
