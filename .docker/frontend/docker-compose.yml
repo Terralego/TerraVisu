@@ -1,7 +1,6 @@
-version: "3.8"
 services:
   front:
-    image: node:${NODE_VERSION:-12}
+    image: node:${NODE_VERSION:-22}
     working_dir: /app/front
 
     volumes:
