@@ -213,7 +213,7 @@ python-magic==0.4.27
     # via terravisu (pyproject.toml)
 python-slugify==8.0.4
     # via django-admin-interface
-pyyaml==6.0.2
+pyyaml==6.0.3
     # via drf-spectacular
 redis==6.4.0
     # via terravisu (pyproject.toml)
