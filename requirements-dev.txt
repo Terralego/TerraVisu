@@ -356,7 +356,7 @@ python-slugify==8.0.4
     # via
     #   -c requirements.txt
     #   django-admin-interface
-pyyaml==6.0.2
+pyyaml==6.0.3
     # via
     #   -c requirements.txt
     #   drf-spectacular
