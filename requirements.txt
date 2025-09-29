@@ -100,7 +100,7 @@ django-colorfield==0.14.0
     # via django-admin-interface
 django-constance==4.3.2
     # via terravisu (pyproject.toml)
-django-cors-headers==4.7.0
+django-cors-headers==4.9.0
     # via terravisu (pyproject.toml)
 django-crispy-forms==2.4
     # via
