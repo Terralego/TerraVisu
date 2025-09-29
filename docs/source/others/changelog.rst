@@ -3,11 +3,15 @@ Changelog
 ==========
 
 2025.07.00.pre1+dev (XXXX-XX-XX)
---------------------------------
+---------------------------------
 
 **New features**
 
 - Add API endpoints and backend for Report and Declarations functionalities (for users to provide feedback about data layers)
+
+**Documentation:**
+
+- Update doc with new features (ref #894)
 
 
 2025.07.00.pre1 (2025-07-11)
