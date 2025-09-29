@@ -173,9 +173,7 @@ class SceneTreeAPIView(APIView):
                     ReportConfig.objects.prefetch_related(
                         Prefetch(
                             "report_fields",
-                            queryset=ReportField.objects.select_related(
-                                "field"
-                            ).order_by("order"),
+                            queryset=ReportField.objects.select_related("field"),
                             to_attr="prefetched_report_fields",
                         ),
                     ),

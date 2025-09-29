@@ -45,7 +45,7 @@ class ReportAdminForm(EmailSendingForm):
         context = {
             "layer": instance.layer.name,
             "status": getattr(Status, instance.status).label,
-            "managers_message": self.cleaned_data.get("managers_message", ""),
+            "administrators_message": self.cleaned_data.get("managers_message", ""),
             "report_mail_signature": config.REPORT_MAIL_SIGNATURE,
         }
         return context
