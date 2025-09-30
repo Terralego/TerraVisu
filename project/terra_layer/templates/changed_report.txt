@@ -1,6 +1,6 @@
 {% load i18n %}
 
-{% blocktranslate with layer=layer status=status administrators_message=administrators_message report_mail_signature=report_mail_signature %}
+{% blocktranslate with layer=layer|safe status=status administrators_message=administrators_message|safe report_mail_signature=report_mail_signature|safe %}
 Hi,
 
 Your report regarding layer "{{ layer }}" has been changed to status "{{ status }}".

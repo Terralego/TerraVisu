@@ -548,6 +548,7 @@ class ReportField(models.Model):
     class Meta:
         verbose_name = _("Report field")
         verbose_name_plural = _("Reports fields")
+        ordering = ["config", "order"]
         constraints = [
             UniqueConstraint(
                 fields=["field", "config"],
