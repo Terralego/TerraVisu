@@ -13,12 +13,13 @@ from rest_framework.routers import SimpleRouter
 
 from project.accounts.api import FunctionalPermissionViewSet, GroupViewSet, UserViewsSet
 from project.admin import config_site
-from project.terra_layer.views.extras import BaseLayerViewSet
+from project.terra_layer.views.extras import BaseLayerViewSet, IconViewSet
 from project.views import serve_private_files
 
 router = SimpleRouter()
 
 router.register("baselayer", BaseLayerViewSet, basename="baselayer")
+router.register("icon", IconViewSet, basename="icon")
 router.register(r"user", UserViewsSet, basename="user")
 router.register(r"groups", GroupViewSet, basename="group")
 router.register(r"permissions", FunctionalPermissionViewSet, basename="permission")
