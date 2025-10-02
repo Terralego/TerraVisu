@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-09-05 15:00+0000\n"
+"POT-Creation-Date: 2025-10-02 09:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -871,17 +871,21 @@ msgstr ""
 "et mises à jour sur %(instance_title)s."
 
 #, python-format
-msgid "DECLARATIONS CREATED IN %(last_month)s (%(created_count)s IN TOTAL)"
-msgstr "DÉCLARATIONS CRÉÉES EN %(last_month)s (%(created_count)s AU TOTAL)"
+msgid ""
+"DECLARATIONS CREATED IN %(last_month)s %(year)s (%(created_count)s IN TOTAL)"
+msgstr ""
+"DÉCLARATIONS CRÉÉES EN %(last_month)s %(year)s (%(created_count)s AU TOTAL)"
 
 #, python-format
 msgid "▶ No new declarations created in %(last_month)s"
 msgstr "▶ Aucune déclaration créée en %(last_month)s"
 
 #, python-format
-msgid "DECLARATIONS UPDATED IN %(last_month)s (%(updated_count)s IN TOTAL)"
+msgid ""
+"DECLARATIONS UPDATED IN %(last_month)s %(year)s (%(updated_count)s IN TOTAL)"
 msgstr ""
-"DÉCLARATIONS MISES À JOUR EN %(last_month)s (%(updated_count)s AU TOTAL)"
+"DÉCLARATIONS MISES À JOUR EN %(last_month)s %(year)s (%(updated_count)s AU "
+"TOTAL)"
 
 #, python-format
 msgid "▶ No updated declarations in %(last_month)s"
@@ -894,12 +898,11 @@ msgid "DECLARATIONS DISTRIBUTION"
 msgstr "RÉPARTITION DES DÉCLARATIONS"
 
 #, python-format
-msgid "In %(last_month)s (%(created_count)s in total) :"
-msgstr "En %(last_month)s (%(created_count)s au total) :"
+msgid "From %(last_month)s :"
+msgstr "Du mois de %(last_month)s:"
 
-#, python-format
-msgid "From the start (%(total_count)s in total) :"
-msgstr "Depuis le début (%(total_count)s au total) :"
+msgid "From the start :"
+msgstr "Depuis le début:"
 
 msgid "Regards,"
 msgstr "Bien cordialement,"
@@ -969,16 +972,19 @@ msgstr ""
 "et mis à jour sur %(instance_title)s."
 
 #, python-format
-msgid "REPORTS CREATED IN %(last_month)s (%(created_count)s IN TOTAL)"
-msgstr "SIGNALEMENTS CRÉÉS EN %(last_month)s (%(created_count)s AU TOTAL)"
+msgid "REPORTS CREATED IN %(last_month)s %(year)s (%(created_count)s IN TOTAL)"
+msgstr ""
+"SIGNALEMENTS CRÉÉS EN %(last_month)s %(year)s (%(created_count)s AU TOTAL)"
 
 #, python-format
 msgid "▶ No new reports created in %(last_month)s"
 msgstr "▶ Aucun signalement créé en %(last_month)s"
 
 #, python-format
-msgid "REPORTS UPDATED IN %(last_month)s (%(updated_count)s IN TOTAL)"
-msgstr "SIGNALEMENTS MIS À JOUR EN %(last_month)s (%(updated_count)s AU TOTAL)"
+msgid "REPORTS UPDATED IN %(last_month)s %(year)s (%(updated_count)s IN TOTAL)"
+msgstr ""
+"SIGNALEMENTS MIS À JOUR EN %(last_month)s %(year)s (%(updated_count)s AU "
+"TOTAL)"
 
 #, python-format
 msgid "▶ No updated reports in %(last_month)s"

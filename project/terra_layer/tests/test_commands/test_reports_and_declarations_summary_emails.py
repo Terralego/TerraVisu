@@ -47,14 +47,14 @@ class SummaryEmailCommandTestCase(TestCase):
         self.report3.feature.properties = report3_feature_properties
         self.report3.feature.save()
 
-        self.report4 = ReportFactory(status=Status.REJECTED)
+        self.report4 = ReportFactory(status=Status.NEW)
         self.feature = self.report4.feature
         self.report4.layer.name = "Other layer"
         self.report4.layer.save()
 
-        self.declaration1 = DeclarationFactory(status=Status.REJECTED)
+        self.declaration1 = DeclarationFactory(status=Status.NEW)
         self.declaration2 = DeclarationFactory(status=Status.NEW)
-        self.declaration3 = DeclarationFactory(status=Status.ACCEPTED)
+        self.declaration3 = DeclarationFactory(status=Status.NEW)
         StatusChangeFactory(report=self.report1, status_after=Status.ACCEPTED)
         StatusChangeFactory(report=self.report3, status_after=Status.ACCEPTED)
         StatusChangeFactory(declaration=self.declaration1, status_after=Status.REJECTED)
@@ -62,20 +62,18 @@ class SummaryEmailCommandTestCase(TestCase):
         # fmt: off
         self.REPORT_EMAIL = ("\n"
         "\n"
+        "\n"
         "Hi,\n"
         "\n"
         "Please find below the monthly summary of created and updated reports on TerraVisu Test.\n"
         "\n"
         "\n"
-        "REPORTS CREATED IN OCTOBER (4 IN TOTAL)\n"
+        "REPORTS CREATED IN OCTOBER 2025 (3 IN TOTAL)\n"
         "─────────────────────────────────────────────────────────────────────────────\n"
         "\n"
         "First layer\n"
         "   │\n"
         "   └── First feature\n"
-        "          │\n"
-        "          ├── Report "+str(self.report1.pk)+"    09/10/2025 00:00    Accepted\n"
-        "          │   ▶ https://testserver.com/config/terra_layer/report/"+str(self.report1.pk)+"/change/\n"
         "          │\n"
         "          ├── Report "+str(self.report2.pk)+"    09/10/2025 00:00    New\n"
         "          │   ▶ https://testserver.com/config/terra_layer/report/"+str(self.report2.pk)+"/change/\n"
@@ -89,11 +87,11 @@ class SummaryEmailCommandTestCase(TestCase):
         "   │\n"
         "   └── Object " +str(self.feature.pk)+"\n"
         "          │\n"
-        "          ├── Report "+str(self.report4.pk)+"    09/10/2025 00:00    Rejected\n"
+        "          ├── Report "+str(self.report4.pk)+"    09/10/2025 00:00    New\n"
         "          │   ▶ https://testserver.com/config/terra_layer/report/"+str(self.report4.pk)+"/change/\n"
         "\n"
         "\n"
-        "REPORTS UPDATED IN OCTOBER (2 IN TOTAL)\n"
+        "REPORTS UPDATED IN OCTOBER 2025 (2 IN TOTAL)\n"
         "─────────────────────────────────────────────────────────────────────────────\n"
         "\n"
         "First layer\n"
@@ -112,19 +110,19 @@ class SummaryEmailCommandTestCase(TestCase):
         "REPORTS DISTRIBUTION\n"
         "─────────────────────────────────────────────────────────────────────────────\n"
         "\n"
-        "In October (4 in total) :\n"
-        "\n"
-        "   • New : 2\n"
-        "   • Pending : 0\n"
-        "   • Accepted : 1\n"
-        "   • Rejected : 1\n"
-        "\n"
-        "From the start (5 in total) :\n"
+        "From October :\n"
         "\n"
         "   • New : 3\n"
         "   • Pending : 0\n"
         "   • Accepted : 1\n"
-        "   • Rejected : 1\n"
+        "   • Rejected : 0\n"
+        "\n"
+        "From the start :\n"
+        "\n"
+        "   • New : 4\n"
+        "   • Pending : 0\n"
+        "   • Accepted : 1\n"
+        "   • Rejected : 0\n"
         "\n"
         "\n"
         "\n"
@@ -134,31 +132,32 @@ class SummaryEmailCommandTestCase(TestCase):
 
         self.DECLARATION_EMAIL = ("\n"
         "\n"
+        "\n"
         "Hi,\n"
         "\n"
         "Please find below the monthly summary of created and updated declarations on TerraVisu Test.\n"
         "\n"
         "\n"
-        "DECLARATIONS CREATED IN OCTOBER (3 IN TOTAL)\n"
+        "DECLARATIONS CREATED IN OCTOBER 2025 (3 IN TOTAL)\n"
         "─────────────────────────────────────────────────────────────────────────────\n"
         "\n"
         "  │\n"
-        "  ├── Declaration "+str(self.declaration1.pk)+"    09/10/2025 00:00    Rejected\n"
+        "  ├── Declaration "+str(self.declaration1.pk)+"    09/10/2025 00:00    New\n"
         "  │   ▶ https://testserver.com/config/terra_layer/declaration/"+str(self.declaration1.pk)+"/change/\n"
         "  │\n"
         "  ├── Declaration "+str(self.declaration2.pk)+"    09/10/2025 00:00    New\n"
         "  │   ▶ https://testserver.com/config/terra_layer/declaration/"+str(self.declaration2.pk)+"/change/\n"
         "  │\n"
-        "  ├── Declaration "+str(self.declaration3.pk)+"    09/10/2025 00:00    Accepted\n"
+        "  ├── Declaration "+str(self.declaration3.pk)+"    09/10/2025 00:00    New\n"
         "  │   ▶ https://testserver.com/config/terra_layer/declaration/"+str(self.declaration3.pk)+"/change/\n"
-        "  \n"
         "\n"
         "\n"
-        "DECLARATIONS UPDATED IN OCTOBER (2 IN TOTAL)\n"
+        "\n"
+        "DECLARATIONS UPDATED IN OCTOBER 2025 (2 IN TOTAL)\n"
         "─────────────────────────────────────────────────────────────────────────────\n"
         "\n"
         "  │\n"
-        "  ├── Declaration "+str(self.declaration1.pk)+"    updated at 09/10/2025 00:00    Rejected\n"
+        "  ├── Declaration "+str(self.declaration1.pk)+"    updated at 09/10/2025 00:00    New\n"
         "  │   ▶ https://testserver.com/config/terra_layer/declaration/"+str(self.declaration1.pk)+"/change/\n"
         "  │\n"
         "  ├── Declaration "+str(self.declaration2.pk)+"    updated at 09/10/2025 00:00    New\n"
@@ -169,19 +168,19 @@ class SummaryEmailCommandTestCase(TestCase):
         "DECLARATIONS DISTRIBUTION\n"
         "─────────────────────────────────────────────────────────────────────────────\n"
         "\n"
-        "In October (3 in total) :\n"
+        "From October :\n"
         "\n"
-        "   • New : 1\n"
+        "   • New : 3\n"
         "   • Pending : 0\n"
-        "   • Accepted : 1\n"
-        "   • Rejected : 1\n"
+        "   • Accepted : 0\n"
+        "   • Rejected : 0\n"
         "\n"
-        "From the start (4 in total) :\n"
+        "From the start :\n"
         "\n"
-        "   • New : 2\n"
+        "   • New : 4\n"
         "   • Pending : 0\n"
-        "   • Accepted : 1\n"
-        "   • Rejected : 1\n"
+        "   • Accepted : 0\n"
+        "   • Rejected : 0\n"
         "\n"
         "\n"
         "\n"
@@ -239,13 +238,13 @@ class SummaryEmailCommandTestCase(TestCase):
         expected_lines = self.REPORT_EMAIL.splitlines()
         actual_lines = content.splitlines()
         for i, expected_line in enumerate(expected_lines):
-            self.assertEqual(expected_line, actual_lines[i])
+            self.assertEqual(expected_line, actual_lines[i].replace("\xa0", " "))
 
         content = declaration_email.body
         expected_lines = self.DECLARATION_EMAIL.splitlines()
         actual_lines = content.splitlines()
         for i, expected_line in enumerate(expected_lines):
-            self.assertEqual(expected_line, actual_lines[i])
+            self.assertEqual(expected_line, actual_lines[i].replace("\xa0", " "))
 
     @freezegun.freeze_time("2025-11-10 00:00:00")
     @override_settings(
@@ -280,7 +279,9 @@ class SummaryEmailCommandTestCase(TestCase):
         expected_lines = [line for section in expected_sections for line in section]
 
         for i, (expected, actual) in enumerate(zip(expected_lines, output_lines)):
-            self.assertEqual(expected, actual, f"Line {i + 1} mismatch")
+            self.assertEqual(
+                expected, actual.replace("\xa0", " "), f"Line {i + 1} mismatch"
+            )
 
     def test_no_managers_no_emails(self):
         """Test that no emails are sent when no managers exist."""

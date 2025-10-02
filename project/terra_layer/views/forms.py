@@ -82,7 +82,7 @@ class DeclarationAdminForm(EmailSendingForm):
     def get_email_context(self, instance):
         context = {
             "status": getattr(Status, instance.status).label,
-            "managers_message": self.cleaned_data.get("managers_message", ""),
+            "administrators_message": self.cleaned_data.get("managers_message", ""),
             "report_mail_signature": config.REPORT_MAIL_SIGNATURE,
         }
         return context
