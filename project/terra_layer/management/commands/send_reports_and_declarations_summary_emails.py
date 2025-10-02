@@ -40,7 +40,8 @@ class BaseSummaryHandler:
         return self.model_class.objects.filter(
             created_at__month=last_month.month,
             created_at__year=last_month.year,
-        )
+            status=Status.NEW,
+        ).order_by("created_at")
 
     def get_updated_last_month(self, last_month):
         """Get instances updated in the last month."""
@@ -64,6 +65,7 @@ class BaseSummaryHandler:
             instance.last_updated_at = status_change.updated_at
             instances.append(instance)
 
+        instances.sort(key=lambda i: i.created_at)
         return instances
 
     def extract_as_json_data(self, instances, language, date_field="created_at"):
@@ -103,6 +105,7 @@ class BaseSummaryHandler:
 
         return {
             "last_month": last_month_display,
+            "year": last_month.year,
             "created_count": len(created_instances),
             "updated_count": len(updated_instances),
             "total_count": all_instances.count(),
@@ -209,7 +212,7 @@ class ReportSummaryHandler(BaseSummaryHandler):
             super()
             .get_created_last_month(last_month)
             .select_related("layer", "layer__main_field")
-            .order_by("layer", "feature")
+            .order_by("layer", "feature", "created_at")
         )
 
     def get_updated_last_month(self, last_month):
@@ -233,6 +236,7 @@ class ReportSummaryHandler(BaseSummaryHandler):
             report.last_updated_at = status_change.updated_at
             reports.append(report)
 
+        reports.sort(key=lambda r: r.created_at)
         return reports
 
     def get_display_name(self, layer):
@@ -292,6 +296,7 @@ class ReportSummaryHandler(BaseSummaryHandler):
 
         return {
             "last_month": last_month_display,
+            "year": last_month.year,
             "created_count": len(created_instances),
             "updated_count": len(updated_instances),
             "total_count": all_instances.count(),

@@ -1,6 +1,6 @@
 {% load i18n %}
 
-{% blocktranslate with status=status administrators_message=administrators_message report_mail_signature=report_mail_signature %}
+{% blocktranslate with status=status administrators_message=administrators_message|safe report_mail_signature=report_mail_signature|safe %}
 Hi,
 
 Your declaration has been changed to status "{{ status }}".
