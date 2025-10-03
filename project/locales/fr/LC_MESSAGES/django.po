@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-19 17:16+0100\n"
+"POT-Creation-Date: 2025-10-02 09:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -60,6 +60,26 @@ msgid ""
 msgstr ""
 "Défini si l'utilisateur est considéré comme actif. Désactiver au lieu de "
 "supprimer les comptes."
+
+msgid "Report manager"
+msgstr "Gestionnaire des signalements"
+
+msgid ""
+"Designates whether this user needs to receive email notifications about "
+"incoming reports, and monthly reports summary."
+msgstr ""
+"Défini si cet utilisateur doit recevoir les notifications e-mail lorsqu'un "
+"signalement est reçu, ainsi que le récapitulatif mensuel des signalements."
+
+msgid "Declaration manager"
+msgstr "Gestionnaire des déclarations"
+
+msgid ""
+"Designates whether this user needs to receive email notifications about "
+"incoming declarations, and monthly declarations summary."
+msgstr ""
+"Défini si cet utilisateur doit recevoir les notifications e-mail lorsqu'une "
+"déclaration est reçue, ainsi que le récapitulatif mensuel des déclarations."
 
 msgid "date joined"
 msgstr "date d'inscription"
@@ -128,7 +148,7 @@ msgid "Warning"
 msgstr "Alerte"
 
 msgid "Pending"
-msgstr "En attente"
+msgstr "En cours"
 
 msgid "Need sync"
 msgstr "À synchroniser"
@@ -345,6 +365,11 @@ msgstr "Latitude maximum pour l'option 'viewbox' de Nominatim"
 
 msgid "Maximum longitude coordinate for nominatim viewbox"
 msgstr "Longitude maximum pour l'option 'viewbox' de Nominatim"
+
+msgid "Signature at the end of Reports or Declarations notifications e-mails"
+msgstr ""
+"Signature insérée à la fin des e-mails de notification concernant les "
+"Signalements et Déclarations"
 
 msgid "General Options"
 msgstr "Options générales"
@@ -572,6 +597,78 @@ msgstr ""
 msgid "Layer identifier"
 msgstr "Identifiant de la couche"
 
+msgid "Status changes"
+msgstr "Changements de statut"
+
+msgid "Files"
+msgstr "Documents"
+
+msgid "Free comment"
+msgstr "Commentaire libre"
+
+msgid "Content"
+msgstr "Contenu"
+
+msgid "Layer"
+msgstr "Couche"
+
+msgid "Report"
+msgstr "Signalement"
+
+msgid "Deleted user"
+msgstr "Utilisateur supprimé"
+
+msgid "Email"
+msgstr "Courriel"
+
+msgid "Feature"
+msgstr "Objet"
+
+msgid "Field"
+msgstr "Champ"
+
+msgid "Declaration"
+msgstr "Déclaration"
+
+msgid "No user"
+msgstr "Pas d'utilisateur"
+
+msgid "Deleted email"
+msgstr "Email supprimé"
+
+msgid "See user"
+msgstr "Voir utilisateur"
+
+msgid "ID"
+msgstr "Identifiant"
+
+msgid "Created at"
+msgstr "Créé le"
+
+msgid "Status"
+msgstr "Statut"
+
+msgid "Latitude"
+msgstr "Latitude"
+
+msgid "Longitude"
+msgstr "Longitude"
+
+msgid "Export selected declarations as CSV"
+msgstr "Exporter les déclarations sélectionnées en CSV"
+
+msgid "Creation month"
+msgstr "Mois de création"
+
+msgid "Monthly declarations summary"
+msgstr "Récapitulatif mensuel des déclarations"
+
+msgid "Monthly reports summary"
+msgstr "Récapitulatif mensuel des signalements"
+
+msgid "Object"
+msgstr "Objet"
+
 msgid "Map"
 msgstr "Carte"
 
@@ -591,6 +688,108 @@ msgstr ""
 msgid "Copy"
 msgstr "Copie"
 
+msgid "New"
+msgstr "Nouveau"
+
+msgid "Accepted"
+msgstr "Accepté"
+
+msgid "Rejected"
+msgstr "Rejeté"
+
+msgid "Fields"
+msgstr "Champs"
+
+msgid "Report config"
+msgstr "Configuration de signalement"
+
+msgid "Reports configs"
+msgstr "Configurations des signalements"
+
+msgid "Help text to guide users when filling this field"
+msgstr "Description pour guider les utilisateurs dans le remplissage du champ"
+
+msgid "Help text"
+msgstr "Description"
+
+msgid "Required"
+msgstr "Requis"
+
+msgid "Order"
+msgstr "Ordre"
+
+msgid "Report field"
+msgstr "Champ de signalement"
+
+msgid "Reports fields"
+msgstr "Champs des signalements"
+
+msgid "Position"
+msgstr "Position"
+
+msgid "Report configuration"
+msgstr "Configuration du signalement"
+
+msgid "Report status"
+msgstr "Statut du signalement"
+
+msgid "Reports"
+msgstr "Signalements"
+
+msgid "Report file"
+msgstr "Document du signalement"
+
+msgid "Report files"
+msgstr "Documents des signalements"
+
+msgid "Declaration form"
+msgstr "Formulaire de déclaration"
+
+msgid "Title of the declaration form"
+msgstr "Titre du formulaire de déclaration"
+
+msgid "Declaration config"
+msgstr "Configuration des déclarations"
+
+msgid "Declaration configs"
+msgstr "Configurations des déclarations"
+
+msgid "Display title for this field"
+msgstr "Titre du champ"
+
+msgid "Declaration field"
+msgstr "Champ du formulaire de déclaration"
+
+msgid "Declaration fields"
+msgstr "Champs du formulaire de déclaration"
+
+msgid "Declaration status"
+msgstr "Statut de la déclaration"
+
+msgid "Submitter email"
+msgstr "Email du déclarant"
+
+msgid "Declarations"
+msgstr "Déclarations"
+
+msgid "Declaration file"
+msgstr "Document de la déclaration"
+
+msgid "Declaration files"
+msgstr "Documents de la déclaration"
+
+msgid "Manager message"
+msgstr "Message des gestionnaires"
+
+msgid "Status before update"
+msgstr "Statut avant la mise à jour"
+
+msgid "Status after update"
+msgstr "Statut après la mise à jour"
+
+msgid "Status change"
+msgstr "Changement de statut"
+
 msgid "'tiles' should not be filled for mapbox base layers."
 msgstr "'tiles' ne doit pas être saisi pour les fonds de plan mapbox."
 
@@ -604,6 +803,215 @@ msgid "'map_box_url' should not be filled for raster and vector base layers."
 msgstr ""
 "'map_box_url' ne doit pas être saisi pour les fonds de plan raster et "
 "vecteur."
+
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
+"Your declaration has been changed to status \"%(status)s\".\n"
+"\n"
+"%(administrators_message)s\n"
+"\n"
+"Regards,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+msgstr ""
+"\n"
+"Bonjour,\n"
+"\n"
+"Votre déclaration a été passée au statut \"%(status)s\".\n"
+"\n"
+"%(administrators_message)s\n"
+"\n"
+"Cordialement,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
+"Your report regarding layer \"%(layer)s\" has been changed to status "
+"\"%(status)s\".\n"
+"\n"
+"%(administrators_message)s\n"
+"\n"
+"Regards,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+msgstr ""
+"\n"
+"Bonjour,\n"
+"\n"
+"Votre signalement concernant la couche de données \"%(layer)s\" a été passé "
+"au statut %(status)s.\n"
+"\n"
+"%(administrators_message)s\n"
+"\n"
+"Cordialement,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+
+#, python-format
+msgid ""
+"Hi,\n"
+"\n"
+"Please find below the monthly summary of created and updated declarations on "
+"%(instance_title)s."
+msgstr ""
+"Bonjour,\n"
+"\n"
+"Veuillez trouver ci-dessous le récapitulatif mensuel des déclarations créées "
+"et mises à jour sur %(instance_title)s."
+
+#, python-format
+msgid ""
+"DECLARATIONS CREATED IN %(last_month)s %(year)s (%(created_count)s IN TOTAL)"
+msgstr ""
+"DÉCLARATIONS CRÉÉES EN %(last_month)s %(year)s (%(created_count)s AU TOTAL)"
+
+#, python-format
+msgid "▶ No new declarations created in %(last_month)s"
+msgstr "▶ Aucune déclaration créée en %(last_month)s"
+
+#, python-format
+msgid ""
+"DECLARATIONS UPDATED IN %(last_month)s %(year)s (%(updated_count)s IN TOTAL)"
+msgstr ""
+"DÉCLARATIONS MISES À JOUR EN %(last_month)s %(year)s (%(updated_count)s AU "
+"TOTAL)"
+
+#, python-format
+msgid "▶ No updated declarations in %(last_month)s"
+msgstr "▶ Aucune déclaration mise à jour en %(last_month)s"
+
+msgid "updated at"
+msgstr "mis à jour le"
+
+msgid "DECLARATIONS DISTRIBUTION"
+msgstr "RÉPARTITION DES DÉCLARATIONS"
+
+#, python-format
+msgid "From %(last_month)s :"
+msgstr "Du mois de %(last_month)s:"
+
+msgid "From the start :"
+msgstr "Depuis le début:"
+
+msgid "Regards,"
+msgstr "Bien cordialement,"
+
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
+"A new declaration has been submitted.\n"
+"\n"
+"You can consult it at : %(url)s\n"
+"\n"
+"Regards,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+msgstr ""
+"\n"
+"Bonjour,\n"
+"\n"
+"Une déclaration a été reçue.\n"
+"\n"
+"Vous pouvez la consulter ici : %(url)s\n"
+"\n"
+"Cordialement,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
+"A new report regarding layer \"%(layer)s\" has been submitted.\n"
+"\n"
+"You can consult it at : %(url)s\n"
+"\n"
+"Regards,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+msgstr ""
+"\n"
+"Bonjour,\n"
+"\n"
+"Un signalement concernant la couche de données \"%(layer)s\" a été reçu.\n"
+"\n"
+"Vous pouvez le consulter ici : %(url)s\n"
+"\n"
+"Cordialement,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+
+#, python-format
+msgid ""
+"Hi,\n"
+"\n"
+"Please find below the monthly summary of created and updated reports on "
+"%(instance_title)s."
+msgstr ""
+"Bonjour,\n"
+"\n"
+"Veuillez trouver ci-dessous le récapitulatif mensuel des signalements créés "
+"et mis à jour sur %(instance_title)s."
+
+#, python-format
+msgid "REPORTS CREATED IN %(last_month)s %(year)s (%(created_count)s IN TOTAL)"
+msgstr ""
+"SIGNALEMENTS CRÉÉS EN %(last_month)s %(year)s (%(created_count)s AU TOTAL)"
+
+#, python-format
+msgid "▶ No new reports created in %(last_month)s"
+msgstr "▶ Aucun signalement créé en %(last_month)s"
+
+#, python-format
+msgid "REPORTS UPDATED IN %(last_month)s %(year)s (%(updated_count)s IN TOTAL)"
+msgstr ""
+"SIGNALEMENTS MIS À JOUR EN %(last_month)s %(year)s (%(updated_count)s AU "
+"TOTAL)"
+
+#, python-format
+msgid "▶ No updated reports in %(last_month)s"
+msgstr "▶ Aucun signalement mis à jour en %(last_month)s"
+
+msgid "REPORTS DISTRIBUTION"
+msgstr "RÉPARTITION DES SIGNALEMENTS"
+
+msgid "New report submitted"
+msgstr "Nouveau signalement reçu"
+
+msgid "New declaration submitted"
+msgstr "Nouvelle déclaration reçue"
+
+msgid "Optional message to send user on status change"
+msgstr ""
+"Message optionnel à transmettre à l'utilisateur qui a soumis le signalement, "
+"lors du changement de statut"
+
+msgid "Managers message"
+msgstr "Message des gestionnaires"
+
+msgid "Your report has been updated"
+msgstr "Votre signalement a été mis à jour"
+
+msgid "Your declaration has been updated"
+msgstr "Votre déclaration a été mise à jour"
 
 msgid "Sprite icon"
 msgstr "Icône de 'sprite'"

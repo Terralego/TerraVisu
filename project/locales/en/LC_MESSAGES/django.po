@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-19 17:16+0100\n"
+"POT-Creation-Date: 2025-10-02 09:51+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,6 +57,22 @@ msgstr ""
 msgid ""
 "Designates whether this user should be treated as active. Unselect this "
 "instead of deleting accounts."
+msgstr ""
+
+msgid "Report manager"
+msgstr ""
+
+msgid ""
+"Designates whether this user needs to receive email notifications about "
+"incoming reports, and monthly reports summary."
+msgstr ""
+
+msgid "Declaration manager"
+msgstr ""
+
+msgid ""
+"Designates whether this user needs to receive email notifications about "
+"incoming declarations, and monthly declarations summary."
 msgstr ""
 
 msgid "date joined"
@@ -326,6 +342,9 @@ msgstr ""
 msgid "Maximum longitude coordinate for nominatim viewbox"
 msgstr ""
 
+msgid "Signature at the end of Reports or Declarations notifications e-mails"
+msgstr ""
+
 msgid "General Options"
 msgstr ""
 
@@ -491,6 +510,78 @@ msgstr ""
 msgid "Layer identifier"
 msgstr ""
 
+msgid "Status changes"
+msgstr ""
+
+msgid "Files"
+msgstr ""
+
+msgid "Free comment"
+msgstr ""
+
+msgid "Content"
+msgstr ""
+
+msgid "Layer"
+msgstr ""
+
+msgid "Report"
+msgstr ""
+
+msgid "Deleted user"
+msgstr ""
+
+msgid "Email"
+msgstr ""
+
+msgid "Feature"
+msgstr ""
+
+msgid "Field"
+msgstr ""
+
+msgid "Declaration"
+msgstr ""
+
+msgid "No user"
+msgstr ""
+
+msgid "Deleted email"
+msgstr ""
+
+msgid "See user"
+msgstr ""
+
+msgid "ID"
+msgstr ""
+
+msgid "Created at"
+msgstr ""
+
+msgid "Status"
+msgstr ""
+
+msgid "Latitude"
+msgstr ""
+
+msgid "Longitude"
+msgstr ""
+
+msgid "Export selected declarations as CSV"
+msgstr ""
+
+msgid "Creation month"
+msgstr ""
+
+msgid "Monthly declarations summary"
+msgstr ""
+
+msgid "Monthly reports summary"
+msgstr ""
+
+msgid "Object"
+msgstr ""
+
 msgid "Map"
 msgstr ""
 
@@ -509,6 +600,108 @@ msgstr ""
 msgid "Copy"
 msgstr ""
 
+msgid "New"
+msgstr ""
+
+msgid "Accepted"
+msgstr ""
+
+msgid "Rejected"
+msgstr ""
+
+msgid "Fields"
+msgstr ""
+
+msgid "Report config"
+msgstr ""
+
+msgid "Reports configs"
+msgstr ""
+
+msgid "Help text to guide users when filling this field"
+msgstr ""
+
+msgid "Help text"
+msgstr ""
+
+msgid "Required"
+msgstr ""
+
+msgid "Order"
+msgstr ""
+
+msgid "Report field"
+msgstr ""
+
+msgid "Reports fields"
+msgstr ""
+
+msgid "Position"
+msgstr ""
+
+msgid "Report configuration"
+msgstr ""
+
+msgid "Report status"
+msgstr ""
+
+msgid "Reports"
+msgstr ""
+
+msgid "Report file"
+msgstr ""
+
+msgid "Report files"
+msgstr ""
+
+msgid "Declaration form"
+msgstr ""
+
+msgid "Title of the declaration form"
+msgstr ""
+
+msgid "Declaration config"
+msgstr ""
+
+msgid "Declaration configs"
+msgstr ""
+
+msgid "Display title for this field"
+msgstr ""
+
+msgid "Declaration field"
+msgstr ""
+
+msgid "Declaration fields"
+msgstr ""
+
+msgid "Declaration status"
+msgstr ""
+
+msgid "Submitter email"
+msgstr ""
+
+msgid "Declarations"
+msgstr ""
+
+msgid "Declaration file"
+msgstr ""
+
+msgid "Declaration files"
+msgstr ""
+
+msgid "Manager message"
+msgstr ""
+
+msgid "Status before update"
+msgstr ""
+
+msgid "Status after update"
+msgstr ""
+
+msgid "Status change"
+msgstr ""
+
 msgid "'tiles' should not be filled for mapbox base layers."
 msgstr ""
 
@@ -519,6 +712,154 @@ msgid "'tiles' should be filled for raster and vector base layers."
 msgstr ""
 
 msgid "'map_box_url' should not be filled for raster and vector base layers."
+msgstr ""
+
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
+"Your declaration has been changed to status \"%(status)s\".\n"
+"\n"
+"%(administrators_message)s\n"
+"\n"
+"Regards,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+msgstr ""
+
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
+"Your report regarding layer \"%(layer)s\" has been changed to status "
+"\"%(status)s\".\n"
+"\n"
+"%(administrators_message)s\n"
+"\n"
+"Regards,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+msgstr ""
+
+#, python-format
+msgid ""
+"Hi,\n"
+"\n"
+"Please find below the monthly summary of created and updated declarations on "
+"%(instance_title)s."
+msgstr ""
+
+#, python-format
+msgid ""
+"DECLARATIONS CREATED IN %(last_month)s %(year)s (%(created_count)s IN TOTAL)"
+msgstr ""
+
+#, python-format
+msgid "▶ No new declarations created in %(last_month)s"
+msgstr ""
+
+#, python-format
+msgid ""
+"DECLARATIONS UPDATED IN %(last_month)s %(year)s (%(updated_count)s IN TOTAL)"
+msgstr ""
+
+#, python-format
+msgid "▶ No updated declarations in %(last_month)s"
+msgstr ""
+
+msgid "updated at"
+msgstr ""
+
+msgid "DECLARATIONS DISTRIBUTION"
+msgstr ""
+
+#, python-format
+msgid "From %(last_month)s :"
+msgstr ""
+
+msgid "From the start :"
+msgstr ""
+
+msgid "Regards,"
+msgstr ""
+
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
+"A new declaration has been submitted.\n"
+"\n"
+"You can consult it at : %(url)s\n"
+"\n"
+"Regards,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+msgstr ""
+
+#, python-format
+msgid ""
+"\n"
+"Hi,\n"
+"\n"
+"A new report regarding layer \"%(layer)s\" has been submitted.\n"
+"\n"
+"You can consult it at : %(url)s\n"
+"\n"
+"Regards,\n"
+"\n"
+"%(report_mail_signature)s\n"
+"\n"
+msgstr ""
+
+#, python-format
+msgid ""
+"Hi,\n"
+"\n"
+"Please find below the monthly summary of created and updated reports on "
+"%(instance_title)s."
+msgstr ""
+
+#, python-format
+msgid "REPORTS CREATED IN %(last_month)s %(year)s (%(created_count)s IN TOTAL)"
+msgstr ""
+
+#, python-format
+msgid "▶ No new reports created in %(last_month)s"
+msgstr ""
+
+#, python-format
+msgid "REPORTS UPDATED IN %(last_month)s %(year)s (%(updated_count)s IN TOTAL)"
+msgstr ""
+
+#, python-format
+msgid "▶ No updated reports in %(last_month)s"
+msgstr ""
+
+msgid "REPORTS DISTRIBUTION"
+msgstr ""
+
+msgid "New report submitted"
+msgstr ""
+
+msgid "New declaration submitted"
+msgstr ""
+
+msgid "Optional message to send user on status change"
+msgstr ""
+
+msgid "Managers message"
+msgstr ""
+
+msgid "Your report has been updated"
+msgstr ""
+
+msgid "Your declaration has been updated"
 msgstr ""
 
 msgid "Sprite icon"

@@ -4,19 +4,25 @@ import uuid
 from hashlib import md5
 
 from autoslug import AutoSlugField
+from django.contrib.gis.db import models as gis_models
 from django.db import models, transaction
-from django.db.models import TextChoices
+from django.db.models import Q, TextChoices, UniqueConstraint
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 from django.utils.text import slugify
-from django.utils.translation import gettext as _
+from django.utils.translation import gettext_lazy as _
 from django.views.generic.dates import timezone_today
+from geostore.models import Feature
 from mapbox_baselayer.models import MapBaseLayer
 from model_clone import CloneMixin
 from rest_framework.reverse import reverse
 
+from project.accounts.models import User
 from project.geosource.models import Field, Source
 
 from .managers import LayerManager, SceneManager
 from .schema import SCENE_LAYERTREE, JSONSchemaValidator
+from .storage import private_media_storage
 from .style import generate_style_from_wizard
 
 logger = logging.getLogger(__name__)
@@ -485,3 +491,266 @@ class StyleImage(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Status(models.TextChoices):
+    NEW = "NEW", _("New")
+    PENDING = "PENDING", _("Pending")
+    ACCEPTED = "ACCEPTED", _("Accepted")
+    REJECTED = "REJECTED", _("Rejected")
+
+
+class ReportConfig(models.Model):
+    label = models.CharField(max_length=255)
+    layer = models.ForeignKey(
+        Layer, on_delete=models.CASCADE, related_name="report_configs"
+    )
+    fields = models.ManyToManyField(
+        Field,
+        through="ReportField",
+        related_name="report_configs",
+        verbose_name=_("Fields"),
+    )
+
+    class Meta:
+        verbose_name = _("Report config")
+        verbose_name_plural = _("Reports configs")
+        unique_together = ["label", "layer"]
+        constraints = [
+            UniqueConstraint(
+                fields=["label", "layer"],
+                name="unique_together_reportconfig_label_layer",
+            )
+        ]
+
+    def __str__(self):
+        return self.label
+
+
+class ReportField(models.Model):
+    config = models.ForeignKey(
+        ReportConfig, on_delete=models.CASCADE, related_name="report_fields"
+    )
+    field = models.ForeignKey(
+        Field,
+        on_delete=models.CASCADE,
+        verbose_name=_("Field"),
+        related_name="report_fields",
+    )
+    helptext = models.TextField(
+        blank=True,
+        help_text=_("Help text to guide users when filling this field"),
+        verbose_name=_("Help text"),
+    )
+    required = models.BooleanField(default=False, verbose_name=_("Required"))
+    order = models.IntegerField(verbose_name=_("Order"))
+
+    class Meta:
+        verbose_name = _("Report field")
+        verbose_name_plural = _("Reports fields")
+        ordering = ["config", "order"]
+        constraints = [
+            UniqueConstraint(
+                fields=["field", "config"],
+                name="unique_together_reportfield_field_config",
+            )
+        ]
+
+    def __str__(self):
+        return f"{_('Report field')} {self.order}"
+
+
+class Report(models.Model):
+    """
+    !!!! Make sure to update SQL view 'report_view' through a migration when updating this model !!!!
+    """
+
+    geom = gis_models.PointField(verbose_name=_("Position"), null=True)
+    config = models.ForeignKey(
+        ReportConfig,
+        on_delete=models.SET_NULL,
+        null=True,
+        verbose_name=_("Report configuration"),
+    )
+    feature = models.ForeignKey(
+        Feature,
+        on_delete=models.CASCADE,
+        related_name="reports",
+        verbose_name=_("Feature"),
+    )
+    layer = models.ForeignKey(
+        Layer, on_delete=models.CASCADE, related_name="reports", verbose_name=_("Layer")
+    )
+    status = models.CharField(
+        max_length=8,
+        choices=Status.choices,
+        default=Status.NEW,
+        verbose_name=_("Report status"),
+    )
+    content = models.JSONField(verbose_name=_("Content"))
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+
+    class Meta:
+        verbose_name = _("Report")
+        verbose_name_plural = _("Reports")
+
+    def __str__(self):
+        return f"{_('Report')} {self.pk}"
+
+    def save(self, *args, **kwargs):
+        if not hasattr(self, "layer") and self.config:
+            self.layer = self.config.layer
+        super().save(*args, **kwargs)
+
+
+class ReportFile(models.Model):
+    report = models.ForeignKey(
+        Report,
+        on_delete=models.CASCADE,
+        related_name="files",
+    )
+    file = models.FileField(upload_to="report_files", storage=private_media_storage)
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("Report file")
+        verbose_name_plural = _("Report files")
+
+    def __str__(self):
+        return f"{_('Report file')} {self.pk}"
+
+
+@receiver(post_delete, sender=ReportFile)
+def report_file_post_delete_handler(sender, **kwargs):
+    file = kwargs["instance"]
+    if file and file.file:
+        storage, path = file.file.storage, file.file.path
+        storage.delete(path)
+
+
+class DeclarationConfig(models.Model):
+    title = models.CharField(
+        max_length=255,
+        default=_("Declaration form"),
+        help_text=_("Title of the declaration form"),
+    )
+
+    class Meta:
+        verbose_name = _("Declaration config")
+        verbose_name_plural = _("Declaration configs")
+
+    def __str__(self):
+        return self.title if self.title else _("Declaration config")
+
+
+class DeclarationField(models.Model):
+    config = models.ForeignKey(
+        DeclarationConfig, on_delete=models.CASCADE, related_name="declaration_fields"
+    )
+    title = models.CharField(
+        max_length=255, help_text=_("Display title for this field")
+    )
+    helptext = models.TextField(
+        blank=True,
+        help_text=_("Help text to guide users when filling this field"),
+        verbose_name=_("Help text"),
+    )
+
+    class Meta:
+        verbose_name = _("Declaration field")
+        verbose_name_plural = _("Declaration fields")
+
+    def __str__(self):
+        return self.title if self.title else f"{_('Declaration field')} {self.pk}"
+
+
+class Declaration(models.Model):
+    geom = gis_models.PointField(verbose_name=_("Position"))
+    status = models.CharField(
+        max_length=8,
+        choices=Status.choices,
+        default=Status.NEW,
+        verbose_name=_("Declaration status"),
+    )
+    content = models.JSONField(verbose_name=_("Content"))
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, verbose_name=_("User")
+    )
+    email = models.EmailField(verbose_name=_("Submitter email"), blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
+
+    class Meta:
+        verbose_name = _("Declaration")
+        verbose_name_plural = _("Declarations")
+
+    def __str__(self):
+        return f"{_('Declaration')} {self.pk}"
+
+
+class DeclarationFile(models.Model):
+    declaration = models.ForeignKey(
+        Declaration,
+        on_delete=models.CASCADE,
+        related_name="files",
+    )
+    file = models.FileField(
+        upload_to="declaration_files", storage=private_media_storage
+    )
+    uploaded_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = _("Declaration file")
+        verbose_name_plural = _("Declaration files")
+
+    def __str__(self):
+        return f"{_('Declaration file')} {self.pk}"
+
+
+@receiver(post_delete, sender=DeclarationFile)
+def declaration_file_post_delete_handler(sender, **kwargs):
+    file = kwargs["instance"]
+    if file and file.file:
+        storage, path = file.file.storage, file.file.path
+        storage.delete(path)
+
+
+class StatusChange(models.Model):
+    message = models.TextField(verbose_name=_("Manager message"))
+    updated_at = models.DateTimeField(auto_now_add=True)
+    status_before = models.CharField(
+        max_length=8,
+        choices=Status.choices,
+        verbose_name=_("Status before update"),
+    )
+    status_after = models.CharField(
+        max_length=8,
+        choices=Status.choices,
+        verbose_name=_("Status after update"),
+    )
+    report = models.ForeignKey(
+        Report,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="report_status_changes",
+    )
+    declaration = models.ForeignKey(
+        Declaration,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="declaration_status_changes",
+    )
+
+    class Meta:
+        verbose_name = _("Status change")
+        verbose_name_plural = _("Status changes")
+        ordering = ["updated_at"]
+        constraints = [
+            models.CheckConstraint(
+                check=Q(declaration__isnull=False) ^ Q(report__isnull=False),
+                name="status_change_has_report_xor_declaration",
+            )
+        ]
+
+    def __str__(self):
+        return f"{_('Status change')} {self.pk}"

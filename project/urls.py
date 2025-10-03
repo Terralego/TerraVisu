@@ -14,6 +14,7 @@ from rest_framework.routers import SimpleRouter
 from project.accounts.api import FunctionalPermissionViewSet, GroupViewSet, UserViewsSet
 from project.admin import config_site
 from project.terra_layer.views.extras import BaseLayerViewSet
+from project.views import serve_private_files
 
 router = SimpleRouter()
 
@@ -21,7 +22,6 @@ router.register("baselayer", BaseLayerViewSet, basename="baselayer")
 router.register(r"user", UserViewsSet, basename="user")
 router.register(r"groups", GroupViewSet, basename="group")
 router.register(r"permissions", FunctionalPermissionViewSet, basename="permission")
-
 
 urlpatterns = [
     path("tinymce/", include("tinymce.urls")),
@@ -35,6 +35,7 @@ urlpatterns = [
     path("api/geolayer/", include("project.terra_layer.urls")),
     path("api/auth/", include("project.accounts.urls")),
     path("api/", include(router.urls)),
+    path("private/<path:path>", serve_private_files, name="serve_private_files"),
     path("", include("project.visu.urls")),
 ]
 
