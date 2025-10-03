@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-02 09:51+0000\n"
+"POT-Creation-Date: 2025-10-03 15:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,15 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 msgid "Welcome to TerraVisu debug interface."
+msgstr ""
+
+msgid "Personal info"
+msgstr ""
+
+msgid "Permissions"
+msgstr ""
+
+msgid "Important dates"
 msgstr ""
 
 msgid "Accounts"

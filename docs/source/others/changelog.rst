@@ -13,6 +13,10 @@ Changelog
 
 - Update doc with new features (ref #894)
 
+**Bugfix:**
+
+- Fix debug user form
+
 
 2025.07.00.pre1 (2025-07-11)
 ----------------------------

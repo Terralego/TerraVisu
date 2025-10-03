@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 from django.utils.translation import gettext_lazy as _
 
 from project.accounts.models import FunctionalPermission, PermanentAccessToken, User
@@ -8,7 +9,52 @@ admin.site.index_title = f"TerraVisu: {_('Debug panel')}"
 admin.site.site_header = f"TerraVisu: {_('Debug panel')}"
 admin.site.index_title = _("Welcome to TerraVisu debug interface.")
 
-admin.site.register(User)
+
+@admin.register(User)
+class UserAdmin(BaseUserAdmin):
+    fieldsets = (
+        (_("Personal info"), {"fields": ("email", "password")}),
+        (
+            _("Permissions"),
+            {
+                "fields": (
+                    "is_active",
+                    "is_staff",
+                    "is_superuser",
+                    "is_report_manager",
+                    "is_declaration_manager",
+                    "groups",
+                    "user_permissions",
+                ),
+            },
+        ),
+        (_("Important dates"), {"fields": ("last_login",)}),
+    )
+    readonly_fields = ("date_joined",)
+    add_fieldsets = (
+        (
+            None,
+            {
+                "classes": ("wide",),
+                "fields": ("email", "password1", "password2"),
+            },
+        ),
+    )
+    list_display = (
+        "email",
+        "is_active",
+        "is_staff",
+        "is_superuser",
+        "is_report_manager",
+        "is_declaration_manager",
+    )
+    list_filter = ("is_staff", "is_superuser", "is_active", "groups")
+    search_fields = ("email", "uuid")
+    ordering = ("email",)
+    filter_horizontal = (
+        "groups",
+        "user_permissions",
+    )
 
 
 @admin.register(FunctionalPermission)
