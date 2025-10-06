@@ -170,3 +170,8 @@ class DeclarationCreateAPIView(NotifyManagersViewMixin, generics.CreateAPIView):
 class IconViewSet(viewsets.ModelViewSet):
     serializer_class = StyleImageSerializer
     queryset = StyleImage.objects.all()
+    ordering_fields = (
+        "id",
+        "name",
+    )
+    search_fields = ["name"]
