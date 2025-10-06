@@ -55,7 +55,7 @@ crispy-bootstrap5==2025.6
     # via terravisu (pyproject.toml)
 cron-descriptor==2.0.6
     # via django-celery-beat
-cryptography==46.0.1
+cryptography==46.0.2
     # via pyjwt
 deepmerge==2.0
     # via django-geostore
