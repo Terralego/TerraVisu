@@ -4,6 +4,7 @@ import io
 import freezegun
 from django.core import mail
 from django.test import TestCase
+from django.utils.html import format_html
 
 from project.accounts.tests.factories import SuperUserFactory
 from project.geosource.models import FieldTypes
@@ -48,10 +49,13 @@ class ReportAdminTestCase(TestCase):
             order=1,
             field=field,
         )
-        main_field_name = getattr(cls.report.layer.main_field, "name")
-        cls.report.feature.properties[main_field_name] = "test_displayed_feature_name"
+        cls.main_field_name = getattr(cls.report.layer.main_field, "name")
+        cls.report.feature.properties[cls.main_field_name] = (
+            "test_displayed_feature_name"
+        )
         cls.report.feature.save()
         StatusChangeFactory(report=cls.report)
+        cls.report_no_object_label = ReportFactory.create(user=cls.user)
 
     @classmethod
     def tearDownClass(cls):
@@ -79,8 +83,25 @@ class ReportAdminTestCase(TestCase):
             f"/debug/terra_layer/report/{self.report.pk}/change/"
         )
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "test_displayed_feature_name")
+        self.assertContains(
+            response,
+            format_html(
+                f"<strong>{self.main_field_name}</strong>: test_displayed_feature_name"
+            ),
+        )
         self.assertContains(response, self.report_file.file.name)
+
+    def test_report_without_name_change(self):
+        response = self.client.get(
+            f"/debug/terra_layer/report/{self.report_no_object_label.pk}/change/"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            format_html(
+                f"<strong>ID</strong>: {self.report_no_object_label.feature.pk}"
+            ),
+        )
 
     def test_report_change_status_sends_email(self):
         self.assertEqual(len(mail.outbox), 0)

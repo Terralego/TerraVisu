@@ -215,11 +215,11 @@ class ReportAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
 
     def display_feature(self, obj):
         main_field = getattr(obj.layer.main_field, "name", None)
-        return (
-            obj.feature.properties.get(main_field, None)
-            if main_field
-            else obj.feature.pk
-        )
+        if main_field:
+            main_field_value = obj.feature.properties.get(main_field, None)
+            if main_field_value:
+                return format_html(f"<strong>{main_field}</strong>: {main_field_value}")
+        return format_html(f"<strong>ID</strong>: {obj.feature.pk}")
 
     display_feature.short_description = _("Feature")
 

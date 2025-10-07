@@ -342,25 +342,29 @@ class LayerDetailSerializer(serializers.ModelSerializer):
             ReportField.objects.create(
                 field=report_field_data["field"],
                 order=report_field_data["order"],
-                helptext=report_field_data["helptext"],
+                helptext=report_field_data.get("helptext", ""),
                 required=report_field_data.get("required", False),
                 config=report_config,
             )
 
     def _create_or_update_report_configs(self, instance, report_configs):
+        instance_report_configs = ReportConfig.objects.filter(layer=instance)
+        # Keep list of initial configs to find the ones that were deleted
+        initial_report_configs = list(
+            instance_report_configs.values_list("pk", flat=True)
+        )
         for report_config_data in report_configs:
             config_pk = report_config_data.pop("id", None)
             # For update
-            if (
-                config_pk
-                and ReportConfig.objects.filter(pk=config_pk, layer=instance).exists()
-            ):
-                existing_config = ReportConfig.objects.get(pk=config_pk, layer=instance)
+            if config_pk and instance_report_configs.filter(pk=config_pk).exists():
+                existing_config = instance_report_configs.get(pk=config_pk)
                 existing_config.label = report_config_data["label"]
                 existing_config.save()
                 self.update_report_fields(
                     existing_config, report_config_data["report_fields"]
                 )
+                # Remove updated config from initial list
+                initial_report_configs.remove(config_pk)
             # For create
             else:
                 new_report_config = ReportConfig.objects.create(
@@ -369,6 +373,8 @@ class LayerDetailSerializer(serializers.ModelSerializer):
                 self.update_report_fields(
                     new_report_config, report_config_data["report_fields"]
                 )
+        # Delete configs remaining in initial list
+        instance_report_configs.filter(pk__in=initial_report_configs).delete()
 
     class Meta:
         model = Layer
