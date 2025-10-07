@@ -373,8 +373,8 @@ class LayerDetailSerializer(serializers.ModelSerializer):
                 self.update_report_fields(
                     new_report_config, report_config_data["report_fields"]
                 )
-            # Delete configs remaining in initial list
-            instance_report_configs.filter(pk__in=initial_report_configs).delete()
+        # Delete configs remaining in initial list
+        instance_report_configs.filter(pk__in=initial_report_configs).delete()
 
     class Meta:
         model = Layer

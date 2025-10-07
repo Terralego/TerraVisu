@@ -1019,6 +1019,16 @@ class LayerViewSetAPITestCase(APITestCase):
             "Test report config 2",
             response.json().get("report_configs")[0].get("label"),
         )
+        # Delete report config
+        response = self.client.patch(
+            reverse("layer-detail", args=[self.layer.pk]),
+            {
+                "report_configs": [],
+            },
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
+        self.assertEqual(ReportConfig.objects.count(), 0)
+        self.assertEqual(ReportField.objects.count(), 0)
 
 
 class ReportCreateAPIViewTestCase(APITestCase):
