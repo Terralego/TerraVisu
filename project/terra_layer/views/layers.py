@@ -30,7 +30,6 @@ from ..models import (
     ReportConfig,
     ReportField,
     Scene,
-    StyleImage,
 )
 from ..permissions import LayerPermission, ScenePermission
 from ..serializers import (
@@ -38,7 +37,6 @@ from ..serializers import (
     LayerListSerializer,
     SceneDetailSerializer,
     SceneListSerializer,
-    StyleImageSerializer,
 )
 from ..sources_serializers import SourceSerializer
 from ..utils import dict_merge, get_scene_tree_cache_key
@@ -268,14 +266,6 @@ class SceneTreeAPIView(APIView):
             }
             for url, source_id in custom_style_infos
         ]
-
-        layer_structure["styleImages"] = StyleImageSerializer(
-            StyleImage.objects.filter(
-                layer__in=self.scene.layers.values_list("pk", flat=True)
-            ),
-            many=True,
-            context={"request": self.request},
-        ).data
 
         return layer_structure
 

@@ -16,7 +16,12 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 
-from project.terra_layer.models import Declaration, DeclarationConfig, Report
+from project.terra_layer.models import (
+    Declaration,
+    DeclarationConfig,
+    Report,
+    StyleImage,
+)
 from project.terra_layer.serializers import (
     DeclarationConfigSerializer,
     DeclarationSerializer,
@@ -26,7 +31,7 @@ from project.terra_layer.serializers import (
 
 from ...accounts.models import User
 from ..permissions import ReadOnly
-from ..serializers import MapBaseLayerSerializer
+from ..serializers import MapBaseLayerSerializer, StyleImageSerializer
 
 
 class GeostoreLayerViewSet(LayerViewSet):
@@ -160,3 +165,13 @@ class DeclarationCreateAPIView(NotifyManagersViewMixin, generics.CreateAPIView):
             _("New declaration submitted"),
         )
         return declaration
+
+
+class IconViewSet(viewsets.ModelViewSet):
+    serializer_class = StyleImageSerializer
+    queryset = StyleImage.objects.all()
+    ordering_fields = (
+        "id",
+        "name",
+    )
+    search_fields = ["name"]
