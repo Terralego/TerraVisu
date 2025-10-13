@@ -6,7 +6,7 @@ asgiref==3.10.0
     # via
     #   django
     #   django-cors-headers
-attrs==25.3.0
+attrs==25.4.0
     # via
     #   fiona
     #   jsonschema
