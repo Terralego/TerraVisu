@@ -327,6 +327,11 @@ CONSTANCE_CONFIG = {
         _("Content of info tab in frontend"),
         "tinymce_field",
     ),
+    "INSTANCE_LOGIN_MESSAGE": (
+        "",
+        _("Message to show with login form"),
+        "tinymce_field",
+    ),
     "INSTANCE_EMAIL_SOURCE_REFRESH_RECIPIENTS": (
         "",
         _("Email addresses to send refresh done reports. (comma separated values)"),
@@ -429,6 +434,7 @@ CONSTANCE_CONFIG_FIELDSETS = (
                 "INSTANCE_SPLASHSCREEN",
                 "INSTANCE_CREDITS",
                 "INSTANCE_INFO_CONTENT",
+                "INSTANCE_LOGIN_MESSAGE",
             ),
             "collapse": False,
         },

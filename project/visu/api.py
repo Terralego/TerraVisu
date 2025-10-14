@@ -149,6 +149,7 @@ class SettingsFrontendView(CommonSettings, APIView):
                     context={"request": request},
                 ).data,
                 "infoContent": self.get_info_content(),
+                "loginMessage": config.INSTANCE_LOGIN_MESSAGE,
                 "allowUserRegistration": False,
                 "user": user,
                 "token": token,
