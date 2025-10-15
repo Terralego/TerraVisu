@@ -414,7 +414,7 @@ texttable==1.7.0
     # via
     #   -c requirements.txt
     #   pyexcel
-typing-extensions==4.14.1
+typing-extensions==4.15.0
     # via
     #   -c requirements.txt
     #   referencing
