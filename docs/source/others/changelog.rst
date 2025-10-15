@@ -8,6 +8,7 @@ Changelog
 **New features**
 
 - Add API endpoints and backend for Report and Declarations functionalities (for users to provide feedback about data layers)
+- Ability to change user password in admin
 
 **Documentation:**
 
