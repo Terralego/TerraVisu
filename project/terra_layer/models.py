@@ -473,6 +473,7 @@ def style_image_path(instance, filename):
 class StyleImage(models.Model):
     name = models.CharField(max_length=255)
     slug = AutoSlugField(populate_from="name", unique=True)
+    source = models.CharField(max_length=255, default="")
     file = models.ImageField(upload_to=style_image_path)
 
     def __str__(self):
