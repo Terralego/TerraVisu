@@ -199,7 +199,7 @@ pyexcel-io==0.6.7
     # via pyexcel
 pyjwt==2.10.1
     # via drf-jwt
-pyproj==3.7.1
+pyproj==3.7.2
     # via terravisu (pyproject.toml)
 python-crontab==3.3.0
     # via django-celery-beat
