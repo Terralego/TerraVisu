@@ -254,7 +254,7 @@ gunicorn==23.0.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-idna==3.10
+idna==3.11
     # via
     #   -c requirements.txt
     #   requests
