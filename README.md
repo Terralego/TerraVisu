@@ -1,6 +1,4 @@
-<h1 align="center">TerraVisu</h1>
-
-<p align="center"><img alt="TerraVisu logo" src="./docs/source/_static/logo_color.png"></p>
+<p align="center"><img alt="TerraVisu logo" src="./docs/source/_static/logo.png"></p>
 
 <p align="center">
 <a href="https://terravisu.readthedocs.io/en/stable/" rel="nofollow"><img alt="Documentation" src="https://img.shields.io/badge/Documentation-blue.svg" style="max-width:100%;"></a>

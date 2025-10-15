@@ -4,12 +4,12 @@ amqp==5.3.1
     # via
     #   -c requirements.txt
     #   kombu
-asgiref==3.9.2
+asgiref==3.10.0
     # via
     #   -c requirements.txt
     #   django
     #   django-cors-headers
-attrs==25.3.0
+attrs==25.4.0
     # via
     #   -c requirements.txt
     #   fiona
@@ -83,7 +83,7 @@ cron-descriptor==2.0.6
     # via
     #   -c requirements.txt
     #   django-celery-beat
-cryptography==45.0.6
+cryptography==46.0.2
     # via
     #   -c requirements.txt
     #   pyjwt
@@ -91,7 +91,7 @@ deepmerge==2.0
     # via
     #   -c requirements.txt
     #   django-geostore
-django==4.2.24
+django==4.2.25
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
@@ -233,7 +233,7 @@ elasticsearch==8.17.2
     #   terravisu (pyproject.toml)
 factory-boy==3.3.3
     # via terravisu (pyproject.toml)
-faker==37.8.0
+faker==37.11.0
     # via factory-boy
 filetype==1.2.0
     # via
@@ -304,7 +304,7 @@ prompt-toolkit==3.0.52
     # via
     #   -c requirements.txt
     #   click-repl
-psycopg2==2.9.10
+psycopg2==2.9.11
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
@@ -369,7 +369,7 @@ referencing==0.36.2
     #   -c requirements.txt
     #   jsonschema
     #   jsonschema-specifications
-requests==2.32.4
+requests==2.32.5
     # via
     #   -c requirements.txt
     #   django-geostore
@@ -383,9 +383,9 @@ rsa==4.9.1
     # via
     #   -c requirements.txt
     #   python-jose
-ruff==0.13.2
+ruff==0.14.0
     # via terravisu (pyproject.toml)
-sentry-sdk==2.39.0
+sentry-sdk==2.41.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
