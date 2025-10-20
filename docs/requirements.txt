@@ -18,7 +18,7 @@ certifi==2025.10.5
     # via
     #   -c docs/../requirements.txt
     #   requests
-charset-normalizer==3.4.2
+charset-normalizer==3.4.4
     # via
     #   -c docs/../requirements.txt
     #   requests
