@@ -67,3 +67,6 @@ docs_serve:
 
 docs_build:
 	docker compose run -w=/opt/terra-visu/docs --rm web make html
+
+icon-libraries:
+	python tools/icon_libraries.py --library mdi
