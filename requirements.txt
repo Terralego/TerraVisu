@@ -217,7 +217,7 @@ pyyaml==6.0.3
     # via drf-spectacular
 redis==6.4.0
     # via terravisu (pyproject.toml)
-referencing==0.36.2
+referencing==0.37.0
     # via
     #   jsonschema
     #   jsonschema-specifications
