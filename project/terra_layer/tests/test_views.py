@@ -1,4 +1,3 @@
-import base64
 import io
 import json
 from unittest import mock
@@ -9,7 +8,6 @@ from django.contrib.auth.models import Group
 from django.core import mail
 from django.core.cache import cache
 from django.core.files.uploadedfile import InMemoryUploadedFile, SimpleUploadedFile
-from django.test import RequestFactory
 from django.urls import reverse
 from geostore.tests.factories import LayerFactory
 from PIL import Image
@@ -30,7 +28,6 @@ from project.terra_layer.models import (
     ReportField,
     ReportFile,
     Scene,
-    StyleImage,
 )
 from project.terra_layer.utils import get_scene_tree_cache_key
 
@@ -40,7 +37,6 @@ from .factories import (
     ReportConfigFactory,
     ReportFactory,
     SceneFactory,
-    StyleImageFactory,
 )
 from .factories import LayerFactory as TerraLayerFactory
 
@@ -726,7 +722,7 @@ class SceneTreeAPITestCase(APITestCase):
         ReportField.objects.create(config=report_config, field=field_2, order=2)
 
         self.client.force_authenticate(self.user)
-        with self.assertNumQueries(46):
+        with self.assertNumQueries(45):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
         with self.assertNumQueries(10):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
@@ -735,7 +731,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer.name = "new_name"
         layer.save()
 
-        with self.assertNumQueries(44):
+        with self.assertNumQueries(43):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
     def test_cache_cleared_after_public_layer_update(self):
@@ -743,7 +739,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer = Layer.objects.create(
             name="public_layer", source=source, group=self.layer_group
         )
-        with self.assertNumQueries(46):
+        with self.assertNumQueries(45):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
         with self.assertNumQueries(9):
@@ -752,7 +748,7 @@ class SceneTreeAPITestCase(APITestCase):
         # updating layer to trigger cache reset
         layer.name = "new_name"
         layer.save()
-        with self.assertNumQueries(38):
+        with self.assertNumQueries(37):
             # still differences in original query number because callbacks auto create geostore layers and groups
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
@@ -794,30 +790,6 @@ class LayerViewSetAPITestCase(APITestCase):
         response = self.client.post(reverse("layer-duplicate", args=[self.layer.pk]))
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.json())
         self.assertEqual(Layer.objects.count(), original_count + 1)
-
-    def test_viewset_retrieve(self):
-        style_image = StyleImage.objects.create(
-            name="test image",
-            layer=self.layer,
-            file=SimpleUploadedFile(content=b"abcdefgh", name="test file"),
-        )
-
-        response = self.client.get(reverse("layer-detail", args=[self.layer.pk]))
-        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
-
-        # Needed to build the absolute url of the Image
-        request = RequestFactory().get("/")
-        self.assertEqual(
-            response.json().get("style_images"),
-            [
-                {
-                    "id": style_image.id,
-                    "name": style_image.name,
-                    "slug": style_image.slug,
-                    "file": request.build_absolute_uri(style_image.file.url),
-                }
-            ],
-        )
 
     def test_viewset_create(self):
         query = {
@@ -865,89 +837,6 @@ class LayerViewSetAPITestCase(APITestCase):
 
         response = response.json()
         self.assertTrue(response.get("minisheet_config", {}).get("enable"))
-
-    def test_viewset_create_with_style_image(self):
-        small_gif = (
-            b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00"
-            b"\x00\x05\x04\x04\x00\x00\x00\x2c\x00\x00\x00\x00"
-            b"\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"
-        )
-        self.assertEqual(StyleImage.objects.count(), 0)
-        request_data = {
-            "name": "test create layer",
-            "source": self.layer.source.pk,
-            "style_images": [
-                {
-                    "name": "small.gif",
-                    "file": base64.b64encode(small_gif).decode("utf-8"),
-                }
-            ],
-        }
-        response = self.client.post(reverse("layer-list"), request_data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.json())
-        self.assertEqual(StyleImage.objects.count(), 1)
-
-    def test_style_image_creation_when_update(self):
-        """On update on layer viewset, new style images should be created"""
-        # No StyleImage created yet
-        self.assertEqual(StyleImage.objects.count(), 0)
-        small_gif = (
-            b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00"
-            b"\x00\x05\x04\x04\x00\x00\x00\x2c\x00\x00\x00\x00"
-            b"\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"
-        )
-        response = self.client.patch(
-            reverse("layer-detail", args=[self.layer.pk]),
-            {
-                "style_images": [
-                    {
-                        "name": "test_image",
-                        "data": base64.b64encode(small_gif).decode("utf-8"),
-                    }
-                ],
-            },
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
-
-        # StyleImage should be created
-        self.assertEqual(StyleImage.objects.count(), 1)
-
-    def test_style_image_deletion_when_update(self):
-        """On update on layer viewset, new style images should be created"""
-        # No StyleImage created yet
-        StyleImageFactory(layer=self.layer)
-
-        response = self.client.patch(
-            reverse("layer-detail", args=[self.layer.pk]),
-            {
-                "style_images": [],
-            },
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
-
-        # StyleImage should be created
-        self.assertEqual(StyleImage.objects.count(), 0)
-
-    def test_style_image_edition_when_update(self):
-        """On update on layer viewset, new style images should be created"""
-        style_image = StyleImageFactory(layer=self.layer)
-
-        response = self.client.patch(
-            reverse("layer-detail", args=[self.layer.pk]),
-            {
-                "style_images": [
-                    {
-                        "id": style_image.pk,
-                        "name": "Test2",
-                    }
-                ],
-            },
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
-
-        # StyleImage should be changed
-        self.assertEqual(StyleImage.objects.count(), 1)
-        self.assertIn("Test2", response.json().get("style_images")[0].get("name"))
 
     def test_create_and_update_report_config(self):
         """On update on layer viewset, new report configs should be created"""
