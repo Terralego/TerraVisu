@@ -187,7 +187,7 @@ django-timezone-field==7.1
     # via
     #   -c requirements.txt
     #   django-celery-beat
-django-tinymce==4.1.0
+django-tinymce==5.0.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
