@@ -318,7 +318,7 @@ pycparser==2.23
     # via
     #   -c requirements.txt
     #   cffi
-pyexcel==0.7.3
+pyexcel==0.7.4
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
