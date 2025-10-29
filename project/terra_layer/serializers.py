@@ -95,7 +95,7 @@ class StyleImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StyleImage
-        exclude = ("layer",)
+        exclude = ()
         read_only_fields = ("slug", "file")
 
 
@@ -249,7 +249,6 @@ class LayerDetailSerializer(serializers.ModelSerializer):
     fields = FilterFieldSerializer(many=True, read_only=True, source="fields_filters")
     extra_styles = CustomStyleSerializer(many=True, read_only=True)
     group = serializers.PrimaryKeyRelatedField(read_only=True)
-    style_images = StyleImageSerializer(many=True, read_only=False, required=False)
     report_configs = ReportConfigSerializer(many=True, read_only=False, required=False)
     comparaison = LayerComparaison(required=False)
 
@@ -266,11 +265,8 @@ class LayerDetailSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        style_images = validated_data.pop("style_images", [])
         report_configs = validated_data.pop("report_configs", [])
         instance = super().create(validated_data)
-        for image_data in style_images:
-            StyleImage.objects.create(layer=instance, **image_data)
 
         # Update m2m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
@@ -290,23 +286,8 @@ class LayerDetailSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        style_images = validated_data.pop("style_images", [])
         report_configs = validated_data.pop("report_configs", [])
         instance = super().update(instance, validated_data)
-
-        # Delete first
-        image_ids = [image["id"] for image in style_images if image.get("id")]
-        instance.style_images.exclude(id__in=image_ids).delete()
-        for image_data in style_images:
-            if not image_data.get("id"):
-                StyleImage.objects.create(layer=instance, **image_data)
-            else:
-                style_image_id = image_data.pop("id")
-                style_image = instance.style_images.get(id=style_image_id)
-                style_image.name = image_data.get("name")
-                if image_data.get("file"):
-                    style_image.file = image_data.get("file")
-                style_image.save()
 
         # Update m1m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
