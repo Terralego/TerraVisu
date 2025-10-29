@@ -3,5 +3,6 @@ from .extras import (  # NOQA
     GeostoreLayerGroupViewsSet,
     GeostoreLayerViewSet,
     ReportCreateAPIView,
+    ReportListAPIView,
 )
 from .layers import LayerViewset, SceneTreeAPIView, SceneViewset  # NOQA

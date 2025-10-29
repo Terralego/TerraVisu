@@ -1,7 +1,13 @@
 from django.urls import include, path
 from rest_framework import routers
 
-from ..views import LayerViewset, ReportCreateAPIView, SceneTreeAPIView, SceneViewset
+from ..views import (
+    LayerViewset,
+    ReportCreateAPIView,
+    ReportListAPIView,
+    SceneTreeAPIView,
+    SceneViewset,
+)
 from ..views.extras import DeclarationConfigDetailAPIView, DeclarationCreateAPIView
 from .geostore import urlpatterns as geostore_patterns
 
@@ -17,6 +23,7 @@ urlpatterns = [
     # Extra urls from third part modules
     path("geostore/", include(geostore_patterns)),
     path("report/", ReportCreateAPIView.as_view(), name="report-create-view"),
+    path("reports/", ReportListAPIView.as_view(), name="report-list-view"),
     path(
         "declaration/config/",
         DeclarationConfigDetailAPIView.as_view(),
