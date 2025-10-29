@@ -118,7 +118,7 @@ django-polymorphic==4.1.0
     # via terravisu (pyproject.toml)
 django-timezone-field==7.1
     # via django-celery-beat
-django-tinymce==4.1.0
+django-tinymce==5.0.0
     # via terravisu (pyproject.toml)
 django-token-tools==0.2.0
     # via django-geostore
