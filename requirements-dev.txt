@@ -360,7 +360,7 @@ pyyaml==6.0.3
     # via
     #   -c requirements.txt
     #   drf-spectacular
-redis==6.4.0
+redis==7.0.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
