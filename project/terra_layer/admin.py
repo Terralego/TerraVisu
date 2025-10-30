@@ -156,7 +156,7 @@ class ReportAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
     ordering = ["-created_at"]
     form = ReportAdminForm
     readonly_fields = (
-        "config",
+        "config_label",
         "display_feature",
         "created_at",
         "display_email",
@@ -166,7 +166,7 @@ class ReportAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
         "display_status_changes",
     )
     fields = (
-        "config",
+        "config_label",
         "created_at",
         "display_email",
         "display_layer",

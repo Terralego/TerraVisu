@@ -572,6 +572,10 @@ class Report(models.Model):
         null=True,
         verbose_name=_("Report configuration"),
     )
+    config_label = models.CharField(
+        max_length=255,
+        verbose_name=_("Report configuration"),
+    )
     feature = models.ForeignKey(
         Feature,
         on_delete=models.CASCADE,

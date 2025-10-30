@@ -236,6 +236,8 @@ class ReportCreateSerializer(JSONContentValidatorMixin, serializers.ModelSeriali
         if len(files) > 3:
             too_many_files_message = "This request cannot contain more than 3 files."
             raise serializers.ValidationError(too_many_files_message)
+        # Save config label to still be able to display it after config deletion
+        validated_data["config_label"] = validated_data["config"].label
         report = super().create(validated_data)
         # Create ReportFile instances for each uploaded file
         for file in files:
