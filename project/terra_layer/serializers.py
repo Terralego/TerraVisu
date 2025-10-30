@@ -1,5 +1,8 @@
 import json
 import mimetypes
+import re
+import unicodedata
+from pathlib import Path
 
 import magic
 from django.db import transaction
@@ -101,6 +104,31 @@ class StyleImageSerializer(serializers.ModelSerializer):
 class FileSerializerMixin:
     file = serializers.FileField()
 
+    def sanitize_filename(self, filename):
+        """Remove accents and special characters from filename"""
+        # Split filename and extension
+        path = Path(filename)
+        name = path.stem
+        ext = path.suffix
+
+        # Remove accents using unicode normalization
+        name = unicodedata.normalize("NFKD", name)
+        name = name.encode("ASCII", "ignore").decode("ASCII")
+
+        # Replace spaces and special characters with underscores
+        name = re.sub(r"[^\w\-]", "_", name)
+
+        # Remove multiple consecutive underscores
+        name = re.sub(r"_+", "_", name)
+
+        # Remove leading/trailing underscores
+        name = name.strip("_")
+
+        # If name is empty after sanitization, use a default
+        name = "file" if not name else name
+
+        return f"{name}{ext.lower()}"
+
     def validate_file(self, value):
         max_size = 5 * 1024 * 1024  # 5 MB
         if value.size > max_size:
@@ -122,6 +150,7 @@ class FileSerializerMixin:
         )
         if not file_mimetype_allowed:
             raise ValidationError(wrong_extension_message)
+        value.name = self.sanitize_filename(value.name)
         return value
 
 
