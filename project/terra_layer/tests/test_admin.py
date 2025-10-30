@@ -200,7 +200,7 @@ class DeclarationAdminTestCase(TestCase):
     def test_declaration_change_status_sends_email(self):
         self.assertEqual(len(mail.outbox), 0)
         response = self.client.post(
-            f"/config/terra_layer/declaration/{self.declaration.pk}/change/",
+            f"/config/terra_layer/declaration/{self.declaration_no_user.pk}/change/",
             {
                 "geom": '{"type": "Point", "coordinates": [6.851806864142417, 43.58039085560784]}',
                 "status": "ACCEPTED",
@@ -211,8 +211,8 @@ class DeclarationAdminTestCase(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "Your declaration has been updated")
         status_change = StatusChange.objects.filter(
-            declaration=self.declaration
-        ).first()
+            declaration=self.declaration_no_user
+        ).last()
         self.assertEqual(status_change.message, "Your declaration has been treated")
         self.assertEqual(str(status_change), f"Status change {status_change.pk}")
 
@@ -260,7 +260,7 @@ class DeclarationAdminTestCase(TestCase):
         self.assertIn(self.declaration_file.file.name, data_row[7])
         self.assertEqual(data_row[8], "01/01/2025 (New → Accepted): Test text")
 
-    def test_report_change_message_sends_email(self):
+    def test_declaration_change_message_sends_email(self):
         self.assertEqual(len(mail.outbox), 0)
         response = self.client.post(
             f"/config/terra_layer/declaration/{self.declaration.pk}/change/",
