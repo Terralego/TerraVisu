@@ -7,6 +7,7 @@ from django.utils.translation import gettext_lazy as _
 
 from project.terra_layer.models import (
     Declaration,
+    ManagersMessage,
     Report,
     Status,
     StatusChange,
@@ -53,7 +54,22 @@ class ReportAdminForm(EmailSendingForm):
     def save(self, commit=True):
         is_update = self.instance.pk is not None
         instance = super().save(commit)
-        if is_update and "status" in self.changed_data:
+        if (
+            is_update
+            and "managers_message" in self.changed_data
+            and "status" not in self.changed_data
+        ):
+            recipients = [instance.user.email] if instance.user else []
+            context = self.get_email_context(instance)
+            self.send_email(
+                "report_information.txt",
+                _("Follow-up information about your report"),
+                context,
+                recipients,
+            )
+            managers_message = self.cleaned_data.get("managers_message", "")
+            ManagersMessage.objects.create(message=managers_message, report=instance)
+        elif is_update and "status" in self.changed_data:
             recipients = [instance.user.email] if instance.user else []
             context = self.get_email_context(instance)
             self.send_email(
@@ -62,13 +78,13 @@ class ReportAdminForm(EmailSendingForm):
                 context,
                 recipients,
             )
-        managers_message = self.cleaned_data.get("managers_message", "")
-        StatusChange.objects.create(
-            message=managers_message,
-            report=instance,
-            status_before=self.status_before,
-            status_after=instance.status,
-        )
+            managers_message = self.cleaned_data.get("managers_message", "")
+            StatusChange.objects.create(
+                message=managers_message,
+                report=instance,
+                status_before=self.status_before,
+                status_after=instance.status,
+            )
         return instance
 
     class Meta:
@@ -90,7 +106,24 @@ class DeclarationAdminForm(EmailSendingForm):
     def save(self, commit=True):
         is_update = self.instance.pk is not None
         instance = super().save(commit)
-        if is_update and "status" in self.changed_data:
+        if (
+            is_update
+            and "managers_message" in self.changed_data
+            and "status" not in self.changed_data
+        ):
+            recipients = [instance.user.email] if instance.user else [instance.email]
+            context = self.get_email_context(instance)
+            self.send_email(
+                "declaration_information.txt",
+                _("Follow-up information about your declaration"),
+                context,
+                recipients,
+            )
+            managers_message = self.cleaned_data.get("managers_message", "")
+            ManagersMessage.objects.create(
+                message=managers_message, declaration=instance
+            )
+        elif is_update and "status" in self.changed_data:
             recipients = (
                 [instance.user.email]
                 if instance.user

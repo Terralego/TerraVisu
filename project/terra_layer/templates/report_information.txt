@@ -1,0 +1,15 @@
+{% load i18n %}
+
+{% blocktranslate with layer=layer|safe administrators_message=administrators_message|safe report_mail_signature=report_mail_signature|safe %}
+Hi,
+
+Here is an update on your report regarding layer "{{ layer }}" :
+
+{{ administrators_message }}
+
+Regards,
+
+{{ report_mail_signature }}
+
+{% endblocktranslate %}
+

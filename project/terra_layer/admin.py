@@ -72,8 +72,35 @@ class ReportAndDeclarationDisplayMixin:
     """Mixin to add status change display functionality to ModelAdmin classes."""
 
     status_changes_field = None
+    managers_message_field = None
     content_title_field = None
     content_value_field = None
+
+    def display_managers_messages(self, obj):
+        managers_messages = getattr(obj, self.managers_message_field).order_by(
+            "updated_at"
+        )
+
+        content = ["<table>"]
+
+        # Header row with dates
+        content.append("<tr>")
+        for managers_message in managers_messages:
+            content.append(
+                f"<th>{date_format(managers_message.updated_at)} - {managers_message.updated_at.time().strftime('%Hh%M')}</th>"
+            )
+        content.append("</tr>")
+
+        # Message row
+        content.append("<tr>")
+        for managers_message in managers_messages:
+            content.append(f"<td>{managers_message.message or '-'}</td>")
+        content.append("</tr>")
+
+        content.append("</table>")
+        return format_html("".join(content))
+
+    display_managers_messages.short_description = _("Managers messages")
 
     def display_status_changes(self, obj):
         status_changes = getattr(obj, self.status_changes_field).order_by("updated_at")
@@ -150,6 +177,7 @@ class ReportAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
         "display_layer",
     )
     status_changes_field = "report_status_changes"
+    managers_message_field = "report_managers_messages"
     content_title_field = "label"
     content_value_field = "content"
     list_filter = ("status", MonthYearFilter)
@@ -164,6 +192,7 @@ class ReportAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
         "display_content",
         "display_files",
         "display_status_changes",
+        "display_managers_messages",
     )
     fields = (
         "config_label",
@@ -175,6 +204,7 @@ class ReportAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
         "geom",
         "display_files",
         "display_status_changes",
+        "display_managers_messages",
         "status",
         "managers_message",
     )
@@ -274,6 +304,7 @@ class DeclarationAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
     list_display = ("display_id", "created_at", "status", "display_email_list")
     list_filter = ("status", MonthYearFilter)
     status_changes_field = "declaration_status_changes"
+    managers_message_field = "declaration_managers_messages"
     content_title_field = "title"
     content_value_field = "value"
     form = DeclarationAdminForm
@@ -286,6 +317,7 @@ class DeclarationAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
         "display_content",
         "display_files",
         "display_status_changes",
+        "display_managers_messages",
     )
     # Reorder all fields including those from AdminForm
     fields = (
@@ -296,6 +328,7 @@ class DeclarationAdmin(ReportAndDeclarationDisplayMixin, admin.ModelAdmin):
         "geom",
         "display_files",
         "display_status_changes",
+        "display_managers_messages",
         "status",
         "managers_message",
     )

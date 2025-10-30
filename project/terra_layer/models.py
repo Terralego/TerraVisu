@@ -719,6 +719,37 @@ def declaration_file_post_delete_handler(sender, **kwargs):
         storage.delete(path)
 
 
+class ManagersMessage(models.Model):
+    message = models.TextField(verbose_name=_("Manager message"))
+    updated_at = models.DateTimeField(auto_now_add=True)
+    report = models.ForeignKey(
+        Report,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="report_managers_messages",
+    )
+    declaration = models.ForeignKey(
+        Declaration,
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="declaration_managers_messages",
+    )
+
+    class Meta:
+        verbose_name = _("Managers message")
+        verbose_name_plural = _("Managers messages")
+        ordering = ["updated_at"]
+        constraints = [
+            models.CheckConstraint(
+                check=Q(declaration__isnull=False) ^ Q(report__isnull=False),
+                name="manager_message_has_report_xor_declaration",
+            )
+        ]
+
+    def __str__(self):
+        return f"{_('Managers message')} {self.pk}"
+
+
 class StatusChange(models.Model):
     message = models.TextField(verbose_name=_("Manager message"))
     updated_at = models.DateTimeField(auto_now_add=True)
