@@ -8,7 +8,7 @@ from django.utils.html import format_html
 
 from project.accounts.tests.factories import SuperUserFactory
 from project.geosource.models import FieldTypes
-from project.terra_layer.models import ReportField, StatusChange
+from project.terra_layer.models import ManagersMessage, ReportField, StatusChange
 from project.terra_layer.tests.factories import (
     AuthentifiedDeclarationFactory,
     DeclarationFieldFactory,
@@ -122,6 +122,28 @@ class ReportAdminTestCase(TestCase):
         self.assertEqual(status_change.status_after, "ACCEPTED")
         self.assertEqual(str(status_change), f"Status change {status_change.pk}")
 
+    def test_report_change_message_sends_email(self):
+        self.assertEqual(len(mail.outbox), 0)
+        # Update with same status as before
+        response = self.client.post(
+            f"/debug/terra_layer/report/{self.report.pk}/change/",
+            {
+                "geom": '{"type": "Point", "coordinates": [6.851806864142417, 43.58039085560784]}',
+                "status": "NEW",
+                "managers_message": "Some info about your report",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(
+            mail.outbox[0].subject, "Follow-up information about your report"
+        )
+        managers_message = ManagersMessage.objects.filter(report=self.report).last()
+        self.assertEqual(managers_message.message, "Some info about your report")
+        self.assertEqual(
+            str(managers_message), f"Managers message {managers_message.pk}"
+        )
+
 
 class DeclarationAdminTestCase(TestCase):
     @classmethod
@@ -178,7 +200,7 @@ class DeclarationAdminTestCase(TestCase):
     def test_declaration_change_status_sends_email(self):
         self.assertEqual(len(mail.outbox), 0)
         response = self.client.post(
-            f"/config/terra_layer/declaration/{self.declaration.pk}/change/",
+            f"/config/terra_layer/declaration/{self.declaration_no_user.pk}/change/",
             {
                 "geom": '{"type": "Point", "coordinates": [6.851806864142417, 43.58039085560784]}',
                 "status": "ACCEPTED",
@@ -189,8 +211,8 @@ class DeclarationAdminTestCase(TestCase):
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "Your declaration has been updated")
         status_change = StatusChange.objects.filter(
-            declaration=self.declaration
-        ).first()
+            declaration=self.declaration_no_user
+        ).last()
         self.assertEqual(status_change.message, "Your declaration has been treated")
         self.assertEqual(str(status_change), f"Status change {status_change.pk}")
 
@@ -237,3 +259,35 @@ class DeclarationAdminTestCase(TestCase):
         self.assertEqual(data_row[6], expected_content)
         self.assertIn(self.declaration_file.file.name, data_row[7])
         self.assertEqual(data_row[8], "01/01/2025 (New → Accepted): Test text")
+
+    def test_declaration_change_message_sends_email(self):
+        self.assertEqual(len(mail.outbox), 0)
+        response = self.client.post(
+            f"/config/terra_layer/declaration/{self.declaration.pk}/change/",
+            {
+                "geom": '{"type": "Point", "coordinates": [6.851806864142417, 43.58039085560784]}',
+                "status": "NEW",
+                "managers_message": "Some information about your declaration",
+            },
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertEqual(
+            mail.outbox[0].subject, "Follow-up information about your declaration"
+        )
+        managers_message = ManagersMessage.objects.filter(
+            declaration=self.declaration
+        ).first()
+        self.assertEqual(
+            managers_message.message, "Some information about your declaration"
+        )
+        self.assertEqual(
+            str(managers_message), f"Managers message {managers_message.pk}"
+        )
+        response = self.client.get(
+            f"/config/terra_layer/declaration/{self.declaration.pk}/change/"
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(
+            "Some information about your declaration", response.content.decode()
+        )

@@ -4,7 +4,6 @@ import json
 from unittest import mock
 from unittest.mock import patch
 
-import freezegun
 from django.contrib.auth.models import Group
 from django.core import mail
 from django.core.cache import cache
@@ -26,6 +25,7 @@ from project.terra_layer.models import (
     FilterField,
     Layer,
     LayerGroup,
+    Report,
     ReportConfig,
     ReportField,
     ReportFile,
@@ -1031,10 +1031,13 @@ class LayerViewSetAPITestCase(APITestCase):
         self.assertEqual(ReportField.objects.count(), 0)
 
 
-class ReportCreateAPIViewTestCase(APITestCase):
+class ReportAPIViewTestCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.feature = FeatureFactory()
+        cls.feature_1 = FeatureFactory()
+        report = ReportFactory(feature=cls.feature_1)
+        cls.layer = report.layer
         cls.report_config = ReportConfigFactory()
         cls.user = SuperUserFactory(is_report_manager=True)
         cls.valid_report_data = [
@@ -1262,20 +1265,60 @@ class ReportCreateAPIViewTestCase(APITestCase):
             str(response.content),
         )
 
-    @freezegun.freeze_time("2025-01-01 00:00:00")
-    def test_feature_api_shows_reports(self):
-        report = ReportFactory()
-        feature = report.feature
+    def test_report_list_authenticated_unfiltered(self):
+        self.client.force_authenticate(self.user)
         response = self.client.get(
-            reverse(
-                "feature-detail",
-                kwargs={"layer": feature.layer.pk, "identifier": feature.identifier},
-            )
+            reverse("report-list-view"), content_type="application/json"
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(
-            response.json()["reports"], {"count": 1, "creation_dates": ["Jan. 1, 2025"]}
+        response = response.json()
+        self.assertEqual(response["count"], Report.objects.count())
+        for report in response["results"]:
+            self.assertIn("created_at", report.keys())
+            self.assertIn("content", report.keys())
+            self.assertIn("geom", report.keys())
+            self.assertIn("status", report.keys())
+
+    def test_report_list_authenticated_filtered(self):
+        self.client.force_authenticate(self.user)
+        query = {
+            "layer": self.layer.pk,
+            "feature": self.feature_1.pk,
+        }
+        response = self.client.get(
+            reverse("report-list-view"), query, content_type="application/json"
         )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response = response.json()
+        self.assertEqual(
+            response["count"],
+            Report.objects.filter(layer=self.layer, feature=self.feature_1).count(),
+        )
+        for report in response["results"]:
+            self.assertIn("created_at", report.keys())
+            self.assertIn("content", report.keys())
+            self.assertIn("geom", report.keys())
+            self.assertIn("status", report.keys())
+
+    def test_report_list_unauthenticated_filtered(self):
+        query = {
+            "layer": self.layer.pk,
+            "feature": self.feature_1.pk,
+        }
+        response = self.client.get(
+            reverse("report-list-view"), query, content_type="application/json"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        response = response.json()
+        self.assertEqual(
+            response["count"],
+            Report.objects.filter(layer=self.layer, feature=self.feature_1).count(),
+        )
+        for report in response["results"]:
+            self.assertIn("created_at", report.keys())
+            self.assertNotIn("content", report.keys())
+            self.assertNotIn("geom", report.keys())
+            self.assertNotIn("status", report.keys())
 
 
 class DeclarationAPIViewTestCase(APITestCase):

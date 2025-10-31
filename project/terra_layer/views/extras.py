@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django.template.loader import get_template
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from django_filters import rest_framework as filters
 from geostore.views import FeatureViewSet, LayerGroupViewsSet, LayerViewSet
 from mapbox_baselayer.models import MapBaseLayer
 from rest_framework import generics, status, viewsets
@@ -20,8 +21,9 @@ from project.terra_layer.models import Declaration, DeclarationConfig, Report
 from project.terra_layer.serializers import (
     DeclarationConfigSerializer,
     DeclarationSerializer,
-    GeostoreFeatureSerializer,
-    ReportSerializer,
+    ReportAuthenticatedListSerializer,
+    ReportCreateSerializer,
+    ReportUnauthenticatedListSerializer,
 )
 
 from ...accounts.models import User
@@ -35,7 +37,6 @@ class GeostoreLayerViewSet(LayerViewSet):
 
 class GeostoreFeatureViewSet(FeatureViewSet):
     permission_classes = (ReadOnly,)
-    serializer_class = GeostoreFeatureSerializer
 
     def get_queryset(self):
         qs = super().get_queryset()
@@ -85,7 +86,7 @@ class NotifyManagersViewMixin:
 
 class ReportCreateAPIView(NotifyManagersViewMixin, generics.CreateAPIView):
     model = Report
-    serializer_class = ReportSerializer
+    serializer_class = ReportCreateSerializer
     permission_classes = [IsAuthenticated]
     parser_classes = [MultiPartParser, JSONParser]
 
@@ -112,6 +113,28 @@ class ReportCreateAPIView(NotifyManagersViewMixin, generics.CreateAPIView):
             "new_report.txt", context, _("New report submitted")
         )
         return report
+
+
+class ReportFilter(filters.FilterSet):
+    layer = filters.CharFilter(field_name="layer_id", lookup_expr="exact")
+    feature = filters.CharFilter(field_name="feature_id", lookup_expr="exact")
+
+    class Meta:
+        model = Report
+        fields = ["layer", "feature"]
+
+
+class ReportListAPIView(generics.ListAPIView):
+    model = Report
+    permission_classes = [AllowAny]
+    filter_backends = [filters.DjangoFilterBackend]
+    filterset_class = ReportFilter
+    queryset = Report.objects.all()
+
+    def get_serializer_class(self):
+        if self.request.user.is_authenticated:
+            return ReportAuthenticatedListSerializer
+        return ReportUnauthenticatedListSerializer
 
 
 class DeclarationConfigDetailAPIView(generics.RetrieveAPIView):

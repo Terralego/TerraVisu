@@ -1,12 +1,14 @@
 import json
 import mimetypes
+import re
+import unicodedata
+from pathlib import Path
 
 import magic
 from django.db import transaction
 from django.utils.formats import date_format
 from django.utils.translation import gettext as _
 from drf_extra_fields.fields import Base64ImageField
-from geostore.serializers import FeatureSerializer
 from mapbox_baselayer.models import BaseLayerTile, MapBaseLayer
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
@@ -102,6 +104,31 @@ class StyleImageSerializer(serializers.ModelSerializer):
 class FileSerializerMixin:
     file = serializers.FileField()
 
+    def sanitize_filename(self, filename):
+        """Remove accents and special characters from filename"""
+        # Split filename and extension
+        path = Path(filename)
+        name = path.stem
+        ext = path.suffix
+
+        # Remove accents using unicode normalization
+        name = unicodedata.normalize("NFKD", name)
+        name = name.encode("ASCII", "ignore").decode("ASCII")
+
+        # Replace spaces and special characters with underscores
+        name = re.sub(r"[^\w\-]", "_", name)
+
+        # Remove multiple consecutive underscores
+        name = re.sub(r"_+", "_", name)
+
+        # Remove leading/trailing underscores
+        name = name.strip("_")
+
+        # If name is empty after sanitization, use a default
+        name = "file" if not name else name
+
+        return f"{name}{ext.lower()}"
+
     def validate_file(self, value):
         max_size = 5 * 1024 * 1024  # 5 MB
         if value.size > max_size:
@@ -123,6 +150,7 @@ class FileSerializerMixin:
         )
         if not file_mimetype_allowed:
             raise ValidationError(wrong_extension_message)
+        value.name = self.sanitize_filename(value.name)
         return value
 
 
@@ -170,7 +198,26 @@ class ReportFileSerializer(FileSerializerMixin, serializers.ModelSerializer):
         fields = ["file"]
 
 
-class ReportSerializer(JSONContentValidatorMixin, serializers.ModelSerializer):
+class ReportUnauthenticatedListSerializer(
+    JSONContentValidatorMixin, serializers.ModelSerializer
+):
+    created_at = SerializerMethodField()
+
+    def get_created_at(self, obj):
+        return date_format(obj.created_at)
+
+    class Meta:
+        model = Report
+        fields = ["created_at"]
+
+
+class ReportAuthenticatedListSerializer(ReportUnauthenticatedListSerializer):
+    class Meta:
+        model = Report
+        fields = ["created_at", "content", "geom", "status"]
+
+
+class ReportCreateSerializer(JSONContentValidatorMixin, serializers.ModelSerializer):
     files = ReportFileSerializer(many=True, required=False)
     layer = serializers.PrimaryKeyRelatedField(read_only=True)
     # The 'content' field which should be a list of dictionaries
@@ -189,6 +236,8 @@ class ReportSerializer(JSONContentValidatorMixin, serializers.ModelSerializer):
         if len(files) > 3:
             too_many_files_message = "This request cannot contain more than 3 files."
             raise serializers.ValidationError(too_many_files_message)
+        # Save config label to still be able to display it after config deletion
+        validated_data["config_label"] = validated_data["config"].label
         report = super().create(validated_data)
         # Create ReportFile instances for each uploaded file
         for file in files:
@@ -477,20 +526,6 @@ class MapBaseLayerSerializer(serializers.ModelSerializer):
             "tiles",
             "tilejson_url",
         )
-
-
-class GeostoreFeatureSerializer(FeatureSerializer):
-    reports = serializers.SerializerMethodField()
-
-    def get_reports(self, obj):
-        reports = obj.reports.order_by("-created_at")
-        reports_data = {"count": len(reports), "creation_dates": []}
-        for report in reports:
-            reports_data["creation_dates"].append(date_format(report.created_at))
-        return reports_data
-
-    class Meta(FeatureSerializer.Meta):
-        fields = FeatureSerializer.Meta.fields + ("reports",)
 
 
 class DeclarationFieldSerializer(serializers.ModelSerializer):
