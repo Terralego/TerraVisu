@@ -18,7 +18,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 
-from project.terra_layer.models import Declaration, DeclarationConfig, Report
+from project.terra_layer.models import Declaration, DeclarationConfig, Report, Status
 from project.terra_layer.serializers import (
     DeclarationConfigSerializer,
     DeclarationSerializer,
@@ -121,7 +121,7 @@ class ReportFilter(filters.FilterSet):
     feature = filters.CharFilter(field_name="feature_id", lookup_expr="exact")
     status = filters.MultipleChoiceFilter(
         field_name="status",
-        choices=Report._meta.get_field("status").choices,
+        choices=Status.choices,
     )
 
     class Meta:
