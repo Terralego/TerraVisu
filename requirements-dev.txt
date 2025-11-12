@@ -385,7 +385,7 @@ rsa==4.9.1
     #   python-jose
 ruff==0.14.4
     # via terravisu (pyproject.toml)
-sentry-sdk==2.42.1
+sentry-sdk==2.43.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
