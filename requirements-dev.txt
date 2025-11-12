@@ -157,7 +157,7 @@ django-cors-headers==4.9.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-django-crispy-forms==2.4
+django-crispy-forms==2.5
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
