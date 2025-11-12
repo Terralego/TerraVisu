@@ -1,4 +1,3 @@
-import json
 import logging
 import uuid
 from hashlib import md5
@@ -363,13 +362,6 @@ class Layer(CloneMixin, models.Model):
     def make_clone(self, *args, **kwargs):
         kwargs.setdefault("attrs", {"name": f"{self.name} (" + _("Copy") + ")"})
         obj = super().make_clone(*args, **kwargs)
-        # fix style images references in main style
-        style_text = str(json.dumps(obj.main_style))
-        for i, style_image in enumerate(self.style_images.all()):
-            style_text = style_text.replace(
-                style_image.slug, obj.style_images.all()[i].slug
-            )
-        obj.main_style = json.loads(style_text)
         obj.save()
         return obj
 
@@ -475,19 +467,14 @@ class FilterField(models.Model):
 
 def style_image_path(instance, filename):
     y, m, d = timezone_today().isoformat().split("-")
-    return f"terra_layer/layers/{instance.layer_id}/style_images/{y}/{m}/{d}/{filename}"
+    return f"terra_layer/icon/{y}/{m}/{d}/{filename}"
 
 
 class StyleImage(models.Model):
     name = models.CharField(max_length=255)
     slug = AutoSlugField(populate_from="name", unique=True)
-    layer = models.ForeignKey(
-        Layer, related_name="style_images", on_delete=models.CASCADE
-    )
+    source = models.CharField(max_length=255, default="")
     file = models.ImageField(upload_to=style_image_path)
-
-    class Meta:
-        unique_together = (("name", "layer"),)
 
     def __str__(self):
         return self.name
