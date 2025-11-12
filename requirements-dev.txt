@@ -215,7 +215,7 @@ drf-jwt==1.19.2
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-drf-spectacular==0.28.0
+drf-spectacular==0.29.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)

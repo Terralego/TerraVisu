@@ -135,7 +135,7 @@ drf-extra-fields==3.7.0
     # via terravisu (pyproject.toml)
 drf-jwt==1.19.2
     # via terravisu (pyproject.toml)
-drf-spectacular==0.28.0
+drf-spectacular==0.29.0
     # via terravisu (pyproject.toml)
 ecdsa==0.19.1
     # via python-jose
