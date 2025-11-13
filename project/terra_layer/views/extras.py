@@ -9,6 +9,7 @@ from geostore.views import FeatureViewSet, LayerGroupViewsSet, LayerViewSet
 from mapbox_baselayer.models import MapBaseLayer
 from rest_framework import generics, status, viewsets
 from rest_framework.decorators import action
+from rest_framework.filters import OrderingFilter
 from rest_framework.parsers import (
     JSONParser,
     MultiPartParser,
@@ -17,7 +18,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 
-from project.terra_layer.models import Declaration, DeclarationConfig, Report
+from project.terra_layer.models import Declaration, DeclarationConfig, Report, Status
 from project.terra_layer.serializers import (
     DeclarationConfigSerializer,
     DeclarationSerializer,
@@ -118,18 +119,24 @@ class ReportCreateAPIView(NotifyManagersViewMixin, generics.CreateAPIView):
 class ReportFilter(filters.FilterSet):
     layer = filters.CharFilter(field_name="layer_id", lookup_expr="exact")
     feature = filters.CharFilter(field_name="feature_id", lookup_expr="exact")
+    status = filters.MultipleChoiceFilter(
+        field_name="status",
+        choices=Status.choices,
+    )
 
     class Meta:
         model = Report
-        fields = ["layer", "feature"]
+        fields = ["layer", "feature", "status"]
 
 
 class ReportListAPIView(generics.ListAPIView):
     model = Report
     permission_classes = [AllowAny]
-    filter_backends = [filters.DjangoFilterBackend]
+    filter_backends = [filters.DjangoFilterBackend, OrderingFilter]
     filterset_class = ReportFilter
     queryset = Report.objects.all()
+    ordering_fields = ["created_at"]
+    ordering = ["-created_at"]
 
     def get_serializer_class(self):
         if self.request.user.is_authenticated:
