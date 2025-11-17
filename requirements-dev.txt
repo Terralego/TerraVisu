@@ -404,7 +404,7 @@ sqlparse==0.5.3
     #   -c requirements.txt
     #   django
     #   django-debug-toolbar
-tblib==3.2.1
+tblib==3.2.2
     # via terravisu (pyproject.toml)
 text-unidecode==1.3
     # via
