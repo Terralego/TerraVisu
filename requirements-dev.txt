@@ -149,7 +149,7 @@ django-colorfield==0.14.0
     # via
     #   -c requirements.txt
     #   django-admin-interface
-django-constance==4.3.3
+django-constance==4.3.4
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
