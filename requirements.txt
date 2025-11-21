@@ -11,7 +11,7 @@ attrs==25.4.0
     #   fiona
     #   jsonschema
     #   referencing
-billiard==4.2.2
+billiard==4.2.3
     # via celery
 celery==5.5.3
     # via
