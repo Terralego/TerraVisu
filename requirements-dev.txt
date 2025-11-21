@@ -374,7 +374,7 @@ requests==2.32.5
     #   -c requirements.txt
     #   django-geostore
     #   openid-connect
-rpds-py==0.28.0
+rpds-py==0.29.0
     # via
     #   -c requirements.txt
     #   jsonschema
