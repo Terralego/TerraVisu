@@ -231,7 +231,7 @@ class SceneTreeAPIView(APIView):
                     sub_source = style.source
                     sub_layer = sub_source.get_layer()
                     subl_url = reverse("layer-tilejson", args=(sub_layer.id,))
-                    sub_source_id = f"{self.DEFAULT_SOURCE_NAME}_{geolayer.pk}"
+                    sub_source_id = f"{self.DEFAULT_SOURCE_NAME}_{sub_layer.pk}"
                     custom_style_infos[sub_source_id] = subl_url
 
                     for map_layer in layer_structure["map"]["customStyle"]["layers"]:
