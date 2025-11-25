@@ -10,6 +10,9 @@ Changelog
 - Add API endpoints and backend for Report and Declarations functionalities (for users to provide feedback about data layers)
 - Ability to change user password in admin
 
+**Performances**
+- Improve source listing by view to speed up map view.
+
 **Documentation:**
 
 - Update doc with new features (ref #894)
