@@ -232,7 +232,7 @@ class SceneViewsetTestCase(APITestCase):
                 {
                     "id": layer.layer_identifier,
                     "layerId": layer.pk,
-                    "source": "terra_0",
+                    "source": f"terra_{source.get_layer().pk}",
                     "source-layer": "test_view_2",
                     "advanced_style": {},
                 }
