@@ -33,7 +33,7 @@ docutils==0.20.1
     # via sphinx
 h11==0.16.0
     # via uvicorn
-idna==3.10
+idna==3.11
     # via
     #   -c docs/../requirements.txt
     #   anyio
