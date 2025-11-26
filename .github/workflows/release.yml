@@ -27,7 +27,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           submodules: recursive
 
@@ -153,7 +153,7 @@ jobs:
     if: ${{ (github.event_name == 'release' && github.event.action == 'created') }}
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
       - name: Prepare install.zip
         run: |
           cd install
