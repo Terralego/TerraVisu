@@ -22,6 +22,7 @@ def field_2_variation_type(field):
     if (
         "width" in field
         or "height" in field
+        or "base" in field
         or "opacity" in field
         or "intensity" in field
         or "size" in field
