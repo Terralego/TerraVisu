@@ -117,7 +117,7 @@ django==4.2.26
     #   drf-extra-fields
     #   drf-jwt
     #   drf-spectacular
-django-admin-interface==0.31.0
+django-admin-interface==0.31.1
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
