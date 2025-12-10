@@ -1,8 +1,16 @@
 from django.test import TestCase
+from django.utils.translation import gettext_lazy as _
 
+from ...geosource.models import FieldTypes
 from ...geosource.tests.factories import PostGISSourceFactory
-from ..models import Layer
-from .factories import LayerFactory, LayerGroupFactory, SceneFactory, StyleImageFactory
+from ..models import Layer, ReportField
+from .factories import (
+    LayerFactory,
+    LayerGroupFactory,
+    ReportFactory,
+    SceneFactory,
+    StyleImageFactory,
+)
 
 
 class LayerTestCase(TestCase):
@@ -165,3 +173,26 @@ class LayerGroupTestCase(TestCase):
     def test_str_without_parent(self):
         group = LayerGroupFactory()
         self.assertEqual(str(group), f"{group.view.name} - {group.label}")
+
+
+class ReportTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.report = ReportFactory.create()
+        field = cls.report.config.layer.source.fields.create(
+            name="test_field", label="test_label", data_type=FieldTypes.String.value
+        )
+        cls.report_field = ReportField.objects.create(
+            config=cls.report.config,
+            order=1,
+            field=field,
+        )
+
+    def test_models_str(self):
+        self.assertEqual(str(self.report), f"Report {self.report.pk}")
+        self.assertEqual(str(self.report.status.label), _("New"))
+        self.assertEqual(str(self.report.config), self.report.config.label)
+        self.assertEqual(
+            str(self.report.config.report_fields.first()),
+            f"Report field {self.report_field.order}",
+        )

@@ -64,6 +64,7 @@ class LayerDumpTestCase(TestCase):
                 "popup_config": {},
                 "minisheet_config": {},
                 "interactions": [],
+                "report_configs": [],
                 "source": "test_view",
                 "group": None,
                 "main_field": None,

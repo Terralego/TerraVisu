@@ -211,6 +211,8 @@ python-decouple==3.8
     # via terravisu (pyproject.toml)
 python-jose==3.5.0
     # via openid-connect
+python-magic==0.4.27
+    # via terravisu (pyproject.toml)
 python-slugify==8.0.4
     # via django-admin-interface
 pyyaml==6.0.3

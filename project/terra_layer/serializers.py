@@ -1,6 +1,12 @@
 import json
+import mimetypes
+import re
+import unicodedata
+from pathlib import Path
 
+import magic
 from django.db import transaction
+from django.utils.formats import date_format
 from django.utils.translation import gettext as _
 from drf_extra_fields.fields import Base64ImageField
 from mapbox_baselayer.models import BaseLayerTile, MapBaseLayer
@@ -9,8 +15,23 @@ from rest_framework.exceptions import ValidationError
 from rest_framework.fields import SerializerMethodField
 from rest_framework.reverse import reverse
 
-from ..geosource.models import Field
-from .models import CustomStyle, FilterField, Layer, Scene, StyleImage
+from project.geosource.models import Field
+
+from .models import (
+    CustomStyle,
+    Declaration,
+    DeclarationConfig,
+    DeclarationField,
+    DeclarationFile,
+    FilterField,
+    Layer,
+    Report,
+    ReportConfig,
+    ReportField,
+    ReportFile,
+    Scene,
+    StyleImage,
+)
 
 
 class SceneListSerializer(serializers.ModelSerializer):
@@ -80,6 +101,175 @@ class StyleImageSerializer(serializers.ModelSerializer):
         read_only_fields = ("slug", "file")
 
 
+class FileSerializerMixin:
+    file = serializers.FileField()
+
+    def sanitize_filename(self, filename):
+        """Remove accents and special characters from filename"""
+        # Split filename and extension
+        path = Path(filename)
+        name = path.stem
+        ext = path.suffix
+
+        # Remove accents using unicode normalization
+        name = unicodedata.normalize("NFKD", name)
+        name = name.encode("ASCII", "ignore").decode("ASCII")
+
+        # Replace spaces and special characters with underscores
+        name = re.sub(r"[^\w\-]", "_", name)
+
+        # Remove multiple consecutive underscores
+        name = re.sub(r"_+", "_", name)
+
+        # Remove leading/trailing underscores
+        name = name.strip("_")
+
+        # If name is empty after sanitization, use a default
+        name = "file" if not name else name
+
+        return f"{name}{ext.lower()}"
+
+    def validate_file(self, value):
+        max_size = 5 * 1024 * 1024  # 5 MB
+        if value.size > max_size:
+            big_file_message = "File size cannot exceed 5MB"
+            raise serializers.ValidationError(big_file_message)
+        # Check for allowed extensions in filename
+        allowed_extensions = [".jpg", ".jpeg", ".png", ".pdf", ".zip"]
+        wrong_extension_message = (
+            f"File type not allowed. Allowed types: {', '.join(allowed_extensions)}"
+        )
+        file_extension = value.name.lower().split(".")[-1]
+        if f".{file_extension}" not in allowed_extensions:
+            raise serializers.ValidationError(wrong_extension_message)
+        # Check for allowed extensions in file content
+        value.seek(0)
+        file_mimetype = magic.from_buffer(value.read(), mime=True)
+        file_mimetype_allowed = f".{file_extension}" in mimetypes.guess_all_extensions(
+            file_mimetype
+        )
+        if not file_mimetype_allowed:
+            raise ValidationError(wrong_extension_message)
+        value.name = self.sanitize_filename(value.name)
+        return value
+
+
+class JSONContentValidatorMixin:
+    required_fields = []
+    integer_fields = []
+
+    def validate_content(self, value):
+        """
+        The 'content' field which should be a list of dictionaries
+        with keys : "title", "value",   OR   "free_comment"
+        """
+        if not isinstance(value, list):
+            error_message = "Field 'content' must be a list of items."
+            raise ValidationError(error_message)
+
+        if len(value) == 0:
+            error_message = "Field 'content' cannot be empty."
+            raise ValidationError(error_message)
+
+        for i, item in enumerate(value):
+            # Check for required fields
+            if "free_comment" in item and len(item) == 1:
+                break
+
+            for field in self.required_fields:
+                if field not in item:
+                    error_message = f"Item at index {i} of field 'content' is missing required field: '{field}'"
+                    raise ValidationError(error_message)
+
+            for integer_field_key in self.integer_fields:
+                try:
+                    integer_value = int(item[integer_field_key])
+                    item[integer_field_key] = integer_value
+                except (ValueError, TypeError):
+                    error_message = f"At index {i} of field 'content': '{integer_field_key}' must be an integer."
+                    raise ValidationError(error_message)
+
+        return value
+
+
+class ReportFileSerializer(FileSerializerMixin, serializers.ModelSerializer):
+    class Meta:
+        model = ReportFile
+        fields = ["file"]
+
+
+class ReportUnauthenticatedListSerializer(
+    JSONContentValidatorMixin, serializers.ModelSerializer
+):
+    created_at = SerializerMethodField()
+
+    def get_created_at(self, obj):
+        return date_format(obj.created_at)
+
+    class Meta:
+        model = Report
+        fields = ["created_at"]
+
+
+class ReportAuthenticatedListSerializer(ReportUnauthenticatedListSerializer):
+    class Meta:
+        model = Report
+        fields = ["created_at", "content", "geom", "status"]
+
+
+class ReportCreateSerializer(JSONContentValidatorMixin, serializers.ModelSerializer):
+    files = ReportFileSerializer(many=True, required=False)
+    layer = serializers.PrimaryKeyRelatedField(read_only=True)
+    # The 'content' field which should be a list of dictionaries
+    # with keys : "sourceFieldId", "value", "label", "content"   OR   "free_comment"
+    required_fields = ["sourceFieldId", "value", "label", "content"]
+    integer_fields = ["sourceFieldId"]
+
+    class Meta:
+        model = Report
+        fields = ["config", "feature", "layer", "content", "files", "geom"]
+
+    def create(self, validated_data):
+        files = []
+        if "files" in self.initial_data:
+            files = self.initial_data.pop("files", [])
+        if len(files) > 3:
+            too_many_files_message = "This request cannot contain more than 3 files."
+            raise serializers.ValidationError(too_many_files_message)
+        # Save config label to still be able to display it after config deletion
+        validated_data["config_label"] = validated_data["config"].label
+        report = super().create(validated_data)
+        # Create ReportFile instances for each uploaded file
+        for file in files:
+            obj = ReportFileSerializer(
+                data={
+                    "file": file,
+                }
+            )
+            if obj.is_valid(raise_exception=True):
+                obj.save(report=report)
+        return report
+
+
+class ReportFieldSerializer(serializers.ModelSerializer):
+    sourceFieldId = serializers.PrimaryKeyRelatedField(
+        source="field", queryset=Field.objects.all()
+    )
+
+    class Meta:
+        model = ReportField
+        fields = ("id", "order", "sourceFieldId", "required", "helptext")
+
+
+class ReportConfigSerializer(serializers.ModelSerializer):
+    id = serializers.IntegerField(required=False, allow_null=True)
+    report_fields = ReportFieldSerializer(many=True)
+
+    class Meta:
+        model = ReportConfig
+        fields = ("id", "label", "report_fields")
+
+
 class LayerListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Layer
@@ -109,6 +299,7 @@ class LayerDetailSerializer(serializers.ModelSerializer):
     extra_styles = CustomStyleSerializer(many=True, read_only=True)
     group = serializers.PrimaryKeyRelatedField(read_only=True)
     style_images = StyleImageSerializer(many=True, read_only=False, required=False)
+    report_configs = ReportConfigSerializer(many=True, read_only=False, required=False)
     comparaison = LayerComparaison(required=False)
 
     @property
@@ -124,11 +315,8 @@ class LayerDetailSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        style_images = (
-            validated_data.pop("style_images", [])
-            if validated_data.get("style_images")
-            else []
-        )
+        style_images = validated_data.pop("style_images", [])
+        report_configs = validated_data.pop("report_configs", [])
         instance = super().create(validated_data)
         for image_data in style_images:
             StyleImage.objects.create(layer=instance, **image_data)
@@ -136,6 +324,9 @@ class LayerDetailSerializer(serializers.ModelSerializer):
         # Update m2m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
         self._update_nested(instance, "extra_styles", CustomStyleSerializer)
+        # Handle nested ReportConfig(s)
+        self._create_or_update_report_configs(instance, report_configs)
+
         instance.save()
 
         return instance
@@ -149,6 +340,7 @@ class LayerDetailSerializer(serializers.ModelSerializer):
     @transaction.atomic
     def update(self, instance, validated_data):
         style_images = validated_data.pop("style_images", [])
+        report_configs = validated_data.pop("report_configs", [])
         instance = super().update(instance, validated_data)
 
         # Delete first
@@ -168,6 +360,8 @@ class LayerDetailSerializer(serializers.ModelSerializer):
         # Update m1m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
         self._update_nested(instance, "extra_styles", CustomStyleSerializer)
+        # Handle nested ReportConfig(s)
+        self._create_or_update_report_configs(instance, report_configs)
 
         instance.save()
 
@@ -190,6 +384,46 @@ class LayerDetailSerializer(serializers.ModelSerializer):
             obj = serializer(data=value)
             if obj.is_valid(raise_exception=True):
                 obj.save(layer=instance)
+
+    def update_report_fields(self, report_config, report_fields):
+        report_config.report_fields.all().delete()
+        for report_field_data in report_fields:
+            ReportField.objects.create(
+                field=report_field_data["field"],
+                order=report_field_data["order"],
+                helptext=report_field_data.get("helptext", ""),
+                required=report_field_data.get("required", False),
+                config=report_config,
+            )
+
+    def _create_or_update_report_configs(self, instance, report_configs):
+        instance_report_configs = ReportConfig.objects.filter(layer=instance)
+        # Keep list of initial configs to find the ones that were deleted
+        initial_report_configs = list(
+            instance_report_configs.values_list("pk", flat=True)
+        )
+        for report_config_data in report_configs:
+            config_pk = report_config_data.pop("id", None)
+            # For update
+            if config_pk and instance_report_configs.filter(pk=config_pk).exists():
+                existing_config = instance_report_configs.get(pk=config_pk)
+                existing_config.label = report_config_data["label"]
+                existing_config.save()
+                self.update_report_fields(
+                    existing_config, report_config_data["report_fields"]
+                )
+                # Remove updated config from initial list
+                initial_report_configs.remove(config_pk)
+            # For create
+            else:
+                new_report_config = ReportConfig.objects.create(
+                    label=report_config_data["label"], layer=instance
+                )
+                self.update_report_fields(
+                    new_report_config, report_config_data["report_fields"]
+                )
+        # Delete configs remaining in initial list
+        instance_report_configs.filter(pk__in=initial_report_configs).delete()
 
     class Meta:
         model = Layer
@@ -292,3 +526,53 @@ class MapBaseLayerSerializer(serializers.ModelSerializer):
             "tiles",
             "tilejson_url",
         )
+
+
+class DeclarationFieldSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = DeclarationField
+        fields = ["title", "helptext"]
+
+
+class DeclarationConfigSerializer(serializers.ModelSerializer):
+    declaration_fields = DeclarationFieldSerializer(many=True)
+
+    class Meta:
+        model = DeclarationConfig
+        fields = ["title", "declaration_fields"]
+
+
+class DeclarationFileSerializer(FileSerializerMixin, serializers.ModelSerializer):
+    class Meta:
+        model = DeclarationFile
+        fields = ["file"]
+
+
+class DeclarationSerializer(JSONContentValidatorMixin, serializers.ModelSerializer):
+    files = DeclarationFileSerializer(many=True, required=False)
+    # The 'content' field which should be a list of dictionaries
+    # with keys : "title", "value"   OR   "free_comment"
+    required_fields = ["title", "value"]
+
+    class Meta:
+        model = Declaration
+        fields = ["content", "files", "email", "geom"]
+
+    def create(self, validated_data):
+        files = []
+        if "files" in self.initial_data:
+            files = self.initial_data.pop("files", [])
+        if len(files) > 3:
+            too_many_files_message = "This request cannot contain more than 3 files."
+            raise serializers.ValidationError(too_many_files_message)
+        declaration = super().create(validated_data)
+        # Create DeclarationFile instances for each uploaded file
+        for file in files:
+            obj = DeclarationFileSerializer(
+                data={
+                    "file": file,
+                }
+            )
+            if obj.is_valid(raise_exception=True):
+                obj.save(declaration=declaration)
+        return declaration

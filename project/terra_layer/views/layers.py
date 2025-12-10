@@ -22,7 +22,16 @@ from rest_framework.viewsets import ModelViewSet
 from project.geosource.models import FieldTypes, WMTSSource
 
 from ..filters import LayerFilterSet, SceneFilterSet
-from ..models import CustomStyle, FilterField, Layer, LayerGroup, Scene, StyleImage
+from ..models import (
+    CustomStyle,
+    FilterField,
+    Layer,
+    LayerGroup,
+    ReportConfig,
+    ReportField,
+    Scene,
+    StyleImage,
+)
 from ..permissions import LayerPermission, ScenePermission
 from ..serializers import (
     LayerDetailSerializer,
@@ -159,6 +168,17 @@ class SceneTreeAPIView(APIView):
                     to_attr="filters_enabled",
                 ),
                 "extra_styles__source",
+                Prefetch(
+                    "report_configs",
+                    ReportConfig.objects.prefetch_related(
+                        Prefetch(
+                            "report_fields",
+                            queryset=ReportField.objects.select_related("field"),
+                            to_attr="prefetched_report_fields",
+                        ),
+                    ),
+                    to_attr="prefetched_report_configs",
+                ),
             )
         ),
     )
@@ -203,7 +223,7 @@ class SceneTreeAPIView(APIView):
                 }
             )
 
-        custom_style_infos = []
+        custom_style_infos = {}
         for i, layer in enumerate(self.layers.all()):
             if layer.extra_styles.exists():
                 # Layer's extra styles have "sub sources" & "sub layers" we need to handle
@@ -211,8 +231,8 @@ class SceneTreeAPIView(APIView):
                     sub_source = style.source
                     sub_layer = sub_source.get_layer()
                     subl_url = reverse("layer-tilejson", args=(sub_layer.id,))
-                    sub_source_id = f"{self.DEFAULT_SOURCE_NAME}_{i}_{y}"
-                    custom_style_infos.append((subl_url, sub_source_id))
+                    sub_source_id = f"{self.DEFAULT_SOURCE_NAME}_{sub_layer.pk}"
+                    custom_style_infos[sub_source_id] = subl_url
 
                     for map_layer in layer_structure["map"]["customStyle"]["layers"]:
                         if (
@@ -225,9 +245,9 @@ class SceneTreeAPIView(APIView):
                         map_layer["source"] = sub_source_id
 
             geolayer = layer.source.get_layer()
-            url = reverse("layer-tilejson", args=(geolayer.id,))
-            source_id = f"{self.DEFAULT_SOURCE_NAME}_{i}"
-            custom_style_infos.append((url, source_id))
+            url = reverse("layer-tilejson", args=(geolayer.pk,))
+            source_id = f"{self.DEFAULT_SOURCE_NAME}_{geolayer.pk}"
+            custom_style_infos[source_id] = url
 
             # Set the correct source "id" for each non-raster layer in the customStyle field
             for map_layer in layer_structure["map"]["customStyle"]["layers"]:
@@ -246,7 +266,7 @@ class SceneTreeAPIView(APIView):
                 "type": self.DEFAULT_SOURCE_TYPE,
                 "url": f"{url}?{querystring.urlencode()}",
             }
-            for url, source_id in custom_style_infos
+            for source_id, url in custom_style_infos.items()
         ]
 
         layer_structure["styleImages"] = StyleImageSerializer(
@@ -537,6 +557,7 @@ class SceneTreeAPIView(APIView):
                 "form": self.get_filter_forms_for_layer(layer),
             },
             "source_credit": layer.source.credit,
+            "report_configs": self.get_report_configs_for_layer(layer),
         }
 
         # Set the exportable status of the layer if any filter fields is exportable
@@ -577,6 +598,29 @@ class SceneTreeAPIView(APIView):
             # Respect filter defined order
             filter_list.sort(key=lambda f: f.get("order", 0))
             return filter_list
+
+    def get_report_configs_for_layer(self, layer):
+        report_configs = []
+        for report_config in layer.prefetched_report_configs:
+            config = {
+                "label": report_config.label,
+                "id": report_config.id,
+                "fields": [],
+            }
+            for report_field in report_config.prefetched_report_fields:
+                config["fields"].append(
+                    {
+                        "order": report_field.order,
+                        "sourceFieldId": report_field.field_id,
+                        "value": report_field.field.name,
+                        "label": report_field.field.label,
+                        "format_type": TYPE_MAP[report_field.field.data_type],
+                        "required": report_field.required,
+                        "helptext": report_field.helptext,
+                    }
+                )
+            report_configs.append(config)
+        return report_configs
 
     @cached_property
     def authorized_sources(self):

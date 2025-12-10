@@ -1,0 +1,14 @@
+{% load i18n %}
+
+{% blocktranslate with layer=layer|safe url=url report_mail_signature=report_mail_signature|safe %}
+Hi,
+
+A new report regarding layer "{{ layer }}" has been submitted.
+
+You can consult it at : {{ url }}
+
+Regards,
+
+{{ report_mail_signature }}
+
+{% endblocktranslate %}

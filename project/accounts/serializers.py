@@ -1,4 +1,5 @@
 from django.contrib.auth.models import Group
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 
 from project.accounts.models import FunctionalPermission, User
@@ -12,7 +13,9 @@ class FunctionalPermissionSerializer(serializers.ModelSerializer):
 
 class UserSerializer(serializers.ModelSerializer):
     modules = serializers.SerializerMethodField()
-    password = serializers.CharField(write_only=True, required=False)
+    password = serializers.CharField(
+        write_only=True, required=False, validators=[validate_password]
+    )
 
     def get_modules(self, instance):
         return list(
@@ -36,6 +39,8 @@ class UserSerializer(serializers.ModelSerializer):
             "is_active",
             "is_staff",
             "is_superuser",
+            "is_report_manager",
+            "is_declaration_manager",
             "date_joined",
             "last_login",
             "groups",

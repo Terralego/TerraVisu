@@ -39,6 +39,7 @@ dependencies = [
     "drf-extra-fields",
     "django-tinymce",
     "pyproj",
+    "python-magic",
 ]
 [project.scripts]
 osm_paths = "osm_paths:main"
