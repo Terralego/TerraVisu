@@ -399,7 +399,7 @@ six==1.17.0
     #   django-clone
     #   ecdsa
     #   python-dateutil
-sqlparse==0.5.3
+sqlparse==0.5.4
     # via
     #   -c requirements.txt
     #   django
