@@ -43,7 +43,7 @@ jobs:
 
       - name: Cache admin
         id: cache-admin
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./admin/build
           key: admin-${{ env.ADMIN_CACHE_KEY }}
@@ -71,7 +71,7 @@ jobs:
 
       - name: Cache front
         id: cache-front
-        uses: actions/cache@v4
+        uses: actions/cache@v5
         with:
           path: ./front/build
           key: front-${{ env.FRONT_CACHE_KEY }}
