@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-30 16:56+0000\n"
+"POT-Creation-Date: 2025-12-19 13:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1087,6 +1087,24 @@ msgstr "Informations au sujet de votre déclaration"
 msgid "Your declaration has been updated"
 msgstr "Votre déclaration a été mise à jour"
 
+msgid "Accessible from"
+msgstr "Accessible depuis"
+
+msgid "No pictogram"
+msgstr "Pas de pictogramme"
+
+msgid "Pictogram for True values"
+msgstr "Pictogramme pour les valeurs Vrai"
+
+msgid "Pictogram for False values"
+msgstr "Pictogramme pour les valeurs Faux"
+
+msgid "Blocks"
+msgstr "Blocs"
+
+msgid "Sheet"
+msgstr "Fiche détaillée"
+
 msgid "Sprite icon"
 msgstr "Icône de 'sprite'"
 
@@ -1104,3 +1122,75 @@ msgstr "Entrée de menu supplémentaire"
 
 msgid "Extra menu items"
 msgstr "Entrées de menu supplémentaires"
+
+msgid "Boolean"
+msgstr "Booléen"
+
+msgid "Textual"
+msgstr "Textuel"
+
+msgid "Numerical"
+msgstr "Numéraire"
+
+msgid "Booleans"
+msgstr "Booléens"
+
+msgid "Fields table"
+msgstr "Tableau de champs"
+
+msgid "Text"
+msgstr "Texte"
+
+msgid "Panoramax"
+msgstr "Panoramax"
+
+msgid "Radar plot"
+msgstr "Graphique radar"
+
+msgid "Bars plot"
+msgstr "Graphique en barres"
+
+msgid "Distribution plot"
+msgstr "Graphique de distribution"
+
+msgid "Sheet name"
+msgstr "Nom de la fiche"
+
+msgid "Feature sheet"
+msgstr "Fiche détaillée"
+
+msgid "Feature sheets"
+msgstr "Fiches détaillées"
+
+msgid "Source field"
+msgstr "Champ source"
+
+msgid "Sheet field type"
+msgstr "Type de champ"
+
+msgid "Suffix"
+msgstr "Suffixe"
+
+msgid "Decimals"
+msgstr "Décimales"
+
+msgid "Sheet field"
+msgstr "Champ de fiche"
+
+msgid "Sheet fields"
+msgstr "Champs de fiche"
+
+msgid "Block title"
+msgstr "Titre du bloc"
+
+msgid "Display title"
+msgstr "Affichage du titre"
+
+msgid "Sheet block type"
+msgstr "Type de bloc"
+
+msgid "Sheet block"
+msgstr "Bloc de fiche"
+
+msgid "Sheet blocks"
+msgstr "Blocs de fiche"
