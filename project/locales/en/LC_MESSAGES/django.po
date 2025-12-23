@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-19 13:49+0000\n"
+"POT-Creation-Date: 2025-12-23 16:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -913,6 +913,18 @@ msgstr ""
 msgid "Your declaration has been updated"
 msgstr ""
 
+#, python-format
+msgid ""
+"Block type '%(block_type)s' requires all fields to be NUMERICAL. The "
+"following fields are not numerical: %(field_names)s"
+msgstr ""
+
+#, python-format
+msgid ""
+"Block type 'Booleans' requires all fields to be BOOLEAN. The following "
+"fields are not boolean: %(field_names)s"
+msgstr ""
+
 msgid "Accessible from"
 msgstr ""
 
@@ -1011,6 +1023,9 @@ msgid "Display title"
 msgstr ""
 
 msgid "Sheet block type"
+msgstr ""
+
+msgid "Geometry field"
 msgstr ""
 
 msgid "Sheet block"

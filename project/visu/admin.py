@@ -2,6 +2,8 @@ from admin_interface.admin import ThemeAdmin
 from admin_interface.models import Theme
 from constance.admin import Config, ConstanceAdmin
 from django.contrib import admin
+from django.core.exceptions import ValidationError
+from django.forms import ModelForm
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
@@ -10,9 +12,67 @@ from project.visu.models import (
     ExtraMenuItem,
     FeatureSheet,
     SheetBlock,
+    SheetBlockType,
     SheetField,
+    SheetFieldType,
     SpriteValue,
 )
+
+
+class SheetBlockAdminForm(ModelForm):
+    class Meta:
+        model = SheetBlock
+        fields = (
+            "sheet",
+            "title",
+            "display_title",
+            "type",
+            "fields",
+            "text",
+            "geom_field",
+        )
+
+    def clean(self):
+        cleaned_data = super().clean()
+        block_type = cleaned_data.get("type")
+        fields = cleaned_data.get("fields")
+
+        if not block_type or not fields:
+            return cleaned_data
+
+        # Validation for plot types requiring numerical fields
+        if block_type in [
+            SheetBlockType.RADAR_PLOT,
+            SheetBlockType.BAR_PLOT,
+            SheetBlockType.DISTRIB_PLOT,
+        ]:
+            non_numerical = [f for f in fields if f.type != SheetFieldType.NUMERICAL]
+            if non_numerical:
+                field_names = ", ".join([f.field.label for f in non_numerical])
+                raise ValidationError(
+                    _(
+                        "Block type '%(block_type)s' requires all fields to be NUMERICAL. "
+                        "The following fields are not numerical: %(field_names)s"
+                    )
+                    % {
+                        "block_type": dict(SheetBlockType.choices)[block_type],
+                        "field_names": field_names,
+                    }
+                )
+
+        # Validation for boolean block type
+        elif block_type == SheetBlockType.BOOLEANS:
+            non_boolean = [f for f in fields if f.type != SheetFieldType.BOOLEAN]
+            if non_boolean:
+                field_names = ", ".join([f.field.label for f in non_boolean])
+                raise ValidationError(
+                    _(
+                        "Block type 'Booleans' requires all fields to be BOOLEAN. "
+                        "The following fields are not boolean: %(field_names)s"
+                    )
+                    % {"field_names": field_names}
+                )
+        return cleaned_data
 
 
 @admin.register(ExtraMenuItem, site=config_site)
@@ -78,13 +138,23 @@ class SheetBlockAdmin(admin.ModelAdmin):
         "title",
         "get_sheet_name",
         "type",
+        "get_fields_name",
         "display_title",
     )
+    form = SheetBlockAdminForm
+
+    class Media:
+        js = ("admin/sheetblock_admin.js",)
 
     def get_sheet_name(self, obj):
         return obj.sheet.name
 
     get_sheet_name.short_description = _("Sheet")
+
+    def get_fields_name(self, obj):
+        return ", ".join([str(field) for field in obj.fields.all()])
+
+    get_fields_name.short_description = _("Fields")
 
 
 config_site.register(SpriteValue)

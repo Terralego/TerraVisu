@@ -141,18 +141,16 @@ class SheetBlock(models.Model):  # OrderedModel
         verbose_name=_("Sheet"),
         related_name="blocks",
     )
-    # settings : listes de fields...
     fields = models.ManyToManyField(
-        SheetField, verbose_name=_("Sheet fields"), related_name="blocks"
+        SheetField, verbose_name=_("Sheet fields"), related_name="blocks", blank=True
     )
     text = models.TextField(
         blank=True,
         verbose_name=_("Text"),
     )
-    # geom_field = models.ForeignKey(
-    #     SheetField,
-    #     verbose_name=_("Geom fields"),
-    # )
+    geom_field = models.CharField(
+        max_length=255, verbose_name=_("Geometry field"), blank=True, default="geom"
+    )
 
     class Meta:
         verbose_name = _("Sheet block")
