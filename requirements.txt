@@ -114,7 +114,7 @@ django-geostore==1.0.0
     # via terravisu (pyproject.toml)
 django-mapbox-baselayer==1.0.0
     # via terravisu (pyproject.toml)
-django-polymorphic==4.2.0
+django-polymorphic==4.5.1
     # via terravisu (pyproject.toml)
 django-timezone-field==7.2.1
     # via django-celery-beat
