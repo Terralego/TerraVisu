@@ -72,7 +72,9 @@ class FeatureSheet(models.Model):
     unique_identifier = models.ForeignKey(
         Field, on_delete=models.CASCADE, verbose_name=_("Unique identifier")
     )
-    accessible_from = models.ManyToManyField(Layer, verbose_name=_("Accessible from"))
+    accessible_from = models.ManyToManyField(
+        Layer, verbose_name=_("Accessible from"), related_name="feature_sheet"
+    )
 
     class Meta:
         verbose_name = _("Feature sheet")
@@ -86,8 +88,10 @@ class SheetField(models.Model):  # OrderedModel
     field = models.ForeignKey(
         Field, on_delete=models.CASCADE, verbose_name=_("Source field")
     )
-    # label : field.label ?
-    # source : field.source
+    label = models.CharField(
+        max_length=255,
+        verbose_name=_("Label"),
+    )
     description = models.TextField(blank=True)
     type = models.CharField(
         max_length=9,
@@ -123,7 +127,7 @@ class SheetField(models.Model):  # OrderedModel
         # Ordering
 
     def __str__(self):
-        return self.field.label
+        return self.label
 
 
 class SheetBlock(models.Model):  # OrderedModel

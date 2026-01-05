@@ -97,6 +97,7 @@ class FeatureSheetAdmin(admin.ModelAdmin):
 class SheetFieldAdmin(admin.ModelAdmin):
     list_display = (
         "field",
+        "label",
         "get_blocks",
         "type",
         "suffix",
