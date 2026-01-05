@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-12-23 16:00+0000\n"
+"POT-Creation-Date: 2026-01-05 15:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -136,6 +136,120 @@ msgid "Celery"
 msgstr ""
 
 msgid "Recent actions"
+msgstr ""
+
+#, python-format
+msgid ""
+"Block type '%(block_type)s' requires all fields to be NUMERICAL. The "
+"following fields are not numerical: %(field_names)s"
+msgstr ""
+
+#, python-format
+msgid ""
+"Block type 'Booleans' requires all fields to be BOOLEAN. The following "
+"fields are not boolean: %(field_names)s"
+msgstr ""
+
+msgid "Accessible from"
+msgstr ""
+
+msgid "No pictogram"
+msgstr ""
+
+msgid "Pictogram for True values"
+msgstr ""
+
+msgid "Pictogram for False values"
+msgstr ""
+
+msgid "Blocks"
+msgstr ""
+
+msgid "Sheet"
+msgstr ""
+
+msgid "Fields"
+msgstr ""
+
+msgid "Feature sheet"
+msgstr ""
+
+msgid "Boolean"
+msgstr ""
+
+msgid "Textual"
+msgstr ""
+
+msgid "Numerical"
+msgstr ""
+
+msgid "Booleans"
+msgstr ""
+
+msgid "Fields table"
+msgstr ""
+
+msgid "Text"
+msgstr ""
+
+msgid "Panoramax"
+msgstr ""
+
+msgid "Map"
+msgstr ""
+
+msgid "Radar plot"
+msgstr ""
+
+msgid "Bars plot"
+msgstr ""
+
+msgid "Distribution plot"
+msgstr ""
+
+msgid "Sheet name"
+msgstr ""
+
+msgid "Feature sheets"
+msgstr ""
+
+msgid "Source field"
+msgstr ""
+
+msgid "Label"
+msgstr ""
+
+msgid "Sheet field type"
+msgstr ""
+
+msgid "Suffix"
+msgstr ""
+
+msgid "Decimals"
+msgstr ""
+
+msgid "Sheet field"
+msgstr ""
+
+msgid "Sheet fields"
+msgstr ""
+
+msgid "Block title"
+msgstr ""
+
+msgid "Display title"
+msgstr ""
+
+msgid "Sheet block type"
+msgstr ""
+
+msgid "Geometry field"
+msgstr ""
+
+msgid "Sheet block"
+msgstr ""
+
+msgid "Sheet blocks"
 msgstr ""
 
 msgid "URL"
@@ -597,9 +711,6 @@ msgstr ""
 msgid "Object"
 msgstr ""
 
-msgid "Map"
-msgstr ""
-
 msgid "Story"
 msgstr ""
 
@@ -622,9 +733,6 @@ msgid "Accepted"
 msgstr ""
 
 msgid "Rejected"
-msgstr ""
-
-msgid "Fields"
 msgstr ""
 
 msgid "Report config"
@@ -913,36 +1021,6 @@ msgstr ""
 msgid "Your declaration has been updated"
 msgstr ""
 
-#, python-format
-msgid ""
-"Block type '%(block_type)s' requires all fields to be NUMERICAL. The "
-"following fields are not numerical: %(field_names)s"
-msgstr ""
-
-#, python-format
-msgid ""
-"Block type 'Booleans' requires all fields to be BOOLEAN. The following "
-"fields are not boolean: %(field_names)s"
-msgstr ""
-
-msgid "Accessible from"
-msgstr ""
-
-msgid "No pictogram"
-msgstr ""
-
-msgid "Pictogram for True values"
-msgstr ""
-
-msgid "Pictogram for False values"
-msgstr ""
-
-msgid "Blocks"
-msgstr ""
-
-msgid "Sheet"
-msgstr ""
-
 msgid "Sprite icon"
 msgstr ""
 
@@ -957,79 +1035,4 @@ msgid "Extra menu item"
 msgstr ""
 
 msgid "Extra menu items"
-msgstr ""
-
-msgid "Boolean"
-msgstr ""
-
-msgid "Textual"
-msgstr ""
-
-msgid "Numerical"
-msgstr ""
-
-msgid "Booleans"
-msgstr ""
-
-msgid "Fields table"
-msgstr ""
-
-msgid "Text"
-msgstr ""
-
-msgid "Panoramax"
-msgstr ""
-
-msgid "Radar plot"
-msgstr ""
-
-msgid "Bars plot"
-msgstr ""
-
-msgid "Distribution plot"
-msgstr ""
-
-msgid "Sheet name"
-msgstr ""
-
-msgid "Feature sheet"
-msgstr ""
-
-msgid "Feature sheets"
-msgstr ""
-
-msgid "Source field"
-msgstr ""
-
-msgid "Sheet field type"
-msgstr ""
-
-msgid "Suffix"
-msgstr ""
-
-msgid "Decimals"
-msgstr ""
-
-msgid "Sheet field"
-msgstr ""
-
-msgid "Sheet fields"
-msgstr ""
-
-msgid "Block title"
-msgstr ""
-
-msgid "Display title"
-msgstr ""
-
-msgid "Sheet block type"
-msgstr ""
-
-msgid "Geometry field"
-msgstr ""
-
-msgid "Sheet block"
-msgstr ""
-
-msgid "Sheet blocks"
 msgstr ""
