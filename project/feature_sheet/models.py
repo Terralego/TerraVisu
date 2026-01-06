@@ -100,6 +100,7 @@ class SheetBlock(OrderedModel):
         related_name="blocks",
         blank=True,
         through="SheetFieldThroughModel",
+        help_text=_("Please select the fields to display"),
     )
     extra_fields = models.ManyToManyField(
         SheetField,
@@ -107,10 +108,20 @@ class SheetBlock(OrderedModel):
         related_name="extra_in_blocks",
         blank=True,
         through="ExtraSheetFieldThroughModel",
+        help_text=_(
+            "Please select fields corresponding to median values for this data source"
+        ),
     )
     text = models.TextField(blank=True, verbose_name=_("Text"))
-    geom_field = models.CharField(
-        max_length=255, verbose_name=_("Geometry field"), blank=True, default="geom"
+    geom_field = models.ForeignKey(
+        Field,
+        on_delete=models.CASCADE,
+        verbose_name=_("Geometry field"),
+        blank=True,
+        null=True,
+        help_text=_(
+            "Please select a field corresponding to the centroid of the feature"
+        ),
     )
 
     class Meta:

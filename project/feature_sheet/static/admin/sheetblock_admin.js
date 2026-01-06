@@ -21,13 +21,13 @@
             if (geometryFieldRow) geometryFieldRow.style.display = 'none';
 
             // Show relevant fields based on type
-            if ((selectedType === 'FIELDS') || (selectedType === 'FIELDS_TABLE') || (selectedType === 'BOOLEANS') || (selectedType === 'BAR_PLOT') || (selectedType === 'DISTRIB_PLOT')) {
+            if ((selectedType === 'FIELDS') || (selectedType === 'FIELDS_TABLE') || (selectedType === 'MAP') || (selectedType === 'BOOLEANS') || (selectedType === 'BAR_PLOT') || (selectedType === 'DISTRIB_PLOT')) {
                 if (fieldsRow) fieldsRow.style.display = '';
                 if (fieldsRow) fieldsRow.style.display = '';
             } else if (selectedType === 'TEXT') {
                 if (textRow) textRow.style.display = '';
                 if (textRow) textRow.style.display = '';
-            } else if ((selectedType === 'PANORAMAX') || (selectedType === 'MAP')) {
+            } else if (selectedType === 'PANORAMAX') {
                 if (geometryFieldRow) geometryFieldRow.style.display = '';
                 if (geometryFieldRow) geometryFieldRow.style.display = '';
             }

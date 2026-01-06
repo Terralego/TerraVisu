@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-06 10:11+0000\n"
+"POT-Creation-Date: 2026-01-06 14:26+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -243,7 +243,17 @@ msgstr ""
 msgid "Sheet block type"
 msgstr ""
 
+msgid "Please select the fields to display"
+msgstr ""
+
+msgid ""
+"Please select fields corresponding to median values for this data source"
+msgstr ""
+
 msgid "Geometry field"
+msgstr ""
+
+msgid "Please select a field corresponding to the centroid of the feature"
 msgstr ""
 
 msgid "Sheet block"
