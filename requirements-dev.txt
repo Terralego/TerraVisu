@@ -19,7 +19,7 @@ billiard==4.2.4
     # via
     #   -c requirements.txt
     #   celery
-celery==5.6.0
+celery==5.6.2
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
