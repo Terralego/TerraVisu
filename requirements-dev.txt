@@ -423,7 +423,7 @@ typing-extensions==4.15.0
     #   cron-descriptor
     #   exceptiongroup
     #   referencing
-tzdata==2025.2
+tzdata==2025.3
     # via
     #   -c requirements.txt
     #   django-celery-beat
