@@ -3,15 +3,52 @@ from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
+from ordered_model.admin import (
+    OrderedInlineModelAdminMixin,
+    OrderedModelAdmin,
+    OrderedTabularInline,
+)
 
 from project.admin import config_site
 from project.feature_sheet.models import (
+    ExtraSheetFieldThroughModel,
     FeatureSheet,
     SheetBlock,
     SheetBlockType,
     SheetField,
+    SheetFieldThroughModel,
     SheetFieldType,
 )
+
+
+class SheetFieldTabularInline(OrderedTabularInline):
+    model = SheetFieldThroughModel
+    fields = (
+        "field",
+        "order",
+        "move_up_down_links",
+    )
+    readonly_fields = (
+        "order",
+        "move_up_down_links",
+    )
+    ordering = ("order",)
+    extra = 1
+
+
+class ExtraSheetFieldTabularInline(OrderedTabularInline):
+    model = ExtraSheetFieldThroughModel
+    fields = (
+        "extra_field",
+        "order",
+        "move_up_down_links",
+    )
+    readonly_fields = (
+        "order",
+        "move_up_down_links",
+    )
+    ordering = ("order",)
+    extra = 1
 
 
 class SheetBlockAdminForm(ModelForm):
@@ -23,6 +60,7 @@ class SheetBlockAdminForm(ModelForm):
             "display_title",
             "type",
             "fields",
+            "extra_fields",
             "text",
             "geom_field",
         )
@@ -30,7 +68,7 @@ class SheetBlockAdminForm(ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         block_type = cleaned_data.get("type")
-        fields = cleaned_data.get("fields")
+        fields = cleaned_data.get("fields", []) + cleaned_data.get("extra_fields", [])
 
         if not block_type or not fields:
             return cleaned_data
@@ -117,14 +155,16 @@ class SheetFieldAdmin(admin.ModelAdmin):
 
 
 @admin.register(SheetBlock, site=config_site)
-class SheetBlockAdmin(admin.ModelAdmin):
+class SheetBlockAdmin(OrderedInlineModelAdminMixin, OrderedModelAdmin):
     list_display = (
         "title",
         "get_sheet_name",
         "type",
         "get_fields_name",
         "display_title",
+        "move_up_down_links",
     )
+    inlines = (SheetFieldTabularInline, ExtraSheetFieldTabularInline)
     form = SheetBlockAdminForm
 
     class Media:

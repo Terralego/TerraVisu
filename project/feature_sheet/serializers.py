@@ -25,6 +25,7 @@ class SheetFieldSerializer(serializers.ModelSerializer):
 
 class SheetBlockSerializer(serializers.ModelSerializer):
     fields = SheetFieldSerializer(read_only=True, many=True)
+    extra_fields = SheetFieldSerializer(read_only=True, many=True)
 
     class Meta:
         model = SheetBlock
@@ -34,6 +35,7 @@ class SheetBlockSerializer(serializers.ModelSerializer):
             "display_title",
             "type",
             "fields",
+            "extra_fields",
             "text",
             "geom_field",
         )

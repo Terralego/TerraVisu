@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import gettext_lazy as _
+from ordered_model.models import OrderedModel
 
 from project.geosource.models import Field
 from project.terra_layer.models import Layer
@@ -40,7 +41,7 @@ class FeatureSheet(models.Model):
         return self.name
 
 
-class SheetField(models.Model):
+class SheetField(OrderedModel):
     field = models.ForeignKey(
         Field, on_delete=models.CASCADE, verbose_name=_("Source field")
     )
@@ -72,12 +73,13 @@ class SheetField(models.Model):
     class Meta:
         verbose_name = _("Sheet field")
         verbose_name_plural = _("Sheet fields")
+        ordering = ("order",)
 
     def __str__(self):
         return self.label
 
 
-class SheetBlock(models.Model):
+class SheetBlock(OrderedModel):
     title = models.CharField(max_length=255, verbose_name=_("Block title"))
     display_title = models.BooleanField(default=True, verbose_name=_("Display title"))
     type = models.CharField(
@@ -93,7 +95,18 @@ class SheetBlock(models.Model):
         related_name="blocks",
     )
     fields = models.ManyToManyField(
-        SheetField, verbose_name=_("Sheet fields"), related_name="blocks", blank=True
+        SheetField,
+        verbose_name=_("Sheet fields"),
+        related_name="blocks",
+        blank=True,
+        through="SheetFieldThroughModel",
+    )
+    extra_fields = models.ManyToManyField(
+        SheetField,
+        verbose_name=_("Sheet fields"),
+        related_name="extra_in_blocks",
+        blank=True,
+        through="ExtraSheetFieldThroughModel",
     )
     text = models.TextField(blank=True, verbose_name=_("Text"))
     geom_field = models.CharField(
@@ -103,6 +116,42 @@ class SheetBlock(models.Model):
     class Meta:
         verbose_name = _("Sheet block")
         verbose_name_plural = _("Sheet blocks")
+        ordering = (
+            "sheet",
+            "order",
+        )
 
     def __str__(self):
         return self.title
+
+
+class SheetFieldThroughModel(OrderedModel):
+    block = models.ForeignKey(SheetBlock, on_delete=models.CASCADE)
+    field = models.ForeignKey(
+        SheetField, on_delete=models.CASCADE, verbose_name=_("Field")
+    )
+    order_with_respect_to = "block"
+
+    class Meta:
+        ordering = ("block", "order")
+        verbose_name = _("Sheet field")
+        verbose_name_plural = _("Sheet fields")
+
+    def __str__(self):
+        return str(self.field)
+
+
+class ExtraSheetFieldThroughModel(OrderedModel):
+    block = models.ForeignKey(SheetBlock, on_delete=models.CASCADE)
+    extra_field = models.ForeignKey(
+        SheetField, on_delete=models.CASCADE, verbose_name=_("Extra field")
+    )
+    order_with_respect_to = "block"
+
+    class Meta:
+        ordering = ("block", "order")
+        verbose_name = _("Extra sheet field")
+        verbose_name_plural = _("Extra sheet fields")
+
+    def __str__(self):
+        return str(self.extra_field)
