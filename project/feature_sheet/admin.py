@@ -80,7 +80,7 @@ class SheetBlockAdminForm(ModelForm):
         ]:
             non_numerical = [f for f in fields if f.type != SheetFieldType.NUMERICAL]
             if non_numerical:
-                field_names = ", ".join([f.field.label for f in non_numerical])
+                field_names = ", ".join([f.label for f in non_numerical])
                 raise ValidationError(
                     _(
                         "Block type '%(block_type)s' requires all fields to be NUMERICAL. The following fields are not numerical: %(field_names)s"
@@ -94,7 +94,7 @@ class SheetBlockAdminForm(ModelForm):
         elif block_type == SheetBlockType.BOOLEANS:
             non_boolean = [f for f in fields if f.type != SheetFieldType.BOOLEAN]
             if non_boolean:
-                field_names = ", ".join([f.field.label for f in non_boolean])
+                field_names = ", ".join([f.label for f in non_boolean])
                 raise ValidationError(
                     _(
                         "Block type 'Booleans' requires all fields to be BOOLEAN. The following fields are not boolean: %(field_names)s"
