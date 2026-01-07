@@ -258,7 +258,9 @@ msgstr "Veuillez sélectionner les champs à afficher"
 
 msgid ""
 "Please select fields corresponding to median values for this data source"
-msgstr "Veuillez sélectionner les champs correspondant aux valeurs médianes pour cette source de données"
+msgstr ""
+"Veuillez sélectionner les champs correspondant aux valeurs médianes pour "
+"cette source de données"
 
 msgid "Geometry field"
 msgstr "Champ géométrie"
