@@ -70,9 +70,6 @@ class SheetBlockAdminForm(ModelForm):
         block_type = cleaned_data.get("type")
         fields = cleaned_data.get("fields", []) + cleaned_data.get("extra_fields", [])
 
-        if not block_type or not fields:
-            return cleaned_data
-
         if block_type in [
             SheetBlockType.RADAR_PLOT,
             SheetBlockType.BAR_PLOT,
@@ -176,6 +173,9 @@ class SheetBlockAdmin(OrderedInlineModelAdminMixin, OrderedModelAdmin):
     get_sheet_name.short_description = _("Sheet")
 
     def get_fields_name(self, obj):
-        return ", ".join([str(field) for field in obj.fields.all()])
+        return ", ".join(
+            [str(field) for field in obj.fields.all()]
+            + [str(field) for field in obj.extra_fields.all()]
+        )
 
     get_fields_name.short_description = _("Fields")

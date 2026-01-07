@@ -55,5 +55,4 @@ class SheetBlockAdminFormTest(TestCase):
             "extra_fields": [],
         }
         cleaned = form.clean()
-        # ensure returned cleaned data still contains our type
         self.assertEqual(cleaned.get("type"), SheetBlockType.BAR_PLOT)
