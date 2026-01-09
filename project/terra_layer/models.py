@@ -561,10 +561,6 @@ class ReportField(models.Model):
 
 
 class Report(models.Model):
-    """
-    !!!! Make sure to update SQL view 'report_view' through a migration when updating this model !!!!
-    """
-
     geom = gis_models.PointField(verbose_name=_("Position"), null=True)
     config = models.ForeignKey(
         ReportConfig,

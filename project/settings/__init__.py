@@ -60,6 +60,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "django_auth_oidc",
+    "ordered_model",
     "rest_framework",
     "rest_framework_jwt",
     "rest_framework_gis",
@@ -75,6 +76,7 @@ INSTALLED_APPS = [
     "project.visu",
     "project.geosource",
     "project.terra_layer",
+    "project.feature_sheet",
     "drf_spectacular",
 ]
 
