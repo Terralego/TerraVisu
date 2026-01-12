@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-06 14:26+0000\n"
+"POT-Creation-Date: 2026-01-12 13:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -129,6 +129,9 @@ msgstr ""
 msgid "Welcome to TerraVisu configuration interface."
 msgstr "Bienvenue sur l'interface de configuration de TerraVisu."
 
+msgid "Feature sheets"
+msgstr "Fiches détaillées"
+
 msgid "Instance customization"
 msgstr "Personnalisation de l'instance"
 
@@ -143,148 +146,6 @@ msgstr "Tâches asynchrones (Celery)"
 
 msgid "Recent actions"
 msgstr "Actions récentes"
-
-#, python-format
-msgid ""
-"Block type '%(block_type)s' requires all fields to be NUMERICAL. The "
-"following fields are not numerical: %(field_names)s"
-msgstr ""
-"Le bloc de type '%(block_type)s' ne peut contenir que des champs de type "
-"Numéraire. Les champs suivants ne sont pas des Numéraires : %(field_names)s"
-
-#, python-format
-msgid ""
-"Block type 'Booleans' requires all fields to be BOOLEAN. The following "
-"fields are not boolean: %(field_names)s"
-msgstr ""
-"Le bloc de type 'Booléens' ne peut contenir que des champs de type Booléen. "
-"Les champs suivants ne sont pas des Booléens : %(field_names)s"
-
-msgid "Accessible from"
-msgstr "Accessible depuis"
-
-msgid "No pictogram"
-msgstr "Pas de pictogramme"
-
-msgid "Pictogram for True values"
-msgstr "Pictogramme pour les valeurs Vrai"
-
-msgid "Pictogram for False values"
-msgstr "Pictogramme pour les valeurs Faux"
-
-msgid "Blocks"
-msgstr "Blocs"
-
-msgid "Sheet"
-msgstr "Fiche détaillée"
-
-msgid "Fields"
-msgstr "Champs"
-
-msgid "Feature sheet"
-msgstr "Fiche détaillée"
-
-msgid "Boolean"
-msgstr "Booléen"
-
-msgid "Textual"
-msgstr "Textuel"
-
-msgid "Numerical"
-msgstr "Numéraire"
-
-msgid "Booleans"
-msgstr "Booléens"
-
-msgid "Fields table"
-msgstr "Tableau de champs"
-
-msgid "Text"
-msgstr "Texte"
-
-msgid "Panoramax"
-msgstr "Panoramax"
-
-msgid "Map"
-msgstr "Carte"
-
-msgid "Radar plot"
-msgstr "Graphique radar"
-
-msgid "Bars plot"
-msgstr "Graphique en barres"
-
-msgid "Distribution plot"
-msgstr "Graphique de distribution"
-
-msgid "Sheet name"
-msgstr "Nom de la fiche"
-
-msgid "Feature sheets"
-msgstr "Fiches détaillées"
-
-msgid "Source field"
-msgstr "Champ source"
-
-msgid "Label"
-msgstr ""
-
-msgid "Sheet field type"
-msgstr "Type de champ"
-
-msgid "Suffix"
-msgstr "Suffixe"
-
-msgid "Decimals"
-msgstr "Décimales"
-
-msgid "Sheet field"
-msgstr "Champ de fiche"
-
-msgid "Sheet fields"
-msgstr "Champs de fiche"
-
-msgid "Block title"
-msgstr "Titre du bloc"
-
-msgid "Display title"
-msgstr "Affichage du titre"
-
-msgid "Sheet block type"
-msgstr "Type de bloc"
-
-msgid "Please select the fields to display"
-msgstr "Veuillez sélectionner les champs à afficher"
-
-msgid ""
-"Please select fields corresponding to median values for this data source"
-msgstr ""
-"Veuillez sélectionner les champs correspondant aux valeurs médianes pour "
-"cette source de données"
-
-msgid "Geometry field"
-msgstr "Champ géométrie"
-
-msgid "Please select a field corresponding to the centroid of the feature"
-msgstr "Veuillez sélectionner le champ correspondant au centroïde de l'objet"
-
-msgid "Sheet block"
-msgstr "Bloc de fiche"
-
-msgid "Sheet blocks"
-msgstr "Blocs de fiche"
-
-msgid "Field"
-msgstr "Champ"
-
-msgid "Extra field"
-msgstr "Champ supplémentaire"
-
-msgid "Extra sheet field"
-msgstr "Champ de fiche supplémentaire"
-
-msgid "Extra sheet fields"
-msgstr "Champs de fiche supplémentaire"
 
 msgid "URL"
 msgstr "URL"
@@ -781,6 +642,9 @@ msgstr "Courriel"
 msgid "Feature"
 msgstr "Objet"
 
+msgid "Field"
+msgstr "Champ"
+
 msgid "Declaration"
 msgstr "Déclaration"
 
@@ -823,6 +687,9 @@ msgstr "Récapitulatif mensuel des signalements"
 msgid "Object"
 msgstr "Objet"
 
+msgid "Map"
+msgstr "Carte"
+
 msgid "Story"
 msgstr "Histoire"
 
@@ -847,6 +714,9 @@ msgstr "Accepté"
 
 msgid "Rejected"
 msgstr "Rejeté"
+
+msgid "Fields"
+msgstr "Champs"
 
 msgid "Report config"
 msgstr "Configuration de signalement"
@@ -1220,6 +1090,40 @@ msgstr "Informations au sujet de votre déclaration"
 msgid "Your declaration has been updated"
 msgstr "Votre déclaration a été mise à jour"
 
+#, python-format
+msgid ""
+"Block type '%(block_type)s' requires all fields to be NUMERICAL. The "
+"following fields are not numerical: %(field_names)s"
+msgstr ""
+"Le bloc de type '%(block_type)s' ne peut contenir que des champs de type "
+"Numéraire. Les champs suivants ne sont pas des Numéraires : %(field_names)s"
+
+#, python-format
+msgid ""
+"Block type 'Booleans' requires all fields to be BOOLEAN. The following "
+"fields are not boolean: %(field_names)s"
+msgstr ""
+"Le bloc de type 'Booléens' ne peut contenir que des champs de type Booléen. "
+"Les champs suivants ne sont pas des Booléens : %(field_names)s"
+
+msgid "Accessible from"
+msgstr "Accessible depuis"
+
+msgid "No pictogram"
+msgstr "Pas de pictogramme"
+
+msgid "Pictogram for True values"
+msgstr "Pictogramme pour les valeurs Vrai"
+
+msgid "Pictogram for False values"
+msgstr "Pictogramme pour les valeurs Faux"
+
+msgid "Blocks"
+msgstr "Blocs"
+
+msgid "Sheet"
+msgstr "Fiche détaillée"
+
 msgid "Sprite icon"
 msgstr "Icône de 'sprite'"
 
@@ -1237,3 +1141,99 @@ msgstr "Entrée de menu supplémentaire"
 
 msgid "Extra menu items"
 msgstr "Entrées de menu supplémentaires"
+
+msgid "Boolean"
+msgstr "Booléen"
+
+msgid "Textual"
+msgstr "Textuel"
+
+msgid "Numerical"
+msgstr "Numéraire"
+
+msgid "Booleans"
+msgstr "Booléens"
+
+msgid "Fields table"
+msgstr "Tableau de champs"
+
+msgid "Text"
+msgstr "Texte"
+
+msgid "Panoramax"
+msgstr "Panoramax"
+
+msgid "Radar plot"
+msgstr "Graphique radar"
+
+msgid "Bars plot"
+msgstr "Graphique en barres"
+
+msgid "Distribution plot"
+msgstr "Graphique de distribution"
+
+msgid "Sheet name"
+msgstr "Nom de la fiche"
+
+msgid "Feature sheet"
+msgstr "Fiche détaillée"
+
+msgid "Source field"
+msgstr "Champ source"
+
+msgid "Label"
+msgstr ""
+
+msgid "Sheet field type"
+msgstr "Type de champ"
+
+msgid "Suffix"
+msgstr "Suffixe"
+
+msgid "Decimals"
+msgstr "Décimales"
+
+msgid "Sheet field"
+msgstr "Champ de fiche"
+
+msgid "Sheet fields"
+msgstr "Champs de fiche"
+
+msgid "Block title"
+msgstr "Titre du bloc"
+
+msgid "Display title"
+msgstr "Affichage du titre"
+
+msgid "Sheet block type"
+msgstr "Type de bloc"
+
+msgid "Please select the fields to display"
+msgstr "Veuillez sélectionner les champs à afficher"
+
+msgid ""
+"Please select fields corresponding to median values for this data source"
+msgstr ""
+"Veuillez sélectionner les champs correspondant aux valeurs médianes pour "
+"cette source de données"
+
+msgid "Geometry field"
+msgstr "Champ géométrie"
+
+msgid "Please select a field corresponding to the centroid of the feature"
+msgstr "Veuillez sélectionner le champ correspondant au centroïde de l'objet"
+
+msgid "Sheet block"
+msgstr "Bloc de fiche"
+
+msgid "Sheet blocks"
+msgstr "Blocs de fiche"
+
+msgid "Extra field"
+msgstr "Champ supplémentaire"
+
+msgid "Extra sheet field"
+msgstr "Champ de fiche supplémentaire"
+
+msgid "Extra sheet fields"
+msgstr "Champs de fiche supplémentaire"
