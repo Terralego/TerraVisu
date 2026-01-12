@@ -37,7 +37,7 @@ urlpatterns = [
     path("api/", include(router.urls)),
     path("private/<path:path>", serve_private_files, name="serve_private_files"),
     path("", include("project.visu.urls")),
-    path("", include("project.feature_sheet.urls")),
+    path("", include("project.visu.urls")),
 ]
 
 if settings.API_SCHEMA:  # pragma: no cover
