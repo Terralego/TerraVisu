@@ -150,7 +150,7 @@ msgid ""
 "following fields are not numerical: %(field_names)s"
 msgstr ""
 "Le bloc de type '%(block_type)s' ne peut contenir que des champs de type "
-"Numéraire. Les champs suivants ne sont pas des Numéraires: %(field_names)s"
+"Numéraire. Les champs suivants ne sont pas des Numéraires : %(field_names)s"
 
 #, python-format
 msgid ""
