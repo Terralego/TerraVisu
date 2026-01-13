@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-10-30 17:04+0000\n"
+"POT-Creation-Date: 2026-01-12 13:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -121,6 +121,9 @@ msgid "TerraVisu: Configuration"
 msgstr ""
 
 msgid "Welcome to TerraVisu configuration interface."
+msgstr ""
+
+msgid "Feature sheets"
 msgstr ""
 
 msgid "Instance customization"
@@ -913,6 +916,36 @@ msgstr ""
 msgid "Your declaration has been updated"
 msgstr ""
 
+#, python-format
+msgid ""
+"Block type '%(block_type)s' requires all fields to be NUMERICAL. The "
+"following fields are not numerical: %(field_names)s"
+msgstr ""
+
+#, python-format
+msgid ""
+"Block type 'Booleans' requires all fields to be BOOLEAN. The following "
+"fields are not boolean: %(field_names)s"
+msgstr ""
+
+msgid "Accessible from"
+msgstr ""
+
+msgid "No pictogram"
+msgstr ""
+
+msgid "Pictogram for True values"
+msgstr ""
+
+msgid "Pictogram for False values"
+msgstr ""
+
+msgid "Blocks"
+msgstr ""
+
+msgid "Sheet"
+msgstr ""
+
 msgid "Sprite icon"
 msgstr ""
 
@@ -927,4 +960,98 @@ msgid "Extra menu item"
 msgstr ""
 
 msgid "Extra menu items"
+msgstr ""
+
+msgid "Boolean"
+msgstr ""
+
+msgid "Textual"
+msgstr ""
+
+msgid "Numerical"
+msgstr ""
+
+msgid "Booleans"
+msgstr ""
+
+msgid "Fields table"
+msgstr ""
+
+msgid "Text"
+msgstr ""
+
+msgid "Panoramax"
+msgstr ""
+
+msgid "Radar plot"
+msgstr ""
+
+msgid "Bars plot"
+msgstr ""
+
+msgid "Distribution plot"
+msgstr ""
+
+msgid "Sheet name"
+msgstr ""
+
+msgid "Feature sheet"
+msgstr ""
+
+msgid "Source field"
+msgstr ""
+
+msgid "Label"
+msgstr ""
+
+msgid "Sheet field type"
+msgstr ""
+
+msgid "Suffix"
+msgstr ""
+
+msgid "Decimals"
+msgstr ""
+
+msgid "Sheet field"
+msgstr ""
+
+msgid "Sheet fields"
+msgstr ""
+
+msgid "Block title"
+msgstr ""
+
+msgid "Display title"
+msgstr ""
+
+msgid "Sheet block type"
+msgstr ""
+
+msgid "Please select the fields to display"
+msgstr ""
+
+msgid ""
+"Please select fields corresponding to median values for this data source"
+msgstr ""
+
+msgid "Geometry field"
+msgstr ""
+
+msgid "Please select a field corresponding to the centroid of the feature"
+msgstr ""
+
+msgid "Sheet block"
+msgstr ""
+
+msgid "Sheet blocks"
+msgstr ""
+
+msgid "Extra field"
+msgstr ""
+
+msgid "Extra sheet field"
+msgstr ""
+
+msgid "Extra sheet fields"
 msgstr ""

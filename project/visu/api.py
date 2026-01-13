@@ -7,6 +7,7 @@ from django.db.models import Q
 from django.template.loader import render_to_string
 from django.utils.timezone import now
 from rest_framework import permissions
+from rest_framework.generics import ListAPIView
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
 from rest_framework.views import APIView
@@ -16,6 +17,9 @@ from project.terra_layer.models import Scene
 from project.visu.models import ExtraMenuItem, SpriteValue
 from project.visu.serializers import ExtraMenuItemSerializer
 from project.visu.utils import get_logo_url
+
+from .models import FeatureSheet
+from .serializers import FeatureSheetSerializer
 
 logger = logging.getLogger(__name__)
 
@@ -221,3 +225,11 @@ class SpriteDataAPIView(APIView):
         for sv in SpriteValue.objects.all():
             data[sv.slug] = {}
         return Response(data)
+
+
+class FeatureSheetAPIView(ListAPIView):
+    permission_classes = [
+        permissions.AllowAny,
+    ]
+    serializer_class = FeatureSheetSerializer
+    queryset = FeatureSheet.objects.all()

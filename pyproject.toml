@@ -20,6 +20,7 @@ dependencies = [
     "django-clone",
     "crispy-bootstrap5",
     "django-mapbox-baselayer",
+    "django-ordered-model",
     "django-cors-headers",
     "django-constance",
     "django-filter",
