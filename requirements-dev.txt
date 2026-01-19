@@ -179,7 +179,7 @@ django-mapbox-baselayer==1.0.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-django-polymorphic==4.5.2
+django-polymorphic==4.10.3
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
