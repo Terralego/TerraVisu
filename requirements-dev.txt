@@ -162,7 +162,7 @@ django-crispy-forms==2.5
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
     #   crispy-bootstrap5
-django-debug-toolbar==6.1.0
+django-debug-toolbar==6.2.0
     # via terravisu (pyproject.toml)
 django-extensions==4.1
     # via terravisu (pyproject.toml)
