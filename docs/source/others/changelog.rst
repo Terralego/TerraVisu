@@ -2,6 +2,24 @@
 Changelog
 ==========
 
+2026.02.00      (2026-02-02)
+----------------------------
+
+**New features**
+
+- Create Detailed Sheet configuration in Admin
+
+**Improvements:**
+
+- Remove legacy Share Control + Table UI improvements by @Bo-Duke in #1079
+- Add options to PDF export dialog
+- Add basemap to Share, fixes on PDF export
+- Datatable extent filter fix by @Bo-Duke in #1070
+- Fix new Datatable + remove old implementation of datatable
+- Replace Blueprint's datatable with MUI + Tanstack table
+- Add worker autoscale for celery
+
+
 2025.12.00      (2025-12-10)
 ----------------------------
 
