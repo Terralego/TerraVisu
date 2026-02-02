@@ -254,7 +254,7 @@ gpxpy==1.6.2
     # via
     #   -c requirements.txt
     #   django-geostore
-gunicorn==23.0.0
+gunicorn==25.0.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
