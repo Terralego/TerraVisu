@@ -112,7 +112,7 @@ django-filter==25.1
     #   djangorestframework-gis
 django-geostore==1.0.0
     # via terravisu (pyproject.toml)
-django-mapbox-baselayer==1.0.0
+django-mapbox-baselayer==1.1.1
     # via terravisu (pyproject.toml)
 django-ordered-model==3.7.4
     # via terravisu (pyproject.toml)

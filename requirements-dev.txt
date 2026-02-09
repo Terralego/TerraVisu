@@ -175,7 +175,7 @@ django-geostore==1.0.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-django-mapbox-baselayer==1.0.0
+django-mapbox-baselayer==1.1.1
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
