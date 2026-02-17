@@ -13,6 +13,7 @@ from ordered_model.admin import (
 )
 
 from project.admin import config_site
+from project.geosource.models import Field
 from project.visu.models import (
     ExtraMenuItem,
     ExtraSheetFieldThroughModel,
@@ -121,10 +122,20 @@ class FeatureSheetAdmin(admin.ModelAdmin):
     get_accessible_from.short_description = _("Accessible from")
 
 
+@admin.register(Field, site=config_site)
+class FieldAdmin(admin.ModelAdmin):
+    ordering = ["source", "order"]
+    search_fields = ["name"]
+
+    def has_module_permission(self, request):
+        # Do not display this in the Admin, it is only registered to
+        # enable the /autocomplete endpoint used in SheetFieldAdmin.
+        return False
+
+
 @admin.register(SheetField, site=config_site)
 class SheetFieldAdmin(admin.ModelAdmin):
     list_display = (
-        "field",
         "label",
         "get_blocks",
         "type",
@@ -133,6 +144,7 @@ class SheetFieldAdmin(admin.ModelAdmin):
         "get_picto_true",
         "get_picto_false",
     )
+    autocomplete_fields = ("field",)
 
     class Media:
         js = ("admin/sheetfield_admin.js",)
