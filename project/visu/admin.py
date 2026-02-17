@@ -13,7 +13,7 @@ from ordered_model.admin import (
 )
 
 from project.admin import config_site
-from project.geosource.models import Field
+from project.geosource.models import Field, Source
 from project.visu.models import (
     ExtraMenuItem,
     ExtraSheetFieldThroughModel,
@@ -73,7 +73,7 @@ class SheetBlockAdminForm(ModelForm):
             "fields",
             "extra_fields",
             "text",
-            "geom_field",
+            "source",
         )
 
     def clean(self):
@@ -128,8 +128,8 @@ class FieldAdmin(admin.ModelAdmin):
     search_fields = ["name"]
 
     def has_module_permission(self, request):
-        # Do not display this in the Admin, it is only registered to
-        # enable the /autocomplete endpoint used in SheetFieldAdmin.
+        # Do not display this in config page, it is only registered to
+        # enable /autocomplete endpoint used in SheetFieldAdmin.
         return False
 
 
@@ -173,6 +173,17 @@ class SheetFieldAdmin(admin.ModelAdmin):
     get_blocks.short_description = _("Blocks")
 
 
+@admin.register(Source, site=config_site)
+class SourceAdmin(admin.ModelAdmin):
+    # ordering = ["source", "order"]
+    search_fields = ["name"]
+
+    def has_module_permission(self, request):
+        # Do not display this in config page, it is only registered to
+        # enable /autocomplete endpoint used in SheetBlockAdmin.
+        return False
+
+
 @admin.register(SheetBlock, site=config_site)
 class SheetBlockAdmin(OrderedInlineModelAdminMixin, OrderedModelAdmin):
     list_display = (
@@ -181,10 +192,12 @@ class SheetBlockAdmin(OrderedInlineModelAdminMixin, OrderedModelAdmin):
         "type",
         "get_fields_name",
         "display_title",
+        "source",
         "move_up_down_links",
     )
     inlines = (SheetFieldTabularInline, ExtraSheetFieldTabularInline)
     form = SheetBlockAdminForm
+    autocomplete_fields = ("source",)
 
     class Media:
         js = ("admin/sheetblock_admin.js",)

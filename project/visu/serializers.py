@@ -2,7 +2,26 @@ from rest_framework import serializers
 
 from project.visu.models import ExtraMenuItem
 
+from ..geosource.models import Source
 from .models import FeatureSheet, SheetBlock, SheetField
+
+
+class SourceGeometrySerializer(serializers.ModelSerializer):
+    source = serializers.SerializerMethodField()
+    geom_field = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Source
+        fields = (
+            "source",
+            "geom_field",
+        )
+
+    def get_geom_field(self, instance):
+        return instance.SOURCE_GEOM_ATTRIBUTE
+
+    def get_source(self, instance):
+        return str(instance)
 
 
 class SheetFieldSerializer(serializers.ModelSerializer):
@@ -28,6 +47,7 @@ class SheetFieldSerializer(serializers.ModelSerializer):
 class SheetBlockSerializer(serializers.ModelSerializer):
     fields = SheetFieldSerializer(read_only=True, many=True)
     extra_fields = SheetFieldSerializer(read_only=True, many=True)
+    geometry = SourceGeometrySerializer(read_only=True, source="source")
 
     class Meta:
         model = SheetBlock
@@ -39,7 +59,7 @@ class SheetBlockSerializer(serializers.ModelSerializer):
             "fields",
             "extra_fields",
             "text",
-            "geom_field",
+            "geometry",
         )
 
 

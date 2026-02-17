@@ -3,7 +3,7 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from ordered_model.models import OrderedModel
 
-from project.geosource.models import Field
+from project.geosource.models import Field, Source
 from project.terra_layer.models import Layer
 
 
@@ -157,14 +157,14 @@ class SheetBlock(OrderedModel):
         ),
     )
     text = models.TextField(blank=True, verbose_name=_("Text"))
-    geom_field = models.ForeignKey(
-        Field,
+    source = models.ForeignKey(
+        Source,
         on_delete=models.CASCADE,
-        verbose_name=_("Geometry field"),
+        verbose_name=_("Geometry source"),
         blank=True,
         null=True,
         help_text=_(
-            "Please select a field corresponding to the centroid of the feature"
+            "Please select a source from which to retrieve the geometry field for this block."
         ),
     )
 
