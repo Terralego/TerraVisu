@@ -167,6 +167,22 @@ class SheetBlock(OrderedModel):
             "Please select a source from which to retrieve the geometry field for this block."
         ),
     )
+    order_field = models.ForeignKey(
+        Field,
+        on_delete=models.CASCADE,
+        verbose_name=_("Order field"),
+        blank=True,
+        null=True,
+        help_text=_("Please select the field that defines ordering for this block"),
+    )
+    limit = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        verbose_name=_("Limit"),
+        help_text=_(
+            "Please set the maximum number of features to return in this block"
+        ),
+    )
 
     class Meta:
         verbose_name = _("Sheet block")

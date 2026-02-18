@@ -72,6 +72,8 @@ class SheetBlockAdminForm(ModelForm):
             "type",
             "fields",
             "extra_fields",
+            "order_field",
+            "limit",
             "text",
             "source",
         )
@@ -197,7 +199,7 @@ class SheetBlockAdmin(OrderedInlineModelAdminMixin, OrderedModelAdmin):
     )
     inlines = (SheetFieldTabularInline, ExtraSheetFieldTabularInline)
     form = SheetBlockAdminForm
-    autocomplete_fields = ("source",)
+    autocomplete_fields = ("source", "order_field")
 
     class Media:
         js = ("admin/sheetblock_admin.js",)
