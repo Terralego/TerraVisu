@@ -123,10 +123,7 @@ class SheetBlockAdminForm(ModelForm):
     def clean(self):
         cleaned_data = super().clean()
         block_type = cleaned_data.get("type")
-        # fields = cleaned_data.get("fields", [])
         order_field = cleaned_data.get("order_field", [])
-        # extra_fields = cleaned_data.get("extra_fields", [])
-        # all_fields =   extra_fields
         first_geom_source = cleaned_data.get("first_geom_source")
         second_geom_source = cleaned_data.get("second_geom_source")
         fields_source = cleaned_data.get("fields_source")

@@ -62,10 +62,10 @@ class FeatureSheetFactory(factory.django.DjangoModelFactory):
     unique_identifier = factory.SubFactory(FieldFactory)
 
     @factory.post_generation
-    def layers(self, create, extracted, **kwargs):
+    def sources(self, create, extracted, **kwargs):
         if not create:
             return
 
         if extracted:
-            for layer in extracted:
-                self.layers.add(layer)
+            for source in extracted:
+                self.sources.add(source)
