@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-18 10:34+0000\n"
+"POT-Creation-Date: 2026-02-19 16:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1090,24 +1090,8 @@ msgstr "Informations au sujet de votre déclaration"
 msgid "Your declaration has been updated"
 msgstr "Votre déclaration a été mise à jour"
 
-#, python-format
-msgid ""
-"Block type '%(block_type)s' requires all fields to be NUMERICAL. The "
-"following fields are not numerical: %(field_names)s"
-msgstr ""
-"Le bloc de type '%(block_type)s' ne peut contenir que des champs de type "
-"Numéraire. Les champs suivants ne sont pas des Numéraires : %(field_names)s"
-
-#, python-format
-msgid ""
-"Block type 'Booleans' requires all fields to be BOOLEAN. The following "
-"fields are not boolean: %(field_names)s"
-msgstr ""
-"Le bloc de type 'Booléens' ne peut contenir que des champs de type Booléen. "
-"Les champs suivants ne sont pas des Booléens : %(field_names)s"
-
-msgid "Accessible from"
-msgstr "Accessible depuis"
+msgid "Sources"
+msgstr "Sources"
 
 msgid "No pictogram"
 msgstr "Pas de pictogramme"
@@ -1123,6 +1107,54 @@ msgstr "Blocs"
 
 msgid "Sheet"
 msgstr "Fiche détaillée"
+
+msgid "NUMERICAL"
+msgstr "Numéraire"
+
+msgid "BOOLEAN"
+msgstr "Booléen"
+
+#, python-format
+msgid ""
+"Block type '%(block_type)s' requires all fields to be %(type_label)s. The "
+"following fields are not: %(field_names)s"
+msgstr ""
+"Le bloc de type '%(block_type)s' ne peut contenir que des champs de type "
+"%(type_label)s. Les champs suivants ne le sont pas : %(field_names)s"
+
+#, python-format
+msgid ""
+"The following fields do not belong to the selected source: %(field_names)s"
+msgstr ""
+"Les champs suivants n'appartiennent pas à la source sélectionnée: "
+"%(field_names)s"
+
+#, python-format
+msgid ""
+"The following extra fields do not belong to the selected source: "
+"%(field_names)s"
+msgstr ""
+"Les champs supplémentaires suivants n'appartiennent pas à la source "
+"sélectionnée: %(field_names)s"
+
+#, python-format
+msgid "Block type '%(block_type)s' requires a fields source."
+msgstr "Une source des champs est nécessaire pour le type '%(block_type)s'."
+
+#, python-format
+msgid "Block type '%(block_type)s' requires a geometry source."
+msgstr ""
+"Une source pour la géométrie est nécessaire pour le type '%(block_type)s'."
+
+msgid "Selected source does not match the sources of the Feature Sheet"
+msgstr ""
+"Une source sélectionnée ne correspond pas aux sources de la Fiche Détaillée."
+
+#, python-format
+msgid "Order field must be from selected source '%(fields_source)s'."
+msgstr ""
+"Le champ définissant l'ordre doit appartenir à la source sélectionnée "
+"'%(fields_source)s'"
 
 msgid "Sprite icon"
 msgstr "Icône de 'sprite'"
@@ -1182,7 +1214,7 @@ msgid "Source field"
 msgstr "Champ source"
 
 msgid "Label"
-msgstr ""
+msgstr "Label"
 
 msgid "Sheet field type"
 msgstr "Type de champ"
@@ -1217,15 +1249,34 @@ msgstr ""
 "Veuillez sélectionner les champs correspondant aux valeurs médianes pour "
 "cette source de données"
 
+msgid "Fields source"
+msgstr "Source des champs"
+
+msgid ""
+"Please select a source from which to retrieve the fields for this block."
+msgstr ""
+"Veuillez sélectionner la source depuis laquelle récupérer les champs de ce "
+"bloc."
+
 msgid "Geometry source"
 msgstr "Source de la géométrie"
 
 msgid ""
-"Please select a source from which to retrieve the geometry field for this "
+"Please select a source from which to retrieve a geometry field for this "
 "block."
 msgstr ""
-"Veuillez sélectionner la source depuis laquelle récupérer la géométrie pour "
+"Veuillez sélectionner la source depuis laquelle récupérer une géométrie pour "
 "ce bloc."
+
+msgid "Second geometry source"
+msgstr "Source de la seconde géométrie"
+
+msgid ""
+"Optionally select a source from which to retrieve a second geometry field "
+"for this map."
+msgstr ""
+"Sélectionnez la source depuis laquelle récupérer une seconde géométrie pour "
+"ce bloc Carte (optionnel)."
 
 msgid "Order field"
 msgstr "Champ définissant l'ordre"
