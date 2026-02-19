@@ -360,9 +360,7 @@ class SheetFieldAdminTest(APITestCase):
     def setUpTestData(cls):
         cls.superuser = SuperUserFactory()
         cls.layer = LayerFactory(name="My Layer")
-        cls.sheet = FeatureSheetFactory(
-            name="My Test Sheet", accessible_from=[cls.layer]
-        )
+        cls.sheet = FeatureSheetFactory(name="My Test Sheet", layers=[cls.layer])
         cls.field_1 = SheetFieldFactory(
             label="My Test Field 1", type=SheetFieldType.BOOLEAN
         )

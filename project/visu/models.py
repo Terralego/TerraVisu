@@ -3,8 +3,7 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from ordered_model.models import OrderedModel
 
-from project.geosource.models import Field
-from project.terra_layer.models import Layer
+from project.geosource.models import Field, Source
 
 
 class SpriteValue(models.Model):
@@ -73,8 +72,8 @@ class FeatureSheet(models.Model):
     unique_identifier = models.ForeignKey(
         Field, on_delete=models.CASCADE, verbose_name=_("Unique identifier")
     )
-    accessible_from = models.ManyToManyField(
-        Layer, verbose_name=_("Accessible from"), related_name="feature_sheet"
+    sources = models.ManyToManyField(
+        Source, verbose_name=_("Sources"), related_name="feature_sheet"
     )
 
     class Meta:
@@ -120,7 +119,7 @@ class SheetField(OrderedModel):
         ordering = ("order",)
 
     def __str__(self):
-        return self.label
+        return f"{self.label} ({self.field.source.slug})"
 
 
 class SheetBlock(OrderedModel):
@@ -157,14 +156,53 @@ class SheetBlock(OrderedModel):
         ),
     )
     text = models.TextField(blank=True, verbose_name=_("Text"))
-    geom_field = models.ForeignKey(
-        Field,
+    fields_source = models.ForeignKey(
+        Source,
         on_delete=models.CASCADE,
-        verbose_name=_("Geometry field"),
+        verbose_name=_("Fields source"),
         blank=True,
         null=True,
         help_text=_(
-            "Please select a field corresponding to the centroid of the feature"
+            "Please select a source from which to retrieve the fields for this block."
+        ),
+        related_name="sheetblock_as_fields",
+    )
+    first_geom_source = models.ForeignKey(
+        Source,
+        on_delete=models.CASCADE,
+        verbose_name=_("Geometry source"),
+        blank=True,
+        null=True,
+        help_text=_(
+            "Please select a source from which to retrieve a geometry field for this block."
+        ),
+        related_name="sheetblock_as_first_geom",
+    )
+    second_geom_source = models.ForeignKey(
+        Source,
+        on_delete=models.CASCADE,
+        verbose_name=_("Second geometry source"),
+        blank=True,
+        null=True,
+        help_text=_(
+            "Optionally select a source from which to retrieve a second geometry field for this map."
+        ),
+        related_name="sheetblock_as_second_geom",
+    )
+    order_field = models.ForeignKey(
+        Field,
+        on_delete=models.CASCADE,
+        verbose_name=_("Order field"),
+        blank=True,
+        null=True,
+        help_text=_("Please select the field that defines ordering for this block"),
+    )
+    limit = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        verbose_name=_("Limit"),
+        help_text=_(
+            "Please set the maximum number of features to return in this block"
         ),
     )
 
