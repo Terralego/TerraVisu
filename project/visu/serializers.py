@@ -1,6 +1,10 @@
+from ordered_model.serializers import OrderedModelSerializer
 from rest_framework import serializers
 
-from project.visu.models import ExtraMenuItem
+from project.visu.models import (
+    ExtraMenuItem,
+    SheetListFieldThroughModel,
+)
 
 from ..geosource.models import Source
 from .models import FeatureSheet, SheetBlock, SheetField
@@ -21,19 +25,19 @@ class SourceGeometrySerializer(serializers.ModelSerializer):
         return instance.SOURCE_GEOM_ATTRIBUTE
 
 
-class OrderFieldSerializer(serializers.ModelSerializer):
+class SheetsListFieldsSerializer(OrderedModelSerializer):
     source = serializers.CharField(source="source.slug", read_only=True)
     field = serializers.CharField(source="name", read_only=True)
 
     class Meta:
-        model = Source
+        model = SheetListFieldThroughModel
         fields = (
             "source",
             "field",
         )
 
 
-class SheetFieldSerializer(serializers.ModelSerializer):
+class SheetFieldSerializer(OrderedModelSerializer):
     field_source = serializers.CharField(source="field.source.slug", read_only=True)
     field_name = serializers.CharField(source="field.name", read_only=True)
 
@@ -58,7 +62,7 @@ class SheetBlockSerializer(serializers.ModelSerializer):
     extra_fields = SheetFieldSerializer(read_only=True, many=True)
     first_geom_source = SourceGeometrySerializer(read_only=True)
     second_geom_source = SourceGeometrySerializer(read_only=True)
-    order_field = OrderFieldSerializer(read_only=True)
+    order_field = serializers.CharField(source="order_field.label", read_only=True)
     fields_source = serializers.CharField(source="fields_source.slug", read_only=True)
 
     class Meta:
@@ -93,7 +97,8 @@ class FeatureSheetSerializer(serializers.ModelSerializer):
     unique_identifier = serializers.CharField(
         source="unique_identifier.name", read_only=True
     )
+    list_fields = SheetsListFieldsSerializer(many=True, read_only=True)
 
     class Meta:
         model = FeatureSheet
-        fields = ("id", "name", "unique_identifier", "blocks", "sources")
+        fields = ("id", "name", "unique_identifier", "blocks", "sources", "list_fields")

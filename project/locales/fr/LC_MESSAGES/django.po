@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-23 09:59+0000\n"
+"POT-Creation-Date: 2026-02-23 14:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1108,11 +1108,18 @@ msgstr "Blocs"
 msgid "Sheet"
 msgstr "Fiche détaillée"
 
-msgid "NUMERICAL"
-msgstr "Numéraire"
+#, python-format
+msgid ""
+"The following fields do not belong to the selected source: %(field_names)s"
+msgstr ""
+"Les champs suivants n'appartiennent pas à la source sélectionnée: "
+"%(field_names)s"
 
 msgid "BOOLEAN"
 msgstr "Booléen"
+
+msgid "NUMERICAL"
+msgstr "Numéraire"
 
 #, python-format
 msgid ""
@@ -1122,20 +1129,9 @@ msgstr ""
 "Le bloc de type '%(block_type)s' ne peut contenir que des champs de type "
 "%(type_label)s. Les champs suivants ne le sont pas : %(field_names)s"
 
-#, python-format
-msgid ""
-"The following fields do not belong to the selected source: %(field_names)s"
+msgid "Sheets list fields must all come from the same source."
 msgstr ""
-"Les champs suivants n'appartiennent pas à la source sélectionnée: "
-"%(field_names)s"
-
-#, python-format
-msgid ""
-"The following extra fields do not belong to the selected source: "
-"%(field_names)s"
-msgstr ""
-"Les champs supplémentaires suivants n'appartiennent pas à la source "
-"sélectionnée: %(field_names)s"
+"Les champs de la liste de fiches doivent tous provenir de la même source."
 
 #, python-format
 msgid "Block type '%(block_type)s' requires a fields source."
@@ -1211,6 +1207,12 @@ msgstr "Graphique de distribution"
 
 msgid "Sheet name"
 msgstr "Nom de la fiche"
+
+msgid "Sheets list field"
+msgstr "Champ de la liste de fiches"
+
+msgid "Please select the fields to display in the sheets list view"
+msgstr "Veuillez sélectionner les champs à afficher dans la liste de fiches"
 
 msgid "Feature sheet"
 msgstr "Fiche détaillée"
@@ -1310,3 +1312,6 @@ msgstr "Champ de fiche supplémentaire"
 
 msgid "Extra sheet fields"
 msgstr "Champs de fiche supplémentaire"
+
+msgid "Sheets list fields"
+msgstr "Champs de la liste de fiches"

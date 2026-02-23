@@ -11,58 +11,22 @@ from project.visu.models import (
 )
 
 
-class SheetFieldInlineFormSet(BaseInlineFormSet):
-    def clean(self):
-        super().clean()
+class BaseSheetFieldInlineFormSet(BaseInlineFormSet):
+    field_key: str = None
 
-        block_type = self.instance.type
-        fields_source = self.instance.fields_source
-
-        fields = [
-            form.cleaned_data["field"]
+    def get_fields(self):
+        return [
+            form.cleaned_data[self.field_key]
             for form in self.forms
             if form.cleaned_data
             and not form.cleaned_data.get("DELETE")
-            and form.cleaned_data.get("field")
+            and form.cleaned_data.get(self.field_key)
         ]
 
-        if not fields:
-            return
-
-        if block_type in [
-            SheetBlockType.RADAR_PLOT,
-            SheetBlockType.BAR_PLOT,
-            SheetBlockType.DISTRIB_PLOT,
-            SheetBlockType.BOOLEANS,
-        ]:
-            expected_type = (
-                SheetFieldType.NUMERICAL
-                if block_type != SheetBlockType.BOOLEANS
-                else SheetFieldType.BOOLEAN
-            )
-            type_label = (
-                _("NUMERICAL")
-                if block_type != SheetBlockType.BOOLEANS
-                else _("BOOLEAN")
-            )
-            wrong_type_fields = [f for f in fields if f.type != expected_type]
-            if wrong_type_fields:
-                field_names = ", ".join([f.label for f in wrong_type_fields])
-                raise ValidationError(
-                    _(
-                        "Block type '%(block_type)s' requires all fields to be %(type_label)s. "
-                        "The following fields are not: %(field_names)s"
-                    )
-                    % {
-                        "block_type": dict(SheetBlockType.choices)[block_type],
-                        "type_label": type_label,
-                        "field_names": field_names,
-                    }
-                )
-
+    def validate_sources(self, fields, fields_source):
         wrong_source_fields = [f for f in fields if f.field.source != fields_source]
         if wrong_source_fields:
-            field_names = ", ".join([f.label for f in wrong_source_fields])
+            field_names = ", ".join(f.label for f in wrong_source_fields)
             raise ValidationError(
                 _(
                     "The following fields do not belong to the selected source: %(field_names)s"
@@ -70,35 +34,77 @@ class SheetFieldInlineFormSet(BaseInlineFormSet):
                 % {"field_names": field_names}
             )
 
+    PLOT_BLOCK_TYPES = {
+        SheetBlockType.RADAR_PLOT,
+        SheetBlockType.BAR_PLOT,
+        SheetBlockType.DISTRIB_PLOT,
+        SheetBlockType.BOOLEANS,
+    }
+    EXPECTED_FIELD_TYPE = {
+        SheetBlockType.BOOLEANS: (SheetFieldType.BOOLEAN, _("BOOLEAN")),
+    }
+    DEFAULT_FIELD_TYPE = (SheetFieldType.NUMERICAL, _("NUMERICAL"))
 
-class ExtraSheetFieldInlineFormSet(BaseInlineFormSet):
+    def validate_field_types(self, fields, block_type):
+        expected_type, type_label = self.EXPECTED_FIELD_TYPE.get(
+            block_type, self.DEFAULT_FIELD_TYPE
+        )
+        wrong_type_fields = [f for f in fields if f.type != expected_type]
+        if wrong_type_fields:
+            field_names = ", ".join(f.label for f in wrong_type_fields)
+            raise ValidationError(
+                _(
+                    "Block type '%(block_type)s' requires all fields to be %(type_label)s. "
+                    "The following fields are not: %(field_names)s"
+                )
+                % {
+                    "block_type": dict(SheetBlockType.choices)[block_type],
+                    "type_label": type_label,
+                    "field_names": field_names,
+                }
+            )
+
     def clean(self):
         super().clean()
+        fields = self.get_fields()
+        self.validate_sources(fields, self.instance.fields_source)
+        block_type = self.instance.type
+        if block_type in self.PLOT_BLOCK_TYPES:
+            self.validate_field_types(fields, block_type)
 
-        fields_source = self.instance.fields_source
 
-        extra_fields = [
-            form.cleaned_data["extra_field"]
+class SheetFieldInlineFormSet(BaseSheetFieldInlineFormSet):
+    field_key = "field"
+
+
+class ExtraSheetFieldInlineFormSet(BaseSheetFieldInlineFormSet):
+    field_key = "extra_field"
+
+
+class SheetListFieldInlineFormSet(BaseInlineFormSet):
+    def get_active_fields(self):
+        return [
+            form.cleaned_data["list_field"]
             for form in self.forms
             if form.cleaned_data
             and not form.cleaned_data.get("DELETE")
-            and form.cleaned_data.get("extra_field")
+            and form.cleaned_data.get("list_field")
         ]
 
-        if not extra_fields:
-            return
-
-        wrong_source_fields = [
-            f for f in extra_fields if f.field.source != fields_source
-        ]
-        if wrong_source_fields:
-            field_names = ", ".join([f.label for f in wrong_source_fields])
+    def validate_same_source(self, fields):
+        sources = []
+        for f in fields:
+            if f.source not in sources:
+                sources.append(f.source)
+        if len(sources) > 1:
             raise ValidationError(
-                _(
-                    "The following extra fields do not belong to the selected source: %(field_names)s"
-                )
-                % {"field_names": field_names}
+                _("Sheets list fields must all come from the same source.")
             )
+
+    def clean(self):
+        super().clean()
+        fields = self.get_active_fields()
+        self.validate_same_source(fields)
 
 
 class SheetBlockAdminForm(ModelForm):
@@ -209,4 +215,8 @@ class FeatureSheetAdminForm(ModelForm):
 
     class Meta:
         model = FeatureSheet
-        fields = ("name", "unique_identifier", "sources")
+        fields = (
+            "name",
+            "unique_identifier",
+            "sources",
+        )

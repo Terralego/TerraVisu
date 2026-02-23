@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-23 09:59+0000\n"
+"POT-Creation-Date: 2026-02-23 14:33+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -934,10 +934,15 @@ msgstr ""
 msgid "Sheet"
 msgstr ""
 
-msgid "NUMERICAL"
+#, python-format
+msgid ""
+"The following fields do not belong to the selected source: %(field_names)s"
 msgstr ""
 
 msgid "BOOLEAN"
+msgstr ""
+
+msgid "NUMERICAL"
 msgstr ""
 
 #, python-format
@@ -946,15 +951,7 @@ msgid ""
 "following fields are not: %(field_names)s"
 msgstr ""
 
-#, python-format
-msgid ""
-"The following fields do not belong to the selected source: %(field_names)s"
-msgstr ""
-
-#, python-format
-msgid ""
-"The following extra fields do not belong to the selected source: "
-"%(field_names)s"
+msgid "Sheets list fields must all come from the same source."
 msgstr ""
 
 #, python-format
@@ -1023,6 +1020,12 @@ msgid "Distribution plot"
 msgstr ""
 
 msgid "Sheet name"
+msgstr ""
+
+msgid "Sheets list field"
+msgstr ""
+
+msgid "Please select the fields to display in the sheets list view"
 msgstr ""
 
 msgid "Feature sheet"
@@ -1113,4 +1116,7 @@ msgid "Extra sheet field"
 msgstr ""
 
 msgid "Extra sheet fields"
+msgstr ""
+
+msgid "Sheets list fields"
 msgstr ""

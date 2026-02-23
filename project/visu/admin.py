@@ -17,6 +17,7 @@ from project.visu.forms import (
     FeatureSheetAdminForm,
     SheetBlockAdminForm,
     SheetFieldInlineFormSet,
+    SheetListFieldInlineFormSet,
 )
 from project.visu.models import (
     ExtraMenuItem,
@@ -25,6 +26,7 @@ from project.visu.models import (
     SheetBlock,
     SheetField,
     SheetFieldThroughModel,
+    SheetListFieldThroughModel,
     SpriteValue,
 )
 
@@ -66,10 +68,27 @@ class SheetFieldTabularInline(OrderedTabularInline):
     extra = 1
 
 
+class SheetsListFieldTabularInline(OrderedTabularInline):
+    model = SheetListFieldThroughModel
+    formset = SheetListFieldInlineFormSet
+    fields = (
+        "list_field",
+        "order",
+        "move_up_down_links",
+    )
+    readonly_fields = (
+        "order",
+        "move_up_down_links",
+    )
+    ordering = ("order",)
+    extra = 1
+
+
 @admin.register(FeatureSheet, site=config_site)
-class FeatureSheetAdmin(admin.ModelAdmin):
+class FeatureSheetAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
     list_display = ("name", "get_sources")
     form = FeatureSheetAdminForm
+    inlines = (SheetsListFieldTabularInline,)
 
     def get_sources(self, obj):
         return ", ".join([str(source) for source in obj.sources.all()])

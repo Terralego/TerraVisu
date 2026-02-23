@@ -75,6 +75,14 @@ class FeatureSheet(models.Model):
     sources = models.ManyToManyField(
         Source, verbose_name=_("Sources"), related_name="feature_sheet"
     )
+    list_fields = models.ManyToManyField(
+        Field,
+        verbose_name=_("Sheets list field"),
+        related_name="sheets_list",
+        blank=True,
+        through="SheetListFieldThroughModel",
+        help_text=_("Please select the fields to display in the sheets list view"),
+    )
 
     class Meta:
         verbose_name = _("Feature sheet")
@@ -248,3 +256,18 @@ class ExtraSheetFieldThroughModel(OrderedModel):
 
     def __str__(self):
         return str(self.extra_field)
+
+
+class SheetListFieldThroughModel(OrderedModel):
+    sheet = models.ForeignKey(FeatureSheet, on_delete=models.CASCADE)
+    list_field = models.ForeignKey(
+        Field, on_delete=models.CASCADE, verbose_name=_("Sheets list fields")
+    )
+
+    class Meta:
+        ordering = ("order",)
+        verbose_name = _("Sheets list field")
+        verbose_name_plural = _("Sheets list fields")
+
+    def __str__(self):
+        return str(self.list_field)
