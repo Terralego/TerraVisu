@@ -3,8 +3,15 @@ from django.test import TestCase
 
 from project.accounts.tests.factories import SuperUserFactory
 from project.visu.admin import SheetBlockAdminForm
-from project.visu.models import SheetBlockType, SheetFieldType
-from project.visu.tests.factories import FeatureSheetFactory, SheetFieldFactory
+from project.visu.models import (
+    SheetBlockType,
+    SheetFieldType,
+)
+from project.visu.tests.factories import (
+    FeatureSheetFactory,
+    SheetFieldFactory,
+    SheetFieldInlineFormSetFactory,
+)
 
 
 class AdminTestCase(TestCase):
@@ -40,46 +47,89 @@ class AdminTestCase(TestCase):
 
 class SheetBlockAdminFormTest(AdminTestCase):
     def test_numerical_block_requires_numerical_fields(self):
-        form = SheetBlockAdminForm()
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.RADAR_PLOT,
+                "fields_source": self.source,
+                "title": "Block title",
+            }
+        )
         # One non-numerical field included for a RADAR_PLOT => should raise
-        form.cleaned_data = {
-            "sheet": self.feature_sheet,
-            "type": SheetBlockType.RADAR_PLOT,
-            "fields": [self.textual_field],
-            "fields_source": self.source,
-            "extra_fields": [],
+        formset_data = {
+            "sheetfieldthroughmodel_set-TOTAL_FORMS": 1,
+            "sheetfieldthroughmodel_set-INITIAL_FORMS": "0",
+            "sheetfieldthroughmodel_set-MIN_NUM_FORMS": "0",
+            "sheetfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
+            "sheetfieldthroughmodel_set-0-field": self.textual_field.pk,
         }
+        self.assertTrue(form.is_valid(), form.errors)
+        block = form.save()
+        formset = SheetFieldInlineFormSetFactory(
+            formset_data,
+            instance=block,
+            prefix="sheetfieldthroughmodel_set",
+        )
         with self.assertRaises(ValidationError) as cm:
-            form.clean()
+            formset.clean()
         exc = cm.exception
         self.assertIn("requires all fields to be NUMERICAL", str(exc))
         self.assertIn("TextField", str(exc))
 
     def test_boolean_block_requires_boolean_fields(self):
-        form = SheetBlockAdminForm()
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.BOOLEANS,
+                "fields_source": self.source,
+                "title": "Block title",
+            }
+        )
         # One non-boolean field included for BOOLEANS => should raise
-        form.cleaned_data = {
-            "sheet": self.feature_sheet,
-            "type": SheetBlockType.BOOLEANS,
-            "fields": [self.numerical_field_1],
-            "fields_source": self.source,
-            "extra_fields": [],
+        formset_data = {
+            "sheetfieldthroughmodel_set-TOTAL_FORMS": 1,
+            "sheetfieldthroughmodel_set-INITIAL_FORMS": "0",
+            "sheetfieldthroughmodel_set-MIN_NUM_FORMS": "0",
+            "sheetfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
+            "sheetfieldthroughmodel_set-0-field": self.textual_field.pk,
         }
+
+        self.assertTrue(form.is_valid(), form.errors)
+        block = form.save()
+        formset = SheetFieldInlineFormSetFactory(
+            formset_data,
+            instance=block,
+            prefix="sheetfieldthroughmodel_set",
+        )
         with self.assertRaises(ValidationError) as cm:
-            form.clean()
+            formset.clean()
         exc = cm.exception
         self.assertIn("requires all fields to be BOOLEAN", str(exc))
-        self.assertIn("NumField", str(exc))
+        self.assertIn("TextField", str(exc))
 
     def test_valid_numerical_block_passes(self):
-        form = SheetBlockAdminForm()
-        # Only numerical fields => should not raise and should return cleaned_data
-        form.cleaned_data = {
-            "sheet": self.feature_sheet,
-            "type": SheetBlockType.BAR_PLOT,
-            "fields": [self.numerical_field_1, self.numerical_field_2],
-            "fields_source": self.source,
-            "extra_fields": [],
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.BAR_PLOT,
+                "fields_source": self.source,
+                "title": "Block title",
+            }
+        )
+        # Only numerical fields => should not raise
+        formset_data = {
+            "sheetfieldthroughmodel_set-TOTAL_FORMS": 1,
+            "sheetfieldthroughmodel_set-INITIAL_FORMS": "0",
+            "sheetfieldthroughmodel_set-MIN_NUM_FORMS": "0",
+            "sheetfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
+            "sheetfieldthroughmodel_set-0-field": self.numerical_field_1.pk,
         }
-        cleaned = form.clean()
-        self.assertEqual(cleaned.get("type"), SheetBlockType.BAR_PLOT)
+
+        self.assertTrue(form.is_valid(), form.errors)
+        block = form.save()
+        formset = SheetFieldInlineFormSetFactory(
+            formset_data,
+            instance=block,
+            prefix="sheetfieldthroughmodel_set",
+        )
+        self.assertTrue(formset.is_valid(), formset.errors)

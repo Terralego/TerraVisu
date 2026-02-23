@@ -1,12 +1,15 @@
 import factory
+from django.forms import inlineformset_factory
 
 from project.terra_layer.tests.factories import FieldFactory
+from project.visu.forms import SheetFieldInlineFormSet
 from project.visu.models import (
     ExtraMenuItem,
     FeatureSheet,
     SheetBlock,
     SheetBlockType,
     SheetField,
+    SheetFieldThroughModel,
     SheetFieldType,
     SpriteValue,
 )
@@ -69,3 +72,12 @@ class FeatureSheetFactory(factory.django.DjangoModelFactory):
         if extracted:
             for source in extracted:
                 self.sources.add(source)
+
+
+SheetFieldInlineFormSetFactory = inlineformset_factory(
+    SheetBlock,
+    SheetFieldThroughModel,
+    formset=SheetFieldInlineFormSet,
+    fields=["field"],
+    extra=0,
+)

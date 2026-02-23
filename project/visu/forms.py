@@ -2,7 +2,9 @@ from django.core.exceptions import ValidationError
 from django.forms import BaseInlineFormSet, ModelForm
 from django.utils.translation import gettext_lazy as _
 
+from project.geosource.models import Field
 from project.visu.models import (
+    FeatureSheet,
     SheetBlock,
     SheetBlockType,
     SheetFieldType,
@@ -180,3 +182,31 @@ class SheetBlockAdminForm(ModelForm):
                 % {"fields_source": fields_source}
             )
         return cleaned_data
+
+
+class FeatureSheetAdminForm(ModelForm):
+    def clean(self):
+        cleaned_data = super().clean()
+        sources = cleaned_data.get("sources")
+        unique_identifier = cleaned_data.get("unique_identifier")
+        for source in sources:
+            if (
+                unique_identifier.source != source
+                and not Field.objects.filter(
+                    name=unique_identifier.name, source=source
+                ).exists()
+            ):
+                raise ValidationError(
+                    _(
+                        "Field '%(unique_identifier)s' does not exist in source '%(source)s'."
+                    )
+                    % {
+                        "unique_identifier": unique_identifier.name,
+                        "source": source.name,
+                    }
+                )
+        return cleaned_data
+
+    class Meta:
+        model = FeatureSheet
+        fields = ("name", "unique_identifier", "sources")

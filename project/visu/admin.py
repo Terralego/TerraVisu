@@ -14,6 +14,7 @@ from project.admin import config_site
 from project.geosource.models import Field, Source
 from project.visu.forms import (
     ExtraSheetFieldInlineFormSet,
+    FeatureSheetAdminForm,
     SheetBlockAdminForm,
     SheetFieldInlineFormSet,
 )
@@ -68,6 +69,7 @@ class SheetFieldTabularInline(OrderedTabularInline):
 @admin.register(FeatureSheet, site=config_site)
 class FeatureSheetAdmin(admin.ModelAdmin):
     list_display = ("name", "get_sources")
+    form = FeatureSheetAdminForm
 
     def get_sources(self, obj):
         return ", ".join([str(source) for source in obj.sources.all()])
