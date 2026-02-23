@@ -2,7 +2,7 @@ import factory
 from django.forms import inlineformset_factory
 
 from project.terra_layer.tests.factories import FieldFactory
-from project.visu.forms import SheetFieldInlineFormSet
+from project.visu.forms import SheetFieldInlineFormSet, SheetListFieldInlineFormSet
 from project.visu.models import (
     ExtraMenuItem,
     FeatureSheet,
@@ -11,6 +11,7 @@ from project.visu.models import (
     SheetField,
     SheetFieldThroughModel,
     SheetFieldType,
+    SheetListFieldThroughModel,
     SpriteValue,
 )
 
@@ -79,5 +80,13 @@ SheetFieldInlineFormSetFactory = inlineformset_factory(
     SheetFieldThroughModel,
     formset=SheetFieldInlineFormSet,
     fields=["field"],
+    extra=0,
+)
+
+SheetListFieldInlineFormSetFactory = inlineformset_factory(
+    FeatureSheet,
+    SheetListFieldThroughModel,
+    formset=SheetListFieldInlineFormSet,
+    fields=["list_field"],
     extra=0,
 )

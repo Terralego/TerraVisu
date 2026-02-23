@@ -70,10 +70,16 @@ class SheetBlockType(models.TextChoices):
 class FeatureSheet(models.Model):
     name = models.CharField(max_length=255, verbose_name=_("Sheet name"))
     unique_identifier = models.ForeignKey(
-        Field, on_delete=models.CASCADE, verbose_name=_("Unique identifier")
+        Field,
+        on_delete=models.CASCADE,
+        verbose_name=_("Unique identifier"),
+        blank=False,
     )
     sources = models.ManyToManyField(
-        Source, verbose_name=_("Sources"), related_name="feature_sheet"
+        Source,
+        verbose_name=_("Sources"),
+        related_name="feature_sheet",
+        blank=False,
     )
     list_fields = models.ManyToManyField(
         Field,

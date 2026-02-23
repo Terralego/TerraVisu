@@ -2,7 +2,7 @@ from django.core.exceptions import ValidationError
 from django.forms import BaseInlineFormSet, ModelForm
 from django.utils.translation import gettext_lazy as _
 
-from project.geosource.models import Field
+from project.geosource.models import Field, Source
 from project.visu.models import (
     FeatureSheet,
     SheetBlock,
@@ -82,29 +82,40 @@ class ExtraSheetFieldInlineFormSet(BaseSheetFieldInlineFormSet):
 
 
 class SheetListFieldInlineFormSet(BaseInlineFormSet):
-    def get_active_fields(self):
+    field_key = "list_field"
+
+    def get_fields(self):
         return [
-            form.cleaned_data["list_field"]
+            form.cleaned_data[self.field_key]
             for form in self.forms
             if form.cleaned_data
             and not form.cleaned_data.get("DELETE")
-            and form.cleaned_data.get("list_field")
+            and form.cleaned_data.get(self.field_key)
         ]
 
-    def validate_same_source(self, fields):
-        sources = []
-        for f in fields:
-            if f.source not in sources:
-                sources.append(f.source)
-        if len(sources) > 1:
+    def validate_source(self, fields, sources):
+        if not fields:
             raise ValidationError(
-                _("Sheets list fields must all come from the same source.")
+                _("Please select at least 1 field to display in the sheets list.")
+            )
+
+        unique_sources = {f.source for f in fields}
+        if len(unique_sources) > 1:
+            raise ValidationError(_("These fields must all come from the same source."))
+        if next(iter(unique_sources)) not in sources:
+            raise ValidationError(
+                _(
+                    "Please choose fields that belong to one of the selected sources above."
+                )
             )
 
     def clean(self):
         super().clean()
-        fields = self.get_active_fields()
-        self.validate_same_source(fields)
+        # Get sources from data and not from instance since m2m saving has not happened yet
+        source_ids = self.data.get("sources", [])
+        sources = Source.objects.filter(pk__in=source_ids)
+        fields = self.get_fields()
+        self.validate_source(fields, sources)
 
 
 class SheetBlockAdminForm(ModelForm):
@@ -193,7 +204,7 @@ class SheetBlockAdminForm(ModelForm):
 class FeatureSheetAdminForm(ModelForm):
     def clean(self):
         cleaned_data = super().clean()
-        sources = cleaned_data.get("sources")
+        sources = cleaned_data.get("sources", [])
         unique_identifier = cleaned_data.get("unique_identifier")
         for source in sources:
             if (
@@ -215,8 +226,4 @@ class FeatureSheetAdminForm(ModelForm):
 
     class Meta:
         model = FeatureSheet
-        fields = (
-            "name",
-            "unique_identifier",
-            "sources",
-        )
+        fields = ("name", "unique_identifier", "sources", "list_fields")

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-23 14:33+0000\n"
+"POT-Creation-Date: 2026-02-23 16:48+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1129,9 +1129,17 @@ msgstr ""
 "Le bloc de type '%(block_type)s' ne peut contenir que des champs de type "
 "%(type_label)s. Les champs suivants ne le sont pas : %(field_names)s"
 
-msgid "Sheets list fields must all come from the same source."
+msgid "Please select at least 1 field to display in the sheets list."
 msgstr ""
-"Les champs de la liste de fiches doivent tous provenir de la même source."
+"Veuillez sélectionner au moins 1 champ à afficher dans la liste de fiches"
+
+msgid "These fields must all come from the same source."
+msgstr "Ces champs doivent tous provenir de la même source."
+
+msgid "Please choose fields that belong to one of the selected sources above."
+msgstr ""
+"Veuillez choisir des champs appartenant à l'une des sources sélectionnées ci-"
+"dessus."
 
 #, python-format
 msgid "Block type '%(block_type)s' requires a fields source."

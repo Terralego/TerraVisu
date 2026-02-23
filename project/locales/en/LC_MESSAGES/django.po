@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-23 14:33+0000\n"
+"POT-Creation-Date: 2026-02-24 10:59+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -951,7 +951,13 @@ msgid ""
 "following fields are not: %(field_names)s"
 msgstr ""
 
-msgid "Sheets list fields must all come from the same source."
+msgid "Please select at least 1 field to display in the sheets list."
+msgstr ""
+
+msgid "These fields must all come from the same source."
+msgstr ""
+
+msgid "Please choose fields that belong to one of the selected sources above."
 msgstr ""
 
 #, python-format
