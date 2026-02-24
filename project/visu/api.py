@@ -233,7 +233,7 @@ class FeatureSheetAPIView(ListAPIView):
         permissions.AllowAny,
     ]
     serializer_class = FeatureSheetSerializer
-    queryset = queryset = FeatureSheet.objects.all().prefetch_related(
+    queryset = FeatureSheet.objects.all().prefetch_related(
         "sources",
         Prefetch(
             "blocks",
