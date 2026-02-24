@@ -18,9 +18,7 @@ class BaseSheetFieldInlineFormSet(BaseInlineFormSet):
         return [
             form.cleaned_data[self.field_key]
             for form in self.forms
-            if form.cleaned_data
-            and not form.cleaned_data.get("DELETE")
-            and form.cleaned_data.get(self.field_key)
+            if form.cleaned_data and form.cleaned_data.get(self.field_key)
         ]
 
     def validate_sources(self, fields, fields_source):
@@ -112,7 +110,7 @@ class SheetListFieldInlineFormSet(BaseInlineFormSet):
     def clean(self):
         super().clean()
         # Get sources from data and not from instance since m2m saving has not happened yet
-        source_ids = self.data.get("sources", [])
+        source_ids = dict(self.data).get("sources", [])
         sources = Source.objects.filter(pk__in=source_ids)
         fields = self.get_fields()
         self.validate_source(fields, sources)

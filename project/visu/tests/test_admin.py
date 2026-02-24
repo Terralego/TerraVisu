@@ -7,6 +7,7 @@ from project.visu.forms import FeatureSheetAdminForm
 from project.visu.models import (
     SheetBlockType,
     SheetFieldType,
+    SheetListFieldThroughModel,
 )
 from project.visu.tests.factories import (
     FeatureSheetFactory,
@@ -173,6 +174,58 @@ class SheetBlockAdminFormTest(AdminTestCase):
         )
         self.assertTrue(formset.is_valid(), formset.errors)
 
+    def test_block_type_requires_fields_source(self):
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.BAR_PLOT,
+                "fields_source": None,
+                "title": "Block title",
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("requires a fields source", str(form.errors))
+
+    def test_block_type_requires_geometry_source(self):
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.PANORAMAX,
+                "title": "Block title",
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("requires a geometry source", str(form.errors))
+
+    def test_selected_source_not_in_sheet_sources(self):
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.BAR_PLOT,
+                "fields_source": self.source_2,  # source_2 not linked to feature_sheet
+                "title": "Block title",
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            "Selected source does not match the sources of the Feature Sheet",
+            str(form.errors),
+        )
+
+    def test_order_field_from_wrong_source(self):
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.FIELDS_TABLE,
+                "fields_source": self.source,
+                "title": "Block title",
+                # order_field belongs to source_2, not source
+                "order_field": self.textual_field_2.field.pk,
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("Order field must be from selected source", str(form.errors))
+
 
 class FeatureSheetAdminFormTest(AdminTestCase):
     def test_sheets_list_fields(self):
@@ -226,13 +279,96 @@ class FeatureSheetAdminFormTest(AdminTestCase):
             "sheetlistfieldthroughmodel_set-1-list_field": self.textual_field_2.field.pk,
         }
         self.assertTrue(form.is_valid(), form.errors)
-        block = form.save()
+        sheet = form.save()
         formset = SheetListFieldInlineFormSetFactory(
             formset_data,
-            instance=block,
+            instance=sheet,
             prefix="sheetlistfieldthroughmodel_set",
         )
         with self.assertRaises(ValidationError) as cm:
             formset.clean()
         exc = cm.exception
         self.assertIn("These fields must all come from the same source.", str(exc))
+
+    def test_no_fields_raises_validation_error(self):
+        form = FeatureSheetAdminForm(
+            data={
+                "name": "Test sheet",
+                "sources": [self.source_2],
+                "unique_identifier": self.textual_field_2.field,
+            }
+        )
+        formset_data = {
+            "sources": [self.source_2.pk],
+            "sheetlistfieldthroughmodel_set-TOTAL_FORMS": 0,
+            "sheetlistfieldthroughmodel_set-INITIAL_FORMS": "0",
+            "sheetlistfieldthroughmodel_set-MIN_NUM_FORMS": "0",
+            "sheetlistfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
+        }
+        self.assertTrue(form.is_valid(), form.errors)
+        sheet = form.save()
+        formset = SheetListFieldInlineFormSetFactory(
+            formset_data,
+            instance=sheet,
+            prefix="sheetlistfieldthroughmodel_set",
+        )
+        with self.assertRaises(ValidationError) as cm:
+            formset.clean()
+        exc = cm.exception
+        self.assertIn(
+            "Please select at least 1 field to display in the sheets list.",
+            str(exc),
+        )
+
+    def test_unique_identifier_not_in_source(self):
+        form = FeatureSheetAdminForm(
+            data={
+                "name": "Test sheet",
+                # source has no field matching textual_field_2
+                "sources": [self.source],
+                "unique_identifier": self.textual_field_2.field,
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("does not exist in source", str(form.errors))
+
+    def test_valid_sheets_list_fields(self):
+        form = FeatureSheetAdminForm(
+            data={
+                "name": "Test sheet",
+                "sources": [self.source_2],
+                "unique_identifier": self.textual_field_2.field,
+            }
+        )
+        # Fields from different sources
+        formset_data = {
+            "sources": [self.source_2.pk],
+            "sheetlistfieldthroughmodel_set-TOTAL_FORMS": 1,
+            "sheetlistfieldthroughmodel_set-INITIAL_FORMS": "0",
+            "sheetlistfieldthroughmodel_set-MIN_NUM_FORMS": "0",
+            "sheetlistfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
+            "sheetlistfieldthroughmodel_set-0-list_field": self.textual_field_2.field.pk,
+        }
+        self.assertTrue(form.is_valid(), form.errors)
+        sheet = form.save()
+        formset = SheetListFieldInlineFormSetFactory(
+            formset_data,
+            instance=sheet,
+            prefix="sheetlistfieldthroughmodel_set",
+        )
+        self.assertTrue(formset.is_valid(), formset.errors)
+        formset.save()
+        sheet.refresh_from_db()
+        self.assertTrue(formset.is_valid(), form.errors)
+        self.assertEqual(sheet.list_fields.count(), 1)
+        self.assertEqual(
+            str(sheet.list_fields.first()), str(self.textual_field_2.field)
+        )
+        self.assertEqual(
+            str(
+                SheetListFieldThroughModel.objects.filter(
+                    sheet=sheet, list_field=self.textual_field_2.field
+                ).first()
+            ),
+            str(self.textual_field_2.field),
+        )
