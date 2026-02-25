@@ -269,6 +269,7 @@ class SheetListFieldThroughModel(OrderedModel):
     list_field = models.ForeignKey(
         Field, on_delete=models.CASCADE, verbose_name=_("Sheets list fields")
     )
+    order_with_respect_to = "sheet"
 
     class Meta:
         ordering = ("order",)

@@ -1131,7 +1131,7 @@ msgstr ""
 
 msgid "Please select at least 1 field to display in the sheets list."
 msgstr ""
-"Veuillez sélectionner au moins 1 champ à afficher dans la liste de fiches"
+"Veuillez sélectionner au moins 1 champ à afficher dans la liste de fiches."
 
 msgid "These fields must all come from the same source."
 msgstr "Ces champs doivent tous provenir de la même source."
@@ -1155,9 +1155,9 @@ msgstr ""
 "Une source sélectionnée ne correspond pas aux sources de la Fiche Détaillée."
 
 #, python-format
-msgid "Order field must be from selected source '%(fields_source)s'."
+msgid "Order field must be from selected source: '%(fields_source)s'."
 msgstr ""
-"Le champ définissant l'ordre doit appartenir à la source sélectionnée "
+"Le champ définissant l'ordre doit appartenir à la source sélectionnée : "
 "'%(fields_source)s'"
 
 #, python-format

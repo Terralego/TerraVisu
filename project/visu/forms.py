@@ -193,8 +193,8 @@ class SheetBlockAdminForm(ModelForm):
             )
         if order_field and order_field.source != fields_source:
             raise ValidationError(
-                _("Order field must be from selected source '%(fields_source)s'.")
-                % {"fields_source": fields_source}
+                _("Order field must be from selected source: '%(fields_source)s'.")
+                % {"fields_source": fields_source.slug}
             )
         return cleaned_data
 
