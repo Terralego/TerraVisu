@@ -223,52 +223,6 @@ class SceneTreeAPIView(APIView):
                 }
             )
 
-        custom_style_infos = {}
-        for i, layer in enumerate(self.layers.all()):
-            if layer.extra_styles.exists():
-                # Layer's extra styles have "sub sources" & "sub layers" we need to handle
-                for y, style in enumerate(layer.extra_styles.all()):
-                    sub_source = style.source
-                    sub_layer = sub_source.get_layer()
-                    subl_url = reverse("layer-tilejson", args=(sub_layer.id,))
-                    sub_source_id = f"{self.DEFAULT_SOURCE_NAME}_{sub_layer.pk}"
-                    custom_style_infos[sub_source_id] = subl_url
-
-                    for map_layer in layer_structure["map"]["customStyle"]["layers"]:
-                        if (
-                            map_layer.get("type", "") == "raster"
-                            or map_layer["layerId"] != layer.id
-                        ):
-                            continue
-                        if map_layer["source-layer"] != sub_source.slug:
-                            continue
-                        map_layer["source"] = sub_source_id
-
-            geolayer = layer.source.get_layer()
-            url = reverse("layer-tilejson", args=(geolayer.pk,))
-            source_id = f"{self.DEFAULT_SOURCE_NAME}_{geolayer.pk}"
-            custom_style_infos[source_id] = url
-
-            # Set the correct source "id" for each non-raster layer in the customStyle field
-            for map_layer in layer_structure["map"]["customStyle"]["layers"]:
-                if (
-                    map_layer.get("type", "") == "raster"
-                    or map_layer["layerId"] != layer.id
-                ):
-                    continue
-                if map_layer["source-layer"] != layer.source.slug:
-                    continue
-                map_layer["source"] = source_id
-
-        layer_structure["map"]["customStyle"]["sources"] = [
-            {
-                "id": source_id,
-                "type": self.DEFAULT_SOURCE_TYPE,
-                "url": f"{url}?{querystring.urlencode()}",
-            }
-            for source_id, url in custom_style_infos.items()
-        ]
-
         layer_structure["styleImages"] = StyleImageSerializer(
             StyleImage.objects.filter(
                 layer__in=self.scene.layers.values_list("pk", flat=True)
@@ -308,10 +262,7 @@ class SceneTreeAPIView(APIView):
             "type": self.scene.category,
             "layersTree": self.get_layers_tree(self.scene),
             "interactions": self.get_interactions(self.layers),
-            "map": {
-                **self.get_map_settings(self.scene),
-                "customStyle": {"sources": [], "layers": self.get_map_layers()},
-            },
+            "map": self.get_map_settings(self.scene),
         }
 
         # settings are merged for now
@@ -349,35 +300,6 @@ class SceneTreeAPIView(APIView):
         layer_structure["map"]["backgroundStyle"] = baselayers
 
         return layer_structure
-
-    def get_map_layers(self):
-        """Return sources information using serializer from sources_serializers module"""
-        map_layers = []
-        for layer in self.layers.filter(
-            source__slug__in=self.authorized_sources
-        ).prefetch_related(
-            Prefetch(
-                "extra_styles",
-                queryset=CustomStyle.objects.filter(
-                    source__slug__in=self.authorized_sources
-                ),
-                to_attr="authorized_extra_styles",
-            )
-        ):
-            map_layers += [
-                dict(
-                    **SourceSerializer.get_object_serializer(layer).data,
-                    layerId=layer.id,
-                ),
-                *[
-                    dict(
-                        **SourceSerializer.get_object_serializer(cs).data,
-                        layerId=layer.id,
-                    )
-                    for cs in layer.authorized_extra_styles
-                ],
-            ]
-        return map_layers
 
     def get_interactions(self, layers):
         """Return interactions for all layers in the scene"""
@@ -573,19 +495,6 @@ class SceneTreeAPIView(APIView):
         raise Http404
 
 
-# class SceneLayersTreeAPIView(SceneTreeAPIView):
-#     """Endpoint B: serves only the layersTree portion of the scene data."""
-#
-#     def get(self, request, slug=None, format=None):
-#         self.scene = get_object_or_404(Scene, slug=slug)
-#         self.layergroup = self.layers.first().source.get_layer().layer_groups.first()
-#         self.user_groups = tiles_token_generator.get_groups_intersect(
-#             self.request.user, self.layergroup
-#         )
-#         layers_tree = self.get_layers_tree(self.scene)
-#         return Response({"layersTree": layers_tree})
-
-
 class SceneLayerDetailAPIView(SceneTreeAPIView):
     def get_report_configs_for_layer(self, layer):
         report_configs = []
@@ -645,6 +554,7 @@ class SceneLayerDetailAPIView(SceneTreeAPIView):
     def get_full_layer_dict(self, layer):
         basic_layer_dict = self.get_basic_layer_dict(layer)
         if not basic_layer_dict:
+            # Exclude layers with non-authorized sources
             return None
 
         main_field = getattr(layer.main_field, "name", None)
@@ -767,7 +677,7 @@ class SceneCustomStyleSourceAPIView(SceneTreeAPIView):
 
 
 class SceneCustomStyleLayerAPIView(SceneTreeAPIView):
-    """Serves all customStyle map layer objects for a given Layer pk."""
+    """Serves all customStyle map layer objects for a given Layer pk, with patched source ids."""
 
     def get(self, request, slug=None, layer_id=None, format=None):
         self.scene = get_object_or_404(Scene, slug=slug)
@@ -793,18 +703,29 @@ class SceneCustomStyleLayerAPIView(SceneTreeAPIView):
         if layer.source.slug not in self.authorized_sources:
             raise Http404
 
-        map_layers = [
-            dict(
-                **SourceSerializer.get_object_serializer(layer).data,
+        # Build main map layer and patch its source
+        geolayer = layer.source.get_layer()
+        main_source_id = f"{self.DEFAULT_SOURCE_NAME}_{geolayer.pk}"
+        main_layer = dict(
+            **SourceSerializer.get_object_serializer(layer).data,
+            layerId=layer.id,
+        )
+        if main_layer.get("source-layer") == layer.source.slug:
+            main_layer["source"] = main_source_id
+
+        map_layers = [main_layer]
+
+        # Build extra style map layers and patch their sources
+        for cs in layer.authorized_extra_styles:
+            sub_layer = cs.source.get_layer()
+            sub_source_id = f"{self.DEFAULT_SOURCE_NAME}_{sub_layer.pk}"
+            cs_layer = dict(
+                **SourceSerializer.get_object_serializer(cs).data,
                 layerId=layer.id,
-            ),
-            *[
-                dict(
-                    **SourceSerializer.get_object_serializer(cs).data,
-                    layerId=layer.id,
-                )
-                for cs in layer.authorized_extra_styles
-            ],
-        ]
+            )
+            if cs_layer.get("source-layer") == cs.source.slug:
+                cs_layer["source"] = sub_source_id
+
+            map_layers.append(cs_layer)
 
         return Response(map_layers)
