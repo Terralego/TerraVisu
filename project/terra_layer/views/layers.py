@@ -506,7 +506,7 @@ class SceneTreeAPIView(APIView):
 
         # Add layers of group
         for layer in group.layers.filter(in_tree=True):
-            layer_dict = self.get_layer_dict(layer)
+            layer_dict = self.get_basic_layer_dict(layer)
             if layer_dict:
                 group_content["layers"].append(layer_dict)
 
@@ -518,13 +518,15 @@ class SceneTreeAPIView(APIView):
 
         return group_content
 
-    def get_layer_dict(self, layer):
-        if (
-            layer.source.slug not in self.authorized_sources
-            or layer.extra_styles.exclude(
+    def is_layer_authorized(self, layer):
+        return layer.source.slug in self.authorized_sources and not (
+            layer.extra_styles.exclude(
                 source__slug__in=self.authorized_sources
             ).exists()
-        ):
+        )
+
+    def get_basic_layer_dict(self, layer):
+        if not self.is_layer_authorized(layer):
             # Exclude layers with non-authorized sources
             return None
 
@@ -535,37 +537,78 @@ class SceneTreeAPIView(APIView):
             }
         }
 
-        main_field = getattr(layer.main_field, "name", None)
-
         # Construct the layer object
         layer_object = {
             **dict_merge(default_values, layer.settings),
             "id": layer.id,
             "label": layer.name,
             "order": layer.order,
-            "content": layer.description,
-            "source_filter": layer.source_filter,
             "layers": self.get_layers_list_for_layer(layer),
-            "legends": layer.legends,
-            "variables": layer.variables,
-            "mainField": main_field,
-            "filters": {
-                "layer": layer.source.slug,
-                "layerId": layer.id,
-                "mainField": main_field,
-                "fields": self.get_filter_fields_for_layer(layer),
-                "form": self.get_filter_forms_for_layer(layer),
-            },
-            "source_credit": layer.source.credit,
-            "report_configs": self.get_report_configs_for_layer(layer),
         }
 
-        # Set the exportable status of the layer if any filter fields is exportable
-        layer_object["filters"]["exportable"] = layer.table_export_enable and any(
-            [f["exportable"] for f in layer_object["filters"]["fields"] or []]
+        return layer_object
+
+    @cached_property
+    def authorized_sources(self):
+        """Cached property of authorized sources from the authenticated user's groups"""
+        return list(
+            self.layergroup.layers.filter(
+                Q(authorized_groups__isnull=True)
+                | Q(authorized_groups__in=self.user_groups)
+            ).values_list("name", flat=True)
         )
 
-        return layer_object
+    @cached_property
+    def layers(self):
+        """List of layers of the selected scene"""
+        layers = (
+            Layer.objects.filter(group__view=self.scene.pk)
+            .order_by("order")
+            .select_related("source")
+            .prefetch_related("extra_styles__source")
+        )
+
+        if layers:
+            return layers
+        raise Http404
+
+
+# class SceneLayersTreeAPIView(SceneTreeAPIView):
+#     """Endpoint B: serves only the layersTree portion of the scene data."""
+#
+#     def get(self, request, slug=None, format=None):
+#         self.scene = get_object_or_404(Scene, slug=slug)
+#         self.layergroup = self.layers.first().source.get_layer().layer_groups.first()
+#         self.user_groups = tiles_token_generator.get_groups_intersect(
+#             self.request.user, self.layergroup
+#         )
+#         layers_tree = self.get_layers_tree(self.scene)
+#         return Response({"layersTree": layers_tree})
+
+
+class SceneLayerDetailAPIView(SceneTreeAPIView):
+    def get_report_configs_for_layer(self, layer):
+        report_configs = []
+        for report_config in layer.prefetched_report_configs:
+            config = {
+                "label": report_config.label,
+                "id": report_config.id,
+                "fields": [],
+            }
+            for report_field in report_config.prefetched_report_fields:
+                config["fields"].append(
+                    {
+                        "order": report_field.order,
+                        "sourceFieldId": report_field.field_id,
+                        "value": report_field.field.name,
+                        "label": report_field.field.label,
+                        "format_type": TYPE_MAP[report_field.field.data_type],
+                        "required": report_field.required,
+                        "helptext": report_field.helptext,
+                    }
+                )
+            report_configs.append(config)
+        return report_configs
 
     def get_filter_fields_for_layer(self, layer):
         """Return the filter fields of the layer if table is enabled"""
@@ -599,49 +642,169 @@ class SceneTreeAPIView(APIView):
             filter_list.sort(key=lambda f: f.get("order", 0))
             return filter_list
 
-    def get_report_configs_for_layer(self, layer):
-        report_configs = []
-        for report_config in layer.prefetched_report_configs:
-            config = {
-                "label": report_config.label,
-                "id": report_config.id,
-                "fields": [],
+    def get_full_layer_dict(self, layer):
+        basic_layer_dict = self.get_basic_layer_dict(layer)
+        if not basic_layer_dict:
+            return None
+
+        main_field = getattr(layer.main_field, "name", None)
+
+        # Construct the layer object
+        layer_object = {
+            **basic_layer_dict,
+            "content": layer.description,
+            "source_filter": layer.source_filter,
+            "legends": layer.legends,
+            "variables": layer.variables,
+            "mainField": main_field,
+            "filters": {
+                "layer": layer.source.slug,
+                "layerId": layer.id,
+                "mainField": main_field,
+                "fields": self.get_filter_fields_for_layer(layer),
+                "form": self.get_filter_forms_for_layer(layer),
+            },
+            "source_credit": layer.source.credit,
+            "report_configs": self.get_report_configs_for_layer(layer),
+        }
+
+        # Set the exportable status of the layer if any filter fields is exportable
+        layer_object["filters"]["exportable"] = layer.table_export_enable and any(
+            [f["exportable"] for f in layer_object["filters"]["fields"] or []]
+        )
+
+        return layer_object
+
+    def get(self, request, slug=None, layer_id=None, format=None):
+        self.scene = get_object_or_404(Scene, slug=slug)
+        self.layergroup = self.layers.first().source.get_layer().layer_groups.first()
+        self.user_groups = tiles_token_generator.get_groups_intersect(
+            self.request.user, self.layergroup
+        )
+
+        layer = get_object_or_404(
+            Layer.objects.select_related("source").prefetch_related(
+                Prefetch(
+                    "fields_filters",
+                    FilterField.objects.filter(shown=True).select_related("field"),
+                    to_attr="filters_shown",
+                ),
+                Prefetch(
+                    "fields_filters",
+                    FilterField.objects.filter(filter_enable=True).select_related(
+                        "field"
+                    ),
+                    to_attr="filters_enabled",
+                ),
+                "extra_styles__source",
+                Prefetch(
+                    "report_configs",
+                    ReportConfig.objects.prefetch_related(
+                        Prefetch(
+                            "report_fields",
+                            queryset=ReportField.objects.select_related("field"),
+                            to_attr="prefetched_report_fields",
+                        ),
+                    ),
+                    to_attr="prefetched_report_configs",
+                ),
+            ),
+            group__view=self.scene,
+            pk=layer_id,
+        )
+
+        layer_dict = self.get_full_layer_dict(layer)
+        if layer_dict is None:
+            # Layer exists but is excluded due to unauthorized sources
+            raise Http404
+
+        return Response(layer_dict)
+
+
+class SceneCustomStyleSourceAPIView(SceneTreeAPIView):
+    """Serves the source entry from customStyle.sources for a given Layer pk."""
+
+    def get(self, request, slug=None, pk=None, format=None):
+        self.scene = get_object_or_404(Scene, slug=slug)
+        self.layergroup = self.layers.first().source.get_layer().layer_groups.first()
+        self.user_groups = tiles_token_generator.get_groups_intersect(
+            self.request.user, self.layergroup
+        )
+
+        layer = get_object_or_404(
+            Layer.objects.select_related("source"),
+            group__view=self.scene,
+            pk=pk,
+        )
+
+        if layer.source.slug not in self.authorized_sources:
+            raise Http404
+
+        querystring = QueryDict(mutable=True)
+        if not self.request.user.is_anonymous:
+            querystring.update(
+                {
+                    "idb64": tiles_token_generator.token_idb64(
+                        self.user_groups, self.layergroup
+                    ),
+                    "token": tiles_token_generator.make_token(
+                        self.user_groups, self.layergroup
+                    ),
+                }
+            )
+
+        geolayer = layer.source.get_layer()
+        url = reverse("layer-tilejson", args=(geolayer.pk,))
+        source_id = f"{self.DEFAULT_SOURCE_NAME}_{geolayer.pk}"
+
+        return Response(
+            {
+                "id": source_id,
+                "type": self.DEFAULT_SOURCE_TYPE,
+                "url": f"{url}?{querystring.urlencode()}",
             }
-            for report_field in report_config.prefetched_report_fields:
-                config["fields"].append(
-                    {
-                        "order": report_field.order,
-                        "sourceFieldId": report_field.field_id,
-                        "value": report_field.field.name,
-                        "label": report_field.field.label,
-                        "format_type": TYPE_MAP[report_field.field.data_type],
-                        "required": report_field.required,
-                        "helptext": report_field.helptext,
-                    }
+        )
+
+
+class SceneCustomStyleLayerAPIView(SceneTreeAPIView):
+    """Serves all customStyle map layer objects for a given Layer pk."""
+
+    def get(self, request, slug=None, layer_id=None, format=None):
+        self.scene = get_object_or_404(Scene, slug=slug)
+        self.layergroup = self.layers.first().source.get_layer().layer_groups.first()
+        self.user_groups = tiles_token_generator.get_groups_intersect(
+            self.request.user, self.layergroup
+        )
+
+        layer = get_object_or_404(
+            Layer.objects.select_related("source").prefetch_related(
+                Prefetch(
+                    "extra_styles",
+                    queryset=CustomStyle.objects.filter(
+                        source__slug__in=self.authorized_sources
+                    ),
+                    to_attr="authorized_extra_styles",
                 )
-            report_configs.append(config)
-        return report_configs
-
-    @cached_property
-    def authorized_sources(self):
-        """Cached property of authorized sources from the authenticated user's groups"""
-        return list(
-            self.layergroup.layers.filter(
-                Q(authorized_groups__isnull=True)
-                | Q(authorized_groups__in=self.user_groups)
-            ).values_list("name", flat=True)
+            ),
+            group__view=self.scene,
+            pk=layer_id,
         )
 
-    @cached_property
-    def layers(self):
-        """List of layers of the selected scene"""
-        layers = (
-            Layer.objects.filter(group__view=self.scene.pk)
-            .order_by("order")
-            .select_related("source")
-            .prefetch_related("extra_styles__source")
-        )
+        if layer.source.slug not in self.authorized_sources:
+            raise Http404
 
-        if layers:
-            return layers
-        raise Http404
+        map_layers = [
+            dict(
+                **SourceSerializer.get_object_serializer(layer).data,
+                layerId=layer.id,
+            ),
+            *[
+                dict(
+                    **SourceSerializer.get_object_serializer(cs).data,
+                    layerId=layer.id,
+                )
+                for cs in layer.authorized_extra_styles
+            ],
+        ]
+
+        return Response(map_layers)
