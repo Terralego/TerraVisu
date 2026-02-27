@@ -768,9 +768,7 @@ class SceneTreeAPITestCase(APITestCase):
         with self.assertNumQueries(27):
             response = self.client.get(reverse("layerview", args=[self.scene.slug]))
         self.assertEqual(response.status_code, 200)
-        self.assertEqual(
-            response.json()["layersTree"][0]["label"], "new_name"
-        )
+        self.assertEqual(response.json()["layersTree"][0]["label"], "new_name")
 
     def test_cache_updated_with_query_parameter(self):
         source = PostGISSource.objects.create(**self.source_params)
