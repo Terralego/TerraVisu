@@ -303,6 +303,82 @@ class SceneViewsetTestCase(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+    def test_layer_custom_style_source_view(self):
+        source = Source.objects.create(
+            geom_type=10,
+            name="test_view_2",
+        )
+        layer = Layer.objects.create(
+            source=source,
+            name="Layer",
+        )
+
+        query = {
+            "name": "Scene Name",
+            "category": "map",
+            "tree": [{"geolayer": layer.id}],
+            "baselayer": [],
+        }
+
+        response = self.client.post(reverse("scene-list"), query)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        scene = response.json()
+
+        geolayer = source.get_layer()
+        url = reverse("layer-tilejson", args=(geolayer.pk,))
+
+        # First request: populates cache (get_or_set branch)
+        response = self.client.get(
+            reverse("scene-customstyle-source", args=[scene["slug"], layer.pk]),
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["id"], f"terra_{geolayer.pk}")
+        self.assertEqual(data["type"], "vector")
+        # Authenticated user: URL should contain idb64 and token params
+        self.assertIn("idb64=", data["url"])
+        self.assertIn("token=", data["url"])
+        self.assertTrue(data["url"].startswith(url))
+
+        # Second request with ?cache=false: covers cache.set branch
+        response = self.client.get(
+            reverse("scene-customstyle-source", args=[scene["slug"], layer.pk]),
+            {"cache": "false"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data_refreshed = response.json()
+        self.assertEqual(data_refreshed["id"], data["id"])
+        self.assertEqual(data_refreshed["type"], data["type"])
+
+        # Anonymous user: URL should have no auth params
+        self.client.force_authenticate(user=None)
+        response = self.client.get(
+            reverse("scene-customstyle-source", args=[scene["slug"], layer.pk]),
+            {"cache": "false"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        anon_data = response.json()
+        self.assertEqual(anon_data["url"], f"{url}?")
+        self.client.force_authenticate(self.user)
+
+        # Unauthorized source: should return 404
+        restricted_group = Group.objects.create(name="restricted_src")
+        unauthorized_source = Source.objects.create(geom_type=10, name="unauthorized")
+        unauthorized_geolayer = unauthorized_source.get_layer()
+        unauthorized_geolayer.authorized_groups.add(restricted_group)
+        unauthorized_layer = Layer.objects.create(
+            source=unauthorized_source,
+            name="Unauthorized Layer",
+            group=LayerGroup.objects.get(view=Scene.objects.get(slug=scene["slug"])),
+        )
+        response = self.client.get(
+            reverse(
+                "scene-customstyle-source",
+                args=[scene["slug"], unauthorized_layer.pk],
+            ),
+        )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
     def test_layer_view_with_wmtsource(self):
         source = WMTSSource.objects.create(
             name="Titi",
@@ -813,7 +889,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer = Layer.objects.create(
             name="public_layer", source=source, group=self.layer_group
         )
-        # First request populates the cache (avoir flaky tests)
+        # First request populates the cache (avoid flaky tests)
         self.client.get(reverse("layerview", args=[self.scene.slug]))
 
         # Second request should be a cache hit with minimal queries
