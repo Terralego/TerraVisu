@@ -41,7 +41,13 @@ from ..serializers import (
     StyleImageSerializer,
 )
 from ..sources_serializers import SourceSerializer
-from ..utils import dict_merge, get_scene_tree_cache_key
+from ..utils import (
+    dict_merge,
+    get_customstyle_layer_cache_key,
+    get_customstyle_source_cache_key,
+    get_layer_detail_cache_key,
+    get_scene_tree_cache_key,
+)
 
 # Map source field data_type to format_type
 TYPE_MAP = {a: b.name.lower() for a, b in dict(FieldTypes.choices()).items()}
@@ -586,6 +592,7 @@ class SceneLayerDetailAPIView(SceneTreeAPIView):
         return layer_object
 
     def get(self, request, slug=None, layer_id=None, format=None):
+        update_cache = request.query_params.get("cache") == "false"
         self.scene = get_object_or_404(Scene, slug=slug)
         self.layergroup = self.layers.first().source.get_layer().layer_groups.first()
         self.user_groups = tiles_token_generator.get_groups_intersect(
@@ -623,32 +630,28 @@ class SceneLayerDetailAPIView(SceneTreeAPIView):
             pk=layer_id,
         )
 
-        layer_dict = self.get_full_layer_dict(layer)
-        if layer_dict is None:
+        cache_key = get_layer_detail_cache_key(self.scene, layer, self.user_groups)
+        if update_cache:
+            response = self.get_full_layer_dict(layer)
+            cache.set(cache_key, response)
+        else:
+            response = cache.get_or_set(
+                cache_key, lambda: self.get_full_layer_dict(layer)
+            )
+
+        if response is None:
             # Layer exists but is excluded due to unauthorized sources
             raise Http404
 
-        return Response(layer_dict)
+        return Response(response)
 
 
 class SceneCustomStyleSourceAPIView(SceneTreeAPIView):
     """Serves the source entry from customStyle.sources for a given Layer pk."""
 
-    def get(self, request, slug=None, pk=None, format=None):
-        self.scene = get_object_or_404(Scene, slug=slug)
-        self.layergroup = self.layers.first().source.get_layer().layer_groups.first()
-        self.user_groups = tiles_token_generator.get_groups_intersect(
-            self.request.user, self.layergroup
-        )
-
-        layer = get_object_or_404(
-            Layer.objects.select_related("source"),
-            group__view=self.scene,
-            pk=pk,
-        )
-
+    def build_source_response(self, layer):
         if layer.source.slug not in self.authorized_sources:
-            raise Http404
+            return None
 
         querystring = QueryDict(mutable=True)
         if not self.request.user.is_anonymous:
@@ -667,19 +670,14 @@ class SceneCustomStyleSourceAPIView(SceneTreeAPIView):
         url = reverse("layer-tilejson", args=(geolayer.pk,))
         source_id = f"{self.DEFAULT_SOURCE_NAME}_{geolayer.pk}"
 
-        return Response(
-            {
-                "id": source_id,
-                "type": self.DEFAULT_SOURCE_TYPE,
-                "url": f"{url}?{querystring.urlencode()}",
-            }
-        )
+        return {
+            "id": source_id,
+            "type": self.DEFAULT_SOURCE_TYPE,
+            "url": f"{url}?{querystring.urlencode()}",
+        }
 
-
-class SceneCustomStyleLayerAPIView(SceneTreeAPIView):
-    """Serves all customStyle map layer objects for a given Layer pk, with patched source ids."""
-
-    def get(self, request, slug=None, layer_id=None, format=None):
+    def get(self, request, slug=None, pk=None, format=None):
+        update_cache = request.query_params.get("cache") == "false"
         self.scene = get_object_or_404(Scene, slug=slug)
         self.layergroup = self.layers.first().source.get_layer().layer_groups.first()
         self.user_groups = tiles_token_generator.get_groups_intersect(
@@ -687,21 +685,34 @@ class SceneCustomStyleLayerAPIView(SceneTreeAPIView):
         )
 
         layer = get_object_or_404(
-            Layer.objects.select_related("source").prefetch_related(
-                Prefetch(
-                    "extra_styles",
-                    queryset=CustomStyle.objects.filter(
-                        source__slug__in=self.authorized_sources
-                    ),
-                    to_attr="authorized_extra_styles",
-                )
-            ),
+            Layer.objects.select_related("source"),
             group__view=self.scene,
-            pk=layer_id,
+            pk=pk,
         )
 
-        if layer.source.slug not in self.authorized_sources:
+        cache_key = get_customstyle_source_cache_key(
+            self.scene, layer, self.user_groups
+        )
+        if update_cache:
+            response = self.build_source_response(layer)
+            cache.set(cache_key, response)
+        else:
+            response = cache.get_or_set(
+                cache_key, lambda: self.build_source_response(layer)
+            )
+
+        if response is None:
             raise Http404
+
+        return Response(response)
+
+
+class SceneCustomStyleLayerAPIView(SceneTreeAPIView):
+    """Serves all customStyle map layer objects for a given Layer pk, with patched source ids."""
+
+    def build_map_layers(self, layer):
+        if layer.source.slug not in self.authorized_sources:
+            return None
 
         # Build main map layer and patch its source
         geolayer = layer.source.get_layer()
@@ -728,4 +739,38 @@ class SceneCustomStyleLayerAPIView(SceneTreeAPIView):
 
             map_layers.append(cs_layer)
 
-        return Response(map_layers)
+        return map_layers
+
+    def get(self, request, slug=None, layer_id=None, format=None):
+        update_cache = request.query_params.get("cache") == "false"
+        self.scene = get_object_or_404(Scene, slug=slug)
+        self.layergroup = self.layers.first().source.get_layer().layer_groups.first()
+        self.user_groups = tiles_token_generator.get_groups_intersect(
+            self.request.user, self.layergroup
+        )
+
+        layer = get_object_or_404(
+            Layer.objects.select_related("source").prefetch_related(
+                Prefetch(
+                    "extra_styles",
+                    queryset=CustomStyle.objects.filter(
+                        source__slug__in=self.authorized_sources
+                    ),
+                    to_attr="authorized_extra_styles",
+                )
+            ),
+            group__view=self.scene,
+            pk=layer_id,
+        )
+
+        cache_key = get_customstyle_layer_cache_key(self.scene, layer, self.user_groups)
+        if update_cache:
+            response = self.build_map_layers(layer)
+            cache.set(cache_key, response)
+        else:
+            response = cache.get_or_set(cache_key, lambda: self.build_map_layers(layer))
+
+        if response is None:
+            raise Http404
+
+        return Response(response)
