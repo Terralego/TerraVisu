@@ -223,11 +223,15 @@ class SceneViewsetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         scene = response.json()
 
-        response = self.client.get(reverse("layerview", args=[scene["slug"]]))
+        response = self.client.get(
+            reverse(
+                "scene-customstyle-layer",
+                args=[scene["slug"], layer.pk],
+            )
+        )
 
-        json_response = response.json()
         self.assertListEqual(
-            json_response["map"]["customStyle"]["layers"],
+            response.json(),
             [
                 {
                     "id": layer.layer_identifier,
@@ -266,11 +270,15 @@ class SceneViewsetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         scene = response.json()
 
-        response = self.client.get(reverse("layerview", args=[scene["slug"]]))
+        response = self.client.get(
+            reverse(
+                "scene-customstyle-layer",
+                args=[scene["slug"], layer.pk],
+            )
+        )
 
-        json_response = response.json()
         self.assertEqual(
-            json_response["map"]["customStyle"]["layers"],
+            response.json(),
             [
                 {
                     "id": layer.layer_identifier,
@@ -360,11 +368,13 @@ class SceneViewsetTestCase(APITestCase):
 
         scene = response.json()
 
-        response = self.client.get(reverse("layerview", args=[scene["slug"]]))
-        layer_tree = response.json()
+        response = self.client.get(
+            reverse("scene-layer-detail", args=[scene["slug"], layer.pk])
+        )
+        layer_detail = response.json()
 
         self.assertEqual(
-            layer_tree["layersTree"][0]["filters"]["fields"][0],
+            layer_detail["filters"]["fields"][0],
             {
                 "value": "_test_field",
                 "label": "test layer fields",
@@ -726,7 +736,7 @@ class SceneTreeAPITestCase(APITestCase):
         ReportField.objects.create(config=report_config, field=field_2, order=2)
 
         self.client.force_authenticate(self.user)
-        with self.assertNumQueries(46):
+        with self.assertNumQueries(35):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
         with self.assertNumQueries(10):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
@@ -735,7 +745,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer.name = "new_name"
         layer.save()
 
-        with self.assertNumQueries(44):
+        with self.assertNumQueries(33):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
     def test_cache_cleared_after_public_layer_update(self):
@@ -743,18 +753,24 @@ class SceneTreeAPITestCase(APITestCase):
         layer = Layer.objects.create(
             name="public_layer", source=source, group=self.layer_group
         )
-        with self.assertNumQueries(46):
-            self.client.get(reverse("layerview", args=[self.scene.slug]))
+        # First request populates the cache (avoir flaky tests)
+        self.client.get(reverse("layerview", args=[self.scene.slug]))
 
+        # Second request should be a cache hit with minimal queries
         with self.assertNumQueries(9):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
-        # updating layer to trigger cache reset
+        # Updating the layer changes updated_at, which changes the cache key
         layer.name = "new_name"
         layer.save()
-        with self.assertNumQueries(38):
-            # still differences in original query number because callbacks auto create geostore layers and groups
-            self.client.get(reverse("layerview", args=[self.scene.slug]))
+
+        # Next request should be a cache miss (key changed due to updated_at)
+        with self.assertNumQueries(27):
+            response = self.client.get(reverse("layerview", args=[self.scene.slug]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            response.json()["layersTree"][0]["label"], "new_name"
+        )
 
     def test_cache_updated_with_query_parameter(self):
         source = PostGISSource.objects.create(**self.source_params)
