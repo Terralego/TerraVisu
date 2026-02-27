@@ -199,7 +199,7 @@ class SceneViewsetTestCase(APITestCase):
 
         self.assertEqual(layer.group.label, "Root")
 
-    def test_layer_view_with_source_model(self):
+    def test_layer_custom_styles_view(self):
         source = Source.objects.create(
             geom_type=10,
             name="test_view_2",
@@ -211,6 +211,10 @@ class SceneViewsetTestCase(APITestCase):
         layer = Layer.objects.get(
             pk=layer.pk
         )  # get annotated field layer_identifier by executing queryset in default manager
+        cs = CustomStyle.objects.create(
+            layer=layer,
+            source=source,
+        )
 
         query = {
             "name": "Scene Name",
@@ -227,21 +231,77 @@ class SceneViewsetTestCase(APITestCase):
             reverse(
                 "scene-customstyle-layer",
                 args=[scene["slug"], layer.pk],
-            )
+            ),
         )
 
+        # Do it again without cache
+        geolayer_pk = source.get_layer().pk
         self.assertListEqual(
             response.json(),
             [
                 {
                     "id": layer.layer_identifier,
                     "layerId": layer.pk,
-                    "source": f"terra_{source.get_layer().pk}",
+                    "source": f"terra_{geolayer_pk}",
                     "source-layer": "test_view_2",
                     "advanced_style": {},
-                }
+                },
+                {
+                    "id": cs.layer_identifier,
+                    "layerId": layer.pk,
+                    "source": f"terra_{geolayer_pk}",
+                    "source-layer": "test_view_2",
+                    "advanced_style": {},
+                },
             ],
         )
+
+        response = self.client.get(
+            reverse(
+                "scene-customstyle-layer",
+                args=[scene["slug"], layer.pk],
+            ),
+            {"cache": "false"},
+        )
+
+        geolayer_pk = source.get_layer().pk
+        self.assertListEqual(
+            response.json(),
+            [
+                {
+                    "id": layer.layer_identifier,
+                    "layerId": layer.pk,
+                    "source": f"terra_{geolayer_pk}",
+                    "source-layer": "test_view_2",
+                    "advanced_style": {},
+                },
+                {
+                    "id": cs.layer_identifier,
+                    "layerId": layer.pk,
+                    "source": f"terra_{geolayer_pk}",
+                    "source-layer": "test_view_2",
+                    "advanced_style": {},
+                },
+            ],
+        )
+
+        # Request for a layer with unauthorized source should return 404
+        restricted_group = Group.objects.create(name="restricted")
+        unauthorized_source = Source.objects.create(geom_type=10, name="unauthorized")
+        unauthorized_geolayer = unauthorized_source.get_layer()
+        unauthorized_geolayer.authorized_groups.add(restricted_group)
+        unauthorized_layer = Layer.objects.create(
+            source=unauthorized_source,
+            name="Unauthorized Layer",
+            group=LayerGroup.objects.get(view=Scene.objects.get(slug=scene["slug"])),
+        )
+        response = self.client.get(
+            reverse(
+                "scene-customstyle-layer",
+                args=[scene["slug"], unauthorized_layer.pk],
+            ),
+        )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_layer_view_with_wmtsource(self):
         source = WMTSSource.objects.create(
