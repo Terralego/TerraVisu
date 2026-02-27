@@ -521,6 +521,101 @@ class SceneViewsetTestCase(APITestCase):
             },
         )
 
+    def test_layer_detail_view(self):
+        field = self.source.fields.create(
+            name="_report_field",
+            label="Report Label",
+            data_type=FieldTypes.String.value,
+        )
+        field_2 = self.source.fields.create(
+            name="_report_field_2",
+            label="Report Label 2",
+            data_type=FieldTypes.Integer.value,
+        )
+        layer = Layer.objects.create(
+            source=self.source,
+            name="Detail Layer",
+            table_enable=True,
+            table_export_enable=True,
+        )
+        FilterField.objects.create(
+            label="shown field",
+            layer=layer,
+            field=field,
+            filter_settings={"type": "single"},
+            filter_enable=True,
+            shown=True,
+            format_type="string",
+            exportable=True,
+        )
+        report_config = ReportConfig.objects.create(label="Test Report", layer=layer)
+        ReportField.objects.create(
+            config=report_config, field=field, order=1, required=True, helptext="Help"
+        )
+        ReportField.objects.create(config=report_config, field=field_2, order=2)
+
+        query = {
+            "name": "Scene Detail",
+            "category": "map",
+            "tree": [{"geolayer": layer.id}],
+            "baselayer": [],
+        }
+        response = self.client.post(reverse("scene-list"), query)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        scene = response.json()
+
+        # First request: cache miss (covers get_prefetched_layer, get_full_layer_dict)
+        response = self.client.get(
+            reverse("scene-layer-detail", args=[scene["slug"], layer.pk])
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+
+        # Verify report_configs (covers lines 508-525)
+        self.assertEqual(len(data["report_configs"]), 1)
+        rc = data["report_configs"][0]
+        self.assertEqual(rc["label"], "Test Report")
+        self.assertEqual(rc["id"], report_config.id)
+        self.assertEqual(len(rc["fields"]), 2)
+        self.assertEqual(rc["fields"][0]["value"], "_report_field")
+        self.assertEqual(rc["fields"][0]["label"], "Report Label")
+        self.assertEqual(rc["fields"][0]["required"], True)
+        self.assertEqual(rc["fields"][0]["helptext"], "Help")
+        self.assertEqual(rc["fields"][1]["value"], "_report_field_2")
+        self.assertEqual(rc["fields"][1]["order"], 2)
+
+        # Verify filter fields and exportable
+        self.assertTrue(data["filters"]["exportable"])
+
+        # Second request: cache hit
+        response = self.client.get(
+            reverse("scene-layer-detail", args=[scene["slug"], layer.pk])
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json(), data)
+
+        # Third request with ?cache=false: covers cache.set branch (line 644-647)
+        response = self.client.get(
+            reverse("scene-layer-detail", args=[scene["slug"], layer.pk]),
+            {"cache": "false"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Unauthorized layer: covers response is None -> 404
+        restricted_group = Group.objects.create(name="restricted_detail")
+        unauth_source = Source.objects.create(geom_type=10, name="unauth_detail")
+        unauth_geolayer = unauth_source.get_layer()
+        unauth_geolayer.authorized_groups.add(restricted_group)
+        unauth_layer = Layer.objects.create(
+            source=unauth_source,
+            name="Unauthorized",
+            group=LayerGroup.objects.get(view=Scene.objects.get(slug=scene["slug"])),
+        )
+        response = self.client.get(
+            reverse("scene-layer-detail", args=[scene["slug"], unauth_layer.pk])
+        )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
     def test_layer_view_with_table_enable_no_layer(self):
         self.source.fields.create(
             name="_test_field", label="test_label", data_type=FieldTypes.String.value
