@@ -3,14 +3,46 @@ from django.test import TestCase
 
 from project.accounts.tests.factories import SuperUserFactory
 from project.visu.admin import SheetBlockAdminForm
-from project.visu.models import SheetBlockType, SheetFieldType
-from project.visu.tests.factories import SheetFieldFactory
+from project.visu.forms import FeatureSheetAdminForm
+from project.visu.models import (
+    SheetBlockType,
+    SheetFieldType,
+    SheetListFieldThroughModel,
+)
+from project.visu.tests.factories import (
+    FeatureSheetFactory,
+    SheetFieldFactory,
+    SheetFieldInlineFormSetFactory,
+    SheetListFieldInlineFormSetFactory,
+)
 
 
 class AdminTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = SuperUserFactory()
+        cls.textual_field = SheetFieldFactory(
+            type=SheetFieldType.TEXTUAL, label="TextField"
+        )
+        cls.source = cls.textual_field.field.source
+        cls.numerical_field_1 = SheetFieldFactory(
+            type=SheetFieldType.NUMERICAL, label="NumField"
+        )
+        cls.numerical_field_2 = SheetFieldFactory(
+            type=SheetFieldType.NUMERICAL, label="NumField"
+        )
+        # Change fields source for test coherence
+        field = cls.numerical_field_1.field
+        field.source = cls.source
+        field.save()
+        field = cls.numerical_field_2.field
+        field.source = cls.source
+        field.save()
+        cls.feature_sheet = FeatureSheetFactory(sources=[cls.source])
+        cls.textual_field_2 = SheetFieldFactory(
+            type=SheetFieldType.TEXTUAL, label="NumField"
+        )
+        cls.source_2 = cls.textual_field_2.field.source
 
     def setUp(self) -> None:
         self.client.force_login(self.user)
@@ -20,53 +52,323 @@ class AdminTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
 
 
-class SheetBlockAdminFormTest(TestCase):
+class SheetBlockAdminFormTest(AdminTestCase):
     def test_numerical_block_requires_numerical_fields(self):
-        form = SheetBlockAdminForm()
-        # One non-numerical field included for a RADAR_PLOT => should raise
-        textual_field = SheetFieldFactory(
-            type=SheetFieldType.TEXTUAL, label="TextField"
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.RADAR_PLOT,
+                "fields_source": self.source,
+                "title": "Block title",
+            }
         )
-
-        form.cleaned_data = {
-            "type": SheetBlockType.RADAR_PLOT,
-            "fields": [textual_field],
-            "extra_fields": [],
+        # One non-numerical field included for a RADAR_PLOT => should raise
+        formset_data = {
+            "sheetfieldthroughmodel_set-TOTAL_FORMS": 1,
+            "sheetfieldthroughmodel_set-INITIAL_FORMS": "0",
+            "sheetfieldthroughmodel_set-MIN_NUM_FORMS": "0",
+            "sheetfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
+            "sheetfieldthroughmodel_set-0-field": self.textual_field.pk,
         }
+        self.assertTrue(form.is_valid(), form.errors)
+        block = form.save()
+        formset = SheetFieldInlineFormSetFactory(
+            formset_data,
+            instance=block,
+            prefix="sheetfieldthroughmodel_set",
+        )
         with self.assertRaises(ValidationError) as cm:
-            form.clean()
+            formset.clean()
         exc = cm.exception
         self.assertIn("requires all fields to be NUMERICAL", str(exc))
         self.assertIn("TextField", str(exc))
 
     def test_boolean_block_requires_boolean_fields(self):
-        form = SheetBlockAdminForm()
-        # One non-boolean field included for BOOLEANS => should raise
-        numerical_field = SheetFieldFactory(
-            type=SheetFieldType.NUMERICAL, label="NumField"
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.BOOLEANS,
+                "fields_source": self.source,
+                "title": "Block title",
+            }
         )
-
-        form.cleaned_data = {
-            "type": SheetBlockType.BOOLEANS,
-            "fields": [numerical_field],
-            "extra_fields": [],
+        # One non-boolean field included for BOOLEANS => should raise
+        formset_data = {
+            "sheetfieldthroughmodel_set-TOTAL_FORMS": 1,
+            "sheetfieldthroughmodel_set-INITIAL_FORMS": "0",
+            "sheetfieldthroughmodel_set-MIN_NUM_FORMS": "0",
+            "sheetfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
+            "sheetfieldthroughmodel_set-0-field": self.textual_field.pk,
         }
+
+        self.assertTrue(form.is_valid(), form.errors)
+        block = form.save()
+        formset = SheetFieldInlineFormSetFactory(
+            formset_data,
+            instance=block,
+            prefix="sheetfieldthroughmodel_set",
+        )
         with self.assertRaises(ValidationError) as cm:
-            form.clean()
+            formset.clean()
         exc = cm.exception
         self.assertIn("requires all fields to be BOOLEAN", str(exc))
-        self.assertIn("NumField", str(exc))
+        self.assertIn("TextField", str(exc))
+
+    def test_field_from_wrong_source(self):
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.BOOLEANS,
+                "fields_source": self.source,
+                "title": "Block title",
+            }
+        )
+        # One non-boolean field included for BOOLEANS => should raise
+        formset_data = {
+            "sheetfieldthroughmodel_set-TOTAL_FORMS": 1,
+            "sheetfieldthroughmodel_set-INITIAL_FORMS": "0",
+            "sheetfieldthroughmodel_set-MIN_NUM_FORMS": "0",
+            "sheetfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
+            "sheetfieldthroughmodel_set-0-field": self.textual_field_2.pk,
+        }
+
+        self.assertTrue(form.is_valid(), form.errors)
+        block = form.save()
+        formset = SheetFieldInlineFormSetFactory(
+            formset_data,
+            instance=block,
+            prefix="sheetfieldthroughmodel_set",
+        )
+        with self.assertRaises(ValidationError) as cm:
+            formset.clean()
+        exc = cm.exception
+        self.assertIn(
+            f"The following fields do not belong to the selected source: {self.textual_field_2.label}",
+            str(exc),
+        )
 
     def test_valid_numerical_block_passes(self):
-        form = SheetBlockAdminForm()
-        # Only numerical fields => should not raise and should return cleaned_data
-        num_field1 = SheetFieldFactory(type=SheetFieldType.NUMERICAL, label="Num1")
-        num_field2 = SheetFieldFactory(type=SheetFieldType.NUMERICAL, label="Num2")
-
-        form.cleaned_data = {
-            "type": SheetBlockType.BAR_PLOT,
-            "fields": [num_field1, num_field2],
-            "extra_fields": [],
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.BAR_PLOT,
+                "fields_source": self.source,
+                "title": "Block title",
+            }
+        )
+        # Only numerical fields => should not raise
+        formset_data = {
+            "sheetfieldthroughmodel_set-TOTAL_FORMS": 1,
+            "sheetfieldthroughmodel_set-INITIAL_FORMS": "0",
+            "sheetfieldthroughmodel_set-MIN_NUM_FORMS": "0",
+            "sheetfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
+            "sheetfieldthroughmodel_set-0-field": self.numerical_field_1.pk,
         }
-        cleaned = form.clean()
-        self.assertEqual(cleaned.get("type"), SheetBlockType.BAR_PLOT)
+
+        self.assertTrue(form.is_valid(), form.errors)
+        block = form.save()
+        formset = SheetFieldInlineFormSetFactory(
+            formset_data,
+            instance=block,
+            prefix="sheetfieldthroughmodel_set",
+        )
+        self.assertTrue(formset.is_valid(), formset.errors)
+
+    def test_block_type_requires_fields_source(self):
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.BAR_PLOT,
+                "fields_source": None,
+                "title": "Block title",
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("requires a fields source", str(form.errors))
+
+    def test_block_type_requires_geometry_source(self):
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.PANORAMAX,
+                "title": "Block title",
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("requires a geometry source", str(form.errors))
+
+    def test_selected_source_not_in_sheet_sources(self):
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.BAR_PLOT,
+                "fields_source": self.source_2,  # source_2 not linked to feature_sheet
+                "title": "Block title",
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            "Selected source does not match the sources of the Feature Sheet",
+            str(form.errors),
+        )
+
+    def test_order_field_from_wrong_source(self):
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.FIELDS_TABLE,
+                "fields_source": self.source,
+                "title": "Block title",
+                # order_field belongs to source_2, not source
+                "order_field": self.textual_field_2.field.pk,
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("Order field must be from selected source", str(form.errors))
+
+
+class FeatureSheetAdminFormTest(AdminTestCase):
+    def test_sheets_list_fields(self):
+        form = FeatureSheetAdminForm(
+            data={
+                "name": "Test sheet",
+                "sources": [self.source_2],
+                "unique_identifier": self.textual_field_2.field,
+            }
+        )
+        # One field from another source
+        formset_data = {
+            "sources": [self.source_2.pk],
+            "sheetlistfieldthroughmodel_set-TOTAL_FORMS": 1,
+            "sheetlistfieldthroughmodel_set-INITIAL_FORMS": "0",
+            "sheetlistfieldthroughmodel_set-MIN_NUM_FORMS": "0",
+            "sheetlistfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
+            "sheetlistfieldthroughmodel_set-0-list_field": self.textual_field.field.pk,
+        }
+        self.assertTrue(form.is_valid(), form.errors)
+        sheet = form.save()
+        formset = SheetListFieldInlineFormSetFactory(
+            formset_data,
+            instance=sheet,
+            prefix="sheetlistfieldthroughmodel_set",
+        )
+        with self.assertRaises(ValidationError) as cm:
+            formset.clean()
+        exc = cm.exception
+        self.assertIn(
+            "Please choose fields that belong to one of the selected sources above.",
+            str(exc),
+        )
+
+    def test_sheets_list_fields_from_several_sources(self):
+        form = FeatureSheetAdminForm(
+            data={
+                "name": "Test sheet",
+                "sources": [self.source_2],
+                "unique_identifier": self.textual_field_2.field,
+            }
+        )
+        # Fields from different sources
+        formset_data = {
+            "sources": [self.source_2.pk],
+            "sheetlistfieldthroughmodel_set-TOTAL_FORMS": 2,
+            "sheetlistfieldthroughmodel_set-INITIAL_FORMS": "0",
+            "sheetlistfieldthroughmodel_set-MIN_NUM_FORMS": "0",
+            "sheetlistfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
+            "sheetlistfieldthroughmodel_set-0-list_field": self.textual_field.field.pk,
+            "sheetlistfieldthroughmodel_set-1-list_field": self.textual_field_2.field.pk,
+        }
+        self.assertTrue(form.is_valid(), form.errors)
+        sheet = form.save()
+        formset = SheetListFieldInlineFormSetFactory(
+            formset_data,
+            instance=sheet,
+            prefix="sheetlistfieldthroughmodel_set",
+        )
+        with self.assertRaises(ValidationError) as cm:
+            formset.clean()
+        exc = cm.exception
+        self.assertIn("These fields must all come from the same source.", str(exc))
+
+    def test_no_fields_raises_validation_error(self):
+        form = FeatureSheetAdminForm(
+            data={
+                "name": "Test sheet",
+                "sources": [self.source_2],
+                "unique_identifier": self.textual_field_2.field,
+            }
+        )
+        formset_data = {
+            "sources": [self.source_2.pk],
+            "sheetlistfieldthroughmodel_set-TOTAL_FORMS": 0,
+            "sheetlistfieldthroughmodel_set-INITIAL_FORMS": "0",
+            "sheetlistfieldthroughmodel_set-MIN_NUM_FORMS": "0",
+            "sheetlistfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
+        }
+        self.assertTrue(form.is_valid(), form.errors)
+        sheet = form.save()
+        formset = SheetListFieldInlineFormSetFactory(
+            formset_data,
+            instance=sheet,
+            prefix="sheetlistfieldthroughmodel_set",
+        )
+        with self.assertRaises(ValidationError) as cm:
+            formset.clean()
+        exc = cm.exception
+        self.assertIn(
+            "Please select at least 1 field to display in the sheets list.",
+            str(exc),
+        )
+
+    def test_unique_identifier_not_in_source(self):
+        form = FeatureSheetAdminForm(
+            data={
+                "name": "Test sheet",
+                # source has no field matching textual_field_2
+                "sources": [self.source],
+                "unique_identifier": self.textual_field_2.field,
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn("does not exist in source", str(form.errors))
+
+    def test_valid_sheets_list_fields(self):
+        form = FeatureSheetAdminForm(
+            data={
+                "name": "Test sheet",
+                "sources": [self.source_2],
+                "unique_identifier": self.textual_field_2.field,
+            }
+        )
+        # Fields from different sources
+        formset_data = {
+            "sources": [self.source_2.pk],
+            "sheetlistfieldthroughmodel_set-TOTAL_FORMS": 1,
+            "sheetlistfieldthroughmodel_set-INITIAL_FORMS": "0",
+            "sheetlistfieldthroughmodel_set-MIN_NUM_FORMS": "0",
+            "sheetlistfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
+            "sheetlistfieldthroughmodel_set-0-list_field": self.textual_field_2.field.pk,
+        }
+        self.assertTrue(form.is_valid(), form.errors)
+        sheet = form.save()
+        formset = SheetListFieldInlineFormSetFactory(
+            formset_data,
+            instance=sheet,
+            prefix="sheetlistfieldthroughmodel_set",
+        )
+        self.assertTrue(formset.is_valid(), formset.errors)
+        formset.save()
+        sheet.refresh_from_db()
+        self.assertTrue(formset.is_valid(), form.errors)
+        self.assertEqual(sheet.list_fields.count(), 1)
+        self.assertEqual(
+            str(sheet.list_fields.first()), str(self.textual_field_2.field)
+        )
+        self.assertEqual(
+            str(
+                SheetListFieldThroughModel.objects.filter(
+                    sheet=sheet, list_field=self.textual_field_2.field
+                ).first()
+            ),
+            str(self.textual_field_2.field),
+        )

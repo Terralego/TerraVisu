@@ -26,8 +26,8 @@ class ConfigSite(AdminSite):
                 apps.append(new_app_config)
         return apps
 
-    def get_app_list(self, request):
-        apps = super().get_app_list(request)
+    def get_app_list(self, request, app_label=None):
+        apps = super().get_app_list(request, app_label)
         self.move_models_to_new_app(
             apps, [FeatureSheet, SheetField, SheetBlock], "Visu", _("Feature sheets")
         )

@@ -1,13 +1,17 @@
 import factory
+from django.forms import inlineformset_factory
 
 from project.terra_layer.tests.factories import FieldFactory
+from project.visu.forms import SheetFieldInlineFormSet, SheetListFieldInlineFormSet
 from project.visu.models import (
     ExtraMenuItem,
     FeatureSheet,
     SheetBlock,
     SheetBlockType,
     SheetField,
+    SheetFieldThroughModel,
     SheetFieldType,
+    SheetListFieldThroughModel,
     SpriteValue,
 )
 
@@ -62,10 +66,27 @@ class FeatureSheetFactory(factory.django.DjangoModelFactory):
     unique_identifier = factory.SubFactory(FieldFactory)
 
     @factory.post_generation
-    def accessible_from(self, create, extracted, **kwargs):
+    def sources(self, create, extracted, **kwargs):
         if not create:
             return
 
         if extracted:
-            for layer in extracted:
-                self.accessible_from.add(layer)
+            for source in extracted:
+                self.sources.add(source)
+
+
+SheetFieldInlineFormSetFactory = inlineformset_factory(
+    SheetBlock,
+    SheetFieldThroughModel,
+    formset=SheetFieldInlineFormSet,
+    fields=["field"],
+    extra=0,
+)
+
+SheetListFieldInlineFormSetFactory = inlineformset_factory(
+    FeatureSheet,
+    SheetListFieldThroughModel,
+    formset=SheetListFieldInlineFormSet,
+    fields=["list_field"],
+    extra=0,
+)

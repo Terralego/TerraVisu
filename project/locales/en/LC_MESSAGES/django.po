@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-12 13:05+0000\n"
+"POT-Creation-Date: 2026-02-25 08:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -916,19 +916,7 @@ msgstr ""
 msgid "Your declaration has been updated"
 msgstr ""
 
-#, python-format
-msgid ""
-"Block type '%(block_type)s' requires all fields to be NUMERICAL. The "
-"following fields are not numerical: %(field_names)s"
-msgstr ""
-
-#, python-format
-msgid ""
-"Block type 'Booleans' requires all fields to be BOOLEAN. The following "
-"fields are not boolean: %(field_names)s"
-msgstr ""
-
-msgid "Accessible from"
+msgid "Sources"
 msgstr ""
 
 msgid "No pictogram"
@@ -944,6 +932,51 @@ msgid "Blocks"
 msgstr ""
 
 msgid "Sheet"
+msgstr ""
+
+#, python-format
+msgid ""
+"The following fields do not belong to the selected source: %(field_names)s"
+msgstr ""
+
+msgid "BOOLEAN"
+msgstr ""
+
+msgid "NUMERICAL"
+msgstr ""
+
+#, python-format
+msgid ""
+"Block type '%(block_type)s' requires all fields to be %(type_label)s. The "
+"following fields are not: %(field_names)s"
+msgstr ""
+
+msgid "Please select at least 1 field to display in the sheets list."
+msgstr ""
+
+msgid "These fields must all come from the same source."
+msgstr ""
+
+msgid "Please choose fields that belong to one of the selected sources above."
+msgstr ""
+
+#, python-format
+msgid "Block type '%(block_type)s' requires a fields source."
+msgstr ""
+
+#, python-format
+msgid "Block type '%(block_type)s' requires a geometry source."
+msgstr ""
+
+msgid "Selected source does not match the sources of the Feature Sheet"
+msgstr ""
+
+#, python-format
+msgid "Order field must be from selected source: '%(fields_source)s'."
+msgstr ""
+
+#, python-format
+msgid "Field '%(unique_identifier)s' does not exist in source '%(source)s'."
 msgstr ""
 
 msgid "Sprite icon"
@@ -995,6 +1028,12 @@ msgstr ""
 msgid "Sheet name"
 msgstr ""
 
+msgid "Sheets list field"
+msgstr ""
+
+msgid "Please select the fields to display in the sheets list view"
+msgstr ""
+
 msgid "Feature sheet"
 msgstr ""
 
@@ -1035,10 +1074,39 @@ msgid ""
 "Please select fields corresponding to median values for this data source"
 msgstr ""
 
-msgid "Geometry field"
+msgid "Fields source"
 msgstr ""
 
-msgid "Please select a field corresponding to the centroid of the feature"
+msgid ""
+"Please select a source from which to retrieve the fields for this block."
+msgstr ""
+
+msgid "Geometry source"
+msgstr ""
+
+msgid ""
+"Please select a source from which to retrieve a geometry field for this "
+"block."
+msgstr ""
+
+msgid "Second geometry source"
+msgstr ""
+
+msgid ""
+"Optionally select a source from which to retrieve a second geometry field "
+"for this map."
+msgstr ""
+
+msgid "Order field"
+msgstr ""
+
+msgid "Please select the field that defines ordering for this block"
+msgstr ""
+
+msgid "Limit"
+msgstr ""
+
+msgid "Please set the maximum number of features to return in this block"
 msgstr ""
 
 msgid "Sheet block"
@@ -1054,4 +1122,7 @@ msgid "Extra sheet field"
 msgstr ""
 
 msgid "Extra sheet fields"
+msgstr ""
+
+msgid "Sheets list fields"
 msgstr ""

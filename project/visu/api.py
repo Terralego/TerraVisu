@@ -3,7 +3,7 @@ import logging
 from constance import config
 from django.conf import settings
 from django.core.files.storage import default_storage
-from django.db.models import Q
+from django.db.models import Prefetch, Q
 from django.template.loader import render_to_string
 from django.utils.timezone import now
 from rest_framework import permissions
@@ -14,10 +14,11 @@ from rest_framework.views import APIView
 
 from project.accounts.serializers import UserSerializer
 from project.terra_layer.models import Scene
-from project.visu.models import ExtraMenuItem, SpriteValue
+from project.visu.models import ExtraMenuItem, SheetBlock, SheetField, SpriteValue
 from project.visu.serializers import ExtraMenuItemSerializer
 from project.visu.utils import get_logo_url
 
+from ..geosource.models import Field
 from .models import FeatureSheet
 from .serializers import FeatureSheetSerializer
 
@@ -232,4 +233,27 @@ class FeatureSheetAPIView(ListAPIView):
         permissions.AllowAny,
     ]
     serializer_class = FeatureSheetSerializer
-    queryset = FeatureSheet.objects.all()
+    queryset = FeatureSheet.objects.all().prefetch_related(
+        "sources",
+        Prefetch(
+            "blocks",
+            queryset=SheetBlock.objects.order_by("order").prefetch_related(
+                Prefetch(
+                    "fields",
+                    queryset=SheetField.objects.order_by(
+                        "sheetfieldthroughmodel__order"
+                    ),
+                ),
+                Prefetch(
+                    "extra_fields",
+                    queryset=SheetField.objects.order_by(
+                        "extrasheetfieldthroughmodel__order"
+                    ),
+                ),
+            ),
+        ),
+        Prefetch(
+            "list_fields",
+            queryset=Field.objects.order_by("sheetlistfieldthroughmodel__order"),
+        ),
+    )
