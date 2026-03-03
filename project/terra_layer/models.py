@@ -198,7 +198,7 @@ class LayerGroup(models.Model):
 
 
 class Layer(CloneMixin, models.Model):
-    _clone_m2o_or_o2m_fields = ["style_images", "extra_styles"]
+    _clone_m2o_or_o2m_fields = ["style_images", "extra_styles", "fields_filters"]
     _clone_excluded_fields = ["group"]  # don't include clone in group / scene
     uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name="layers")
