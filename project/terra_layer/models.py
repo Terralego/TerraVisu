@@ -441,7 +441,7 @@ class CustomStyle(models.Model):
         ).hexdigest()
 
 
-class FilterField(models.Model):
+class FilterField(CloneMixin, models.Model):
     field = models.ForeignKey(Field, on_delete=models.CASCADE)
     layer = models.ForeignKey(
         Layer, on_delete=models.CASCADE, related_name="fields_filters"

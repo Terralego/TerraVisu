@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-05 10:28+0000\n"
+"POT-Creation-Date: 2026-03-10 14:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -678,6 +678,175 @@ msgstr "Exporter les déclarations sélectionnées en CSV"
 msgid "Creation month"
 msgstr "Mois de création"
 
+#, python-format
+msgid ""
+"Invalid %(option)s value '%(value)s'. Expected format: \"old_value,"
+"new_value\""
+msgstr ""
+
+#, python-format
+msgid "Field '%(name)s' does not exist on original source %(source)s"
+msgstr ""
+"Le champ '%(name)s' n'existe pas dans la source d'origine '%(source)s'."
+
+#, python-format
+msgid "Field '%(name)s' does not exist on target source %(source)s"
+msgstr "Le champ '%(name)s' n'existe pas dans la source cible '%(source)s'."
+
+#, python-format
+msgid "Fields mapping need to include '%(old_field_name)s'."
+msgstr "Le mapping des champs doit inclure '%(old_field_name)s'."
+
+msgid "Primary key of the layer to duplicate"
+msgstr "Clé primaire de la couche à dupliquer"
+
+msgid "Custom name for the duplicated layer"
+msgstr "Nouveau nom pour la couche dupliquée"
+
+msgid "Primary key of the source to use for the duplicated layer"
+msgstr "Clé primaire de la source à utiliser pour la couche à dupliquer"
+
+msgid ""
+"Name of the field to use as main_field for the duplicated layer. The field "
+"is looked up on the target source. Mandatory when --source is specified."
+msgstr ""
+"Nom du champ principal pour la couche dupliquée. Le champ doit faire partie "
+"de la source spécifiée. Ce paramètre est obligatoire si le paramètre --"
+"source est utilisé."
+
+msgid ""
+"Source PKs for extra styles, comma-separated in order. Use \"_\" to keep the "
+"original source. Example: \"12,_,17\" updates 1st and 3rd extra style "
+"sources."
+msgstr ""
+"Clé primaire de la source à utiliser pour les styles secondaires, dans "
+"l'ordre et séparés par une virgule. Utiliser \"_\" préserve la source "
+"originale. Exemple: \"12,_,17\" modifie la source du premier et troisième "
+"style secondaire."
+
+msgid ""
+"Rename legend titles. Each value is \"old_title,new_title\". Example: --"
+"legend-titles-search-and-replace \"Old title,New title\" \"Other title,"
+"Changed title\""
+msgstr ""
+"Change les titres de légende. Les valeurs sont de la forme \"ancien_titre,"
+"nouveau_titre\". Exemple: --legend-titles \"Ancien titre,Nouveau titre\" "
+"\"Autre titre,Autre nouveau titre\""
+
+msgid ""
+"Update legend comments. Each value is \"old_comment,new_comment\". Example: "
+"--legend-comments-search-and-replace \"Old comment,New comment here\""
+msgstr ""
+"Change les commentaires de légendes. Les valeurs sont de la forme "
+"\"ancien_commentaire,nouveau_commentaire\" Exemple: --legend-comments "
+"\"Ancien commentaire,Un nouveau commentaire\""
+
+msgid ""
+"Search and replace in popup template. Each value is \"old_string,"
+"new_string\". Example: --popup-search-and-replace \"old text,new text\""
+msgstr ""
+"Cherche et remplace une chaîne de caractères dans le modèle de la fenêtre au "
+"survol. Les valeurs sont de la forme \"ancienne_valeur,nouvelle_valeur\". "
+"Example: --popup-search-and-replace \"name_field,config_field\""
+
+msgid ""
+"Search and replace in minisheet template. Each value is \"old_string,"
+"new_string\". Example: --minisheet-search-and-replace \"old text,new text\""
+msgstr ""
+"Cherche et remplace une chaîne de caractères dans le modèle de la mini-"
+"fiche. Les valeurs sont de la forme \"ancienne_valeur,nouvelle_valeur\". "
+"Example: ---minisheet-search-and-replace \"name_field,config_field\""
+
+msgid ""
+"Keep the duplicated layer in the same scene (group) as the original. By "
+"default the clone is detached from any scene."
+msgstr ""
+"Conserve la couche dupliquée dans la même vue (et groupe) que l'originale. "
+"Par défaut la couche n'est pas liée à une vue."
+
+msgid ""
+"Map fields from the original source to the target source. Each value is "
+"\"old_field_name,new_field_name\". Example: --fields-mapping \"nom_m,"
+"name_field\" \"pop,population\"."
+msgstr ""
+"Établit la correspondance entre les champs de la source d'origine et de la "
+"source cible. Les valeurs sont de la forme \"nom_ancien_champ,"
+"nom_nouveau_champ\". Exemple: --fields-mapping \"nom_m,name_field\" \"pop,"
+"population\"."
+
+#, python-format
+msgid "Layer with pk %(pk)s does not exist"
+msgstr "Aucune couche avec la clé primaire %(pk)s n'existe"
+
+msgid "Copy"
+msgstr "Copie"
+
+msgid "--main-field is required when --source is specified"
+msgstr "--main-field est obligatoire si --source est utilisé"
+
+#, python-format
+msgid "Source with pk %(pk)s does not exist"
+msgstr "Aucune source avec la clé primaire %(pk)s n'existe"
+
+#, python-format
+msgid "Field '%(name)s' does not exist on source %(source)s"
+msgstr "Le champ '%(name)s' n'existe pas dans la source '%(source)s'."
+
+#, python-format
+msgid "No legend with title '%(title)s' found"
+msgstr "Aucune légende ayant pour titre '%(title)s' n'a été trouvée"
+
+#, python-format
+msgid "No legend with comment '%(comment)s' found"
+msgstr "Aucune légende ayant pour commentaire '%(comment)s' n'a été trouvée"
+
+#, python-format
+msgid "String '%(string)s' not found in popup config"
+msgstr ""
+"La chaîne '%(string)s' n'a pas été trouvée dans le modèle de la fenêtre au "
+"survol"
+
+msgid "Popup template:"
+msgstr "Modèle de la fenêtre au survol :"
+
+#, python-format
+msgid "String '%(string)s' not found in minisheet config"
+msgstr ""
+"La chaîne '%(string)s' n'a pas été trouvée dans le modèle de la mini-fiche"
+
+msgid "Minisheet template:"
+msgstr "Modèle de la mini-fiche :"
+
+msgid "Minisheet config:"
+msgstr "Configuration de la mini-fiche :"
+
+msgid "Popup config:"
+msgstr "Configuration de la fenêtre au survol :"
+
+#, python-format
+msgid ""
+"This layer has %(expected)s extra style(s), please enter as many sources "
+"(found %(got)s sources)"
+msgstr ""
+"Cette couche a %(expected)s style(s) secondaire(s), veuillez entrer autant "
+"de sources (%(got)s sources lues)."
+
+#, python-format
+msgid ""
+"Invalid value '%(value)s' in --extra-styles-sources. Expected an integer PK "
+"or \"_\"."
+msgstr ""
+"Valeur invalide '%(value)s' pour --extra-styles-sources. Entrez des clés "
+"primaires (entiers) ou \"_\"."
+
+#, python-format
+msgid ""
+"Layer %(old_pk)s duplicated successfully. New layer: pk=%(new_pk)s, "
+"name=\"%(name)s\""
+msgstr ""
+"La couche %(old_pk)s a été dupliquée. Nouvelle couche: pk=%(new_pk)s, "
+"nom=\"%(name)s\""
+
 msgid "Monthly declarations summary"
 msgstr "Récapitulatif mensuel des déclarations"
 
@@ -702,9 +871,6 @@ msgstr "Champ de la source de donnée à utiliser pour la comparaison."
 msgid "Separator to generate query params from field values."
 msgstr ""
 "Séparateur à utiliser pour les valeurs de champs des objets à comparer."
-
-msgid "Copy"
-msgstr "Copie"
 
 msgid "New"
 msgstr "Nouveau"
