@@ -107,7 +107,7 @@ class FeatureSheetAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
 @admin.register(Field, site=config_site)
 class FieldAdmin(admin.ModelAdmin):
     ordering = ["source", "order"]
-    search_fields = ["name", "source"]
+    search_fields = ["name", "source__name"]
 
     def has_module_permission(self, request):
         # Do not display this in config page, it is only registered to
@@ -165,7 +165,6 @@ class SheetFieldAdmin(admin.ModelAdmin):
 
 @admin.register(Source, site=config_site)
 class SourceAdmin(admin.ModelAdmin):
-    # ordering = ["source", "order"]
     search_fields = ["name"]
 
     def has_module_permission(self, request):
