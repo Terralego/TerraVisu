@@ -81,6 +81,7 @@ class SheetsListFieldTabularInline(OrderedTabularInline):
         "move_up_down_links",
     )
     ordering = ("order",)
+    autocomplete_fields = ("list_field",)
     extra = 1
 
 
@@ -89,6 +90,7 @@ class FeatureSheetAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
     list_display = ("name", "get_sources")
     form = FeatureSheetAdminForm
     inlines = (SheetsListFieldTabularInline,)
+    autocomplete_fields = ("sources",)
 
     def get_queryset(self, request):
         return (
