@@ -227,6 +227,60 @@ class SheetBlockAdminFormTest(AdminTestCase):
         self.assertIn("Order field must be from selected source", str(form.errors))
 
 
+class AutocompleteTestCase(AdminTestCase):
+    def test_sheetblock_order_field_autocomplete(self):
+        field_name = self.textual_field.field.name
+        response = self.client.get(
+            "/config/autocomplete/",
+            {
+                "term": field_name,
+                "app_label": "visu",
+                "model_name": "sheetblock",
+                "field_name": "order_field",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        results = data["results"]
+        (
+            self.assertIn(
+                self.textual_field.field.pk, [int(result["id"]) for result in results]
+            ),
+        )
+
+    def test_sheetfield_field_autocomplete(self):
+        field_name = self.textual_field.field.name
+        response = self.client.get(
+            "/config/autocomplete/",
+            {
+                "term": field_name,
+                "app_label": "visu",
+                "model_name": "sheetfield",
+                "field_name": "field",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        results = data["results"]
+        self.assertIn(
+            self.textual_field.field.pk, [int(result["id"]) for result in results]
+        )
+
+    def test_sheetblock_order_field_autocomplete_no_results(self):
+        response = self.client.get(
+            "/config/autocomplete/",
+            {
+                "term": "nonexistent_field",
+                "app_label": "visu",
+                "model_name": "sheetblock",
+                "field_name": "order_field",
+            },
+        )
+        self.assertEqual(response.status_code, 200)
+        data = response.json()
+        self.assertEqual(data["results"], [])
+
+
 class FeatureSheetAdminFormTest(AdminTestCase):
     def test_sheets_list_fields(self):
         form = FeatureSheetAdminForm(

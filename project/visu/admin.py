@@ -90,6 +90,14 @@ class FeatureSheetAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
     form = FeatureSheetAdminForm
     inlines = (SheetsListFieldTabularInline,)
 
+    def get_queryset(self, request):
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("unique_identifier")
+            .prefetch_related("sources", "list_fields")
+        )
+
     def get_sources(self, obj):
         return ", ".join([str(source) for source in obj.sources.all()])
 
@@ -99,7 +107,7 @@ class FeatureSheetAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
 @admin.register(Field, site=config_site)
 class FieldAdmin(admin.ModelAdmin):
     ordering = ["source", "order"]
-    search_fields = ["name", "source"]
+    search_fields = ["name", "source__name"]
 
     def has_module_permission(self, request):
         # Do not display this in config page, it is only registered to
@@ -122,6 +130,14 @@ class SheetFieldAdmin(admin.ModelAdmin):
 
     class Media:
         js = ("admin/sheetfield_admin.js",)
+
+    def get_queryset(self, request):
+        return (
+            super()
+            .get_queryset(request)
+            .select_related("field")
+            .prefetch_related("blocks")
+        )
 
     def get_picto_true(self, obj):
         return mark_safe(
@@ -149,7 +165,6 @@ class SheetFieldAdmin(admin.ModelAdmin):
 
 @admin.register(Source, site=config_site)
 class SourceAdmin(admin.ModelAdmin):
-    # ordering = ["source", "order"]
     search_fields = ["name"]
 
     def has_module_permission(self, request):
@@ -180,6 +195,19 @@ class SheetBlockAdmin(OrderedInlineModelAdminMixin, OrderedModelAdmin):
 
     class Media:
         js = ("admin/sheetblock_admin.js",)
+
+    def get_queryset(self, request):
+        return (
+            super()
+            .get_queryset(request)
+            .select_related(
+                "sheet",
+                "fields_source",
+                "first_geom_source",
+                "second_geom_source",
+            )
+            .prefetch_related("fields", "extra_fields")
+        )
 
     def get_sheet_name(self, obj):
         return obj.sheet.name
