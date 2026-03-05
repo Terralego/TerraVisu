@@ -226,6 +226,64 @@ class SheetBlockAdminFormTest(AdminTestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("Order field must be from selected source", str(form.errors))
 
+    def test_is_main_table_unique_per_sheet(self):
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.FIELDS,
+                "fields_source": self.source,
+                "title": "Main block",
+                "is_main_table": True,
+            }
+        )
+        self.assertTrue(form.is_valid(), form.errors)
+        instance = form.save()
+        form = SheetBlockAdminForm(
+            instance=instance,
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.FIELDS,
+                "fields_source": self.source,
+                "title": "Main block",
+                "is_main_table": True,
+            },
+        )
+        form.save()
+        form2 = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.FIELDS,
+                "fields_source": self.source,
+                "title": "Another block",
+                "is_main_table": True,
+            }
+        )
+        self.assertFalse(form2.is_valid())
+        self.assertIn("is already set as main table", str(form2.errors))
+
+    def test_is_main_table_false_does_not_conflict(self):
+        form = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.FIELDS,
+                "fields_source": self.source,
+                "title": "Main block",
+                "is_main_table": True,
+            }
+        )
+        self.assertTrue(form.is_valid(), form.errors)
+        form.save()
+        form2 = SheetBlockAdminForm(
+            data={
+                "sheet": self.feature_sheet,
+                "type": SheetBlockType.FIELDS,
+                "fields_source": self.source,
+                "title": "Another block",
+                "is_main_table": False,
+            }
+        )
+        self.assertTrue(form2.is_valid(), form2.errors)
+
 
 class AutocompleteTestCase(AdminTestCase):
     def test_sheetblock_order_field_autocomplete(self):

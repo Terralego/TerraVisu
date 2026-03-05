@@ -135,6 +135,7 @@ class SheetBlockAdminForm(ModelForm):
             "fields_source",
             "first_geom_source",
             "second_geom_source",
+            "is_main_table",
         )
 
     def clean(self):
@@ -196,6 +197,23 @@ class SheetBlockAdminForm(ModelForm):
                 _("Order field must be from selected source: '%(fields_source)s'.")
                 % {"fields_source": fields_source.slug}
             )
+
+        # Only one main table per sheet
+        is_main_table = cleaned_data.get("is_main_table")
+        if is_main_table and sheet:
+            main_table_block = SheetBlock.objects.filter(
+                sheet=sheet, is_main_table=True
+            )
+            if self.instance.pk:
+                main_table_block = main_table_block.exclude(pk=self.instance.pk)
+            if main_table_block.exists():
+                raise ValidationError(
+                    _(
+                        "Block '%(bloc_title)s is already set as main table for this sheet."
+                    )
+                    % {"bloc_title": main_table_block.first().title}
+                )
+
         return cleaned_data
 
 
