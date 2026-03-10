@@ -303,6 +303,12 @@ class SceneViewsetTestCase(APITestCase):
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
+        response = self.client.get(
+            reverse("scene-customstyle-source", args=[scene["slug"], layer.pk]),
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.json()), 2)
+
     def test_layer_custom_style_source_view(self):
         source = Source.objects.create(
             geom_type=10,
@@ -332,7 +338,7 @@ class SceneViewsetTestCase(APITestCase):
             reverse("scene-customstyle-source", args=[scene["slug"], layer.pk]),
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data = response.json()
+        data = response.json()[0]
         self.assertEqual(data["id"], f"terra_{geolayer.pk}")
         self.assertEqual(data["type"], "vector")
         # Authenticated user: URL should contain idb64 and token params
@@ -346,7 +352,7 @@ class SceneViewsetTestCase(APITestCase):
             {"cache": "false"},
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        data_refreshed = response.json()
+        data_refreshed = response.json()[0]
         self.assertEqual(data_refreshed["id"], data["id"])
         self.assertEqual(data_refreshed["type"], data["type"])
 
@@ -357,7 +363,7 @@ class SceneViewsetTestCase(APITestCase):
             {"cache": "false"},
         )
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        anon_data = response.json()
+        anon_data = response.json()[0]
         self.assertEqual(anon_data["url"], f"{url}?")
         self.client.force_authenticate(self.user)
 
