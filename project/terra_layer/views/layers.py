@@ -649,9 +649,9 @@ class SceneLayerDetailAPIView(SceneTreeAPIView):
 class SceneCustomStyleSourceAPIView(SceneTreeAPIView):
     """Serves the source entry from customStyle.sources for a given Layer pk."""
 
-    def build_source_response(self, layer):
-        if layer.source.slug not in self.authorized_sources:
-            return None
+    def build_source_response(self, source):
+        if source.slug not in self.authorized_sources:
+            raise Http404
 
         querystring = QueryDict(mutable=True)
         if not self.request.user.is_anonymous:
@@ -666,7 +666,7 @@ class SceneCustomStyleSourceAPIView(SceneTreeAPIView):
                 }
             )
 
-        geolayer = layer.source.get_layer()
+        geolayer = source.get_layer()
         url = reverse("layer-tilejson", args=(geolayer.pk,))
         source_id = f"{self.DEFAULT_SOURCE_NAME}_{geolayer.pk}"
 
@@ -675,6 +675,15 @@ class SceneCustomStyleSourceAPIView(SceneTreeAPIView):
             "type": self.DEFAULT_SOURCE_TYPE,
             "url": f"{url}?{querystring.urlencode()}",
         }
+
+    def build_sources_response(self, layer):
+        sources_data = [self.build_source_response(layer.source)]
+        if layer.extra_styles.exists():
+            # Layer's extra styles have "sub sources" & "sub layers" we need to handle
+            for style in layer.extra_styles.all():
+                sub_source = style.source
+                sources_data.append(self.build_source_response(sub_source))
+        return sources_data
 
     def get(self, request, slug=None, pk=None, format=None):
         update_cache = request.query_params.get("cache") == "false"
@@ -693,16 +702,14 @@ class SceneCustomStyleSourceAPIView(SceneTreeAPIView):
         cache_key = get_customstyle_source_cache_key(
             self.scene, layer, self.user_groups
         )
+
         if update_cache:
-            response = self.build_source_response(layer)
+            response = self.build_sources_response(layer)
             cache.set(cache_key, response)
         else:
             response = cache.get_or_set(
-                cache_key, lambda: self.build_source_response(layer)
+                cache_key, lambda: self.build_sources_response(layer)
             )
-
-        if response is None:
-            raise Http404
 
         return Response(response)
 
