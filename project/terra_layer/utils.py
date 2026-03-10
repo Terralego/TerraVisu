@@ -25,3 +25,28 @@ def get_scene_tree_cache_key(scene, user_groups=None):
     layers_key = f"{scene.layers.values('id', 'group', 'updated_at')}"
     cache_string = f"tree-{scene_key}-{user_groups_key}-{layers_key}"
     return md5(cache_string.encode("utf-8")).hexdigest()
+
+
+def layer_cache_key(prefix, scene, layer, user_groups=None):
+    scene_key = f"{scene.pk}-{scene.updated_at}"
+    layer_key = f"{layer.pk}-{layer.updated_at}"
+    user_groups_key = (
+        f"{user_groups.values_list('pk', flat=True)}" if user_groups else ""
+    )
+    cache_string = f"{prefix}-{scene_key}-{layer_key}-{user_groups_key}"
+    return md5(cache_string.encode("utf-8")).hexdigest()
+
+
+def get_layer_detail_cache_key(scene, layer, user_groups=None):
+    """Make cache key for layer detail endpoint"""
+    return layer_cache_key("layer-detail", scene, layer, user_groups)
+
+
+def get_customstyle_source_cache_key(scene, layer, user_groups=None):
+    """Make cache key for custom style source endpoint"""
+    return layer_cache_key("customstyle-source", scene, layer, user_groups)
+
+
+def get_customstyle_layer_cache_key(scene, layer, user_groups=None):
+    """Make cache key for custom style layer endpoint"""
+    return layer_cache_key("customstyle-layer", scene, layer, user_groups)
