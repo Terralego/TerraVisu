@@ -26,7 +26,7 @@ router.register(r"", LayerViewset, basename="layer")
 urlpatterns = [
     path("view/<str:slug>/", SceneTreeAPIView.as_view(), name="layerview"),
     path(
-        "view/<slug:slug>/layersTree/layers/<int:layer_id>",
+        "view/<slug:slug>/layersTree/layer/<int:layer_id>",
         SceneLayerDetailAPIView.as_view(),
         name="scene-layer-detail",
     ),
@@ -36,7 +36,7 @@ urlpatterns = [
         name="scene-customstyle-source",
     ),
     path(
-        "view/<slug:slug>/customStyle/layer/<int:layer_id>",
+        "view/<slug:slug>/customStyle/layers/<int:layer_id>",
         SceneCustomStyleLayerAPIView.as_view(),
         name="scene-customstyle-layer",
     ),
