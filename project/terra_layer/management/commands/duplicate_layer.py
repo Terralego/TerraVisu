@@ -9,28 +9,27 @@ from project.geosource.models import Field, Source
 from project.terra_layer.models import Layer
 
 
-def parse_pair(value, option_name):
-    """Split on the first unescaped comma, unescape \\, and validate exactly two parts."""
-    parts = re.split(r"(?<!\\),", value, maxsplit=1)
-    if len(parts) != 2:
-        raise CommandError(
-            _(
-                "Invalid %(option)s value '%(value)s'. "
-                'Expected format: "old_value,new_value"'
-            )
-            % {"option": option_name, "value": value}
-        )
-    return [p.replace("\\,", ",") for p in parts]
-
-
 class Command(BaseCommand):
     help = "Duplicate a layer by its primary key and optionally update the duplicate"
     fields_mapping = {}
 
+    def parse_pair(self, value, option_name):
+        """Split on the first unescaped comma, unescape \\, and validate exactly two parts."""
+        parts = re.split(r"(?<!\\),", value, maxsplit=1)
+        if len(parts) != 2:
+            raise CommandError(
+                _(
+                    "Invalid %(option)s value '%(value)s'. "
+                    'Expected format: "old_value,new_value"'
+                )
+                % {"option": option_name, "value": value}
+            )
+        return [p.replace("\\,", ",") for p in parts]
+
     def prepare_fields_mapping(self, layer, target_source, fields_mapping_options):
         if fields_mapping_options:
             for pair in fields_mapping_options:
-                old_name, new_name = parse_pair(pair, "fields-mapping")
+                old_name, new_name = self.parse_pair(pair, "fields-mapping")
                 try:
                     old_field = Field.objects.get(source=layer.source, name=old_name)
                 except Field.DoesNotExist:
@@ -186,6 +185,7 @@ class Command(BaseCommand):
         if options["preserve_scene"]:
             attrs["group"] = layer.group
 
+        source_changed = False
         if options["source"]:
             if not options["main_field"]:
                 raise CommandError(
@@ -197,6 +197,7 @@ class Command(BaseCommand):
                 attrs["main_field"] = Field.objects.get(
                     source=target_source, name=options["main_field"]
                 )
+                source_changed = True
             except Source.DoesNotExist:
                 raise CommandError(
                     _("Source with pk %(pk)s does not exist")
@@ -212,14 +213,16 @@ class Command(BaseCommand):
             )
 
         # Clone layer using attributes
-        clone = layer.make_clone(attrs=attrs)
-        self.clone_fields_filters(layer, clone)
+        # Make sure to handle fields filters manually if source changed
+        clone = layer.make_clone(attrs=attrs, skip_fields_filters=source_changed)
+        if source_changed:
+            self.clone_fields_filters(layer, clone)
 
         # Update the clone's legend
         clone_modified = False
         if options["legend_titles_search_and_replace"]:
             for pair in options["legend_titles_search_and_replace"]:
-                old_title, new_title = parse_pair(
+                old_title, new_title = self.parse_pair(
                     pair, "legend-titles-search-and-replace"
                 )
                 found = False
@@ -237,7 +240,7 @@ class Command(BaseCommand):
             clone_modified = True
         if options["legend_comments_search_and_replace"]:
             for pair in options["legend_comments_search_and_replace"]:
-                old_comment, new_comment = parse_pair(
+                old_comment, new_comment = self.parse_pair(
                     pair, "legend-comments-search-and-replace"
                 )
                 found = False
@@ -258,7 +261,9 @@ class Command(BaseCommand):
         if options["popup_search_and_replace"]:
             popup_text = json.dumps(clone.popup_config, ensure_ascii=False)
             for pair in options["popup_search_and_replace"]:
-                old_string, new_string = parse_pair(pair, "popup-search-and-replace")
+                old_string, new_string = self.parse_pair(
+                    pair, "popup-search-and-replace"
+                )
                 if old_string not in popup_text:
                     raise CommandError(
                         _("String '%(string)s' not found in popup config")
@@ -267,7 +272,7 @@ class Command(BaseCommand):
                 popup_text = popup_text.replace(old_string, new_string)
             clone.popup_config = json.loads(popup_text)
             clone_modified = True
-            if options["verbosity"] >= 1:
+            if options["verbosity"] >= 2:
                 self.stdout.write(
                     _("Popup template:")
                     + f"\n{clone.popup_config.get('template', '')}\n\n"
@@ -277,7 +282,7 @@ class Command(BaseCommand):
         if options["minisheet_search_and_replace"]:
             minisheet_text = json.dumps(clone.minisheet_config, ensure_ascii=False)
             for pair in options["minisheet_search_and_replace"]:
-                old_string, new_string = parse_pair(
+                old_string, new_string = self.parse_pair(
                     pair, "minisheet-search-and-replace"
                 )
                 if old_string not in minisheet_text:
@@ -288,7 +293,7 @@ class Command(BaseCommand):
                 minisheet_text = minisheet_text.replace(old_string, new_string)
             clone.minisheet_config = json.loads(minisheet_text)
             clone_modified = True
-            if options["verbosity"] >= 1:
+            if options["verbosity"] >= 2:
                 self.stdout.write(
                     _("Minisheet template:")
                     + f"\n{clone.minisheet_config.get('template', '')}\n\n"
@@ -297,14 +302,14 @@ class Command(BaseCommand):
         # Update the clone's fields using fields mapping if source was changed
         if options["source"]:
             # Handle fields in minisheet config if source was changed
-            if "tree" in clone.minisheet_config["wizard"]:
+            if "tree" in clone.minisheet_config.get("wizard", {}):
                 for item in clone.minisheet_config["wizard"]["tree"]:
                     if "sourceFieldId" in item:
                         old_field_id = item["sourceFieldId"]
                         new_field_id = self.fields_mapping[old_field_id]
                         item["sourceFieldId"] = new_field_id
                         clone_modified = True
-                        if options["verbosity"] >= 1:
+                        if options["verbosity"] >= 2:
                             self.stdout.write(
                                 _("Minisheet config:")
                                 + f"\n{clone.minisheet_config}\n\n"
@@ -319,15 +324,17 @@ class Command(BaseCommand):
                     )
                     clone_modified = True
             # Handle fields in popup config if source was changed
-            for item in clone.popup_config["wizard"]["fields"]:
-                if "sourceFieldId" in item:
-                    old_field_id = item["sourceFieldId"]
-                    new_field_id = self.fields_mapping[old_field_id]
-                    item["sourceFieldId"] = new_field_id
-                    clone_modified = True
-                    self.stdout.write(
-                        _("Popup config:") + f"\n{clone.popup_config}\n\n"
-                    )
+            if "fields" in clone.popup_config.get("wizard", {}):
+                for item in clone.popup_config["wizard"]["fields"]:
+                    if "sourceFieldId" in item:
+                        old_field_id = item["sourceFieldId"]
+                        new_field_id = self.fields_mapping[old_field_id]
+                        item["sourceFieldId"] = new_field_id
+                        clone_modified = True
+                        if options["verbosity"] >= 2:
+                            self.stdout.write(
+                                _("Popup config:") + f"\n{clone.popup_config}\n\n"
+                            )
 
         # Update the clone's extra styles sources
         if options["extra_styles_sources"]:
