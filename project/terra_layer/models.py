@@ -198,7 +198,7 @@ class LayerGroup(models.Model):
 
 
 class Layer(CloneMixin, models.Model):
-    _clone_m2o_or_o2m_fields = ["style_images", "extra_styles"]
+    _clone_m2o_or_o2m_fields = ["style_images", "extra_styles", "fields_filters"]
     _clone_excluded_fields = ["group"]  # don't include clone in group / scene
     uuid = models.UUIDField(unique=True, default=uuid.uuid4, editable=False)
     source = models.ForeignKey(Source, on_delete=models.CASCADE, related_name="layers")
@@ -360,9 +360,13 @@ class Layer(CloneMixin, models.Model):
 
         return []
 
-    def make_clone(self, *args, **kwargs):
+    def make_clone(self, *args, skip_fields_filters=False, **kwargs):
         kwargs.setdefault("attrs", {"name": f"{self.name} (" + _("Copy") + ")"})
+        if skip_fields_filters:
+            self._clone_m2o_or_o2m_fields.remove("fields_filters")
         obj = super().make_clone(*args, **kwargs)
+        if skip_fields_filters:
+            self._clone_m2o_or_o2m_fields.append("fields_filters")
         # fix style images references in main style
         style_text = str(json.dumps(obj.main_style))
         for i, style_image in enumerate(self.style_images.all()):
