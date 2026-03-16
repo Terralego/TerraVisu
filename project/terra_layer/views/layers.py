@@ -557,12 +557,40 @@ class SceneLayerDetailAPIView(SceneTreeAPIView):
             filter_list.sort(key=lambda f: f.get("order", 0))
             return filter_list
 
+    def get_prefetched_layer(self, layer_id):
+        """Re-fetch a layer with all prefetches needed for the full detail response."""
+        return Layer.objects.select_related("source").prefetch_related(
+            Prefetch(
+                "fields_filters",
+                FilterField.objects.filter(shown=True).select_related("field"),
+                to_attr="filters_shown",
+            ),
+            Prefetch(
+                "fields_filters",
+                FilterField.objects.filter(filter_enable=True).select_related("field"),
+                to_attr="filters_enabled",
+            ),
+            "extra_styles__source",
+            Prefetch(
+                "report_configs",
+                ReportConfig.objects.prefetch_related(
+                    Prefetch(
+                        "report_fields",
+                        queryset=ReportField.objects.select_related("field"),
+                        to_attr="prefetched_report_fields",
+                    ),
+                ),
+                to_attr="prefetched_report_configs",
+            ),
+        ).get(pk=layer_id)
+
     def get_full_layer_dict(self, layer):
         basic_layer_dict = self.get_basic_layer_dict(layer)
         if not basic_layer_dict:
             # Exclude layers with non-authorized sources
             return None
 
+        layer = self.get_prefetched_layer(layer.pk)
         main_field = getattr(layer.main_field, "name", None)
 
         # Construct the layer object
@@ -601,30 +629,7 @@ class SceneLayerDetailAPIView(SceneTreeAPIView):
 
         layer = get_object_or_404(
             Layer.objects.select_related("source").prefetch_related(
-                Prefetch(
-                    "fields_filters",
-                    FilterField.objects.filter(shown=True).select_related("field"),
-                    to_attr="filters_shown",
-                ),
-                Prefetch(
-                    "fields_filters",
-                    FilterField.objects.filter(filter_enable=True).select_related(
-                        "field"
-                    ),
-                    to_attr="filters_enabled",
-                ),
                 "extra_styles__source",
-                Prefetch(
-                    "report_configs",
-                    ReportConfig.objects.prefetch_related(
-                        Prefetch(
-                            "report_fields",
-                            queryset=ReportField.objects.select_related("field"),
-                            to_attr="prefetched_report_fields",
-                        ),
-                    ),
-                    to_attr="prefetched_report_configs",
-                ),
             ),
             group__view=self.scene,
             pk=layer_id,
