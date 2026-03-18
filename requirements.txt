@@ -155,7 +155,7 @@ fiona==1.10.1
     #   django-geostore
 gpxpy==1.6.2
     # via django-geostore
-gunicorn==25.0.0
+gunicorn==25.1.0
     # via terravisu (pyproject.toml)
 idna==3.11
     # via requests
