@@ -181,7 +181,7 @@ packaging==25.0
     # via
     #   gunicorn
     #   kombu
-pillow==12.1.0
+pillow==12.1.1
     # via
     #   terravisu (pyproject.toml)
     #   django-colorfield
