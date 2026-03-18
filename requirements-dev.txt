@@ -299,7 +299,7 @@ packaging==25.0
     #   -c requirements.txt
     #   gunicorn
     #   kombu
-pillow==12.1.0
+pillow==12.1.1
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
