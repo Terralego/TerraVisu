@@ -1,8 +1,7 @@
-from datetime import datetime
+from datetime import UTC, datetime
 from unittest import mock
 
 from django.test import TestCase
-from django.utils import timezone
 
 from project.geosource.models import GeoJSONSource, GeometryTypes, PostGISSource
 from project.geosource.periodics import auto_refresh_source
@@ -25,7 +24,7 @@ class PeriodicsTestCase(TestCase):
             query="SELECT 1",
             geom_field="geom",
             refresh=-1,
-            last_refresh=datetime(2020, 1, 1, tzinfo=timezone.utc),
+            last_refresh=datetime(2020, 1, 1, tzinfo=UTC),
             geom_type=GeometryTypes.LineString,
         )
         cls.source2 = PostGISSource.objects.create(
@@ -36,24 +35,24 @@ class PeriodicsTestCase(TestCase):
             query="SELECT 1",
             geom_field="geom",
             refresh=60 * 24 * 3,
-            last_refresh=datetime(2020, 1, 1, tzinfo=timezone.utc),
+            last_refresh=datetime(2020, 1, 1, tzinfo=UTC),
             geom_type=GeometryTypes.LineString,
         )
 
     @mock.patch("django.utils.timezone.now")
     def test_should_refresh(self, mock_timezone):
-        dt = datetime(2099, 1, 1, tzinfo=timezone.utc)
+        dt = datetime(2099, 1, 1, tzinfo=UTC)
         mock_timezone.return_value = dt
 
         self.assertEqual(self.source.should_refresh(), False)
         self.assertEqual(self.geosource.should_refresh(), False)
 
-        dt = datetime(2020, 1, 2, tzinfo=timezone.utc)
+        dt = datetime(2020, 1, 2, tzinfo=UTC)
         mock_timezone.return_value = dt
 
         self.assertEqual(self.source2.should_refresh(), False)
 
-        dt = datetime(2020, 1, 10, tzinfo=timezone.utc)
+        dt = datetime(2020, 1, 10, tzinfo=UTC)
         mock_timezone.return_value = dt
 
         self.assertEqual(self.source2.should_refresh(), True)
@@ -69,7 +68,7 @@ class PeriodicsTestCase(TestCase):
                 return_value=False,
             ),
         ):
-            dt = datetime(2020, 1, 2, tzinfo=timezone.utc)
+            dt = datetime(2020, 1, 2, tzinfo=UTC)
             mock_timezone.return_value = dt
             auto_refresh_source()
 
@@ -82,7 +81,7 @@ class PeriodicsTestCase(TestCase):
                 return_value=False,
             ),
         ):
-            dt = datetime(2020, 1, 10, tzinfo=timezone.utc)
+            dt = datetime(2020, 1, 10, tzinfo=UTC)
             mock_timezone.return_value = dt
             auto_refresh_source()
 
@@ -95,7 +94,7 @@ class PeriodicsTestCase(TestCase):
                 return_value=False,
             ),
         ):
-            dt = datetime(2020, 1, 10, tzinfo=timezone.utc)
+            dt = datetime(2020, 1, 10, tzinfo=UTC)
             mock_timezone.return_value = dt
             auto_refresh_source()
 
