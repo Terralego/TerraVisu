@@ -102,7 +102,7 @@ django-constance==4.3.4
     # via terravisu (pyproject.toml)
 django-cors-headers==4.9.0
     # via terravisu (pyproject.toml)
-django-crispy-forms==2.5
+django-crispy-forms==2.6
     # via
     #   terravisu (pyproject.toml)
     #   crispy-bootstrap5
