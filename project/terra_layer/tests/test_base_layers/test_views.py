@@ -13,7 +13,7 @@ class MapBaseLayerViewsSetTesCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         out = StringIO()
-        call_command("install_osm_baselayer", stdout=out)
+        call_command("install_layer", "osm", stdout=out)
         cls.mapbox = MapBaseLayer.objects.create(
             name="mapbox", base_layer_type="mapbox", map_box_url="mapbox://test/"
         )
