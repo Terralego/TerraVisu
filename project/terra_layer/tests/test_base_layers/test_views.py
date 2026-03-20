@@ -13,7 +13,7 @@ class MapBaseLayerViewsSetTesCase(APITestCase):
     @classmethod
     def setUpTestData(cls):
         out = StringIO()
-        call_command("install_osm_baselayer", stdout=out)
+        call_command("install_layer", "osm", stdout=out)
         cls.mapbox = MapBaseLayer.objects.create(
             name="mapbox", base_layer_type="mapbox", map_box_url="mapbox://test/"
         )
@@ -29,7 +29,7 @@ class MapBaseLayerViewsSetTesCase(APITestCase):
         self.assertTrue(len(data["results"]) > 0)
 
     def test_detail_raster(self):
-        pk = MapBaseLayer.objects.get(slug="osm").pk
+        pk = MapBaseLayer.objects.get(name="OSM").pk
         response = self.client.get(reverse("baselayer-detail", args=(pk,)))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
@@ -52,7 +52,7 @@ class MapBaseLayerViewsSetTesCase(APITestCase):
         )
 
     def test_tilejson_in_list(self):
-        pk = MapBaseLayer.objects.get(slug="osm").pk
+        pk = MapBaseLayer.objects.get(name="OSM").pk
         response = self.client.get(reverse("baselayer-detail", args=(pk,)))
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
