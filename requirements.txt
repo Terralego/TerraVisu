@@ -116,7 +116,7 @@ django-mapbox-baselayer==1.2.2
     # via terravisu (pyproject.toml)
 django-ordered-model==3.7.4
     # via terravisu (pyproject.toml)
-django-polymorphic==4.5.2
+django-polymorphic==4.11.2
     # via terravisu (pyproject.toml)
 django-timezone-field==7.2.1
     # via django-celery-beat
