@@ -175,7 +175,7 @@ mercantile==1.2.1
     # via django-geostore
 openid-connect==0.5.0
     # via django-auth-oidc
-packaging==25.0
+packaging==26.0
     # via
     #   gunicorn
     #   kombu
