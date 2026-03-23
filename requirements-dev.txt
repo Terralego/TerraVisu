@@ -73,7 +73,7 @@ conditional==2.0
     # via
     #   -c requirements.txt
     #   django-clone
-coverage==7.13.4
+coverage==7.13.5
     # via terravisu (pyproject.toml)
 crispy-bootstrap5==2026.3
     # via
