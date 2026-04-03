@@ -37,6 +37,61 @@ L'interface cartographique est décomposée en 4 parties :
 
 .. image :: ../_static/images/visu/visu_interfacecarto.png
 
+Le panneau latéral gauche
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+Les vues
+^^^^^^^^^
+
+Les couches sont réparties dans des vues et reflètent des thématiques ou des applications métier. 
+
+Les vues sont représentées par des pictogrammes dans le bandeau latéral gauche. 
+
+.. image :: ../_static/images/visu/vue.png
+  :width: 200
+
+Pour changer de vue, cliquez sur le pictogramme concerné.
+
+.. note::
+	Chaque vue est indépendante et il n'est pas possible d'afficher deux vues à la fois. 
+	Cela signifie qu'en cliquant sur une autre vue, la carte change.
+
+Les sites externes
+^^^^^^^^^^^^^^^^^^
+
+Depuis le panneau latéral des vues, il est possible de rajouter des boutons renvoyant vers des sites externes. Cet ajout est à réaliser dans le module de configuration.
+
+**Exemple de sites externes**
+
+.. image :: ../_static/images/visu/visu_sitesexternes.png
+
+La pop-up Informations
+^^^^^^^^^^^^^^^^^^^^^^
+
+**Bouton de la pop-up**
+
+.. image :: ../_static/images/visu/visu_popup_informations_button.png
+
+**Pop-up par défaut**
+
+.. image :: ../_static/images/visu/visu_popup_informations.png
+
+Le bouton de connexion/déconnexion
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+**Bouton de connexion**
+
+.. image :: ../_static/images/visu/visu_login.png
+
+**Bouton de déconnexion**
+
+.. image :: ../_static/images/visu/visu_logout.png
+
+**Exemple de fenêtre de connexion**
+
+.. image :: ../_static/images/visu/visu_login_popup.png
+
 Les données géographiques
 -----------------------------
 
@@ -61,26 +116,6 @@ Au niveau d'une couche de données, vous pouvez ainsi activer les fonctionnalit�
   :width: 300
 
 L'interface cartographique se met automatiquement à jour selon les fonctionnalités activées.
-
-Les vues
-~~~~~~~~~~~
-
-Les couches sont réparties dans des vues et reflètent des thématiques ou des applications métier. 
-
-Les vues sont représentées par des pictogrammes dans le bandeau latéral gauche. 
-
-.. image :: ../_static/images/visu/vue.png
-  :width: 200
-
-Pour changer de vue, cliquez sur le pictogramme concerné.
-
-.. note::
-	Chaque vue est indépendante et il n'est pas possible d'afficher deux vues à la fois. 
-	Cela signifie qu'en cliquant sur une autre vue, la carte change.
-
-
-L'arbre des couches
-~~~~~~~~~~~~~~~~~~~~~~
 
 Les données sont agencées de manière personnalisée dans l'arbre des couches. 
 
@@ -107,7 +142,7 @@ Pour activer/désactiver une couche cliquez sur le curseur à gauche du nom.
 La légende
 ^^^^^^^^^^
 
-Quand les couches affichées ont des légendes, celles-ci s'affichent sur la partie droite de l'écran. C'est vous qui décidez si vous souhaitez affichez la légende et quel type de légende.
+Quand les couches affichées ont des légendes, celles-ci s'affichent sur la partie droite de l'écran.
 
 **Exemple de légende disponible**
 
@@ -127,17 +162,28 @@ Il est possible d'associer du contenu informatif à chaque couche. Ce contenu es
 La table attributaire
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-**TerraVisu** propose l’affichage de la table des données contenues dans la couche. La table attributaire contient les caractéristiques **non spatiales** des données.
+La table attributaire de **TerraVisu** propose les fonctionnalités suivantes :
 
-La table attributaire de **TerraVisu** comprend de nombreuses fonctionnalités telles que :
+* Visualiser le nombre total de lignes
+* Afficher le nombre de lignes sélectionnées
+* Afficher le nombre de lignes filtrées
+* Afficher uniquement les lignes sélectionnées
+* Zoomer sur l’emprise géographique des entités sélectionnées
+* Ouvrir la mini-fiche d’une entité
+* Trier les données selon une ou plusieurs colonnes
+* Filtrer les données en fonction de l’emprise courante de la carte
+* Comparer jusqu’à trois entités sur une vue détaillée
+* Exporter les données (formats CSV et Excel)
+* Afficher ou masquer des colonnes
+* Agrandir ou réduire l’affichage de la table
 
-* Afficher le nombre de lignes du tableau
-* Trier les données selon une colonne
-* Filtrer les données par l'emprise de la carte
-* Comparer jusqu'à trois lignes
-* Exporter les données au format CSV et Excel
-* Afficher/masquer des colonnes
-* Agrandir la table
+.. note::
+    La table attributaire est synchronisée avec la carte interactive**.
+
+    La sélection d’une entité dans la table entraîne automatiquement :
+
+    * sa mise en évidence sur la carte
+    * un recentrage et un zoom sur son emprise
 
 **Exemple d'une table attributaire**
 
@@ -157,7 +203,7 @@ Les éléments qui ne correspondent pas au filtre sont cachés et la carte est a
 .. image :: ../_static/images/visu/visu_filtre.png
   :width: 200
 
-Les filtres peuvent prendre plusieurs formes (case à cocher, intervalle de valeurs, curseur, recherche, etc.) et sont paramétrables dans l'outil d'administration.
+Les filtres peuvent prendre plusieurs formes (case à cocher, intervalle de valeurs, curseur, champ recherche au autocomplétion, etc.) et sont paramétrables dans l'outil d'administration.
 
 Le widget
 ~~~~~~~~~~~~
@@ -182,8 +228,6 @@ Cet outil permet de zoomer sur l'étendue spatiale d'une couche activée. Le zoo
    :alt: Zoom sur l'emprise spaiale d'une couche
    :align: center
 
-La table attributaire et le widget sont automatiquement mis à jour en fonction du zoom.
-
 La modification de l'opacité 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -196,9 +240,10 @@ Faites glisser le curseur de droite à gauche pour modifier le pourcentage de tr
 .. image :: ../_static/images/visu/visu_transparence.png
   :width: 300
 
-Les contenus externes associés
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-Des contenus configurés depuis une application externe, notamment graphiques, peuvent être ajoutés à une couche. Un pictogramme et un libellé, paramétrables depuis l'interface d'administration, permet d'identifier chacun d'entre eux dans la liste des informations et outils disponibles sur la couche.
+Les inclusions/contenus externes associés
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Des contenus configurés depuis une application externe, notamment des graphiques, peuvent être ajoutés à une couche. Un pictogramme et un libellé, paramétrables depuis l'interface d'administration, permet d'identifier chacun d'entre eux dans la liste des informations et outils disponibles sur la couche.
 
 **Exemple de graphique**
 
@@ -212,31 +257,31 @@ Il est possible d’interagir avec les objets affichés sur la carte, dès lors 
 La fiche descriptive
 ~~~~~~~~~~~~~~~~~~~~~~~
 
-Les informations relatives aux données sont présentées dans une fiche à gauche de l'écran. Cette fiche apparaît au clic de l’objet cartographie (i.e. le point sur la carte).
+Les informations relatives aux données sont présentées dans une fiche à droite de l'écran. Cette fiche apparaît **au clic** de l’objet cartographique.
 
 **Exemple de fiche descriptive pour une station du métro toulousain**
 
 .. image :: ../_static/images/visu/visu_minifiche.png
   :width: 300
 
-Depuis l'outil d'administration, vous pouvez personnaliser la fiche de manière avancée, en y intégrant du texte, des images ou des graphiques pour améliorer le rendu visuel. 
+Depuis l'outil d'administration, vous pouvez personnaliser la fiche de manière avancée, en y intégrant du texte, des images ou des graphiques intéractifs pour enrichir le rendu. 
 
 Il n'y a pas de limite au contenu de la fiche tant que l'information est disponible. La fiche peut contenir des liens vers des sites web et des mails. 
 
 L'infobulle au survol
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Une information résumée de la donnée, sous la forme d'une infobulle, est disponible au survol des des objets cartographiques. Si la couche a été configurée dans ce sens dans l'outil d'administration, des infobulles peuvent apparaître au survol des objets cartographiques.
+Une information résumée de la donnée, sous la forme d'une infobulle, est disponible **au survol** des objets cartographiques. Cette infobulle est configurable depuis l'outil d'administration.
 
-**Exemple d'infobulle au clic sur une station de métro toulousain**
+**Exemple d'infobulle sur une station de métro toulousain**
 
 .. image :: ../_static/images/visu/visu_infobulle.png
   :width: 400
 
-Le contenu de l'infobulle est entièrement personnalisable dans l'outil d'administration et peut comprendre toutes les information que vous souhaitez.
+Le contenu de l'infobulle est entièrement personnalisable dans l'outil d'administration et peut comprendre toutes les informations que vous souhaitez.
 
-Les outils de navigation
----------------------------
+Les outils de navigation standards
+-----------------------------------
 
 **TerraVisu** dispose des contrôles classiques de navigation :
 
@@ -246,9 +291,9 @@ Les outils de navigation
 * Réorientation de la carte
 * Gestion des fonds de carte
 * Impression vers PDF
-* Partage de la carte : hyperlien ou vers les réseaux sociaux
+* Partage de la carte / encapsulation
 
-**Barre de navigation à gauche sur la carte**
+**Barre de navigation à droite sur la carte**
 
 .. image :: ../_static/images/visu/visu_outilnavigation.png
   :width: 50
@@ -263,10 +308,9 @@ La recherche sur la carte (via l'outil loupe) permet d'effectuer à la fois :
 * une recherche de lieu ou d'adresse par à un appel à la base d'adresses Nominatim implémenté,
 * une recherche dans les champs textuels d'une ou plusieurs couches activées (exemple : une parcelle par le nom du propriétaire).
 
-Le fait de sélectionner un résultat dans les attributs de la ou les couches activées permet de zoomer sur ce résultat, de sélectionner l'objet en surbrillance et d'ouvrir la mini-fiche (si elle existe).
+Le fait de sélectionner un résultat dans les attributs de la ou les couches activées permet de zoomer sur ce résultat, de sélectionner l'objet en surbrillance et d'ouvrir la mini-fiche (si elle est configurée).
 
-Le comportement est différent si on sélectionne un résultat pour la recherche de lieu puisqu'il permet uniquement de zoomer sur l'emprise géographique correspondante sans réaliser d'intéraction avec la ou les couches activées.
-
+Le comportement est différent si on sélectionne un résultat pour la recherche de lieu puisqu'il permet uniquement de centrer et zoomer sur l'emprise géographique correspondante sans réaliser d'intéraction avec la ou les couches activées.
 
 **Exemple de recherche**
 
@@ -300,20 +344,65 @@ Plusieurs fonds de cartes sont disponibles par défaut et vos propres fonds de c
 L'impression de la carte au format PDF
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-La carte affichée à l'écran peut être imprimée en format PDF selon les deux dispositions (portait ou paysage).
+Le composeur d’impression de TerraVisu permet de générer un export PDF de la carte affichée à l’écran. 
 
-**Exemple de la procédure d'impression**
+L’outil offre plusieurs options de personnalisation afin d’adapter la mise en page aux besoins de l’utilisateur :
+
+* Choix de la disposition du document (portrait ou paysage)
+* Ajout d’un titre dynamique, avec paramétrage de la taille et de l’alignement (gauche, centre, droite)
+* Intégration d'un logo dans l’en-tête, avec possibilité de définir sa position (au-dessus, à gauche ou à droite)
+* Activation des éléments cartographiques tels que l’échelle et les attributions
+* Possibilité de définir des bordures arrondies
+
+**Exemple du composeur d'impression**
 
 .. image :: ../_static/images/visu/visu_impression.png
 
 Le partage de la carte
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Il est possible de partager la carte soit en générant un hyperlien, soit en la partageant sur les réseaux sociaux (X, Facebook et Linkedin)
+Le bouton de partage de carte permet :
+
+* de partager un hyperlien avec plusieurs options 
+* de générer le code d’une ``iframe``
+
+Lien direct
+^^^^^^^^^^^^^
+
+Le partage de lien direct permet de générer un hyperlien avec plusieurs options de partage :
+
+* conserver la position sur la carte 
+* conserver les couches activées 
+* afficher l’arbre des couches, sinon il sera rétracté 
+* conserver le fond de carte utilisé au moment du partage
+
+Une fois les options choisies, l’utilisateur peut cliquer sur :guilabel:`Copier`. Un message :guilabel:`Copié !` s’affiche alors.
 
 **Exemple de partage d'hyperlien**
 
 .. image :: ../_static/images/visu/visu_partage.png
+
+Iframe
+^^^^^^^
+
+La génération du code de l’``iframe`` se met à jour en temps réel au fur et à mesure que les options changent.
+
+Il est possible de définir la taille de l’``iframe`` en renseignant sa largeur et sa hauteur.
+
+Le bouton :guilabel:`Prévisualiser` permet d’obtenir un aperçu du rendu de la page TerraVisu qui sera encapsulée dans un site tiers.
+
+**Exemple d'encapsulation**
+
+.. image :: ../_static/images/visu/visu_encapsulation.png
+
+
+Les outils de navigation optionnels
+-----------------------------------
+
+Il est également possible d'activer l'outil de déclaration depuis le module de configuration, afin de permettre aux utilisateurs de faire des remontées d'informations sur la carte.
+
+.. image :: ../_static/images/visu/visu_outilnavigation_declaration.png
+  :width: 50
 
 La visualisation en Storytelling
 ---------------------------------
@@ -325,3 +414,4 @@ Cette fonctionnalité peut servir à la communication ou de manuel d'utilisation
 **Exemple de storytelling**
 
 .. image :: ../_static/images/visu/visu_storytelling.png
+
