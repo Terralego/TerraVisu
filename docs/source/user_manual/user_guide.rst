@@ -178,10 +178,12 @@ La table attributaire de **TerraVisu** propose les fonctionnalités suivantes :
 * Agrandir ou réduire l’affichage de la table
 
 .. note::
-	La table attributaire est synchronisée avec la carte interactive**.
-	La sélection d’une entité dans la table entraîne automatiquement :
-  * sa mise en évidence sur la carte
-  * un recentrage et un zoom sur son emprise
+    La table attributaire est synchronisée avec la carte interactive**.
+
+    La sélection d’une entité dans la table entraîne automatiquement :
+
+    * sa mise en évidence sur la carte
+    * un recentrage et un zoom sur son emprise
 
 **Exemple d'une table attributaire**
 
@@ -238,7 +240,7 @@ Faites glisser le curseur de droite à gauche pour modifier le pourcentage de tr
 .. image :: ../_static/images/visu/visu_transparence.png
   :width: 300
 
-Les inclusions / contenus externes associés
+Les inclusions/contenus externes associés
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Des contenus configurés depuis une application externe, notamment des graphiques, peuvent être ajoutés à une couche. Un pictogramme et un libellé, paramétrables depuis l'interface d'administration, permet d'identifier chacun d'entre eux dans la liste des informations et outils disponibles sur la couche.
