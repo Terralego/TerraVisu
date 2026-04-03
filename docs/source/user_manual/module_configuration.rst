@@ -21,7 +21,7 @@ Options de configuration
 L'entrée ``Config`` dans le panneau de configuration offre le moyen à l'utilisateur de spécifier finement certains paramètres, activer des outils supplémentaires, personnaliser le thème de l'application, etc.
 
 Configuration
-----------
+---------------
 
 .. figure:: ../_static/images/django/config2.png
    :alt: Page de configuration
