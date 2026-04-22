@@ -254,7 +254,7 @@ Les intéractions avec les données affichés sur la carte
 
 Il est possible d’interagir avec les objets affichés sur la carte, dès lors que les couches ont été configurées dans le backoffice pour inclure les infobulles (survol) ou les mini-fiches (clic).
 
-La fiche descriptive
+La mini-fiche
 ~~~~~~~~~~~~~~~~~~~~~~~
 
 Les informations relatives aux données sont présentées dans une fiche à droite de l'écran. Cette fiche apparaît **au clic** de l’objet cartographique.
@@ -267,6 +267,17 @@ Les informations relatives aux données sont présentées dans une fiche à droi
 Depuis l'outil d'administration, vous pouvez personnaliser la fiche de manière avancée, en y intégrant du texte, des images ou des graphiques intéractifs pour enrichir le rendu. 
 
 Il n'y a pas de limite au contenu de la fiche tant que l'information est disponible. La fiche peut contenir des liens vers des sites web et des mails. 
+
+.. note::
+
+   - Si l’utilisateur est connecté, qu’il peut visualiser la couche et que celle-ci est configurée avec un formulaire de signalement, le bouton **« Signaler une anomalie »** apparaît dans la mini-fiche.
+   - Lorsque l’utilisateur clique sur ce bouton, le formulaire s’affiche.
+
+   .. image:: ../_static/images/visu/visu_signalement.png
+      :width: 300
+
+   .. image:: ../_static/images/visu/visu_signalement2.png
+      :width: 300
 
 L'infobulle au survol
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -403,6 +414,10 @@ Il est également possible d'activer l'outil de déclaration depuis le module de
 
 .. image :: ../_static/images/visu/visu_outilnavigation_declaration.png
   :width: 50
+
+.. note::
+	La définition des champs du formulaire est paramétrable depuis le module de configuration Django.
+
 
 La visualisation en Storytelling
 ---------------------------------
