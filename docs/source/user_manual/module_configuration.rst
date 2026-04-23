@@ -5,6 +5,7 @@ Module de configuration
 Le module de configuration est accessible via l’URL du visualiseur, suivie de ``/config``.
 
 Depuis le bandeau supérieur (header), il est possible de naviguer entre les interfaces :
+
 - le bouton **« ADMIN »** permet de revenir à l’outil d’administration ;
 - le bouton **« VOIR LE SITE »** permet de retourner au visualiseur.
 
@@ -112,7 +113,9 @@ Options de personnalisation du thème de l'application.
 - ``INSTANCE_SPLASHSCREEN`` : Logo de démarrage
 - ``INSTANCE_CREDITS`` : Crédits de l'instance, s'affiche sur la carte en mode impression
 - ``INSTANCE_INFO_CONTENT`` : Contenu de l'onglet 'Informations' de l'application
-    
+- ``INSTANCE_LOGIN_MESSAGE`` : Message à afficher avec le formulaire de connexion 
+- ``REPORT_MAIL_SIGNATURE`` : Signature insérée à la fin des e-mails de notification concernant les Signalements et Déclarations
+	
 
 Viewlayer
 ---------------
@@ -211,8 +214,9 @@ Le module de fiches détaillées permet de créer des fiches enrichies, intégra
 Ces fiches apportent une réelle valeur ajoutée aux données sources en les structurant, en les mettant en forme et en les rendant plus accessibles.
 
 La configuration se déroule en trois étapes :
-- créer une fiche 
-- définir les champs associés 
+
+- créer une fiche
+- définir les champs associés
 - ajouter et organiser les blocs de contenu
 
 Fiches détaillées
@@ -221,6 +225,7 @@ Fiches détaillées
 La sous-section **Fiches détaillées** permet de déclarer une nouvelle fiche.
 
 Pour cela, il est nécessaire de renseigner :
+
 - son nom 
 - un identifiant unique à utiliser 
 - la ou les sources associées (qui doivent partager ce même identifiant)
@@ -243,6 +248,7 @@ Champs de fiche
 ~~~~~~~~~~~~~~~~~~~~
 
 Plusieurs types de champs sont disponibles :
+
 - **booléen** : avec possibilité d’associer des pictogrammes 
 - **textuel** 
 - **numérique** : avec possibilité de définir un suffixe et le nombre de décimales

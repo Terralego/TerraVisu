@@ -73,11 +73,15 @@ Si vous activez l’option :guilabel:`Super-utilisateur` l’utilisateur pourra 
 
 Si vous activez l’option :guilabel:`Actif` l’utilisateur pourra se connecter dès que son compte sera créé, sinon, il devra attendre que celui ci devienne actif.
 
+Si vous activez l’option :guilabel:`Gestionnaire des signalements` l’utilisateur recevra un mail mensuel avec le récapitulatif des signalements réalisés.
+
+Si vous activez l’option :guilabel:`Gestionnaire des déclarations` l’utilisateur recevra un mail mensuel avec le récapitulatif des déclarations réalisées.
+
 Vous pouvez intégrer l’utilisateur à un ou plusieurs groupes. 
 
 Il est possible de rajouter des informations supplémentaires comme la ``fonction``, l’``organisme de rattachement`` ou encore l’``adresse``. 
 
-Si l'utilisateur perd son mot de passe, il faut supprimer son compte et lui en créer un nouveau.
+Si l'utilisateur perd son mot de passe, il est possible d'en définir un nouveau.
 
 .. image :: ../_static/images/admin/admin_utilisateurs_ajout.png
 
