@@ -1,0 +1,3397 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="user_guide.html">
+      
+      
+        <link rel="next" href="module_configuration.html">
+      
+      
+      <link rel="icon" href="../_static/favicon.ico">
+    
+    
+      
+        <title>Outil d’administration - TerraVisu 2025.07.00.pre1 documentation</title>
+      
+    
+    
+      
+        
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#l-outil-d-administration" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="TerraVisu 2025.07.00.pre1 documentation" class="md-header__button md-logo" aria-label="TerraVisu 2025.07.00.pre1 documentation" data-md-component="logo">
+      <img src="../_static/logo.png" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TerraVisu 2025.07.00.pre1 documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Outil d’administration
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Terralego/TerraVisu/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    TerraVisu
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="TerraVisu 2025.07.00.pre1 documentation" class="md-nav__button md-logo" aria-label="TerraVisu 2025.07.00.pre1 documentation" data-md-component="logo">
+      <img src="../_static/logo.png" alt="logo">
+    </a>
+    TerraVisu 2025.07.00.pre1 documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Terralego/TerraVisu/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    TerraVisu
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    🚀 User manual
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            🚀 User manual
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="user_guide.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Plateforme Terra<wbr>Visu
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Outil d’administration
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Outil d’administration
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Outil d’administration
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#l-outil-d-administration" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      L’outil d’administration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentification" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Authentification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authentification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#procedure-dauthentification" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Procédure d’authentification
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page-d-acces" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Page d’accès
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-de-gestion-des-utilisateurs" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Module de gestion des utilisateurs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module de gestion des utilisateurs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#liste-des-utilisateurs" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Liste des utilisateurs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creer-un-nouvel-utilisateur" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Créer un nouvel utilisateur
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#liste-des-groupes-d-utilisateurs" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Liste des groupes d’utilisateurs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creer-un-nouveau-groupe-d-utilisateurs" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Créer un nouveau groupe d’utilisateurs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-visualiseur" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Module Visualiseur
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Visualiseur">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#liste-des-sources-de-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Liste des sources de données
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creer-une-source-de-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Créer une source de données
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Créer une source de données">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#import-de-fichiers" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Import de fichiers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Import de fichiers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#geojson-ou-shapefile" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Geo<wbr>JSON ou Shapefile
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#csv" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      CSV
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-via-une-requete-postgis" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Import via une requête Post<wbr>GIS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-via-un-flux-wms-wmts" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Import via un flux WMS/WMTS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enregistrer-une-source-de-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Enregistrer une source de données
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enregistrer une source de données">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#actualisation-de-la-source-de-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Actualisation de la source de données
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Actualisation de la source de données">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#statuts-d-actualisation" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Statuts d’actualisation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-definition" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet DÉFINITION
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet DONNÉES
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-rapport-d-importation" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet RAPPORT D’IMPORTATION
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-informations-generales" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet INFORMATIONS GÉNÉRALES
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifier-une-source-de-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Modifier une source de données
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dupliquer-une-source-de-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Dupliquer une source de données
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supprimer-une-source-de-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Supprimer une source de données
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#liste-des-couches" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Liste des couches
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creer-une-couche" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Créer une couche
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Créer une couche">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#id1" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet DÉFINITION
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Onglet DÉFINITION">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filtrage-de-source" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Filtrage de source
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metadonnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Métadonnées
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-icones" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet ICÔNES
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-style" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet STYLE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Onglet STYLE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#style-simple" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Style simple
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-avec-motif" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Style avec motif
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-avec-une-analyse" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Style avec une analyse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemples-de-styles-mapbox-avances" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Exemples de styles Mapbox avancés
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ajouter-un-style-secondaire" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Ajouter un style secondaire
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-sans-assistant" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Style sans assistant
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-legendes" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet LÉGENDES
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-fenetre-au-survol" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet FENÊTRE AU SURVOL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-mini-fiche" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet MINI-<wbr>FICHE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Onglet MINI-FICHE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mode-simple" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Mode simple
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mode-expert" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Mode expert
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparaison-d-entites" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Comparaison d’entités
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-filtre" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet FILTRE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-table" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet TABLE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-widget" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet WIDGET
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-inclusions" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet INCLUSIONS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifier-une-couche" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Modifier une couche
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dupliquer-une-couche" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Dupliquer une couche
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supprimer-une-couche" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Supprimer une couche
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#liste-des-vues" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Liste des vues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creer-une-vue" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span title="creer-une-vue (reference label)">Créer une vue</span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Créer une vue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arbre-des-couches" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Arbre des couches
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selection-des-couches-par-variables" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Sélection des couches par variables
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supprimer-une-vue" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Supprimer une vue
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonds-de-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Fonds de carte
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fonds de carte">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#liste-des-fonds-de-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Liste des fonds de carte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creer-un-nouveau-fond-de-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Créer un nouveau fond de carte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifier-un-fond-de-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Modifier un fond de carte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supprimer-un-fond-de-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Supprimer un fond de carte
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="module_configuration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module de configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    🔧 Installation &amp; Configuration
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            🔧 Installation &amp; Configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation_configuration/install.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Install instructions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation_configuration/configuration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation_configuration/troubleshooting.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    ✨ Contribute
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            ✨ Contribute
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/contributing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/development.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/translating.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Translating
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/documentation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/design.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Design
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    📝 Others
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            📝 Others
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../others/authors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Authors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../others/changelog.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Outil d’administration
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#l-outil-d-administration" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      L’outil d’administration
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#authentification" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Authentification
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Authentification">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#procedure-dauthentification" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Procédure d’authentification
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#page-d-acces" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Page d’accès
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-de-gestion-des-utilisateurs" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Module de gestion des utilisateurs
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module de gestion des utilisateurs">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#liste-des-utilisateurs" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Liste des utilisateurs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creer-un-nouvel-utilisateur" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Créer un nouvel utilisateur
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#liste-des-groupes-d-utilisateurs" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Liste des groupes d’utilisateurs
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creer-un-nouveau-groupe-d-utilisateurs" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Créer un nouveau groupe d’utilisateurs
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-visualiseur" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Module Visualiseur
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Module Visualiseur">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#liste-des-sources-de-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Liste des sources de données
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creer-une-source-de-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Créer une source de données
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Créer une source de données">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#import-de-fichiers" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Import de fichiers
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Import de fichiers">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#geojson-ou-shapefile" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Geo<wbr>JSON ou Shapefile
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#csv" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      CSV
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-via-une-requete-postgis" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Import via une requête Post<wbr>GIS
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#import-via-un-flux-wms-wmts" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Import via un flux WMS/WMTS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#enregistrer-une-source-de-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Enregistrer une source de données
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Enregistrer une source de données">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#actualisation-de-la-source-de-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Actualisation de la source de données
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Actualisation de la source de données">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#statuts-d-actualisation" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Statuts d’actualisation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-definition" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet DÉFINITION
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet DONNÉES
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-rapport-d-importation" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet RAPPORT D’IMPORTATION
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-informations-generales" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet INFORMATIONS GÉNÉRALES
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifier-une-source-de-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Modifier une source de données
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dupliquer-une-source-de-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Dupliquer une source de données
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supprimer-une-source-de-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Supprimer une source de données
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#liste-des-couches" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Liste des couches
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creer-une-couche" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Créer une couche
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Créer une couche">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#id1" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet DÉFINITION
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Onglet DÉFINITION">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#filtrage-de-source" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Filtrage de source
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#metadonnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Métadonnées
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-icones" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet ICÔNES
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-style" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet STYLE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Onglet STYLE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#style-simple" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Style simple
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-avec-motif" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Style avec motif
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-avec-une-analyse" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Style avec une analyse
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemples-de-styles-mapbox-avances" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Exemples de styles Mapbox avancés
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ajouter-un-style-secondaire" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Ajouter un style secondaire
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#style-sans-assistant" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Style sans assistant
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-legendes" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet LÉGENDES
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-fenetre-au-survol" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet FENÊTRE AU SURVOL
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-mini-fiche" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet MINI-<wbr>FICHE
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Onglet MINI-FICHE">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mode-simple" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Mode simple
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mode-expert" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Mode expert
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#comparaison-d-entites" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Comparaison d’entités
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-filtre" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet FILTRE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-table" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet TABLE
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-widget" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet WIDGET
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#onglet-inclusions" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Onglet INCLUSIONS
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifier-une-couche" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Modifier une couche
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#dupliquer-une-couche" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Dupliquer une couche
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supprimer-une-couche" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Supprimer une couche
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#liste-des-vues" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Liste des vues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creer-une-vue" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      <span title="creer-une-vue (reference label)">Créer une vue</span>
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Créer une vue">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#arbre-des-couches" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Arbre des couches
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selection-des-couches-par-variables" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Sélection des couches par variables
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supprimer-une-vue" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Supprimer une vue
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fonds-de-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Fonds de carte
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Fonds de carte">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#liste-des-fonds-de-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Liste des fonds de carte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#creer-un-nouveau-fond-de-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Créer un nouveau fond de carte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#modifier-un-fond-de-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Modifier un fond de carte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#supprimer-un-fond-de-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Supprimer un fond de carte
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                
+                
+                  
+
+
+  
+  
+
+<h1 id="outil-d-administration">Outil d’administration<a class="headerlink" href="#outil-d-administration" title="Link to this heading">¶</a></h1>
+<h2 id="l-outil-d-administration">L’outil d’administration<a class="headerlink" href="#l-outil-d-administration" title="Link to this heading">¶</a></h2>
+<p>Cette documentation décrit les procédures pour l’activation et la gestion des différentes fonctionnalités de la plateforme TerraVisu.</p>
+<p>L’outil d’administration de TerraVisu permet en quelques clics de gérer des utilisateurs, d’importer différentes sources de données géographiques, de créer et personnaliser ses cartes.</p>
+<p><strong>Résumé des fonctionnalités :</strong></p>
+<ul class="simple">
+<li><p>Gérer les sources de données géographiques</p></li>
+<li><p>Configurer des fonds de cartes</p></li>
+<li><p>Créer des visualisation privées</p></li>
+<li><p>Créer des visualisation publiques</p></li>
+<li><p>Créer des analyses privées</p></li>
+<li><p>Créer des analyses publiques</p></li>
+<li><p>Créer des scénarios interactifs</p></li>
+<li><p>Organiser les visualisations et analyses présentes dans l’application</p></li>
+</ul>
+<h2 id="authentification">Authentification<a class="headerlink" href="#authentification" title="Link to this heading">¶</a></h2>
+<h3 id="procedure-dauthentification">Procédure d’authentification<a class="headerlink" href="#procedure-dauthentification" title="Link to this heading">¶</a></h3>
+<p>Le chemin d’accès à l’outil d’administration d’une application TerraVisu est toujours constitué de l’URL du visualiseur suivis de <code class="docutils literal notranslate"><span class="pre">/admin</span></code>.</p>
+<p>Une fois en possession des identifiants, vous pouvez les renseigner dans la page d’authentification.</p>
+<img alt="../_images/admin_authentification.png" src="../_images/admin_authentification.png" />
+<h3 id="page-d-acces">Page d’accès<a class="headerlink" href="#page-d-acces" title="Link to this heading">¶</a></h3>
+<p>Une fois connecté, vous arrivez sur l’écran d’accueil de l’outil d’administration.
+L’outil est composé de trois modules :</p>
+<ul class="simple">
+<li><p><span class="guilabel">Utilisateurs</span>, permet de gérer les utilisateurs de l’application</p></li>
+<li><p><span class="guilabel">Visualiseur</span>, permet de créer les cartes</p></li>
+<li><p><span class="guilabel">Fonds de carte</span>, permet de configurer les fonds de carte</p></li>
+</ul>
+<img alt="../_images/admin_accueil.png" src="../_images/admin_accueil.png" />
+<h2 id="module-de-gestion-des-utilisateurs">Module de gestion des utilisateurs<a class="headerlink" href="#module-de-gestion-des-utilisateurs" title="Link to this heading">¶</a></h2>
+<h3 id="liste-des-utilisateurs">Liste des utilisateurs<a class="headerlink" href="#liste-des-utilisateurs" title="Link to this heading">¶</a></h3>
+<p>Pour afficher l’ensemble des utilisateurs cliquez sur <span class="guilabel">Liste des utilisateurs</span>.
+Vous arrivez sur une page présentant la liste de tous les utilisateurs existants.</p>
+<p>Le module <span class="guilabel">Utilisateurs</span> de TerraVisu permet de gérer les permissions d’accès des utilisateurs et des groupes d’utilisateurs aux différents éléments du visualiseur cartographique.</p>
+<img alt="../_images/admin_utilisateurs.png" src="../_images/admin_utilisateurs.png" />
+<p>Vous avez la possibilité d’exporter la liste des utilisateurs au format <code class="docutils literal notranslate"><span class="pre">CSV</span></code> en cliquant sur le bouton <span class="guilabel">EXPORTER</span>.</p>
+<h3 id="creer-un-nouvel-utilisateur">Créer un nouvel utilisateur<a class="headerlink" href="#creer-un-nouvel-utilisateur" title="Link to this heading">¶</a></h3>
+<p>Seuls les <strong>super-utilisateurs</strong> sont autorisés à créer de nouveaux utilisateurs.</p>
+<p>Pour ajouter un nouvel utilisateur cliquez sur le bouton <span class="guilabel">CRÉER</span>.
+Les informations à renseigner sont à minima le <code class="docutils literal notranslate"><span class="pre">nom</span></code>, le <code class="docutils literal notranslate"><span class="pre">prénom</span></code>, l’<code class="docutils literal notranslate"><span class="pre">adresse</span> <span class="pre">mail</span></code>, le <code class="docutils literal notranslate"><span class="pre">mot</span> <span class="pre">de</span> <span class="pre">passe</span></code>.</p>
+<p>Si vous activez l’option <span class="guilabel">Super-utilisateur</span> l’utilisateur pourra à son tour créer de nouveaux utilisateurs.</p>
+<p>Si vous activez l’option <span class="guilabel">Actif</span> l’utilisateur pourra se connecter dès que son compte sera créé, sinon, il devra attendre que celui ci devienne actif.</p>
+<p>Vous pouvez intégrer l’utilisateur à un ou plusieurs groupes.</p>
+<p>Il est possible de rajouter des informations supplémentaires comme la <code class="docutils literal notranslate"><span class="pre">fonction</span></code>, l’<code class="docutils literal notranslate"><span class="pre">organisme</span> <span class="pre">de</span> <span class="pre">rattachement</span></code> ou encore l’<code class="docutils literal notranslate"><span class="pre">adresse</span></code>.</p>
+<p>Si l’utilisateur perd son mot de passe, il faut supprimer son compte et lui en créer un nouveau.</p>
+<img alt="../_images/admin_utilisateurs_ajout.png" src="../_images/admin_utilisateurs_ajout.png" />
+<h3 id="liste-des-groupes-d-utilisateurs">Liste des groupes d’utilisateurs<a class="headerlink" href="#liste-des-groupes-d-utilisateurs" title="Link to this heading">¶</a></h3>
+<p>Les groupes d’utilisateurs permettent de gérer des permissions à différents niveaux de l’application.</p>
+<p><strong>Les permissions sont les suivantes :</strong></p>
+<ul class="simple">
+<li><p>L’administration de fonds de carte</p></li>
+<li><p>La gestion des sources de données</p></li>
+<li><p>La gestion des couches cartographiques</p></li>
+<li><p>La gestion des groupes d’utilisateurs</p></li>
+<li><p>La gestion des utilisateurs</p></li>
+</ul>
+<p>Pour afficher l’ensemble des groupes cliquez sur <span class="guilabel">Liste des groupes d’utilisateurs</span>.
+Vous arrivez sur une page présentant la liste de tous les groupes existants.</p>
+<h3 id="creer-un-nouveau-groupe-d-utilisateurs">Créer un nouveau groupe d’utilisateurs<a class="headerlink" href="#creer-un-nouveau-groupe-d-utilisateurs" title="Link to this heading">¶</a></h3>
+<p>Pour ajouter un nouveau groupe cliquez sur le bouton <span class="guilabel">CRÉER</span>.</p>
+<p>Les informations à renseigner lors de la création d’un nouveau groupe sont à minima le <code class="docutils literal notranslate"><span class="pre">nom</span></code>, les <code class="docutils literal notranslate"><span class="pre">utilisateurs</span> <span class="pre">affectés</span></code>, les <code class="docutils literal notranslate"><span class="pre">permissions</span></code>.</p>
+<img alt="../_images/admin_groupe_ajout.png" src="../_images/admin_groupe_ajout.png" />
+<h2 id="module-visualiseur">Module Visualiseur<a class="headerlink" href="#module-visualiseur" title="Link to this heading">¶</a></h2>
+<p>Le module <span class="guilabel">Visualiseur</span> de TerraVisu permet de gérer les données de l’application et le paramétrage de leur(s) représentation(s).</p>
+<p>Il comporte trois entrées :</p>
+<ul class="simple">
+<li><p>Les sources de données</p></li>
+<li><p>Les couches</p></li>
+<li><p>Les vues</p></li>
+</ul>
+<h3 id="liste-des-sources-de-donnees">Liste des sources de données<a class="headerlink" href="#liste-des-sources-de-donnees" title="Link to this heading">¶</a></h3>
+<p>Afin de configurer une visualisation, l’utilisateur doit créer les différentes sources de données en adéquation avec le projet si elles n’existent pas déjà.</p>
+<p>Pour afficher l’ensemble des sources de données cliquez sur <span class="guilabel">Liste des sources de données</span>.</p>
+<p>Vous arrivez sur une page présentant la liste de toutes les sources de données déclarées.</p>
+<img alt="../_images/admin_sources.png" src="../_images/admin_sources.png" />
+<div class="tip admonition">
+<p class="admonition-title">Tip</p>
+<ul class="simple">
+<li><p>Pour retrouver plus facilement une source de données dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par type de données, type de géométrie, statut ou rapport d’importation.</p></li>
+<li><p>Toutes les colonnes de la liste des sources de données sont triables dans l’ordre ascendant / descendant :</p></li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li><p>Nom</p></li>
+<li><p>Type de données</p></li>
+<li><p>Type de géométrie</p></li>
+<li><p>Couches associées</p></li>
+<li><p>Statut</p></li>
+<li><p>Dernière mise à jour</p></li>
+</ul>
+</div></blockquote>
+</div>
+<h3 id="creer-une-source-de-donnees">Créer une source de données<a class="headerlink" href="#creer-une-source-de-donnees" title="Link to this heading">¶</a></h3>
+<p>Pour ajouter une nouvelle source, cliquez sur le bouton <span class="guilabel">CRÉER</span>.</p>
+<p>Les types de sources de données supportés actuellement par l’application sont :</p>
+<ul class="simple">
+<li><p>les fichiers <strong>GeoJSON</strong></p></li>
+<li><p>les fichiers <strong>Shapefile</strong></p></li>
+<li><p>les requêtes <strong>PostGIS</strong></p></li>
+<li><p>les fichiers <strong>CSV</strong> contenant des coordonnées géographiques</p></li>
+<li><p>les flux <strong>WMS/WMTS</strong></p></li>
+</ul>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Une fois la source de données enregistrée, il n’est pas possible de modifier son type.</p>
+</div>
+<p>Les types de géométries supportés par l’application sont les suivants :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Point</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Linestring</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Polygon</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MultiPoint</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MultiLinestring</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">MultiPolygon</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">GeometryCollection</span></code></p></li>
+</ul>
+<p>Lors de la déclaration de la source, il est possible d’ajouter un ou plusieurs groupes d’utilisateurs, De cette façon, seuls les utilisateurs faisant partie des groupes affectés à la source seront en mesure de visualiser les données.</p>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Le nom d’une source de données doit être unique, si ce n’est pas le cas l’enregistrement échouera.</p></li>
+<li><p>Toutes les données intégrées à l’application doivent a minima posséder un champ d’identifiant unique et une géométrie.</p></li>
+</ul>
+</div>
+<h4 id="import-de-fichiers">Import de fichiers<a class="headerlink" href="#import-de-fichiers" title="Link to this heading">¶</a></h4>
+<p>Une source de données peut être créée par l’import d’un fichier <strong>GeoJSON</strong>, <strong>Shapefile</strong> ou <strong>CSV</strong> en déposant le fichier dans l’interface.</p>
+<h5 id="geojson-ou-shapefile">GeoJSON ou Shapefile<a class="headerlink" href="#geojson-ou-shapefile" title="Link to this heading">¶</a></h5>
+<p>Les informations à renseigner à minima, lors de la création d’une nouvelle source <strong>GeoJSON</strong> ou <strong>Shapefile</strong> sont le <code class="docutils literal notranslate"><span class="pre">nom</span></code>, le <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">de</span> <span class="pre">données</span></code>, le <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">de</span> <span class="pre">la</span> <span class="pre">géométrie</span></code> et l’<code class="docutils literal notranslate"><span class="pre">identifiant</span> <span class="pre">unique</span></code>.</p>
+<img alt="../_images/admin_source_creation_geojson.png" src="../_images/admin_source_creation_geojson.png" />
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Les fichiers GeoJSON doivent avoir le SRID 4326</p></li>
+<li><p>Les fichiers <strong>Shapefile</strong> doivent être fournis sous la forme d’une archive zippée contenant l’ensemble des fichiers (<code class="docutils literal notranslate"><span class="pre">.shp</span></code>, <code class="docutils literal notranslate"><span class="pre">.prj</span></code>, <code class="docutils literal notranslate"><span class="pre">.shx</span></code>, <code class="docutils literal notranslate"><span class="pre">.dbf</span></code>, etc).</p></li>
+</ul>
+</div>
+<h5 id="csv">CSV<a class="headerlink" href="#csv" title="Link to this heading">¶</a></h5>
+<p>Pour intégrer un fichier <strong>CSV</strong>, il faut que celui-ci comporte des coordonnées géographiques, dans une ou deux colonnes.</p>
+<p>Les informations à renseigner à minima lors de la création d’une nouvelle source CSV sont le <code class="docutils literal notranslate"><span class="pre">nom</span></code>, le ou les <code class="docutils literal notranslate"><span class="pre">champs</span> <span class="pre">de</span> <span class="pre">coordonnées</span></code>, le <code class="docutils literal notranslate"><span class="pre">système</span> <span class="pre">de</span> <span class="pre">coordonnées</span></code>, le <code class="docutils literal notranslate"><span class="pre">champ</span> <span class="pre">de</span> <span class="pre">l’identifiant</span> <span class="pre">unique</span></code>, le <code class="docutils literal notranslate"><span class="pre">séparateur</span> <span class="pre">de</span> <span class="pre">champ</span></code>, le <code class="docutils literal notranslate"><span class="pre">séparateur</span> <span class="pre">de</span> <span class="pre">texte</span></code>, le <code class="docutils literal notranslate"><span class="pre">séparateur</span> <span class="pre">décimal</span> <span class="pre">pour</span> <span class="pre">les</span> <span class="pre">coordonnées</span></code> et le <code class="docutils literal notranslate"><span class="pre">nombre</span> <span class="pre">de</span> <span class="pre">lignes</span> <span class="pre">à</span> <span class="pre">ignorer</span></code>.</p>
+<img alt="../_images/admin_source_creation_csv.png" src="../_images/admin_source_creation_csv.png" />
+<p>L’ option <span class="guilabel">Entête à la première ligne</span> activée permet de conserver les entêtes de colonnes qui se trouvent à la première ligne du fichier <strong>CSV</strong>.</p>
+<p>Si l’option <span class="guilabel">Ignorer les colonnes à null</span> est activée, toutes les colonnes vides ne seront pas conservées.</p>
+<h4 id="import-via-une-requete-postgis">Import via une requête PostGIS<a class="headerlink" href="#import-via-une-requete-postgis" title="Link to this heading">¶</a></h4>
+<p>Les informations à renseigner à minima lors de la création d’une nouvelle source <strong>PostGIS</strong> sont le <code class="docutils literal notranslate"><span class="pre">nom</span></code>, le <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">de</span> <span class="pre">géométrie</span></code>, les <code class="docutils literal notranslate"><span class="pre">paramètres</span> <span class="pre">de</span> <span class="pre">connexion</span> <span class="pre">à</span> <span class="pre">la</span> <span class="pre">base</span> <span class="pre">de</span> <span class="pre">données</span></code> (hôte, port, nom bdd, nom utilisateur, mot de passe utilisateur), <code class="docutils literal notranslate"><span class="pre">requête</span> <span class="pre">SQL</span></code>, <code class="docutils literal notranslate"><span class="pre">champ</span> <span class="pre">de</span> <span class="pre">géométrie</span></code>, <code class="docutils literal notranslate"><span class="pre">champ</span> <span class="pre">de</span> <span class="pre">l’identifiant</span> <span class="pre">unique</span></code>.</p>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Attention à ne pas terminer la requête par un point virgule.</p>
+</div>
+<div class="tip admonition">
+<p class="admonition-title">Tip</p>
+<p>Il est possible de définir la fréquence de mise à jour automatique de la source (toutes les heures, quotidiennement…). La requête peut ainsi être exécutée régulièrement afin de mettre à jour les données avec le contenu de la base.</p>
+</div>
+<img alt="../_images/admin_source_creation_postgis.png" src="../_images/admin_source_creation_postgis.png" />
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Si une source de données dont la fréquence de mise à jour a été paramétrée sur <code class="docutils literal notranslate"><span class="pre">Quotidienne</span></code>, le déclenchement de la synchronisation ne se fera pas exactement 24h après.</p>
+<p>L’heure d’exécution se fera 24h+25mn (redémarrage de l’outil qui regarde toutes les 25 mn s’il y a des changements) + date de fin de la dernière mise à jour.</p>
+<p>Il peut donc y avoir un delta de 24h et 25mn au minimum entre chaque mise à jour de source de données.</p>
+<p>Ce delta peut se rajouter d’autant plus s’il y a des mise à jour manuelles.</p>
+</div>
+<table class="docutils data align-default" id="id5">
+<caption><span class="caption-text">Géométries invalides</span><a class="headerlink" href="#id5" title="Link to this table">¶</a></caption>
+<thead>
+<tr class="row-odd"><th class="head"><p>Géométries invalides</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>Seules des géométries valides peuvent être importées dans l’application TerraVisu.</p></td>
+</tr>
+<tr class="row-odd"><td><dl class="simple">
+<dt>Avec PostGis, il est possible de corriger des géométries invalides avec les fonctions suivantes :</dt><dd><ul class="simple">
+<li><p><cite>ST_MakeValid(geom)</cite></p></li>
+<li><p><cite>ST_Buffer(geom, 0)</cite></p></li>
+<li><p><cite>ST_SimplifyPreserveTopology(geom, tolerance)</cite></p></li>
+</ul>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<h4 id="import-via-un-flux-wms-wmts">Import via un flux WMS/WMTS<a class="headerlink" href="#import-via-un-flux-wms-wmts" title="Link to this heading">¶</a></h4>
+<p>Les flux <strong>WMS/WMTS</strong> sont des protocoles de communication qui permettent d’obtenir des cartes de données géoréférencées à partir de différents serveurs de données (IGN, BRGM, etc.).</p>
+<p>Les informations à renseigner à minima lors de la création d’une nouvelle source <strong>WMS/WMTS</strong>  sont le <code class="docutils literal notranslate"><span class="pre">nom</span></code> et l’<code class="docutils literal notranslate"><span class="pre">adresse</span></code>.</p>
+<p>Il est possible de renseigner les niveaux de zoom min et max auxquels les images du flux seront affichées dans le visualiseur cartographique.</p>
+<img alt="../_images/admin_source_creation_wms.png" src="../_images/admin_source_creation_wms.png" />
+<h3 id="enregistrer-une-source-de-donnees">Enregistrer une source de données<a class="headerlink" href="#enregistrer-une-source-de-donnees" title="Link to this heading">¶</a></h3>
+<p>Au moment de l’enregistrement de la source, les champs attributaires sont automatiquement déterminés et renseignés et quatres onglets sont créés :</p>
+<ul class="simple">
+<li><p><span class="guilabel">DÉFINITION</span> contient les informations principales de la source</p></li>
+<li><p><span class="guilabel">DONNÉES</span> contient la liste de tous les champs attributaires</p></li>
+<li><p><span class="guilabel">RAPPORT D’IMPORTATION</span> permet de remonter des informations concernant l’importation des données suite à l’actualisation</p></li>
+<li><p><span class="guilabel">INFORMATIONS GÉNÉRALES</span> affiche plusieurs informations utiles sur la source de données</p></li>
+</ul>
+<h4 id="actualisation-de-la-source-de-donnees">Actualisation de la source de données<a class="headerlink" href="#actualisation-de-la-source-de-donnees" title="Link to this heading">¶</a></h4>
+<p>Une fois créée, la source de données doit être actualisée afin d’importer les données dans la base PostGIS du projet.</p>
+<h5 id="statuts-d-actualisation">Statuts d’actualisation<a class="headerlink" href="#statuts-d-actualisation" title="Link to this heading">¶</a></h5>
+<p>Il existe cinq types de statuts relatifs à l’actualisation des sources :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span> <span class="pre">synchroniser</span></code> : le statut de la source nouvellement créé, cela signifie que la source a besoin d’être actualisée pour être utilisée. Cliquez d’abord sur la source pour éditer son statut, puis sur <span class="guilabel">ACTUALISER LES DONNÉES</span>. Une fois revenu à la liste des source, vous pourrez constater que le statut est devenu <code class="docutils literal notranslate"><span class="pre">En</span> <span class="pre">cours</span></code> ou <code class="docutils literal notranslate"><span class="pre">Terminé</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">En</span> <span class="pre">cours</span></code> : la source de données est en cours d’actualisation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">En</span> <span class="pre">attente</span></code> : les sources mises en attente et traitées dans l’ordre de demande d’actualisation.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Terminé</span></code> : la source de données a bien été créé et vient d’être actualisée.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Inutile</span></code> : ce statut ne concerne que les sources <strong>WMS/WMTS</strong> car celles ci n’ont pas besoin d’être raffraichies.</p></li>
+</ul>
+<img alt="../_images/admin_source_listesource_status.png" src="../_images/admin_source_listesource_status.png" />
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>Lors de la mise à jour d’une source, dans la page d’édition, le bouton <span class="guilabel">ACTUALISER LES DONNÉES</span> est grisé pour éviter de relancer la synchronisation plusieurs fois.</p></li>
+<li><p>Il est néanmoins possible de forcer la réactualisation d’une source de données en cliquant sur le bouton grisé.</p></li>
+</ul>
+</div>
+<h4 id="onglet-definition">Onglet DÉFINITION<a class="headerlink" href="#onglet-definition" title="Link to this heading">¶</a></h4>
+<p>Cet onglet comporte les mêmes informations que celles renseignées lors de la création de la source de données.</p>
+<h4 id="onglet-donnees">Onglet DONNÉES<a class="headerlink" href="#onglet-donnees" title="Link to this heading">¶</a></h4>
+<p>Cet onglet présente plusieurs intérêts :</p>
+<ul class="simple">
+<li><p>Renommer le nom du champ (sera utilisé dans les couches)</p></li>
+<li><p>Changer le type de champ (integer, float, string, etc.)</p></li>
+<li><p>Afficher un extrait des valeurs du champ</p></li>
+</ul>
+<h4 id="onglet-rapport-d-importation">Onglet RAPPORT D’IMPORTATION<a class="headerlink" href="#onglet-rapport-d-importation" title="Link to this heading">¶</a></h4>
+<p>Au survol sur la vignette du statut d’une source, une infobulle apparait avec les informations du rapport d’importation.</p>
+<a class="reference internal image-reference" href="../_images/statut_encours.png"><img alt="../_images/statut_encours.png" src="../_images/statut_encours.png" style="width: 49%;" /></a>
+<a class="reference internal image-reference" href="../_images/statut_termine.png"><img alt="../_images/statut_termine.png" src="../_images/statut_termine.png" style="width: 49%;" /></a>
+<p>Il suffit de cliquer sur la vignette du statut pour être redirigé vers l’onglet <span class="guilabel">RAPPORT D’IMPORTATION</span>.</p>
+<p>Il existe trois types de statuts relatifs au rapport d’importation des sources :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Succès</span></code> : les données ont toutes correctement été importées au moment de l’actualisation</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Erreur</span></code> : aucune donnée n’a pu être importée au moment de l’actualisation (exemple : aucune donnée)</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Alerte</span></code> : importation partielle des données car l’actualisation a rencontré une erreur (exemple : géométries invalides, mauvais typage de colonne)</p></li>
+</ul>
+<p>Le rapport d’importation comporte plusieurs informations utiles comme :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">Statut</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Commencée</span> <span class="pre">à</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Finie</span> <span class="pre">à</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Rapport</span> <span class="pre">global</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Nombre</span> <span class="pre">total</span> <span class="pre">de</span> <span class="pre">lignes</span> <span class="pre">traitées</span></code></p>
+<ul>
+<li><p><code class="docutils literal notranslate"><span class="pre">Erreurs</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Nombre</span> <span class="pre">de</span> <span class="pre">lignes</span> <span class="pre">ajoutées</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Nombre</span> <span class="pre">de</span> <span class="pre">lignes</span> <span class="pre">modifiées</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Nombre</span> <span class="pre">de</span> <span class="pre">lignes</span> <span class="pre">supprimées</span></code></p></li>
+</ul>
+</li>
+</ul>
+<img alt="../_images/admin_source_rapportimportation_alert.png" src="../_images/admin_source_rapportimportation_alert.png" />
+<h4 id="onglet-informations-generales">Onglet INFORMATIONS GÉNÉRALES<a class="headerlink" href="#onglet-informations-generales" title="Link to this heading">¶</a></h4>
+<p>Cet onglet donne des informations utiles sur :</p>
+<ul class="simple">
+<li><p>La date de création de la source de donnée (<em>automatique</em>)</p></li>
+<li><p>La date de modification de la source de données (<em>automatique</em>)</p></li>
+<li><p>La description (à renseigner dans l’onglet <span class="guilabel">DÉFINITION</span>)</p></li>
+<li><p>Les crédits (à renseigner dans l’onglet <span class="guilabel">DÉFINITION</span>)</p></li>
+<li><p>L’auteur de la source de données (<em>automatique à partir du nom de l’utilisateur à l’origine de la source</em>)</p></li>
+</ul>
+<img alt="../_images/admin_source_infosgenerales.png" src="../_images/admin_source_infosgenerales.png" />
+<h3 id="modifier-une-source-de-donnees">Modifier une source de données<a class="headerlink" href="#modifier-une-source-de-donnees" title="Link to this heading">¶</a></h3>
+<p>L’onglet <span class="guilabel">DONNÉES</span> contient l’ensemble des champs attributaires de la source.</p>
+<p>L’outil détecte automatiquement les types de chaque champ mais il peut arriver qu’il soit mal reconnu. Dans ce cas là, il est possible de le modifier dans la liste du type de chaque champ.</p>
+<p>Les types gérés par l’application sont les suivants :</p>
+<ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">String</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Integer</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Float</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Boolean</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Undefined</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Date</span></code></p></li>
+</ul>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Lorsqu’un champ est de type <code class="docutils literal notranslate"><span class="pre">Undefined</span></code>, cela signifie que l’outil n’a pas réussit à l’identifier. A ce moment là il faut lui assigner le bon type dans la liste déroulante.</p>
+</div>
+<p>Un extrait des valeurs pour chaque champ est fournit afin d’avoir un aperçu des données.</p>
+<p>Le libellé de chaque champ est modifiable de façon à le rendre plus lisible qu’une variable brut. Celui-ci sera utilisé lors de la configuration des couches.</p>
+<img alt="../_images/admin_source_modification.png" src="../_images/admin_source_modification.png" />
+<h3 id="dupliquer-une-source-de-donnees">Dupliquer une source de données<a class="headerlink" href="#dupliquer-une-source-de-donnees" title="Link to this heading">¶</a></h3>
+<p>Cela peut être particulièrement intéressant pour les sources <strong>PostGIS</strong> qui possèdent les mêmes paramètres de connexion à la base de données.</p>
+<p>Si la duplication est réalisée sur une source <strong>Shapefile</strong>/<strong>GeoJSON</strong>/<strong>CSV</strong>, il est nécessaire de réimporter le fichier de données.</p>
+<p>Pour dupliquer une source de données cliquez sur le bouton <span class="guilabel">+</span> depuis la liste des sources.</p>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Assurez vous de renommer la source car le nom d’une source de données doit être unique.</p>
+</div>
+<h3 id="supprimer-une-source-de-donnees">Supprimer une source de données<a class="headerlink" href="#supprimer-une-source-de-donnees" title="Link to this heading">¶</a></h3>
+<p>Pouvoir supprimer une source de données nécessite de s’assurer qu’elle n’est pas utilisée par aucune couche. Si ce n’est pas le cas, la suppression ne pourra pas être effectuée.</p>
+<p>Pour supprimer une source, vous avez deux façons de procéder :</p>
+<ul class="simple">
+<li><p>depuis la liste, cliquez sur la couche et en bas de la page cliquez sur le bouton <span class="guilabel">SUPPRIMER</span>.</p></li>
+<li><p>dans la liste, cochez la source et cliquez sur le bouton <span class="guilabel">SUPPRIMER</span>.</p></li>
+</ul>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Toute suppression est définitive.</p>
+</div>
+<h3 id="liste-des-couches">Liste des couches<a class="headerlink" href="#liste-des-couches" title="Link to this heading">¶</a></h3>
+<p>Une fois les sources de données déclarées, l’utilisateur peut créer les couches qui en découlent.</p>
+<p>Pour afficher l’ensemble des couches cliquez sur <span class="guilabel">Liste des couches</span>.</p>
+<img alt="../_images/admin_couche_liste.png" src="../_images/admin_couche_liste.png" />
+<div class="tip admonition">
+<p class="admonition-title">Tip</p>
+<ul class="simple">
+<li><p>Pour retrouver plus facilement une couche dans la liste, vous avez la possibilité d’utiliser la barre de recherche ou d’ajouter un filtre pour filtrer par source de données, vue, affichée par défaut(oui/non), table attributaire affichée(oui/non), fenêtre au survol(oui/non), mini-fiche (oui/non).</p></li>
+<li><p>Toutes les colonnes de la liste des sources de données sont triables dans l’ordre ascendant / descendant :</p>
+<ul>
+<li><p>Nom</p></li>
+<li><p>Vue</p></li>
+<li><p>Source des données</p></li>
+<li><p>Affichée par défaut</p></li>
+</ul>
+</li>
+</ul>
+</div>
+<h3 id="creer-une-couche">Créer une couche<a class="headerlink" href="#creer-une-couche" title="Link to this heading">¶</a></h3>
+<p>La configuration des couches permet de personnaliser de manière très approfondie les possibilités d’interaction au sein d’une couche :</p>
+<ul class="simple">
+<li><p>La fonction de recherche</p></li>
+<li><p>La description associée</p></li>
+<li><p>La représentation cartographique</p></li>
+<li><p>La légende associée aux styles cartographiques affichés</p></li>
+<li><p>L’affichage de popups associés aux données</p></li>
+<li><p>L’affichage de fiches informatives associés aux données</p></li>
+<li><p>La gestion d’outils de filtrage des données</p></li>
+<li><p>La gestion de la table attributaire</p></li>
+<li><p>La gestion d’un outil de synthèse</p></li>
+<li><p>L’affichage de contenus provenant d’applications externes</p></li>
+</ul>
+<p>Pour créer une nouvelle couche, cliquez sur le bouton <span class="guilabel">CRÉER</span>.</p>
+<p>Une page s’ouvre avec différents onglets à renseigner.</p>
+<h4 id="id1">Onglet DÉFINITION<a class="headerlink" href="#id1" title="Link to this heading">¶</a></h4>
+<p>Les informations à renseigner à minima lors de la définition de la couche sont le <code class="docutils literal notranslate"><span class="pre">nom</span></code> et la <code class="docutils literal notranslate"><span class="pre">source</span> <span class="pre">de</span> <span class="pre">données</span></code>.</p>
+<p>A la différence des sources qui doivent avoir des noms uniques, il est possible d’avoir plusieurs couches avec le même nom.</p>
+<p>Il faut ensuite sélectionner une source de données dans la liste. Chaque couche est associée à une source de données.
+Il est possible d’en filtrer le contenu en ajoutant une condition de sélection des données à partir de la liste des champs disponibles fournie (voir ci-dessous).</p>
+<p>Le <span class="guilabel">Champ principal</span> permet d’activer la fonction de recherche dans le visualiseur qui retournera les résultats en fonction de ce champ.</p>
+<p>Si l’option <span class="guilabel">Affichée par défaut</span> est activée, la couche sera activée dès l’ouverture de la vue à laquelle elle est associée dans le visualiseur cartographique.</p>
+<p>Enfin, la partie <span class="guilabel">Description</span> permet d’ajouter du contenu informatif (textes, images, etc) sur cette couche. Ce texte peut être mis à disposition de l’utilisateur dans les vues classiques et de storytelling.</p>
+<p>A ce stade, il est possible d’enregistrer la couche telle quelle et de l’afficher dans le visualiseur cartographique. Une représentation par défaut est appliquée à la couche, ce qui permet de la visualiser.</p>
+<img alt="../_images/admin_couche_definition.png" src="../_images/admin_couche_definition.png" />
+<h5 id="filtrage-de-source">Filtrage de source<a class="headerlink" href="#filtrage-de-source" title="Link to this heading">¶</a></h5>
+<p>L’intérêt principal du filtrage de source est qu’il permet de créer de multiple couches à partir de la même source de données.</p>
+<p>Le langage de filtrage, <span class="guilabel">Pivot QL</span>, est très proche du <a class="reference external" href="https://fr.wikipedia.org/wiki/Structured_Query_Language">SQL</a> et une aide 🛈 permet d’obtenir des exemples avec des cas de figures parlants.</p>
+<p>Pour aider à l’écriture de la requête de filtrage, il peut être intéressant de consulter la liste des champs disponibles afin de ne pas faire d’erreur de nommage.</p>
+<img alt="../_images/admin_couche_definition_filtrage1.png" src="../_images/admin_couche_definition_filtrage1.png" />
+<p>Pour finir, si la requête est syntaxiquement incorrecte ou qu’un nom de champ est mal orthographié alors un  message d’erreur vient avertir l’utilisateur.</p>
+<p>Le nombre d’éléments retournés par le filtre est une aide précieuse pour savoir si la requête est bonne.</p>
+<img alt="../_images/admin_couche_definition_filtrage2.png" src="../_images/admin_couche_definition_filtrage2.png" />
+<p>Le filtre appliqué à la source de données dans la couche est immédiatement répercuté dans la fenêtre de filtre côté interface du visualiseur cartographique.</p>
+<h5 id="metadonnees">Métadonnées<a class="headerlink" href="#metadonnees" title="Link to this heading">¶</a></h5>
+<p>Il est possible de renseigner un texte descriptif lié à une couche.
+Ce texte sera affiché dans les outils de la couche (icône <code class="docutils literal notranslate"><span class="pre">i</span></code>).</p>
+<p>Il peut servir à préciser la méthodologie utilisée, la provenance des données, leur millésime, le fournisseur, le créateur, etc.</p>
+<p>L’éditeur de texte enrichi permet :</p>
+<ul class="simple">
+<li><p>de mettre en forme du texte (gras, italique, souligné, barré) ;</p></li>
+<li><p>de créer des listes à puces ou numérotées ;</p></li>
+<li><p>d’insérer un lien hypertexte.</p></li>
+</ul>
+<p>Pour ajouter un média (image, vidéo), il est nécessaire de basculer sur l’éditeur <strong>HTML</strong>.</p>
+<img alt="../_images/admin_couche_definition_metadonnees.png" src="../_images/admin_couche_definition_metadonnees.png" />
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Ne pas oublier d’activer l’option “Activer la description dans l’arbre des couches”</p>
+</div>
+<h4 id="onglet-icones">Onglet ICÔNES<a class="headerlink" href="#onglet-icones" title="Link to this heading">¶</a></h4>
+<p>Il est possible d’afficher ses propres pictogrammes sur une couche. Ils pourront servir d’icônes ou de motifs sur la carte créée.</p>
+<p>Pour cela il suffit de cliquer sur le bouton <span class="guilabel">AJOUTER</span>, d’importer son image (png/jpeg) et de la nommer dans le champ <code class="docutils literal notranslate"><span class="pre">Nom</span></code>.</p>
+<img alt="../_images/admin_couche_icone.png" src="../_images/admin_couche_icone.png" />
+<p>Il est possible de modifier la couleur de fond de l’image en utilisant l’outil <span class="guilabel">COMPOSER</span>. Pour cela il est nécessaire que l’image ait été enregistrée au préalable afin qu’elle soit disponible dans la liste.</p>
+<p>Pour enregistrer l’image, enregistrez la couche.</p>
+<img alt="../_images/admin_couche_icone_bleue.png" src="../_images/admin_couche_icone_bleue.png" />
+<h4 id="onglet-style">Onglet STYLE<a class="headerlink" href="#onglet-style" title="Link to this heading">¶</a></h4>
+<p>La conception du style permet de donner du sens à une carte en transmettant une information qui doit être la plus efficace et compréhensible possible.</p>
+<p>Parmi les nombreux styles que l’on peut réaliser, voici les plus courants :</p>
+<ul class="simple">
+<li><p>Des <strong>styles simples</strong> sans analyse : polygones, lignes, points.</p></li>
+<li><p>Des <strong>analyses paramétrées</strong> permettant de représenter une variable en particulier :</p>
+<ul>
+<li><p>Cartes choroplèthes (analyse discrète)</p></li>
+<li><p>Carte thématiques (catégorisation)</p></li>
+<li><p>Points avec cercles proportionnels (analyse continue)</p></li>
+<li><p>Point avec iconographie (catégorisation)</p></li>
+<li><p>Affichage de texte</p></li>
+</ul>
+</li>
+<li><p>Des <strong>analyses bivariées</strong> permettant de représenter deux variables en même temps en faisant varier deux caractéristiques du style de la même représentation géographique.</p></li>
+<li><p>Des représentations mettant en jeux plusieurs couches (polygone + centroide par exemple) du type couche principale + couche de décoration.</p></li>
+<li><p>Des représentations différentes en fonction du niveau de zoom.</p></li>
+</ul>
+<p>Il existe deux modes possibles pour la conception du style : le mode avec assistant de style et le mode sans. Par défaut, le mode avec assistant est activé.</p>
+<p>Dans ce manuel d’utilisation, nous nous concentrons principalement sur le mode avec assistant car celui ci s’adresse à un profil d’utilisateur non développeur.</p>
+<h5 id="style-simple">Style simple<a class="headerlink" href="#style-simple" title="Link to this heading">¶</a></h5>
+<p>L’application identifie automatiquement le type de représentation possible en fonction de la géométrie de la source de données utilisée. Ainsi, au moment de la conception, un style simple par défaut est proposé à l’utilisateur.
+Il est possible de modifier les couleurs par défaut en cliquant sur le carré coloré. Un sélecteur de couleur apparaît et vous permet d’en choisir une dans la palette chromatique ou de renseigner le code couleur en <code class="docutils literal notranslate"><span class="pre">HTML</span></code> ou <code class="docutils literal notranslate"><span class="pre">RGBA</span></code>.</p>
+<p>Pour renseigner une valeur numérique (exemple le <code class="docutils literal notranslate"><span class="pre">Diamètre</span></code> pour une représentation <code class="docutils literal notranslate"><span class="pre">Cercle</span></code>), il suffit de cliquer sur la zone concernée et d’inscrire une valeur.</p>
+<img alt="../_images/admin_couche_style.png" src="../_images/admin_couche_style.png" />
+<p>Les curseur de la plage de visibilité permettent de définir des niveaux de zoom d’apparition/disparition d’un style sur la carte (exemple : on affiche des zones du zoom 0 jusqu’au zoom 13 et à partir du zoom 13 on affiche des icônes).</p>
+<p>Pour utiliser une icône existante dans un style simple, sélectionnez la représentation <code class="docutils literal notranslate"><span class="pre">Icône</span></code> et choisissez l’image que vous avez enregistré dans l’onglet <span class="guilabel">ICÔNES</span>.</p>
+<img alt="../_images/admin_couche_style_icone.png" src="../_images/admin_couche_style_icone.png" />
+<h5 id="style-avec-motif">Style avec motif<a class="headerlink" href="#style-avec-motif" title="Link to this heading">¶</a></h5>
+<p>Il est possible d’utiliser des motifs au lieu des couleurs pour remplir un polygone.</p>
+<blockquote>
+<div><ol class="arabic simple">
+<li><p>Création d’un motif
+La première étape est de créer le motif, dans l’onglet <span class="guilabel">ICÔNES</span>.
+Pour cela, il est nécessaire d’importer une image servant de base au motif (le motif est idéalement blanc et de taille 28 x 28 pixels). L’import d’image se fait via le bouton <span class="guilabel">UPLOAD</span>.
+Il est ensuite possible de colorer l’image précédemment importée dans l’application. Le bouton <span class="guilabel">COMPOSE</span> permet ce choix de couleur à appliquer sur le motif.</p></li>
+<li><p>Utilisation d’un motif
+Actuellement les motifs ne sont pas gérés par l’assistant de style.
+Il est nécessaire de désactiver l’assistant pour utiliser les motifs via du code <code class="docutils literal notranslate"><span class="pre">Mapbox</span></code>.</p></li>
+</ol>
+<blockquote>
+<div><p>Exemple :</p>
+</div></blockquote>
+</div></blockquote>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fill&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;paint&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;fill-pattern&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hachures-bleu&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;maxzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;minzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<h5 id="style-avec-une-analyse">Style avec une analyse<a class="headerlink" href="#style-avec-une-analyse" title="Link to this heading">¶</a></h5>
+<ul class="simple">
+<li><p>Choix du <strong>type de représentation</strong></p>
+<ul>
+<li><p>Polygone</p></li>
+<li><p>Ligne</p></li>
+<li><p>Extrusion (3D)</p></li>
+<li><p>Cercle</p></li>
+<li><p>Icône</p></li>
+<li><p>Texte</p></li>
+<li><p>Diagrammes circulaires</p></li>
+</ul>
+</li>
+<li><p>Choix du de la <strong>caractéristique à faire varier</strong></p>
+<ul>
+<li><p>Couleur fond</p></li>
+<li><p>Couleur contour</p></li>
+<li><p>Diamètre</p></li>
+<li><p>Épaisseur</p></li>
+<li><p>Couleur texte</p></li>
+<li><p>Taille texte</p></li>
+<li><p>etc.</p></li>
+</ul>
+</li>
+<li><p>Choix de la <strong>variable à représenter</strong></p></li>
+<li><p>Choix du <strong>type d’analyse</strong></p>
+<ul>
+<li><p>Si la variable est un nombre (type Float/Integer)</p>
+<ul>
+<li><p>Discrétisation (méthodes Jenks, Quantiles, Intervalles égaux)</p></li>
+<li><p>Interpolation</p></li>
+<li><p>Catégorisation</p></li>
+<li><p>Diagrammes circulaires</p></li>
+</ul>
+</li>
+<li><p>Si la variable est un texte (type String)</p>
+<ul>
+<li><p>Catégorisation</p></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<p>Afin de ne pas égarer l’utilisateur dans les nombreux choix du <strong>type de représentation</strong>, ce dernier sera restreint en fonction du type géométrique de la source de données utilisée par la couche. Par exemple, à une source de type <code class="docutils literal notranslate"><span class="pre">Polygon</span></code> sera proposé uniquement les types de représentation <code class="docutils literal notranslate"><span class="pre">Polygone</span></code>, <code class="docutils literal notranslate"><span class="pre">Ligne</span></code>, <code class="docutils literal notranslate"><span class="pre">Extrusion</span></code>.</p>
+<p>Le choix de la <strong>caractéristique</strong> à faire varier découlera automatiquement du type de représentation choisi précédemment. Par exemple, pour une <strong>représentation</strong> <code class="docutils literal notranslate"><span class="pre">Polygone</span></code>, les caractéristiques à faire varier seront <code class="docutils literal notranslate"><span class="pre">Couleur</span> <span class="pre">du</span> <span class="pre">polygone</span></code> et <code class="docutils literal notranslate"><span class="pre">Couleur</span> <span class="pre">du</span> <span class="pre">contour</span></code>.</p>
+<p>Il est à noter que <strong>toutes les caractéristiques ne sont pas variables</strong> car n’apportant pas d’intérêt : par exemple l’épaisseur du contour de la représentation Cercle n’est pas variable, uniquement fixe.</p>
+<p>Le choix de la <strong>variable à représenter</strong> se fait à l’aide d’une liste déroulante. La variable se présente ainsi : le label (éditable), le nom de la variable, le type. Le <strong>type de la variable choisie</strong> (<code class="docutils literal notranslate"><span class="pre">String</span></code>, <code class="docutils literal notranslate"><span class="pre">Integer</span></code>, <code class="docutils literal notranslate"><span class="pre">Float</span></code>..) <strong>conditionne les possibilités du type d’analyse</strong>.</p>
+<p>Le choix du type d’analyse constitue la dernière étape. Le <strong>type d’analyse Interpolation</strong> n’est disponible que pour faire varier les caractéristiques <code class="docutils literal notranslate"><span class="pre">Diamètre</span></code> ou``Épaisseur``, c’est à dire une taille.</p>
+<p>Lors de la conception d’un style avec une analyse, il est possible d’activer l’option <span class="guilabel">Générer la légende associée</span> pour que la légende soit exactement conforme au style représenté.</p>
+<img alt="../_images/admin_couche_style_assistant.png" src="../_images/admin_couche_style_assistant.png" />
+<h5 id="exemples-de-styles-mapbox-avances">Exemples de styles Mapbox avancés<a class="headerlink" href="#exemples-de-styles-mapbox-avances" title="Link to this heading">¶</a></h5>
+<p><strong>Catégorisation</strong></p>
+<ul class="simple">
+<li><p>Fallback value (valeur par défaut)</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w"> </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fill&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="nt">&quot;paint&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;fill-color&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;case&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;has&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;nb_log_ind_pour_mille&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;step&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;get&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;nb_log_ind_pour_mille&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="s2">&quot;#fde725&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="mf">0.1</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#5dc963&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="mf">1.1</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#21908d&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="mf">3.1</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#3b528b&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="mf">7.1</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#440154&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="mf">15.1</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#CCC&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="s2">&quot;#CCC&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;fill-outline-color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#a7c2e8&quot;</span>
+<span class="p">},</span>
+<span class="nt">&quot;maxzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span>
+<span class="nt">&quot;minzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<ul class="simple">
+<li><p>Variation simple (icones en fonction d’un champ) + étiquettes en fonction d’un champ</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;symbol&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;paint&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;text-color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hsl(352, 100%, 15%)&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;layout&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;icon-size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;text-font&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;Arial Unicode MS Bold&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;text-size&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;icon-image&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;match&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;get&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;cep_nature&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="s2">&quot;ESU&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;point-vert&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;ESO&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;point-noir&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;EMI&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;point-marron&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;text-field&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;{cep_nom}&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;text-radial-offset&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;text-variable-anchor&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;top&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;bottom&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;left&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;right&quot;</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;maxzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;minzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<ul class="simple">
+<li><p>Variation simple (couleur des points en fonction d’un champ) + clusters colorés en fonction du nombre de points</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;circle&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;paint&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;circle-color&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;case&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;has&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;secteuractivite&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;match&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">[</span>
+<span class="w">          </span><span class="s2">&quot;get&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;secteuractivite&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="s2">&quot;Alimentaire&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;hsla(210, 50%, 40%, 0.8)&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Automobiles, motos&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;hsla(0, 0%, 80%, 0.8)&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Hôtels, cafés, restaurants&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;hsla(180, 50%, 60%, 0.8)&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Culture, loisirs&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;hsla(180, 50%, 40%, 0.8)&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Divers&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;hsla(0, 20%, 50%, 0.8)&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Équipement de la maison&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;hsla(60, 50%, 60%, 0.8)&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Équipement de la personne&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;hsla(300, 33%, 30%, 0.8)&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Grand magasin&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;#c7843d&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Hygiène, santé, beauté&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;hsla(300, 33%, 70%, 0.8)&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Services à la personne&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;hsla(0, 100%, 90%, 0.8)&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;Services à vitrine&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;hsla(30, 100%, 60%, 0.8)&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;#CCC&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="s2">&quot;#CCC&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;circle-radius&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">7</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;circle-stroke-color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hsl(0, 0%, 95%)&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;circle-stroke-width&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;cluster&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;font&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;#ffffff&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="nt">&quot;sizes&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">      </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">      </span><span class="mi">15</span><span class="p">,</span>
+<span class="w">      </span><span class="mi">20</span><span class="p">,</span>
+<span class="w">      </span><span class="mi">22</span><span class="p">,</span>
+<span class="w">      </span><span class="mi">25</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;steps&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">      </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">      </span><span class="mi">10</span><span class="p">,</span>
+<span class="w">      </span><span class="mi">50</span><span class="p">,</span>
+<span class="w">      </span><span class="mi">80</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;border&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;colors&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;#b8e295&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#8dcf82&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#64bc6e&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#3ba859&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#1c8a47&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#006837&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;radius&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;maxzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;minzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<ul class="simple">
+<li><p>Variation double : couleur des lignes en fonction d’un champ + taille des lignes en fonction en fonction d’un champ</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;line&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;paint&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;line-color&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;match&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;get&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;class_adm&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="s2">&quot;Autoroute&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#bb1e2a&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;Départementale&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#487b00&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;Nationale&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#487bb6&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#000000&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;line-width&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;match&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;get&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;class_adm&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="s2">&quot;Autoroute&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;Départementale&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="mi">2</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;Nationale&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="mi">0</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;maxzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;minzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<ul class="simple">
+<li><p>Variation simple (couleur du polygone en fonction d’un champ) + ordre d’affichage des géométries en fonction d’un champ</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fill&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;paint&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;fill-color&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;match&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;get&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;buffer&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="s2">&quot;1000&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#e47e1c&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;250&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#e41a1c&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;#000000&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="nt">&quot;fill-outline-color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;transparent&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;layout&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;fill-sort-key&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;case&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;==&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">[</span>
+<span class="w">          </span><span class="s2">&quot;get&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;buffer&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="s2">&quot;1000&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="mi">0</span><span class="p">,</span>
+<span class="w">      </span><span class="p">[</span>
+<span class="w">        </span><span class="s2">&quot;==&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="p">[</span>
+<span class="w">          </span><span class="s2">&quot;get&quot;</span><span class="p">,</span>
+<span class="w">          </span><span class="s2">&quot;buffer&quot;</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="s2">&quot;250&quot;</span>
+<span class="w">      </span><span class="p">],</span>
+<span class="w">      </span><span class="mi">1</span><span class="p">,</span>
+<span class="w">      </span><span class="mi">0</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;maxzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;minzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<p><strong>Filtres</strong></p>
+<ul class="simple">
+<li><p>Filtre simple (une condition)</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fill&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;paint&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;fill-color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hsl(140, 92%, 24%)&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;fill-outline-color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hsl(0, 0%, 100%)&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;==&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;nouvelle_culture&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;Oui&quot;</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;maxzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;minzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<ul class="simple">
+<li><p>Filtre “et” (les conditions se cumulent)</p></li>
+</ul>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><code><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fill&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;paint&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;fill-color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hsl(140, 92%, 24%)&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;fill-outline-color&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hsl(0, 0%, 100%)&quot;</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;filter&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="s2">&quot;all&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;==&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;nouvelle_culture&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;Oui&quot;</span>
+<span class="w">    </span><span class="p">],</span>
+<span class="w">    </span><span class="p">[</span>
+<span class="w">      </span><span class="s2">&quot;&gt;=&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;evol_2021_surf&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;0&quot;</span>
+<span class="w">    </span><span class="p">]</span>
+<span class="w">  </span><span class="p">],</span>
+<span class="w">  </span><span class="nt">&quot;maxzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">24</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;minzoom&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span>
+<span class="p">}</span>
+</code></pre></div>
+</div>
+<h5 id="ajouter-un-style-secondaire">Ajouter un style secondaire<a class="headerlink" href="#ajouter-un-style-secondaire" title="Link to this heading">¶</a></h5>
+<p>Une couche peut utiliser plusieurs styles. Le style principal utilise les données de la source utilisée par la couche, en revanche, le style secondaire peut faire appel à une source de données différente.</p>
+<p>Le style secondaire doit être vu comme un élément de décoration sur la carte. De cette manière, aucune interaction ne sera possible avec les données du style secondaire (info-bulle, mini-fiche, filtre, etc.)</p>
+<p><strong>Exemple concret</strong> : Dans le cas d’une carte des communes, il pourra être intéressant de rajouter les étiquettes des noms au centre des communes. Pour se faire, on aura besoin de créer un style secondaire faisant appel à la source de données des centroides des communes pour pouvoir ajouter les étiquettes.</p>
+<img alt="../_images/admin_couche_style_secondaire.png" src="../_images/admin_couche_style_secondaire.png" />
+<h5 id="style-sans-assistant">Style sans assistant<a class="headerlink" href="#style-sans-assistant" title="Link to this heading">¶</a></h5>
+<p>Il est possible d’aller plus loin dans la conception d’un style en désactivant le mode assistant. Ce mode s’adresse à des utilisateurs développeurs car il faut rédiger le code en <code class="docutils literal notranslate"><span class="pre">JSON</span></code>, en suivant la spécification <a class="reference external" href="https://docs.mapbox.com/mapbox-gl-js/style-spec/">Mapbox</a>.</p>
+<img alt="../_images/admin_couche_style_sansassistant.png" src="../_images/admin_couche_style_sansassistant.png" />
+<h4 id="onglet-legendes">Onglet LÉGENDES<a class="headerlink" href="#onglet-legendes" title="Link to this heading">¶</a></h4>
+<p>La légende est un des éléments essentiels de la carte. Elle doit être claire, facilement compréhensible et doit s’adapter aux éléments affichés sur la carte.</p>
+<p>Voici les typologies de légende :</p>
+<ul class="simple">
+<li><p>Légende avec carrés pour représenter des polygones</p></li>
+<li><p>Légende avec cercles pour représenter des points</p></li>
+<li><p>Légende avec lignes pour représenter les lignes</p></li>
+<li><p>Légende avec icônes pour représenter les pictogrammes ou motifs</p></li>
+</ul>
+<p>On peut faire varier :</p>
+<ul class="simple">
+<li><p>La couleur de fond pour les carrés et le cercles</p></li>
+<li><p>La couleur de la ligne pour les carrés, les cercles et les lignes</p></li>
+<li><p>La taille pour les carrés et les cercles</p></li>
+<li><p>L’épaisseur de ligne pour les carrés, les cercles et les lignes</p></li>
+</ul>
+<img alt="../_images/admin_couche_legende.png" src="../_images/admin_couche_legende.png" />
+<p>Si elle est générée depuis l’onglet <span class="guilabel">STYLE</span>, alors elle se met en lien automatiquement avec le style de la couche et prend en compte la typologie de géométrie affichée.</p>
+<p>Il n’est pas possible de modifier une légende qui a été générée. Seuls le titre et le pied de légende sont éditables.</p>
+<p>Si la légende générée ne vous convient pas, il faut désactiver l’option <span class="guilabel">Générer la légende associée</span> dans l’onglet <span class="guilabel">STYLE</span> pour la caractéristique concernée (exemple <code class="docutils literal notranslate"><span class="pre">Couleur</span> <span class="pre">du</span> <span class="pre">polygone</span></code>). De cette façon, vous pourrez créer manuellement la légende souhaitée.</p>
+<img alt="../_images/admin_couche_legendegeneree.png" src="../_images/admin_couche_legendegeneree.png" />
+<h4 id="onglet-fenetre-au-survol">Onglet FENÊTRE AU SURVOL<a class="headerlink" href="#onglet-fenetre-au-survol" title="Link to this heading">¶</a></h4>
+<p>La fenêtre au survol ou info-bulle est un message contextuel apparaissant en surimpression au survol de la souris sur les éléments de la couche. Le contenu du message s’adapte dynamiquement en fonction de l’objet survolé.
+Celle-ci n’est pas active par défaut.</p>
+<img alt="../_images/admin_couche_pophover.png" src="../_images/admin_couche_pophover.png" />
+<p>Une fois activée, la configuration de la fenêtre est facilitée grâce à un assistant qui permet d’ajouter les éléments de contenus et de définir une plage de zoom.</p>
+<p>Si le champ principal a été définit dans l’onglet <span class="guilabel">DÉFINITION</span>, alors ce dernier sera aussi utilisé comme titre de l’info-bulle.</p>
+<p>En cas de valeur nulle sur un champ, il est possible de définir une valeur par défaut. De même, l’outil permet de rajouter du texte en préfixe et suffixe de la valeur du champ choisi.</p>
+<img alt="../_images/admin_couche_pophover_nonexpert.png" src="../_images/admin_couche_pophover_nonexpert.png" />
+<p>Lorsque le label d’un champ est renommé à un endroit de l’application, il est renommé partout ailleurs.</p>
+<p>Le <span class="guilabel">Mode expert</span> permet d’aller plus loin dans le paramétrage de l’info-bulle en codant le contenu en <a class="reference external" href="https://mozilla.github.io/nunjucks/fr/templating.html">Nunjucks</a>.</p>
+<p>Le code est généré à partir de ce qui existe dans le mode avec assistant, en revanche l’inverse n’est pas vrai. C’est à dire que le mode avec assistant n’est pas synchronisé avec le <span class="guilabel">Mode expert</span>.</p>
+<p>Ce mode avancé s’adresse à des utilisateurs développeurs. Il peut être intéressant de l’utiliser pour définir des conditions <code class="docutils literal notranslate"><span class="pre">if</span></code> ou <code class="docutils literal notranslate"><span class="pre">elseif</span></code>.</p>
+<img alt="../_images/admin_couche_pophover_expert.png" src="../_images/admin_couche_pophover_expert.png" />
+<h4 id="onglet-mini-fiche">Onglet MINI-FICHE<a class="headerlink" href="#onglet-mini-fiche" title="Link to this heading">¶</a></h4>
+<p>La mini-fiche est une fiche structurée présentant des informations associées à un objet de la couche. Celle-ci s’ouvre au clic sur l’objet en question.</p>
+<h5 id="mode-simple">Mode simple<a class="headerlink" href="#mode-simple" title="Link to this heading">¶</a></h5>
+<p>La mini-fiche n’est pas active par défaut.</p>
+<img alt="../_images/admin_couche_minifiche.png" src="../_images/admin_couche_minifiche.png" />
+<p>La mini-fiche fonctionne sur le même principe que celui de la fenêtre au survol. Si le champ principal a été définit dans l’onglet <span class="guilabel">DÉFINITION</span>, alors ce dernier sera aussi utilisé comme titre de la mini-fiche.</p>
+<p>Il est possible de sélectionner une couleur de surbrillance pour les objets cliqués sur la carte au moment de l’affichage de la mini-fiche.</p>
+<p>En cas de valeur nulle sur un champ, il est possible de définir une valeur par défaut.</p>
+<p>De même, l’outil permet de rajouter du texte en préfixe et suffixe de la valeur du champ choisi.</p>
+<p>A la différence de l’info-bulle, l’utilisateur peut ajouter des titres de section pour structurer les parties de la fiche.</p>
+<img alt="../_images/admin_couche_minifiche_nonexpert.png" src="../_images/admin_couche_minifiche_nonexpert.png" />
+<p>Lorsque le label d’un champ est renommé à un endroit de l’application, il est renommé partout ailleurs.</p>
+<h5 id="mode-expert">Mode expert<a class="headerlink" href="#mode-expert" title="Link to this heading">¶</a></h5>
+<p>Le <span class="guilabel">Mode expert</span> permet d’aller plus loin dans le paramétrage de la fiche en codant le contenu en <a class="reference external" href="https://mozilla.github.io/nunjucks/fr/templating.html">Nunjucks</a>.</p>
+<p>Le code est généré à partir de ce qui existe dans le mode avec assistant, en revanche l’inverse n’est pas vrai. C’est à dire que le mode avec assistant n’est pas synchronisé avec le <span class="guilabel">Mode expert</span>.</p>
+<p>Ce mode avancé s’adresse à des utilisateurs développeurs. Il peut être intéressant de l’utiliser pour ajouter du texte coloré, des liens hypertexte ou des images.</p>
+<img alt="../_images/admin_couche_minifiche_expert.png" src="../_images/admin_couche_minifiche_expert.png" />
+<h5 id="comparaison-d-entites">Comparaison d’entités<a class="headerlink" href="#comparaison-d-entites" title="Link to this heading">¶</a></h5>
+<p>Il est possible de créer une URL permettant de comparer plusieurs entités.</p>
+<p>Modèle d’URL :</p>
+<p><code class="docutils literal notranslate"><span class="pre">https://fiches.sud-foncier-eco.fr/comparer?eae={{ids}}</span></code></p>
+<p>Dans ce modèle, l’URL de comparaison est générée automatiquement et affichée dans le tableau lorsque plusieurs éléments sont sélectionnés.
+Le paramètre <code class="docutils literal notranslate"><span class="pre">{{ids}}</span></code> doit être remplacé par la liste des identifiants des entités sélectionnées.</p>
+<img alt="../_images/admin_couche_minifiche_comparaison.png" src="../_images/admin_couche_minifiche_comparaison.png" />
+<h4 id="onglet-filtre">Onglet FILTRE<a class="headerlink" href="#onglet-filtre" title="Link to this heading">¶</a></h4>
+<p>L’outil de filtre permet de restreindre les éléments sur la carte en fonction des valeurs de champs sélectionnées.</p>
+<p>L’outil de filtre n’est pas actif par défaut.</p>
+<img alt="../_images/admin_couche_filtre.png" src="../_images/admin_couche_filtre.png" />
+<p>Pour ajouter un filtre sur la couche cliquez sur <span class="guilabel">AJOUTER</span>.</p>
+<p>Plusieurs types de filtrage sont disponibles en fonction des types de champs :</p>
+<ul class="simple">
+<li><p>Une seule valeur (texte)</p></li>
+<li><p>Plusieurs valeurs (texte)</p></li>
+<li><p>Une étendue de valeurs (numérique ou date)</p></li>
+</ul>
+<p>Au niveau de l’affichage, il est possible de choisir:</p>
+<ul class="simple">
+<li><p>Aucune valeur</p></li>
+<li><p>Toutes les valeurs disponibles pour le champ</p></li>
+<li><p>Une liste de valeurs</p></li>
+</ul>
+<img alt="../_images/admin_couche_filtreactive.png" src="../_images/admin_couche_filtreactive.png" />
+<p>Il est possible de remonter/descendre les filtres dans l’ordre souhaité.</p>
+<h4 id="onglet-table">Onglet TABLE<a class="headerlink" href="#onglet-table" title="Link to this heading">¶</a></h4>
+<p>La table attributaire permet d’avoir une vision tabulaire des données de la couche. Elle n’est pas activée par défaut.</p>
+<img alt="../_images/admin_couche_table.png" src="../_images/admin_couche_table.png" />
+<p>Une fois la table activée, l’utilisateur peut configurer l’affichage des champs et autoriser leur export au format <code class="docutils literal notranslate"><span class="pre">xlsx</span></code>.</p>
+<p>Il est possible de remonter/descendre les champs dans l’ordre souhaité.</p>
+<img alt="../_images/admin_couche_tableactivee.png" src="../_images/admin_couche_tableactivee.png" />
+<h4 id="onglet-widget">Onglet WIDGET<a class="headerlink" href="#onglet-widget" title="Link to this heading">¶</a></h4>
+<p>L’outil de widget permet de récapituler dans un tableau dynamique des indicateurs utiles à l’analyse de la couche.</p>
+<p>Plusieurs widgets peuvent être créés par couche. L’icône et le libellé de chacun d’entre eux est personnalisable.</p>
+<p>Trois types de calculs statistiques sont proposés :</p>
+<ul class="simple">
+<li><p>le comptage du nombre d’éléments présents</p></li>
+<li><p>la somme de leur valeur</p></li>
+<li><p>la moyenne de leur valeur</p></li>
+</ul>
+<img alt="../_images/admin_couche_widget.png" src="../_images/admin_couche_widget.png" />
+<p>Il est possible de choisir si le résultat de ces calculs se réactualise en fonction des éléments qui se trouvent dans l’emprise spatiale, lors du zoom sur la carte, ou non.</p>
+<p>Un champ de saisie avancée à destination des utilisateurs développeurs est également disponible. Il requiert l’écriture en <a class="reference external" href="https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/JSON">JSON</a> avec dans la clé “template” une chaîne de caractère contenant le code en <a class="reference external" href="https://mozilla.github.io/nunjucks/fr/templating.html">Nunjucks</a> du format de données attendu.</p>
+<img alt="../_images/admin_couche_widget_devs.png" src="../_images/admin_couche_widget_devs.png" />
+<h4 id="onglet-inclusions">Onglet INCLUSIONS<a class="headerlink" href="#onglet-inclusions" title="Link to this heading">¶</a></h4>
+<p>Enfin, il est également possible d’associer à une couche des contenus provenant d’applications externes - par exemple, pour associer des graphiques aux couches cartographiques.</p>
+<p>Pour cela, il suffit de renseigner :</p>
+<ul class="simple">
+<li><p>l’icône représentative</p></li>
+<li><p>un libellé correspondant</p></li>
+<li><p>l’URL du contenu distant à mettre à disposition des utilisateurs de TerraVisu</p></li>
+</ul>
+<img alt="../_images/admin_couche_embed.png" src="../_images/admin_couche_embed.png" />
+<h3 id="modifier-une-couche">Modifier une couche<a class="headerlink" href="#modifier-une-couche" title="Link to this heading">¶</a></h3>
+<p>Pour modifier une couche existante, cliquez sur la couche dans la liste et effectuez vos changements.</p>
+<h3 id="dupliquer-une-couche">Dupliquer une couche<a class="headerlink" href="#dupliquer-une-couche" title="Link to this heading">¶</a></h3>
+<p>La duplication d’une couche inclut la copie :</p>
+<ul class="simple">
+<li><p>du style</p></li>
+<li><p>de la légende</p></li>
+<li><p>de l’infobulle</p></li>
+<li><p>de la mini-fiche</p></li>
+<li><p>du widget</p></li>
+</ul>
+<p>Pour dupliquer une couche cliquez sur le bouton <span class="guilabel">DUPLIQUER</span> depuis la liste des couches.</p>
+<p>Un message indique à l’utilisateur que la couche a bien été dupliquée.</p>
+<h3 id="supprimer-une-couche">Supprimer une couche<a class="headerlink" href="#supprimer-une-couche" title="Link to this heading">¶</a></h3>
+<p>Pouvoir supprimer une source de données nécessite de s’assurer qu’elle n’est utilisée dans aucun vue. Si ce n’est pas le cas, la suppression ne pourra pas être effectuée.</p>
+<p>Pour supprimer une couche, vous avez deux façons de procéder :</p>
+<ul class="simple">
+<li><p>dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton <span class="guilabel">SUPPRIMER</span></p></li>
+<li><p>dans la liste, cochez la couche et cliquez sur le bouton <span class="guilabel">SUPPRIMER</span></p></li>
+</ul>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Toute suppression est définitive.</p>
+</div>
+<h3 id="liste-des-vues">Liste des vues<a class="headerlink" href="#liste-des-vues" title="Link to this heading">¶</a></h3>
+<p>La configuration des menus d’accès aux couches de données s’appelle les vues.</p>
+<p>Il s’agit de la dernière étape à réaliser (après la création de la source, puis création de la couche) pour visualiser ses données.</p>
+<p>Pour afficher l’ensemble des vues cliquez sur <span class="guilabel">Liste des vues</span>.</p>
+<p>Vous arrivez sur une page présentant la liste de toutes les vues déclarées.</p>
+<img alt="../_images/admin_vue_liste.png" src="../_images/admin_vue_liste.png" />
+<h3 id="creer-une-vue"><span id="id4"></span>Créer une vue<a class="headerlink" href="#creer-une-vue" title="Link to this heading">¶</a></h3>
+<p>Pour ajouter une nouvelle vue cliquez sur le bouton <span class="guilabel">CRÉER</span>.</p>
+<p>Les informations à renseigner à minima lors de la création d’une nouvelle vue sont le <code class="docutils literal notranslate"><span class="pre">nom</span></code>, le <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">de</span> <span class="pre">vue</span></code>, le <code class="docutils literal notranslate"><span class="pre">classement</span></code> et l’<code class="docutils literal notranslate"><span class="pre">arbre</span> <span class="pre">des</span> <span class="pre">couches</span></code>.</p>
+<p>Il existe deux types de vues :</p>
+<ul class="simple">
+<li><p><strong>Carte</strong> : les couches sont affichés dans une arborescence composée de groupes</p></li>
+<li><p><strong>Storytelling</strong> : les couches sont affichés à droite d’une description (analyse de carte, chiffre clés..) et l’utilisateur  les fait défiler dans l’ordre dans lesquelles elles sont ordonnées dans l’arbre des couches.</p></li>
+</ul>
+<p>Le classement permet d’affecter à la vue une position par rapport aux autres (exemple : 1ere position, deuxième position..). Il est possible de créer autant de vues que nécessaire mais il ne peut pas y avoir plus de 10 vues affichées dans le visualiseur cartographique.</p>
+<p>Il est possible de définir une emprise géographique différente de l’emprise par défaut du visualiseur cartographique (exemple : Centre ville de Thionville). Pour cela, il suffit de dessiner la zone à afficher à l’aide de l’outil de dessin.</p>
+<p>S’il a définit au préalable des fonds de carte dans le module <span class="guilabel">Liste des fonds de carte</span>, l’utilisateur peut choisir de les utiliser dans une vue. Si il ne le fait pas, c’est le fond de carte par défaut (Mapbox Monochrome Light) qui sera utilisé.</p>
+<p>Une icône par défaut est appliquée à la vue si l’utilisateur ne lui en choisis pas. Sa couleur est blanche afin que l’icône se démarque bien sur le menu des vues dans le visualiseur cartographique. Le format supporté par l’outil est le png.</p>
+<h4 id="arbre-des-couches">Arbre des couches<a class="headerlink" href="#arbre-des-couches" title="Link to this heading">¶</a></h4>
+<p>Une couche appartient obligatoirement à un groupe.</p>
+<p>Pour ajouter un groupe cliquez sur le bouton <span class="guilabel">CRÉER UN GROUPE</span>.</p>
+<p>Pour ajouter une couche à un groupe cliquez sur le <span class="guilabel">+</span> et choisissez la dans la liste.</p>
+<p>Vous pouvez construire votre arbre en ajoutant, déplaçant, imbriquant les éléments.</p>
+<p>A partir d’un groupe, en cliquant sur les trois petits points verticaux vous avez la possibilité de :</p>
+<ul class="simple">
+<li><p>Ajouter une couche</p></li>
+<li><p>Ajouter un sous-groupe</p></li>
+<li><p>Paramétrer le mode de sélection des couches : exclusif, inclusif ou par variables</p></li>
+<li><p>Supprimer un groupe</p></li>
+</ul>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Une couche ne peut être ajoutée qu’à une seule vue à la fois.</p>
+</div>
+<img alt="../_images/admin_vue.png" src="../_images/admin_vue.png" />
+<p>L’enregistrement de la vue aura pour effet immédiat de rajouter automatiquement l’ensemble des éléments de l’arbre des couches dans le visualiseur cartographique.</p>
+<p>Pour modifier une vue existante, cliquez sur la vue dans la liste et effectuez vos changements.</p>
+<h4 id="selection-des-couches-par-variables">Sélection des couches par variables<a class="headerlink" href="#selection-des-couches-par-variables" title="Link to this heading">¶</a></h4>
+<p>Le mode de sélection de couches dit “par variables” permet de rassembler plusieurs couches portant sur un même indicateur, dont la valeur est fonction de combinaisons de variables.</p>
+<p>Ce mécanisme est particulièrement utile pour permettre la sélection du millésime de données ainsi que de l’échelle spatiale utilisée.</p>
+<p>Pour pouvoir actionner ce mode de sélection, il est nécessaire d’avoir préalablement défini une couche par combinaison de valeurs voulues pour les variables en jeu.</p>
+<p><strong>Exemple avec deux variables</strong> :</p>
+<ul class="simple">
+<li><p>Variables et valeurs associées</p>
+<ul>
+<li><p>Zone géographique : Département, Région</p></li>
+<li><p>Année : 2020, 2050</p></li>
+</ul>
+</li>
+<li><p>Couches nécessaires (sans contrainte sur le nom)</p>
+<ul>
+<li><p>Couche Département 2020</p></li>
+<li><p>Couche Département 2050</p></li>
+<li><p>Couche Région 2020</p></li>
+<li><p>Couche Région 2050</p></li>
+</ul>
+</li>
+</ul>
+<p>Dans la page d’édition d’une vue, vous aurez alors accès au menu suivant permettant la création d’un nouveau groupe.</p>
+<ol class="arabic simple">
+<li><p>Créer un nouveau groupe, le nommer et afficher ses paramètres :</p></li>
+</ol>
+<img alt="../_images/admin_vue_groupe.png" src="../_images/admin_vue_groupe.png" />
+<ol class="arabic simple" start="2">
+<li><p>Sélectionner le mode de sélection de couches “par variables” et renseigner le nom des variables souhaitées :</p></li>
+</ol>
+<img alt="../_images/admin_vue_groupe_variables.png" src="../_images/admin_vue_groupe_variables.png" />
+<ol class="arabic simple" start="3">
+<li><p>Ajouter une couche au groupe. C’est lors de cette étape que les valeurs des différentes variables sont définies.</p></li>
+</ol>
+<img alt="../_images/admin_vue_groupe_variables_valeurs.png" src="../_images/admin_vue_groupe_variables_valeurs.png" />
+<ol class="arabic simple" start="4">
+<li><p>Affecter une couche à chaque combinaison :</p></li>
+</ol>
+<img alt="../_images/admin_vue_groupe_variables_combinaisons.png" src="../_images/admin_vue_groupe_variables_combinaisons.png" />
+<p>Le groupe s’affiche alors dans l’arbre des couches et comporte un sélecteur de valeurs quand il est actif.</p>
+<img alt="../_images/visu_groupe_variables.png" src="../_images/visu_groupe_variables.png" />
+<p>Dans le cas où la couche correspondant à une combinaison n’a pas été définie,  une erreur s’affiche lors du changement de valeurs des variables et la couche sélectionnée n’est pas modifiée.</p>
+<img alt="../_images/visu_groupe_variables_error.png" src="../_images/visu_groupe_variables_error.png" />
+<h3 id="supprimer-une-vue">Supprimer une vue<a class="headerlink" href="#supprimer-une-vue" title="Link to this heading">¶</a></h3>
+<p>Pour supprimer une vue, vous avez deux façons de procéder :</p>
+<ul class="simple">
+<li><p>dans la liste, cliquez sur la vue et en bas de la page cliquez sur le bouton <span class="guilabel">SUPPRIMER</span></p></li>
+<li><p>dans la liste, cochez la vue et cliquez sur le bouton <span class="guilabel">SUPPRIMER</span></p></li>
+</ul>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Toute suppression est définitive.</p>
+</div>
+<h2 id="fonds-de-carte">Fonds de carte<a class="headerlink" href="#fonds-de-carte" title="Link to this heading">¶</a></h2>
+<p>Le module <span class="guilabel">Fonds de carte</span> de TerraVisu  permet à l’utilisateur de définir ses fonds de cartes sur lesquels viendront se superposer les couches de données cartographiques de l’application.</p>
+<p>L’utilisateur peut par exemple ainsi basculer d’un fond de plan cartographique à une photographie aérienne pour avoir un meilleur aperçu de la réalité physique du territoire d’étude.</p>
+<h3 id="liste-des-fonds-de-carte">Liste des fonds de carte<a class="headerlink" href="#liste-des-fonds-de-carte" title="Link to this heading">¶</a></h3>
+<p>Trois types de fonds de cartes peuvent être définis :</p>
+<ul class="simple">
+<li><p>Raster</p></li>
+<li><p>Vectoriel</p></li>
+<li><p>Mapbox</p></li>
+</ul>
+<p>Pour afficher l’ensemble des fonds de carte cliquez sur <span class="guilabel">Liste des fonds de carte</span>.</p>
+<p>Vous arrivez sur une page présentant la liste de tous les fonds de carte existants.</p>
+<img alt="../_images/admin_fondscarte.png" src="../_images/admin_fondscarte.png" />
+<h3 id="creer-un-nouveau-fond-de-carte">Créer un nouveau fond de carte<a class="headerlink" href="#creer-un-nouveau-fond-de-carte" title="Link to this heading">¶</a></h3>
+<p>Pour ajouter un nouveau fond de carte cliquez sur le bouton <span class="guilabel">CRÉER</span>.</p>
+<p>Les informations à renseigner à minima lors de la création d’un nouveau fond de carte sont le <code class="docutils literal notranslate"><span class="pre">Nom</span></code>, le <code class="docutils literal notranslate"><span class="pre">Type</span> <span class="pre">de</span> <span class="pre">fond</span> <span class="pre">de</span> <span class="pre">carte</span></code> et l’<code class="docutils literal notranslate"><span class="pre">URL</span></code>.</p>
+<p>La taille des tuiles est modifiable mais elle est définie par défaut sur la valeur 256. Le curseur de l’amplitude du zoom permet de choisir à quel niveau de zoom les tuiles du fond de carte s’afficheront dans le visualiseur.</p>
+<p>Une fois les fonds de plan ajoutés, l’utilisateur peut choisir de les utiliser dans les vues qu’il veut.</p>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Il est possible de définir l’ordre d’affichage du fond de plan dans une vue en renseignant le champ <code class="docutils literal notranslate"><span class="pre">Ordre</span></code>.</p>
+</div>
+<img alt="../_images/admin_fondscarte_modification.png" src="../_images/admin_fondscarte_modification.png" />
+<h3 id="modifier-un-fond-de-carte">Modifier un fond de carte<a class="headerlink" href="#modifier-un-fond-de-carte" title="Link to this heading">¶</a></h3>
+<p>Pour modifier un fond de carte existant, cliquez sur le fond de carte dans la liste et effectuez vos changements.</p>
+<h3 id="supprimer-un-fond-de-carte">Supprimer un fond de carte<a class="headerlink" href="#supprimer-un-fond-de-carte" title="Link to this heading">¶</a></h3>
+<p>Pour supprimer fond de carte, vous avez deux façons de procéder :</p>
+<ul class="simple">
+<li><p>dans la liste, cliquez sur le fond de carte et en bas de la page cliquez sur le bouton <span class="guilabel">SUPPRIMER</span></p></li>
+<li><p>dans la liste, cochez le fond de carte et cliquez sur le bouton <span class="guilabel">SUPPRIMER</span></p></li>
+</ul>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Toute suppression est définitive.</p>
+</div>
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2017 - 2025, Autonomens.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    8.1.3.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/Terralego/TerraVisu/" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/company/makina-corpus" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.sections", "navigation.top", "search.share", "toc.follow", "toc.sticky", "content.tabs.link", "announce.dismiss"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+      
+    
+  </body>
+</html>

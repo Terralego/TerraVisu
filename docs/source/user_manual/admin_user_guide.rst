@@ -2,6 +2,7 @@
 Outil d'administration 
 ========================
 
+Le module de configuration est accessible via l’URL du visualiseur, suivie de ``/admin``.
 
 L'outil d'administration
 ========================
@@ -72,11 +73,15 @@ Si vous activez l’option :guilabel:`Super-utilisateur` l’utilisateur pourra 
 
 Si vous activez l’option :guilabel:`Actif` l’utilisateur pourra se connecter dès que son compte sera créé, sinon, il devra attendre que celui ci devienne actif.
 
+Si vous activez l’option :guilabel:`Gestionnaire des signalements` l’utilisateur recevra un mail mensuel avec le récapitulatif des signalements réalisés.
+
+Si vous activez l’option :guilabel:`Gestionnaire des déclarations` l’utilisateur recevra un mail mensuel avec le récapitulatif des déclarations réalisées.
+
 Vous pouvez intégrer l’utilisateur à un ou plusieurs groupes. 
 
 Il est possible de rajouter des informations supplémentaires comme la ``fonction``, l’``organisme de rattachement`` ou encore l’``adresse``. 
 
-Si l'utilisateur perd son mot de passe, il faut supprimer son compte et lui en créer un nouveau.
+Si l'utilisateur perd son mot de passe, il est possible d'en définir un nouveau.
 
 .. image :: ../_static/images/admin/admin_utilisateurs_ajout.png
 
@@ -1121,7 +1126,7 @@ Un champ de saisie avancée à destination des utilisateurs développeurs est é
 
 Onglet INCLUSIONS
 ~~~~~~~~~~~~~~~~~~
-Enfin, il est également possible d'associer à une couche des contenus provenant d'applications externes - par exemple, pour associer des graphiques aux couches cartographiques.
+Il est également possible d'associer à une couche des contenus provenant d'applications externes - par exemple, pour associer des graphiques aux couches cartographiques.
 
 Pour cela, il suffit de renseigner :
 
@@ -1130,6 +1135,24 @@ Pour cela, il suffit de renseigner :
 - l'URL du contenu distant à mettre à disposition des utilisateurs de TerraVisu
 
 .. image :: ../_static/images/admin/admin_couche_embed.png
+
+Onglet SIGNALEMENTS
+~~~~~~~~~~~~~~~~~~~
+
+Il est possible de configurer un formulaire de signalement associé à une couche.  
+Ce formulaire apparaît dans la mini-fiche lorsqu’un utilisateur clique sur un élément de la carte.
+
+Les paramètres suivants peuvent être définis :
+
+- Nom du formulaire
+- Champs du formulaire, pour chacun :
+  
+  - l’ordre d’apparition
+  - le champ source associé
+  - le caractère obligatoire ou non
+  - un texte d’aide pour guider la saisie
+
+.. image :: ../_static/images/admin/admin_signalement.png
 
 Modifier une couche
 -------------------

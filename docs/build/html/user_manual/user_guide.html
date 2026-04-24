@@ -1,0 +1,1714 @@
+
+
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+        <link rel="prev" href="../index.html">
+      
+      
+        <link rel="next" href="admin_user_guide.html">
+      
+      
+      <link rel="icon" href="../_static/favicon.ico">
+    
+    
+      
+        <title>Plateforme TerraVisu - TerraVisu 2025.07.00.pre1 documentation</title>
+      
+    
+    
+      
+        
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#terravisu" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../index.html" title="TerraVisu 2025.07.00.pre1 documentation" class="md-header__button md-logo" aria-label="TerraVisu 2025.07.00.pre1 documentation" data-md-component="logo">
+      <img src="../_static/logo.png" alt="logo">
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            TerraVisu 2025.07.00.pre1 documentation
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Plateforme TerraVisu
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="blue" data-md-color-accent="light-blue"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Terralego/TerraVisu/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    TerraVisu
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../index.html" title="TerraVisu 2025.07.00.pre1 documentation" class="md-nav__button md-logo" aria-label="TerraVisu 2025.07.00.pre1 documentation" data-md-component="logo">
+      <img src="../_static/logo.png" alt="logo">
+    </a>
+    TerraVisu 2025.07.00.pre1 documentation
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Terralego/TerraVisu/" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    TerraVisu
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_1" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_1" id="__nav_1_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    🚀 User manual
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_1_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_1">
+            <span class="md-nav__icon md-icon"></span>
+            🚀 User manual
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    Plateforme Terra<wbr>Visu
+    
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="#" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    Plateforme Terra<wbr>Visu
+    
+  </span>
+  
+
+      </a>
+      
+        
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Plateforme Terra<wbr>Visu
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#terravisu" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Terra<wbr>Visu
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#les-principales-fonctionnalites" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Les principales fonctionnalités
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Les principales fonctionnalités">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#l-interface-cartographique" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      L’interface cartographique
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#les-donnees-geographiques" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Les données géographiques
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Les données géographiques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#les-vues" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Les vues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#l-arbre-des-couches" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      L’arbre des couches
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#l-affichage-de-la-couche" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      L’affichage de la couche
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="L’affichage de la couche">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-legende" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La légende
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-panneau-d-informations" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Le panneau d’informations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-table-attributaire" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La table attributaire
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-filtrage-des-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Le filtrage des données
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-widget" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Le widget
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-zoom-sur-l-etendue-spatiale" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Le zoom sur l’étendue spatiale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-modification-de-l-opacite" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La modification de l’opacité
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#les-contenus-externes-associes" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Les contenus externes associés
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#les-interactions-avec-les-donnees-affiches-sur-la-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Les intéractions avec les données affichés sur la carte
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Les intéractions avec les données affichés sur la carte">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-fiche-descriptive" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La fiche descriptive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#l-infobulle-au-survol" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      L’infobulle au survol
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#les-outils-de-navigation" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Les outils de navigation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Les outils de navigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-recherche-sur-la-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La recherche sur la carte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-retour-a-l-emprise-d-origine" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Le retour à l’emprise d’origine
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-gestion-du-zoom" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La gestion du zoom
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-reorientation-de-la-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La réorientation de la carte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-gestion-des-fonds-de-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La gestion des fonds de carte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#l-impression-de-la-carte-au-format-pdf" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      L’impression de la carte au format PDF
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-partage-de-la-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Le partage de la carte
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-visualisation-en-storytelling" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La visualisation en Storytelling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="admin_user_guide.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Outil d’administration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="module_configuration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Module de configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    🔧 Installation &amp; Configuration
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            🔧 Installation &amp; Configuration
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation_configuration/install.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Install instructions
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation_configuration/configuration.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Configuration
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../installation_configuration/troubleshooting.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Troubleshooting
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    ✨ Contribute
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            ✨ Contribute
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/contributing.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Contributing
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/development.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Development
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/translating.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Translating
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/documentation.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Documentation
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contribute/design.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Design
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    📝 Others
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            📝 Others
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../others/authors.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Authors
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../others/changelog.html" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    Changelog
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+  
+
+<nav class="md-nav md-nav--secondary">
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Plateforme Terra<wbr>Visu
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#terravisu" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Terra<wbr>Visu
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#les-principales-fonctionnalites" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Les principales fonctionnalités
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Les principales fonctionnalités">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#l-interface-cartographique" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      L’interface cartographique
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#les-donnees-geographiques" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Les données géographiques
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Les données géographiques">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#les-vues" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Les vues
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#l-arbre-des-couches" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      L’arbre des couches
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#l-affichage-de-la-couche" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      L’affichage de la couche
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="L’affichage de la couche">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-legende" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La légende
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-panneau-d-informations" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Le panneau d’informations
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-table-attributaire" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La table attributaire
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-filtrage-des-donnees" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Le filtrage des données
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-widget" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Le widget
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-zoom-sur-l-etendue-spatiale" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Le zoom sur l’étendue spatiale
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-modification-de-l-opacite" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La modification de l’opacité
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#les-contenus-externes-associes" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Les contenus externes associés
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#les-interactions-avec-les-donnees-affiches-sur-la-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Les intéractions avec les données affichés sur la carte
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Les intéractions avec les données affichés sur la carte">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-fiche-descriptive" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La fiche descriptive
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#l-infobulle-au-survol" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      L’infobulle au survol
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#les-outils-de-navigation" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Les outils de navigation
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Les outils de navigation">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#la-recherche-sur-la-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La recherche sur la carte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-retour-a-l-emprise-d-origine" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Le retour à l’emprise d’origine
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-gestion-du-zoom" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La gestion du zoom
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-reorientation-de-la-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La réorientation de la carte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-gestion-des-fonds-de-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La gestion des fonds de carte
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#l-impression-de-la-carte-au-format-pdf" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      L’impression de la carte au format PDF
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#le-partage-de-la-carte" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      Le partage de la carte
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#la-visualisation-en-storytelling" class="md-nav__link">
+    
+    <span class="md-ellipsis">
+      La visualisation en Storytelling
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset" role="main">
+                
+                
+                  
+
+
+  
+  
+
+<h1 id="plateforme-terravisu">Plateforme TerraVisu<a class="headerlink" href="#plateforme-terravisu" title="Link to this heading">¶</a></h1>
+<h2 id="terravisu">TerraVisu<a class="headerlink" href="#terravisu" title="Link to this heading">¶</a></h2>
+<p>L’application cartographique <strong>TerraVisu</strong> permet de manipuler un ensemble de données relatives aux différents champs de l’action publique : démographie, habitat, patrimoine, mobilité, environnement.</p>
+<p><strong>TerraVisu</strong> propose des outils d’observation et d’analyse pour comprendre l’évolution de vos territoires.</p>
+<p>Vous voulez tester par vous-même? <a class="reference external" href="https://demo-terravisu-territoires.makina-corpus.com/">Une instance de démonstration est accessible ici</a> !</p>
+<p><strong>Résumé des fonctionnalités :</strong></p>
+<ul class="simple">
+<li><p>Naviguer dans l’interface cartographique</p></li>
+<li><p>Intéragir avec les couches (descriptif, filtres, table attributaire, transparence, zoom sur l’emprise, synthèse statistique)</p></li>
+<li><p>Interroger les objets géographiques (infobulle au survol, fiche descriptive)</p></li>
+<li><p>Afficher des fonds de cartes</p></li>
+<li><p>Utiliser les outils de navigation (recherche dans les données/lieux, gestion du zoom, orientation de la carte..)</p></li>
+<li><p>Exporter et partager les cartes (impression PDF, partage de la carte sur les réseaux sociaux)</p></li>
+</ul>
+<h2 id="les-principales-fonctionnalites">Les principales fonctionnalités<a class="headerlink" href="#les-principales-fonctionnalites" title="Link to this heading">¶</a></h2>
+<h3 id="l-interface-cartographique">L’interface cartographique<a class="headerlink" href="#l-interface-cartographique" title="Link to this heading">¶</a></h3>
+<p>L’interface cartographique est décomposée en 4 parties :</p>
+<ul class="simple">
+<li><p>Les vues : à gauche, le panneau des vues permet d’organiser les couches par grande famille ou thématique</p></li>
+<li><p>L’arbre des couches : entre les vues et la carte, l’arbre des couches permet d’afficher, de rechercher une couche et de filtrer les données à voir sur la carte</p></li>
+<li><p>La carte : au centre, un fond de plan cartographique sur lequel se superposent des données</p></li>
+<li><p>Les outils de navigation : à droite, se trouvent les outils incontournables d’une application cartographique (zoom, orientation) mais aussi d’autres outils additionnels comme le retour à l’emprise initiale, le changement de fond de plan, l’impression et le partage de la carte</p></li>
+</ul>
+<p><strong>Exemple</strong></p>
+<img alt="../_images/visu_interfacecarto.png" src="../_images/visu_interfacecarto.png" />
+<h3 id="les-donnees-geographiques">Les données géographiques<a class="headerlink" href="#les-donnees-geographiques" title="Link to this heading">¶</a></h3>
+<p>Les données géographiques sont organisées dans des couches qui rassemblent des entités de même nature. Chaque couche de carte permet d’afficher et d’utiliser un jeu de données SIG spécifique.</p>
+<p><strong>TerraVisu</strong> dispose d’un arbre des couches sur lequel une série d’outils permet d’agir sur les différentes couches de données visibles.</p>
+<p>Au niveau d’une couche de données, vous pouvez ainsi activer les fonctionnalités suivantes :</p>
+<ul class="simple">
+<li><p>Afficher/masquer la couche</p></li>
+<li><p>Afficher/masquer le panneau d’informations de la couche</p></li>
+<li><p>Afficher/masquer la table attributaire</p></li>
+<li><p>Afficher/masquer le panneau de filtres</p></li>
+<li><p>Afficher/modifier la liste des filtres appliqués</p></li>
+<li><p>Afficher le widget de synthèse</p></li>
+<li><p>Afficher du contenu provenant d’une application externe (graphiques par exemple)</p></li>
+<li><p>Zoomer sur son étendue spatiale</p></li>
+<li><p>Changer son opacité</p></li>
+</ul>
+<a class="reference internal image-reference" href="../_images/visu_interfacecarto_couche.png"><img alt="../_images/visu_interfacecarto_couche.png" src="../_images/visu_interfacecarto_couche.png" style="width: 300px;" /></a>
+<p>L’interface cartographique se met automatiquement à jour selon les fonctionnalités activées.</p>
+<h4 id="les-vues">Les vues<a class="headerlink" href="#les-vues" title="Link to this heading">¶</a></h4>
+<p>Les couches sont réparties dans des vues et reflètent des thématiques ou des applications métier.</p>
+<p>Les vues sont représentées par des pictogrammes dans le bandeau latéral gauche.</p>
+<a class="reference internal image-reference" href="../_images/vue.png"><img alt="../_images/vue.png" src="../_images/vue.png" style="width: 200px;" /></a>
+<p>Pour changer de vue, cliquez sur le pictogramme concerné.</p>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Chaque vue est indépendante et il n’est pas possible d’afficher deux vues à la fois.
+Cela signifie qu’en cliquant sur une autre vue, la carte change.</p>
+</div>
+<h4 id="l-arbre-des-couches">L’arbre des couches<a class="headerlink" href="#l-arbre-des-couches" title="Link to this heading">¶</a></h4>
+<p>Les données sont agencées de manière personnalisée dans l’arbre des couches.</p>
+<p>Vous pouvez créer autant de grandes catégories et de sous-catégories de groupes de données que vous le souhaitez.</p>
+<p>Dans le cas où il y aurait un grand nombre de couches dans l’arbre, vous pouvez utiliser la barre de recherche présente en haut du panneau pour filtrer une couche par son nom.</p>
+<div class="note admonition">
+<p class="admonition-title">Note</p>
+<p>Le filtrage de couche ne peut se faire que dans la vue en cours.</p>
+</div>
+<p><strong>Exemple de barre de filtre</strong></p>
+<a class="reference internal image-reference" href="../_images/visu_filtre_arbrecouches.gif"><img alt="Filtre dans l'arbre des couches" src="../_images/visu_filtre_arbrecouches.gif" style="width: 200px;" /></a>
+<h4 id="l-affichage-de-la-couche">L’affichage de la couche<a class="headerlink" href="#l-affichage-de-la-couche" title="Link to this heading">¶</a></h4>
+<p>Pour activer/désactiver une couche cliquez sur le curseur à gauche du nom.</p>
+<h5 id="la-legende">La légende<a class="headerlink" href="#la-legende" title="Link to this heading">¶</a></h5>
+<p>Quand les couches affichées ont des légendes, celles-ci s’affichent sur la partie droite de l’écran. C’est vous qui décidez si vous souhaitez affichez la légende et quel type de légende.</p>
+<p><strong>Exemple de légende disponible</strong></p>
+<a class="reference internal image-reference" href="../_images/visu_legende.png"><img alt="../_images/visu_legende.png" src="../_images/visu_legende.png" style="width: 200px;" /></a>
+<p>La configuration de la légende s’effectue depuis l’outil administration.</p>
+<h4 id="le-panneau-d-informations">Le panneau d’informations<a class="headerlink" href="#le-panneau-d-informations" title="Link to this heading">¶</a></h4>
+<p>Il est possible d’associer du contenu informatif à chaque couche. Ce contenu est mis à disposition de l’utilisateur via un panneau dédié, configurable dans l’interface d’administration de la plateforme <strong>TerraVisu</strong>.</p>
+<p><strong>Exemple de panneau d’informations</strong></p>
+<img alt="../_images/visu_infos.png" src="../_images/visu_infos.png" />
+<h4 id="la-table-attributaire">La table attributaire<a class="headerlink" href="#la-table-attributaire" title="Link to this heading">¶</a></h4>
+<p><strong>TerraVisu</strong> propose l’affichage de la table des données contenues dans la couche. La table attributaire contient les caractéristiques <strong>non spatiales</strong> des données.</p>
+<p>La table attributaire de <strong>TerraVisu</strong> comprend de nombreuses fonctionnalités telles que :</p>
+<ul class="simple">
+<li><p>Afficher le nombre de lignes du tableau</p></li>
+<li><p>Trier les données selon une colonne</p></li>
+<li><p>Filtrer les données par l’emprise de la carte</p></li>
+<li><p>Comparer jusqu’à trois lignes</p></li>
+<li><p>Exporter les données au format CSV et Excel</p></li>
+<li><p>Afficher/masquer des colonnes</p></li>
+<li><p>Agrandir la table</p></li>
+</ul>
+<p><strong>Exemple d’une table attributaire</strong></p>
+<img alt="../_images/visu_table.png" src="../_images/visu_table.png" />
+<p>Une fois la table exportée, vous pouvez travailler vos données avec votre tableur habituel et créer des graphiques, des tableaux dynamiques croisés, etc., depuis votre ordinateur.</p>
+<h4 id="le-filtrage-des-donnees">Le filtrage des données<a class="headerlink" href="#le-filtrage-des-donnees" title="Link to this heading">¶</a></h4>
+<p>Un jeu de données peut être filtré par ses données attributaires, c’est à dire des informations textuelles qui décrivent les caractéristiques diverses (géographiques, alphanumériques, etc.).</p>
+<p>Les éléments qui ne correspondent pas au filtre sont cachés et la carte est alors mise à jour.</p>
+<p><strong>Exemple de filtres disponibles</strong></p>
+<a class="reference internal image-reference" href="../_images/visu_filtre.png"><img alt="../_images/visu_filtre.png" src="../_images/visu_filtre.png" style="width: 200px;" /></a>
+<p>Les filtres peuvent prendre plusieurs formes (case à cocher, intervalle de valeurs, curseur, recherche, etc.) et sont paramétrables dans l’outil d’administration.</p>
+<h4 id="le-widget">Le widget<a class="headerlink" href="#le-widget" title="Link to this heading">¶</a></h4>
+<p>Le widget permet de récapituler dans un tableau dynamique, des indicateurs utiles à l’analyse de la couche. La synthèse des informations se réactualise en fonction des éléments qui se trouvent dans l’emprise spatiale. Le widget s’affiche à droite de l’écran.</p>
+<p><strong>Exemple d’un widget</strong></p>
+<a class="reference internal image-reference" href="../_images/visu_widget.png"><img alt="../_images/visu_widget.png" src="../_images/visu_widget.png" style="width: 300px;" /></a>
+<p>Les données à afficher dans le widget sont définies par l’utilisateur dans l’outil d’administration.</p>
+<h4 id="le-zoom-sur-l-etendue-spatiale">Le zoom sur l’étendue spatiale<a class="headerlink" href="#le-zoom-sur-l-etendue-spatiale" title="Link to this heading">¶</a></h4>
+<p>Cet outil permet de zoomer sur l’étendue spatiale d’une couche activée. Le zoom est particulièrement utile lorsque l’on souhaite voir l’emprise géographique des éléments filtrés d’une couche.</p>
+<p><strong>Exemple d’un zoom</strong></p>
+<img alt="Zoom sur l'emprise spaiale d'une couche" class="align-center" src="../_images/zoom_extent.gif" />
+<p>La table attributaire et le widget sont automatiquement mis à jour en fonction du zoom.</p>
+<h4 id="la-modification-de-l-opacite">La modification de l’opacité<a class="headerlink" href="#la-modification-de-l-opacite" title="Link to this heading">¶</a></h4>
+<p>Pour changer l’opacité d’une couche, cliquez sur les trois petits points horizontaux à côté de l’outil filtre.</p>
+<p>Faites glisser le curseur de droite à gauche pour modifier le pourcentage de transparence.</p>
+<p><strong>Exemple de transparence sur la couche des lignes de bus</strong></p>
+<a class="reference internal image-reference" href="../_images/visu_transparence.png"><img alt="../_images/visu_transparence.png" src="../_images/visu_transparence.png" style="width: 300px;" /></a>
+<h4 id="les-contenus-externes-associes">Les contenus externes associés<a class="headerlink" href="#les-contenus-externes-associes" title="Link to this heading">¶</a></h4>
+<p>Des contenus configurés depuis une application externe, notamment graphiques, peuvent être ajoutés à une couche. Un pictogramme et un libellé, paramétrables depuis l’interface d’administration, permet d’identifier chacun d’entre eux dans la liste des informations et outils disponibles sur la couche.</p>
+<p><strong>Exemple de graphique</strong></p>
+<img alt="../_images/visu_graphique.png" src="../_images/visu_graphique.png" />
+<h3 id="les-interactions-avec-les-donnees-affiches-sur-la-carte">Les intéractions avec les données affichés sur la carte<a class="headerlink" href="#les-interactions-avec-les-donnees-affiches-sur-la-carte" title="Link to this heading">¶</a></h3>
+<p>Il est possible d’interagir avec les objets affichés sur la carte, dès lors que les couches ont été configurées dans le backoffice pour inclure les infobulles (survol) ou les mini-fiches (clic).</p>
+<h4 id="la-fiche-descriptive">La fiche descriptive<a class="headerlink" href="#la-fiche-descriptive" title="Link to this heading">¶</a></h4>
+<p>Les informations relatives aux données sont présentées dans une fiche à gauche de l’écran. Cette fiche apparaît au clic de l’objet cartographie (i.e. le point sur la carte).</p>
+<p><strong>Exemple de fiche descriptive pour une station du métro toulousain</strong></p>
+<a class="reference internal image-reference" href="../_images/visu_minifiche.png"><img alt="../_images/visu_minifiche.png" src="../_images/visu_minifiche.png" style="width: 300px;" /></a>
+<p>Depuis l’outil d’administration, vous pouvez personnaliser la fiche de manière avancée, en y intégrant du texte, des images ou des graphiques pour améliorer le rendu visuel.</p>
+<p>Il n’y a pas de limite au contenu de la fiche tant que l’information est disponible. La fiche peut contenir des liens vers des sites web et des mails.</p>
+<h4 id="l-infobulle-au-survol">L’infobulle au survol<a class="headerlink" href="#l-infobulle-au-survol" title="Link to this heading">¶</a></h4>
+<p>Une information résumée de la donnée, sous la forme d’une infobulle, est disponible au survol des des objets cartographiques. Si la couche a été configurée dans ce sens dans l’outil d’administration, des infobulles peuvent apparaître au survol des objets cartographiques.</p>
+<p><strong>Exemple d’infobulle au clic sur une station de métro toulousain</strong></p>
+<a class="reference internal image-reference" href="../_images/visu_infobulle.png"><img alt="../_images/visu_infobulle.png" src="../_images/visu_infobulle.png" style="width: 400px;" /></a>
+<p>Le contenu de l’infobulle est entièrement personnalisable dans l’outil d’administration et peut comprendre toutes les information que vous souhaitez.</p>
+<h3 id="les-outils-de-navigation">Les outils de navigation<a class="headerlink" href="#les-outils-de-navigation" title="Link to this heading">¶</a></h3>
+<p><strong>TerraVisu</strong> dispose des contrôles classiques de navigation :</p>
+<ul class="simple">
+<li><p>Recherche de lieux/adresse et dans les données actives</p></li>
+<li><p>Retour à l’emprise d’origine</p></li>
+<li><p>Gestion du zoom</p></li>
+<li><p>Réorientation de la carte</p></li>
+<li><p>Gestion des fonds de carte</p></li>
+<li><p>Impression vers PDF</p></li>
+<li><p>Partage de la carte : hyperlien ou vers les réseaux sociaux</p></li>
+</ul>
+<p><strong>Barre de navigation à gauche sur la carte</strong></p>
+<a class="reference internal image-reference" href="../_images/visu_outilnavigation.png"><img alt="../_images/visu_outilnavigation.png" src="../_images/visu_outilnavigation.png" style="width: 50px;" /></a>
+<p>Quelques uns de ces outils de navigation sont détaillés ci-après.</p>
+<h4 id="la-recherche-sur-la-carte">La recherche sur la carte<a class="headerlink" href="#la-recherche-sur-la-carte" title="Link to this heading">¶</a></h4>
+<p>La recherche sur la carte (via l’outil loupe) permet d’effectuer à la fois :</p>
+<ul class="simple">
+<li><p>une recherche de lieu ou d’adresse par à un appel à la base d’adresses Nominatim implémenté,</p></li>
+<li><p>une recherche dans les champs textuels d’une ou plusieurs couches activées (exemple : une parcelle par le nom du propriétaire).</p></li>
+</ul>
+<p>Le fait de sélectionner un résultat dans les attributs de la ou les couches activées permet de zoomer sur ce résultat, de sélectionner l’objet en surbrillance et d’ouvrir la mini-fiche (si elle existe).</p>
+<p>Le comportement est différent si on sélectionne un résultat pour la recherche de lieu puisqu’il permet uniquement de zoomer sur l’emprise géographique correspondante sans réaliser d’intéraction avec la ou les couches activées.</p>
+<p><strong>Exemple de recherche</strong></p>
+<img alt="../_images/visu_recherche.png" src="../_images/visu_recherche.png" />
+<h4 id="le-retour-a-l-emprise-d-origine">Le retour à l’emprise d’origine<a class="headerlink" href="#le-retour-a-l-emprise-d-origine" title="Link to this heading">¶</a></h4>
+<p>Pour revenir à l’emprise initiale du projet, cliquez sur l’icône en forme de maison.</p>
+<h4 id="la-gestion-du-zoom">La gestion du zoom<a class="headerlink" href="#la-gestion-du-zoom" title="Link to this heading">¶</a></h4>
+<p>Pour zoomer sur la carte utilisez la molette de la souris vers l’avant ou cliquez sur l’icône <span class="guilabel">+</span>.</p>
+<p>Pour dézoomer sur la carte utilisez la molette de la souris vers l’arrière ou cliquez sur l’icône <span class="guilabel">-</span>.</p>
+<h4 id="la-reorientation-de-la-carte">La réorientation de la carte<a class="headerlink" href="#la-reorientation-de-la-carte" title="Link to this heading">¶</a></h4>
+<p>Par défaut la carte est orientée au nord. Pour changer l’orientation, cliquez sur l’icône en forme de boussole.</p>
+<p>Pour avoir une meilleure expérience utilisateur sur les couches en 3D, effectuez la combinaison <span class="guilabel">CTRL</span> + <span class="guilabel">clic gauche</span> souris sur la carte pour incliner le plan.</p>
+<h4 id="la-gestion-des-fonds-de-carte">La gestion des fonds de carte<a class="headerlink" href="#la-gestion-des-fonds-de-carte" title="Link to this heading">¶</a></h4>
+<p>Plusieurs fonds de cartes sont disponibles par défaut et vos propres fonds de carte peuvent être ajoutés depuis l’<a class="reference external" href="https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#liste-des-fonds-de-carte">outil d’administration</a></p>
+<h4 id="l-impression-de-la-carte-au-format-pdf">L’impression de la carte au format PDF<a class="headerlink" href="#l-impression-de-la-carte-au-format-pdf" title="Link to this heading">¶</a></h4>
+<p>La carte affichée à l’écran peut être imprimée en format PDF selon les deux dispositions (portait ou paysage).</p>
+<p><strong>Exemple de la procédure d’impression</strong></p>
+<img alt="../_images/visu_impression.png" src="../_images/visu_impression.png" />
+<h4 id="le-partage-de-la-carte">Le partage de la carte<a class="headerlink" href="#le-partage-de-la-carte" title="Link to this heading">¶</a></h4>
+<p>Il est possible de partager la carte soit en générant un hyperlien, soit en la partageant sur les réseaux sociaux (X, Facebook et Linkedin)</p>
+<p><strong>Exemple de partage d’hyperlien</strong></p>
+<img alt="../_images/visu_partage.png" src="../_images/visu_partage.png" />
+<h3 id="la-visualisation-en-storytelling">La visualisation en Storytelling<a class="headerlink" href="#la-visualisation-en-storytelling" title="Link to this heading">¶</a></h3>
+<p>TerraVisu dispose d’une fonction de Storytelling. C’est une autre forme de visualisation qui est accessible depuis une vue dédiée. Le storytelling comprend du texte et des images qui sont parcourues comme un « slideshow » (diaporama).</p>
+<p>Cette fonctionnalité peut servir à la communication ou de manuel d’utilisation.</p>
+<p><strong>Exemple de storytelling</strong></p>
+<img alt="../_images/visu_storytelling.png" src="../_images/visu_storytelling.png" />
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  
+  
+  <div class="md-footer-meta md-typeset">
+    
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-footer-copyright__highlight">
+        &#169; Copyright 2017 - 2025, Autonomens.
+        
+    </div>
+  
+    Created using
+    <a href="https://www.sphinx-doc.org/" target="_blank" rel="noopener">Sphinx</a>
+    8.1.3.
+     and
+    <a href="https://github.com/jbms/sphinx-immaterial/" target="_blank" rel="noopener">Sphinx-Immaterial</a>
+  
+</div>
+      
+        <div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/Terralego/TerraVisu/" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://www.linkedin.com/company/makina-corpus" target="_blank" rel="noopener" title="www.linkedin.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M416 32H31.9C14.3 32 0 46.5 0 64.3v383.4C0 465.5 14.3 480 31.9 480H416c17.6 0 32-14.5 32-32.3V64.3c0-17.8-14.4-32.3-32-32.3M135.4 416H69V202.2h66.5V416zm-33.2-243c-21.3 0-38.5-17.3-38.5-38.5S80.9 96 102.2 96c21.2 0 38.5 17.3 38.5 38.5 0 21.3-17.2 38.5-38.5 38.5m282.1 243h-66.4V312c0-24.8-.5-56.7-34.5-56.7-34.6 0-39.9 27-39.9 54.9V416h-66.4V202.2h63.7v29.2h.9c8.9-16.8 30.6-34.5 62.9-34.5 67.2 0 79.7 44.3 79.7 101.9z"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+    
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": "..", "features": ["navigation.expand", "navigation.sections", "navigation.top", "search.share", "toc.follow", "toc.sticky", "content.tabs.link", "announce.dismiss"], "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+      
+    
+  </body>
+</html>
