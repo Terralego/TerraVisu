@@ -250,7 +250,7 @@ texttable==1.7.0
     # via pyexcel
 typing-extensions==4.15.0
     # via referencing
-tzdata==2025.3
+tzdata==2026.1
     # via
     #   django-celery-beat
     #   kombu

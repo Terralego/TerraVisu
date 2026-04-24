@@ -425,7 +425,7 @@ typing-extensions==4.15.0
     # via
     #   -c requirements.txt
     #   referencing
-tzdata==2025.3
+tzdata==2026.1
     # via
     #   -c requirements.txt
     #   django-celery-beat
