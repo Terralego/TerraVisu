@@ -53,7 +53,7 @@ conditional==2.0
     # via django-clone
 crispy-bootstrap5==2026.3
     # via terravisu (pyproject.toml)
-cron-descriptor==1.4.5
+cron-descriptor==2.0.8
     # via django-celery-beat
 cryptography==46.0.7
     # via pyjwt
