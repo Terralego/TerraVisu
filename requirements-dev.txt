@@ -223,7 +223,7 @@ drf-spectacular==0.29.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-ecdsa==0.19.1
+ecdsa==0.19.2
     # via
     #   -c requirements.txt
     #   python-jose
