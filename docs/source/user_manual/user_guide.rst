@@ -149,11 +149,11 @@ Quand les couches affichées ont des légendes, celles-ci s'affichent sur la par
 .. image :: ../_static/images/visu/visu_legende.png
   :width: 200
 
-La configuration de la légende s’effectue depuis `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-legendes>`_
+La configuration de la légende s’effectue depuis `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-legendes>`__
 
 Le panneau de métadonnées
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-Il est possible d'associer du contenu informatif à chaque couche. Ce contenu est mis à disposition de l'utilisateur via un panneau dédié, configurable dans `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#metadonnees>`_ de la plateforme **TerraVisu**.
+Il est possible d'associer du contenu informatif à chaque couche. Ce contenu est mis à disposition de l'utilisateur via un panneau dédié, configurable dans `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#metadonnees>`__ de la plateforme **TerraVisu**.
 
 **Exemple de panneau de métadonnées**
 
@@ -203,7 +203,7 @@ Les éléments qui ne correspondent pas au filtre sont cachés et la carte est a
 .. image :: ../_static/images/visu/visu_filtre.png
   :width: 200
 
-Les filtres peuvent prendre plusieurs formes (case à cocher, intervalle de valeurs, curseur, champ recherche au autocomplétion, etc.) et sont paramétrables dans l'outil d'administration.
+Les filtres peuvent prendre plusieurs formes (case à cocher, intervalle de valeurs, curseur, champ recherche au autocomplétion, etc.) et sont paramétrables dans `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-filtre>`__.
 
 Le widget
 ~~~~~~~~~~~~
@@ -215,7 +215,7 @@ Le widget permet de récapituler dans un tableau dynamique, des indicateurs util
 .. image :: ../_static/images/visu/visu_widget.png
   :width: 300
 
-Les données à afficher dans le widget sont définies par l’utilisateur dans l'outil d'administration.
+Les données à afficher dans le widget sont définies par l’utilisateur dans `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-widget>`__.
 
 Le zoom sur l'étendue spatiale
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -243,7 +243,7 @@ Faites glisser le curseur de droite à gauche pour modifier le pourcentage de tr
 Les inclusions/contenus externes associés
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Des contenus configurés depuis une application externe, notamment des graphiques, peuvent être ajoutés à une couche. Un pictogramme et un libellé, paramétrables depuis `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-inclusions>`_, permet d'identifier chacun d'entre eux dans la liste des informations et outils disponibles sur la couche.
+Des contenus configurés depuis une application externe, notamment des graphiques, peuvent être ajoutés à une couche. Un pictogramme et un libellé, paramétrables depuis `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-inclusions>`__, permet d'identifier chacun d'entre eux dans la liste des informations et outils disponibles sur la couche.
 
 **Exemple de graphique**
 
@@ -252,7 +252,7 @@ Des contenus configurés depuis une application externe, notamment des graphique
 Les intéractions avec les données affichés sur la carte
 ---------------------------------------------------------
 
-Il est possible d’interagir avec les objets affichés sur la carte, dès lors que les couches ont été configurées dans `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-fenetre-au-survol>`_ pour inclure les infobulles (fenêtre au survol) ou les mini-fiches (clic).
+Il est possible d’interagir avec les objets affichés sur la carte, dès lors que les couches ont été configurées dans `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-fenetre-au-survol>`__ pour inclure les infobulles (fenêtre au survol) ou les mini-fiches (clic).
 
 La mini-fiche
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -264,7 +264,7 @@ Les informations relatives aux données sont présentées dans une fiche à droi
 .. image :: ../_static/images/visu/visu_minifiche.png
   :width: 300
 
-Depuis l'outil d'administration, vous pouvez personnaliser la fiche de manière avancée, en y intégrant du texte, des images ou des graphiques intéractifs pour enrichir le rendu. 
+Depuis `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-mini-fiche>`__, vous pouvez personnaliser la fiche de manière avancée, en y intégrant du texte, des images ou des graphiques intéractifs pour enrichir le rendu. 
 
 Il n'y a pas de limite au contenu de la fiche tant que l'information est disponible. La fiche peut contenir des liens vers des sites web et des mails. 
 
@@ -282,14 +282,14 @@ Il n'y a pas de limite au contenu de la fiche tant que l'information est disponi
 L'infobulle au survol
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Une information résumée de la donnée, sous la forme d'une infobulle, est disponible **au survol** des objets cartographiques. Cette infobulle est configurable depuis `l'outil d'administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-fenetre-au-survol>`_.
+Une information résumée de la donnée, sous la forme d'une infobulle, est disponible **au survol** des objets cartographiques. Cette infobulle est configurable depuis `l'outil d'administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-fenetre-au-survol>`__.
 
 **Exemple d'infobulle sur une station de métro toulousain**
 
 .. image :: ../_static/images/visu/visu_infobulle.png
   :width: 400
 
-Le contenu de l'infobulle est entièrement personnalisable dans l'outil d'administration et peut comprendre toutes les informations que vous souhaitez.
+Le contenu de l'infobulle est entièrement personnalisable dans `l'outil d'administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-fenetre-au-survol>`__ et peut comprendre toutes les informations que vous souhaitez.
 
 Les outils de navigation standards
 -----------------------------------
@@ -350,7 +350,7 @@ Pour avoir une meilleure expérience utilisateur sur les couches en 3D, effectue
 La gestion des fonds de carte
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Plusieurs fonds de cartes sont disponibles par défaut et vos propres fonds de carte peuvent être ajoutés depuis l'`outil d'administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#liste-des-fonds-de-carte>`_ 
+Plusieurs fonds de cartes sont disponibles par défaut et vos propres fonds de carte peuvent être ajoutés depuis l'`outil d'administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#liste-des-fonds-de-carte>`__ 
 
 L'impression de la carte au format PDF
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -410,13 +410,13 @@ Le bouton :guilabel:`Prévisualiser` permet d’obtenir un aperçu du rendu de l
 Les outils de navigation optionnels
 -----------------------------------
 
-Il est également possible d'activer l'outil de déclaration depuis le `module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#configurations-des-declarations>`_, afin de permettre aux utilisateurs de faire des remontées d'informations sur la carte.
+Il est également possible d'activer l'outil de déclaration depuis le `module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#configurations-des-declarations>`__, afin de permettre aux utilisateurs de faire des remontées d'informations sur la carte.
 
 .. image :: ../_static/images/visu/visu_outilnavigation_declaration.png
   :width: 50
 
 .. note::
-	La définition des champs du formulaire est paramétrable depuis le `module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#configurations-des-declarations>`_.
+	La définition des champs du formulaire est paramétrable depuis le `module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#configurations-des-declarations>`__.
 
 
 La visualisation en Storytelling
@@ -426,7 +426,7 @@ TerraVisu dispose d'une fonction de Storytelling. C'est une autre forme de visua
 
 Cette fonctionnalité peut servir à la communication ou de manuel d'utilisation.
 
-Le contenu de chaque couche "Story" est à définir depuis `l'outil d'administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#id1>`_.
+Le contenu de chaque couche "Story" est à définir depuis `l'outil d'administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#id1>`__.
 
 **Exemple de storytelling**
 

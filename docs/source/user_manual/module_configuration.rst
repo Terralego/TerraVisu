@@ -97,7 +97,7 @@ Cette emprise pourra être redéfinie au niveau de chaque vue dans l'outil d'adm
 Mapbox options
 ~~~~~~~~~~~~~~~~~~
 
-La clé Mapbox est obligatoire pour l'affichage des cartes de définition de l'emprise spatiale dans `l'outil d'administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#creer-une-vue>`_.
+La clé Mapbox est obligatoire pour l'affichage des cartes de définition de l'emprise spatiale dans `l'outil d'administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#creer-une-vue>`__.
 
 - ``MAPBOX_ACCESS_TOKEN`` : Clé Mapbox
 
