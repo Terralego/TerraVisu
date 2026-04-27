@@ -57,16 +57,16 @@ Pour changer de vue, cliquez sur le pictogramme concerné.
 	Chaque vue est indépendante et il n'est pas possible d'afficher deux vues à la fois. 
 	Cela signifie qu'en cliquant sur une autre vue, la carte change.
 
-Les sites externes
-^^^^^^^^^^^^^^^^^^
+Les menus supplémentaires
+^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Depuis le panneau latéral des vues, il est possible de rajouter des boutons renvoyant vers des sites externes. Cet ajout est à réaliser dans le module de configuration.
+Depuis le panneau latéral des vues, il est possible de rajouter des boutons renvoyant vers des menus supplémentaires. Cet ajout est à réaliser dans `le module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#entree-de-menus-supplementaires>`_
 
 **Exemple de sites externes**
 
 .. image :: ../_static/images/visu/visu_sitesexternes.png
 
-La pop-up Informations
+Le bouton Informations
 ^^^^^^^^^^^^^^^^^^^^^^
 
 **Bouton de la pop-up**
@@ -149,13 +149,13 @@ Quand les couches affichées ont des légendes, celles-ci s'affichent sur la par
 .. image :: ../_static/images/visu/visu_legende.png
   :width: 200
 
-La configuration de la légende s’effectue depuis l'outil administration.
+La configuration de la légende s’effectue depuis `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-legendes>`_
 
-Le panneau d'informations
+Le panneau de métadonnées
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
-Il est possible d'associer du contenu informatif à chaque couche. Ce contenu est mis à disposition de l'utilisateur via un panneau dédié, configurable dans l'interface d'administration de la plateforme **TerraVisu**.
+Il est possible d'associer du contenu informatif à chaque couche. Ce contenu est mis à disposition de l'utilisateur via un panneau dédié, configurable dans `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#metadonnees>`_ de la plateforme **TerraVisu**.
 
-**Exemple de panneau d'informations**
+**Exemple de panneau de métadonnées**
 
 .. image :: ../_static/images/visu/visu_infos.png
 
@@ -243,7 +243,7 @@ Faites glisser le curseur de droite à gauche pour modifier le pourcentage de tr
 Les inclusions/contenus externes associés
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Des contenus configurés depuis une application externe, notamment des graphiques, peuvent être ajoutés à une couche. Un pictogramme et un libellé, paramétrables depuis l'interface d'administration, permet d'identifier chacun d'entre eux dans la liste des informations et outils disponibles sur la couche.
+Des contenus configurés depuis une application externe, notamment des graphiques, peuvent être ajoutés à une couche. Un pictogramme et un libellé, paramétrables depuis `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-inclusions>`_, permet d'identifier chacun d'entre eux dans la liste des informations et outils disponibles sur la couche.
 
 **Exemple de graphique**
 
@@ -252,7 +252,7 @@ Des contenus configurés depuis une application externe, notamment des graphique
 Les intéractions avec les données affichés sur la carte
 ---------------------------------------------------------
 
-Il est possible d’interagir avec les objets affichés sur la carte, dès lors que les couches ont été configurées dans le backoffice pour inclure les infobulles (survol) ou les mini-fiches (clic).
+Il est possible d’interagir avec les objets affichés sur la carte, dès lors que les couches ont été configurées dans `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-fenetre-au-survol>`_ pour inclure les infobulles (fenêtre au survol) ou les mini-fiches (clic).
 
 La mini-fiche
 ~~~~~~~~~~~~~~~~~~~~~~~
@@ -270,7 +270,7 @@ Il n'y a pas de limite au contenu de la fiche tant que l'information est disponi
 
 .. note::
 
-   - Si l’utilisateur est connecté, qu’il peut visualiser la couche et que celle-ci est configurée avec un formulaire de signalement, le bouton **« Signaler une anomalie »** apparaît dans la mini-fiche.
+   - Si l’utilisateur est connecté, qu’il peut visualiser la couche et que celle-ci est `configurée avec un formulaire de signalement <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-signalements>`_, le bouton **« Signaler une anomalie »** apparaît dans la mini-fiche.
    - Lorsque l’utilisateur clique sur ce bouton, le formulaire s’affiche.
 
    .. image:: ../_static/images/visu/visu_signalement.png
@@ -282,7 +282,7 @@ Il n'y a pas de limite au contenu de la fiche tant que l'information est disponi
 L'infobulle au survol
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-Une information résumée de la donnée, sous la forme d'une infobulle, est disponible **au survol** des objets cartographiques. Cette infobulle est configurable depuis l'outil d'administration.
+Une information résumée de la donnée, sous la forme d'une infobulle, est disponible **au survol** des objets cartographiques. Cette infobulle est configurable depuis `l'outil d'administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-fenetre-au-survol>`_.
 
 **Exemple d'infobulle sur une station de métro toulousain**
 
@@ -319,7 +319,7 @@ La recherche sur la carte (via l'outil loupe) permet d'effectuer à la fois :
 * une recherche de lieu ou d'adresse par à un appel à la base d'adresses Nominatim implémenté,
 * une recherche dans les champs textuels d'une ou plusieurs couches activées (exemple : une parcelle par le nom du propriétaire).
 
-Le fait de sélectionner un résultat dans les attributs de la ou les couches activées permet de zoomer sur ce résultat, de sélectionner l'objet en surbrillance et d'ouvrir la mini-fiche (si elle est configurée).
+Le fait de sélectionner un résultat dans les attributs de la ou les couches activées permet de zoomer sur ce résultat, de sélectionner l'objet en surbrillance et d'ouvrir la mini-fiche (si elle est `configurée <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-mini-fiche>`_).
 
 Le comportement est différent si on sélectionne un résultat pour la recherche de lieu puisqu'il permet uniquement de centrer et zoomer sur l'emprise géographique correspondante sans réaliser d'intéraction avec la ou les couches activées.
 
@@ -410,13 +410,13 @@ Le bouton :guilabel:`Prévisualiser` permet d’obtenir un aperçu du rendu de l
 Les outils de navigation optionnels
 -----------------------------------
 
-Il est également possible d'activer l'outil de déclaration depuis le module de configuration, afin de permettre aux utilisateurs de faire des remontées d'informations sur la carte.
+Il est également possible d'activer l'outil de déclaration depuis le `module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#configurations-des-declarations>`_, afin de permettre aux utilisateurs de faire des remontées d'informations sur la carte.
 
 .. image :: ../_static/images/visu/visu_outilnavigation_declaration.png
   :width: 50
 
 .. note::
-	La définition des champs du formulaire est paramétrable depuis le module de configuration Django.
+	La définition des champs du formulaire est paramétrable depuis le `module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#configurations-des-declarations>`_.
 
 
 La visualisation en Storytelling
@@ -425,6 +425,8 @@ La visualisation en Storytelling
 TerraVisu dispose d'une fonction de Storytelling. C'est une autre forme de visualisation qui est accessible depuis une vue dédiée. Le storytelling comprend du texte et des images qui sont parcourues comme un « slideshow » (diaporama).
 
 Cette fonctionnalité peut servir à la communication ou de manuel d'utilisation.
+
+Le contenu de chaque couche "Story" est à définir depuis `l'outil d'administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#id1>`_.
 
 **Exemple de storytelling**
 

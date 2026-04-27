@@ -9,7 +9,7 @@ Depuis le bandeau supérieur (header), il est possible de naviguer entre les int
 - le bouton **« ADMIN »** permet de revenir à l’outil d’administration ;
 - le bouton **« VOIR LE SITE »** permet de retourner au visualiseur.
 
-Le bouton **« DEBUG »** donne accès à une interface avancée du module d’administration.  
+Le bouton **« DEBUG »** donne accès à une interface avancée de l'outil d’administration.  
 Elle permet notamment de gérer les tâches Celery, les sources TerraVisu, les tâches périodiques ainsi que les utilisateurs.
 
 Cette interface est destinée aux administrateurs.
@@ -97,7 +97,7 @@ Cette emprise pourra être redéfinie au niveau de chaque vue dans l'outil d'adm
 Mapbox options
 ~~~~~~~~~~~~~~~~~~
 
-La clé Mapbox est obligatoire pour l'affichage des cartes de définition de l'empriqse spatiale dans l'outil d'administration.
+La clé Mapbox est obligatoire pour l'affichage des cartes de définition de l'emprise spatiale dans `l'outil d'administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#creer-une-vue>`_.
 
 - ``MAPBOX_ACCESS_TOKEN`` : Clé Mapbox
 
@@ -206,7 +206,7 @@ Il est également possible de restreindre l’accès à ces menus à certains gr
 
    Détail d'une entrée de menu supplémentaire
 
-Fiches détaillées
+Les fiches détaillées
 -------------------
 
 Le module de fiches détaillées permet de créer des fiches enrichies, intégrant différents types de contenus : graphiques, textes, tableaux, pictogrammes, etc.
@@ -215,9 +215,9 @@ Ces fiches apportent une réelle valeur ajoutée aux données sources en les str
 
 La configuration se déroule en trois étapes :
 
-- créer une fiche
-- définir les champs associés
-- ajouter et organiser les blocs de contenu
+- `créer une fiche <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#fiches-detaillees>`_
+- `définir les champs associés <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#champs-de-fiche>`_
+- `ajouter et organiser les blocs de contenu <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#blocs-de-fiche>`_
 
 Fiches détaillées
 ~~~~~~~~~~~~~~~~~~~~

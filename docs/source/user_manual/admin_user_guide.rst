@@ -2,7 +2,7 @@
 Outil d'administration 
 ========================
 
-Le module de configuration est accessible via l’URL du visualiseur, suivie de ``/admin``.
+L'outil d'administration est accessible via l’URL du visualiseur, suivie de ``/admin``.
 
 L'outil d'administration
 ========================
@@ -362,7 +362,7 @@ Les types gérés par l’application sont les suivants :
 
 Un extrait des valeurs pour chaque champ est fournit afin d’avoir un aperçu des données.
 
-Le libellé de chaque champ est modifiable de façon à le rendre plus lisible qu’une variable brut. Celui-ci sera utilisé lors de la configuration des couches.
+Le libellé de chaque champ est modifiable de façon à le rendre plus lisible qu’une variable brut. Celui-ci sera utilisé lors de la `configuration des couches <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#creer-une-couche>`_.
 
 .. image :: ../_static/images/admin/admin_source_modification.png
 
