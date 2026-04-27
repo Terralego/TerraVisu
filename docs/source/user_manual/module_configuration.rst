@@ -207,7 +207,7 @@ Il est également possible de restreindre l’accès à ces menus à certains gr
    Détail d'une entrée de menu supplémentaire
 
 Les fiches détaillées
--------------------
+-----------------------
 
 Le module de fiches détaillées permet de créer des fiches enrichies, intégrant différents types de contenus : graphiques, textes, tableaux, pictogrammes, etc.
 
