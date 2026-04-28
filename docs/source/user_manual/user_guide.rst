@@ -60,7 +60,7 @@ Pour changer de vue, cliquez sur le pictogramme concerné.
 Les menus supplémentaires
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Depuis le panneau latéral des vues, il est possible de rajouter des boutons renvoyant vers des menus supplémentaires. Cet ajout est à réaliser dans `le module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#entree-de-menus-supplementaires>`_
+Depuis le panneau latéral des vues, il est possible de rajouter des boutons renvoyant vers des menus/sites supplémentaires. Cet ajout est à réaliser dans `le module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#entree-de-menus-supplementaires>`_
 
 **Exemple de sites externes**
 
@@ -410,7 +410,7 @@ Le bouton :guilabel:`Prévisualiser` permet d’obtenir un aperçu du rendu de l
 Les outils de navigation optionnels
 -----------------------------------
 
-Il est également possible d'activer l'outil de déclaration depuis le `module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#configurations-des-declarations>`__, afin de permettre aux utilisateurs de faire des remontées d'informations sur la carte.
+L'outil de déclaration permet aux utilisateurs de faire des remontées d'informations sur la carte.
 
 .. image :: ../_static/images/visu/visu_outilnavigation_declaration.png
   :width: 50

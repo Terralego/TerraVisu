@@ -188,7 +188,7 @@ Visu
 Entrée de menus supplémentaires
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Il est possible de définir une ou plusieurs entrées de menu supplémentaires, affichées dans le panneau latéral gauche du visualiseur.
+Il est possible de définir une ou plusieurs entrées de menus/sites supplémentaires, affichées dans le panneau latéral gauche du visualiseur.
 
 Pour créer une nouvelle entrée, rendez-vous à l’adresse ``/config/visu/extramenuitem/``.
 
