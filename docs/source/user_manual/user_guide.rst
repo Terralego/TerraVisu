@@ -279,7 +279,7 @@ La fonctionnalité de signalement permet aux utilisateurs connectés de suggére
    - Si l’utilisateur est connecté, qu’il peut visualiser la couche et que celle-ci est `configurée avec un formulaire de signalement <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-signalements>`_, le bouton **« Signaler une anomalie »** apparaît dans la mini-fiche de l'entité.
    - Lorsque l’utilisateur clique sur le bouton **« Signaler une anomalie »**, le formulaire s’affiche.
 
-  .. image:: ../_static/images/visu/visu_signalement3.png
+   .. image:: ../_static/images/visu/visu_signalement3.png
       :width: 250
 
    .. image:: ../_static/images/visu/visu_signalement.png
