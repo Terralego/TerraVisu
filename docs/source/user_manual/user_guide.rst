@@ -271,7 +271,7 @@ Il n'y a pas de limite au contenu de la fiche tant que l'information est disponi
 Signalements
 ^^^^^^^^^^^^^
 
-La fonctionnalité de signalement permet aux utilisateurs connectés de suggérer des corrections sur les informations attributaires d’une entité d’une couche (telles que le nom, la nature, les coordonnées, etc.), ainsi que sur sa localisation géographique. Il est possible d'ajouter des documents tels que des photos ou des plans en pièce-jointe ou de rédiger un commentaire libre.
+La fonctionnalité de **signalements** permet aux utilisateurs connectés de suggérer des corrections sur les informations attributaires d’une entité d’une couche (telles que le nom, la nature, les coordonnées, etc.), ainsi que sur sa localisation géographique. Il est possible d'ajouter des documents tels que des photos ou des plans en pièce-jointe ou de rédiger un commentaire libre.
 
 .. note::
 
@@ -423,7 +423,7 @@ Les outils de navigation optionnels
 Déclarations
 ~~~~~~~~~~~~~~~
 
-L'outil de déclarations permet aux utilisateurs de faire des remontées d'informations sur la carte.
+L'outil de **déclarations** permet aux utilisateurs de faire des remontées d'informations sur la carte.
 
 .. note::
 
