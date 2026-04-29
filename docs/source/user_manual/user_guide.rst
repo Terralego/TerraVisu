@@ -286,7 +286,7 @@ La fonctionnalité de **signalements** permet aux utilisateurs connectés de sug
       :width: 250
 
    .. image:: ../_static/images/visu/visu_signalement2.png
-      :width: 250
+      :width: 200
 
 
 L'infobulle au survol
