@@ -268,16 +268,19 @@ Depuis `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_
 
 Il n'y a pas de limite au contenu de la fiche tant que l'information est disponible. La fiche peut contenir des liens vers des sites web et des mails. 
 
-.. note::
+Signalements
+^^^^^^^^^^^^^
 
-   - Si l’utilisateur est connecté, qu’il peut visualiser la couche et que celle-ci est `configurée avec un formulaire de signalement <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-signalements>`_, le bouton **« Signaler une anomalie »** apparaît dans la mini-fiche.
-   - Lorsque l’utilisateur clique sur ce bouton, le formulaire s’affiche.
+La fonctionnalité de signalement permet aux utilisateurs connectés de suggérer des corrections sur les informations attributaires d’une entité d’une couche (telles que le nom, la nature, les coordonnées, etc.), ainsi que sur sa localisation géographique. Il est possible d'ajouter des documents tels que des photos ou des plans en pièce-jointe ou de rédiger un commentaire libre.
 
-   .. image:: ../_static/images/visu/visu_signalement.png
-      :width: 300
+- Si l’utilisateur est connecté, qu’il peut visualiser la couche et que celle-ci est `configurée avec un formulaire de signalement <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-signalements>`_, le bouton **« Signaler une anomalie »** apparaît dans la mini-fiche.
+- Lorsque l’utilisateur clique sur ce bouton, le formulaire s’affiche.
 
-   .. image:: ../_static/images/visu/visu_signalement2.png
-      :width: 300
+.. image :: ../_static/images/visu/visu_signalement.png
+  :width: 50
+
+.. image :: ../_static/images/visu/visu_signalement2.png
+  :width: 50
 
 L'infobulle au survol
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -410,13 +413,22 @@ Le bouton :guilabel:`Prévisualiser` permet d’obtenir un aperçu du rendu de l
 Les outils de navigation optionnels
 -----------------------------------
 
-L'outil de déclaration permet aux utilisateurs de faire des remontées d'informations sur la carte.
+Déclarations
+~~~~~~~~~~~~~~~
+
+L'outil de déclarations permet aux utilisateurs de faire des remontées d'informations sur la carte.
 
 .. image :: ../_static/images/visu/visu_outilnavigation_declaration.png
   :width: 50
 
+.. image :: ../_static/images/visu/visu_outilnavigation_declaration2.png
+  :width: 50
+
+.. image :: ../_static/images/visu/visu_outilnavigation_declaration3.png
+  :width: 50
+
 .. note::
-	La définition des champs du formulaire est paramétrable depuis le `module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#configurations-des-declarations>`__.
+	La définition des champs du formulaire de déclarations est paramétrable depuis le `module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#configurations-des-declarations>`__.
 
 
 La visualisation en Storytelling

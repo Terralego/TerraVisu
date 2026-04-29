@@ -1139,7 +1139,7 @@ Pour cela, il suffit de renseigner :
 Onglet SIGNALEMENTS
 ~~~~~~~~~~~~~~~~~~~
 
-La fonctionnalité de signalement permet aux utilisateurs connectés de suggérer des corrections sur les informations attributaires d’une entité d’une couche (telles que le nom, la nature, les coordonnées, etc.), ainsi que sur sa localisation géographique. Il est possible d'ajouter des documents tels que des photos ou des plans en pièce-jointe ou de rédiger un commentaire libre.
+La fonctionnalité de signalement permet aux utilisateurs connectés de proposer des corrections sur les informations et la localisation d’une entité, avec la possibilité d’ajouter des commentaires et des pièces jointes (photos, plans).
 
 Il est possible de configurer un formulaire de signalement associé à une couche.  
 Ce formulaire apparaît dans la mini-fiche lorsqu’un utilisateur clique sur un élément de la carte.
