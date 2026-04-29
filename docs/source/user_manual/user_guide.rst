@@ -275,14 +275,18 @@ La fonctionnalité de signalement permet aux utilisateurs connectés de suggére
 
 .. note::
 
-   - Si l’utilisateur est connecté, qu’il peut visualiser la couche et que celle-ci est `configurée avec un formulaire de signalement <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-signalements>`_, le bouton **« Signaler une anomalie »** apparaît dans la mini-fiche.
-   - Lorsque l’utilisateur clique sur ce bouton, le formulaire s’affiche.
+   - Si un signalement a déjà été réalisé sur l'entité sélectionnée, un pictogramme apparait en haut de la mini-fiche (ex : 12 signalements en cours)
+   - Si l’utilisateur est connecté, qu’il peut visualiser la couche et que celle-ci est `configurée avec un formulaire de signalement <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-signalements>`_, le bouton **« Signaler une anomalie »** apparaît dans la mini-fiche de l'entité.
+   - Lorsque l’utilisateur clique sur le bouton **« Signaler une anomalie »**, le formulaire s’affiche.
+
+  .. image:: ../_static/images/visu/visu_signalement3.png
+      :width: 250
 
    .. image:: ../_static/images/visu/visu_signalement.png
-      :width: 300
+      :width: 250
 
    .. image:: ../_static/images/visu/visu_signalement2.png
-      :width: 300
+      :width: 250
 
 
 L'infobulle au survol
@@ -426,7 +430,7 @@ L'outil de déclarations permet aux utilisateurs de faire des remontées d'infor
   La définition des champs du formulaire de déclarations est paramétrable depuis le `module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#configurations-des-declarations>`__.
 
    .. image:: ../_static/images/visu/visu_outilnavigation_declaration.png
-      :width: 300
+      :width: 50
 
    .. image:: ../_static/images/visu/visu_outilnavigation_declaration2.png
       :width: 300
