@@ -48,7 +48,7 @@ Les couches sont réparties dans des vues et reflètent des thématiques ou des 
 
 Les vues sont représentées par des pictogrammes dans le bandeau latéral gauche. 
 
-.. image :: ../_static/images/visu/vue.png
+.. image :: ../_static/images/visu/visu_vue.png
   :width: 200
 
 Pour changer de vue, cliquez sur le pictogramme concerné.
@@ -224,7 +224,7 @@ Cet outil permet de zoomer sur l'étendue spatiale d'une couche activée. Le zoo
 
 **Exemple d'un zoom**
 
-.. image:: ../_static/images/visu/zoom_extent.gif
+.. image:: ../_static/images/visu/visu_zoom_extent.gif
    :alt: Zoom sur l'emprise spaiale d'une couche
    :align: center
 

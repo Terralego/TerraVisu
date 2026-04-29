@@ -301,9 +301,9 @@ Onglet RAPPORT D'IMPORTATION
 
 Au survol sur la vignette du statut d'une source, une infobulle apparait avec les informations du rapport d'importation.
 
-.. image:: ../_static/images/admin/statut_encours.png
+.. image:: ../_static/images/admin/admin_source_statut_encours.png
     :width: 49 %
-.. image:: ../_static/images/admin/statut_termine.png
+.. image:: ../_static/images/admin/admin_source_statut_termine.png
     :width: 49 %
 
 Il suffit de cliquer sur la vignette du statut pour être redirigé vers l'onglet :guilabel:`RAPPORT D’IMPORTATION`.
@@ -1139,6 +1139,8 @@ Pour cela, il suffit de renseigner :
 Onglet SIGNALEMENTS
 ~~~~~~~~~~~~~~~~~~~
 
+La fonctionnalité de signalement permet aux utilisateurs connectés de suggérer des corrections sur les informations attributaires d’une entité d’une couche (telles que le nom, la nature, les coordonnées, etc.), ainsi que sur sa localisation géographique. Il est possible d'ajouter des documents tels que des photos ou des plans en pièce-jointe ou de rédiger un commentaire libre.
+
 Il est possible de configurer un formulaire de signalement associé à une couche.  
 Ce formulaire apparaît dans la mini-fiche lorsqu’un utilisateur clique sur un élément de la carte.
 
@@ -1152,7 +1154,17 @@ Les paramètres suivants peuvent être définis :
   - le caractère obligatoire ou non
   - un texte d’aide pour guider la saisie
 
-.. image :: ../_static/images/admin/admin_signalement.png
+.. figure:: ../_static/images/admin/admin_couche_signalement.png
+   :alt: Configuration du formulaire de signalements
+   :align: center
+
+   Configuration du formulaire de signalements
+
+.. figure:: ../_static/images/django/admin_couche_signalement2.png
+   :alt: Rendu du formulaire dans l'interface cartographique
+   :align: center
+
+   Rendu du formulaire dans l'interface cartographique
 
 Modifier une couche
 -------------------

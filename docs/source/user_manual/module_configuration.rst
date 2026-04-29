@@ -170,7 +170,7 @@ Lorsqu’un formulaire de signalement est complété puis soumis depuis le visua
 
    Liste des signalements réalisés
 
-Pour consulter le détail d’une déclaration, cliquez sur son nom dans la colonne **« Signalement »**.
+Pour consulter le détail d’un signalement, cliquez sur son nom dans la colonne **« Signalement »**.
 
 Il est possible de modifier le statut d’un signalement (**Nouveau**, **En cours**, **Accepté**, **Rejeté**) et d’y associer un message.
 
