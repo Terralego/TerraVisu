@@ -1160,7 +1160,7 @@ Les paramètres suivants peuvent être définis :
 
    Configuration du formulaire de signalements
 
-.. figure:: ../_static/images/django/admin_couche_signalement2.png
+.. figure:: ../_static/images/admin/admin_couche_signalement2.png
    :alt: Rendu du formulaire dans l'interface cartographique
    :align: center
 
