@@ -180,7 +180,7 @@ La table attributaire de **TerraVisu** propose les fonctionnalités suivantes :
 .. note::
     La table attributaire est synchronisée avec la carte interactive**.
 
-    La sélection d’une entité dans la table entraîne automatiquement :
+    La sélection d’une entité dans la table entraîne :
 
     * sa mise en évidence sur la carte
     * un recentrage et un zoom sur son emprise
@@ -203,7 +203,7 @@ Les éléments qui ne correspondent pas au filtre sont cachés et la carte est a
 .. image :: ../_static/images/visu/visu_filtre.png
   :width: 200
 
-Les filtres peuvent prendre plusieurs formes (case à cocher, intervalle de valeurs, curseur, champ recherche au autocomplétion, etc.) et sont paramétrables dans `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-filtre>`__.
+Les filtres peuvent prendre plusieurs formes (case à cocher, intervalle de valeurs, curseur, champ recherche avec autocomplétion, etc.) et sont paramétrables dans `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-filtre>`__.
 
 Le widget
 ~~~~~~~~~~~~
@@ -367,11 +367,11 @@ L'impression de la carte au format PDF
 
 Le composeur d’impression de TerraVisu permet de générer un export PDF de la carte affichée à l’écran. 
 
-L’outil offre plusieurs options de personnalisation afin d’adapter la mise en page aux besoins de l’utilisateur :
+L’outil offre plusieurs options de personnalisation du template d'impression défini afin d’adapter la mise en page aux besoins de l’utilisateur :
 
 * Choix de la disposition du document (portrait ou paysage)
 * Ajout d’un titre dynamique, avec paramétrage de la taille et de l’alignement (gauche, centre, droite)
-* Intégration d'un logo dans l’en-tête, avec possibilité de définir sa position (au-dessus, à gauche ou à droite)
+* Intégration du logo prédefini dans l’en-tête, avec possibilité de définir sa position (au-dessus, à gauche ou à droite)
 * Activation des éléments cartographiques tels que l’échelle et les attributions
 * Possibilité de définir des bordures arrondies
 
@@ -397,7 +397,7 @@ Le partage de lien direct permet de générer un hyperlien avec plusieurs option
 * afficher l’arbre des couches, sinon il sera rétracté 
 * conserver le fond de carte utilisé au moment du partage
 
-Une fois les options choisies, l’utilisateur peut cliquer sur :guilabel:`Copier`. Un message :guilabel:`Copié !` s’affiche alors.
+Une fois les options choisies, l’utilisateur peut cliquer sur :guilabel:`Copier` afin de sauvegarder le lien généré dans le presse-papier.
 
 **Exemple de partage d'hyperlien**
 
