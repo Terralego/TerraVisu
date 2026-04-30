@@ -474,6 +474,9 @@ class SceneTreeAPIView(APIView):
             "layers": self.get_layers_list_for_layer(layer),
         }
 
+        if layer.variables:
+            layer_object["variables"] = layer.variables
+
         return layer_object
 
     @cached_property
