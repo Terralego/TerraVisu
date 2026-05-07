@@ -207,7 +207,7 @@ djangorestframework==3.16.1
     #   drf-extra-fields
     #   drf-jwt
     #   drf-spectacular
-djangorestframework-gis==1.2.0
+djangorestframework-gis==1.2.1
     # via
     #   -c requirements.txt
     #   django-geostore
