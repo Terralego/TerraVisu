@@ -91,7 +91,7 @@ deepmerge==2.0
     # via
     #   -c requirements.txt
     #   django-geostore
-django==5.2.13
+django==5.2.14
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
