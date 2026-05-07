@@ -185,7 +185,7 @@ pillow==12.2.0
     #   django-colorfield
 prompt-toolkit==3.0.52
     # via click-repl
-psycopg2==2.9.11
+psycopg2==2.9.12
     # via
     #   terravisu (pyproject.toml)
     #   django-geostore
