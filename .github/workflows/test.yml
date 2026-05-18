@@ -68,7 +68,7 @@ jobs:
           docker compose run --rm web coverage combine
           docker compose run --rm web coverage xml -o coverage.xml
 
-      - uses: codecov/codecov-action@v5
+      - uses: codecov/codecov-action@v6
         with:
           flags: backend-unittests
           token: ${{ secrets.CODECOV_TOKEN }}

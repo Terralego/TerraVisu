@@ -10,4 +10,5 @@ node_modules/
 /install/public/
 /install/var/
 /public/
+/docs/build
 !/public/media/.empty

@@ -2,6 +2,7 @@
 Outil d'administration 
 ========================
 
+L'outil d'administration est accessible via l’URL du visualiseur, suivie de ``/admin``.
 
 L'outil d'administration
 ========================
@@ -72,11 +73,15 @@ Si vous activez l’option :guilabel:`Super-utilisateur` l’utilisateur pourra 
 
 Si vous activez l’option :guilabel:`Actif` l’utilisateur pourra se connecter dès que son compte sera créé, sinon, il devra attendre que celui ci devienne actif.
 
+Si vous activez l’option :guilabel:`Gestionnaire des signalements` l’utilisateur recevra un mail mensuel avec le récapitulatif des signalements réalisés.
+
+Si vous activez l’option :guilabel:`Gestionnaire des déclarations` l’utilisateur recevra un mail mensuel avec le récapitulatif des déclarations réalisées.
+
 Vous pouvez intégrer l’utilisateur à un ou plusieurs groupes. 
 
 Il est possible de rajouter des informations supplémentaires comme la ``fonction``, l’``organisme de rattachement`` ou encore l’``adresse``. 
 
-Si l'utilisateur perd son mot de passe, il faut supprimer son compte et lui en créer un nouveau.
+Si l'utilisateur perd son mot de passe, il est possible d'en définir un nouveau.
 
 .. image :: ../_static/images/admin/admin_utilisateurs_ajout.png
 
@@ -296,9 +301,9 @@ Onglet RAPPORT D'IMPORTATION
 
 Au survol sur la vignette du statut d'une source, une infobulle apparait avec les informations du rapport d'importation.
 
-.. image:: ../_static/images/admin/statut_encours.png
+.. image:: ../_static/images/admin/admin_source_statut_encours.png
     :width: 49 %
-.. image:: ../_static/images/admin/statut_termine.png
+.. image:: ../_static/images/admin/admin_source_statut_termine.png
     :width: 49 %
 
 Il suffit de cliquer sur la vignette du statut pour être redirigé vers l'onglet :guilabel:`RAPPORT D’IMPORTATION`.
@@ -357,7 +362,7 @@ Les types gérés par l’application sont les suivants :
 
 Un extrait des valeurs pour chaque champ est fournit afin d’avoir un aperçu des données.
 
-Le libellé de chaque champ est modifiable de façon à le rendre plus lisible qu’une variable brut. Celui-ci sera utilisé lors de la configuration des couches.
+Le libellé de chaque champ est modifiable de façon à le rendre plus lisible qu’une variable brut. Celui-ci sera utilisé lors de la `configuration des couches <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#creer-une-couche>`_.
 
 .. image :: ../_static/images/admin/admin_source_modification.png
 
@@ -1121,7 +1126,7 @@ Un champ de saisie avancée à destination des utilisateurs développeurs est é
 
 Onglet INCLUSIONS
 ~~~~~~~~~~~~~~~~~~
-Enfin, il est également possible d'associer à une couche des contenus provenant d'applications externes - par exemple, pour associer des graphiques aux couches cartographiques.
+Il est également possible d'associer à une couche des contenus provenant d'applications externes - par exemple, pour associer des graphiques aux couches cartographiques.
 
 Pour cela, il suffit de renseigner :
 
@@ -1130,6 +1135,36 @@ Pour cela, il suffit de renseigner :
 - l'URL du contenu distant à mettre à disposition des utilisateurs de TerraVisu
 
 .. image :: ../_static/images/admin/admin_couche_embed.png
+
+Onglet SIGNALEMENTS
+~~~~~~~~~~~~~~~~~~~
+
+La fonctionnalité de signalement permet aux utilisateurs connectés de proposer des corrections sur les informations et la localisation d’une entité, avec la possibilité d’ajouter des commentaires et des pièces jointes (photos, plans).
+
+Il est possible de configurer un formulaire de signalement associé à une couche.  
+Ce formulaire apparaît dans la mini-fiche lorsqu’un utilisateur clique sur un élément de la carte.
+
+Les paramètres suivants peuvent être définis :
+
+- Nom du formulaire
+- Champs du formulaire, pour chacun :
+  
+  - l’ordre d’apparition
+  - le champ source associé
+  - le caractère obligatoire ou non
+  - un texte d’aide pour guider la saisie
+
+.. figure:: ../_static/images/admin/admin_couche_signalement.png
+   :alt: Configuration du formulaire de signalements
+   :align: center
+
+   Configuration du formulaire de signalements
+
+.. figure:: ../_static/images/admin/admin_couche_signalement2.png
+   :alt: Rendu du formulaire dans l'interface cartographique
+   :align: center
+
+   Rendu du formulaire dans l'interface cartographique
 
 Modifier une couche
 -------------------
