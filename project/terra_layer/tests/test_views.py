@@ -199,7 +199,7 @@ class SceneViewsetTestCase(APITestCase):
 
         self.assertEqual(layer.group.label, "Root")
 
-    def test_layer_view_with_source_model(self):
+    def test_layer_custom_styles_view(self):
         source = Source.objects.create(
             geom_type=10,
             name="test_view_2",
@@ -211,6 +211,10 @@ class SceneViewsetTestCase(APITestCase):
         layer = Layer.objects.get(
             pk=layer.pk
         )  # get annotated field layer_identifier by executing queryset in default manager
+        cs = CustomStyle.objects.create(
+            layer=layer,
+            source=source,
+        )
 
         query = {
             "name": "Scene Name",
@@ -223,21 +227,163 @@ class SceneViewsetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         scene = response.json()
 
-        response = self.client.get(reverse("layerview", args=[scene["slug"]]))
+        response = self.client.get(
+            reverse(
+                "scene-customstyle-layer",
+                args=[scene["slug"], layer.pk],
+            ),
+        )
 
-        json_response = response.json()
+        # Do it again without cache
+        geolayer_pk = source.get_layer().pk
         self.assertListEqual(
-            json_response["map"]["customStyle"]["layers"],
+            response.json(),
             [
                 {
                     "id": layer.layer_identifier,
                     "layerId": layer.pk,
-                    "source": f"terra_{source.get_layer().pk}",
+                    "source": f"terra_{geolayer_pk}",
                     "source-layer": "test_view_2",
                     "advanced_style": {},
-                }
+                },
+                {
+                    "id": cs.layer_identifier,
+                    "layerId": layer.pk,
+                    "source": f"terra_{geolayer_pk}",
+                    "source-layer": "test_view_2",
+                    "advanced_style": {},
+                },
             ],
         )
+
+        response = self.client.get(
+            reverse(
+                "scene-customstyle-layer",
+                args=[scene["slug"], layer.pk],
+            ),
+            {"cache": "false"},
+        )
+
+        geolayer_pk = source.get_layer().pk
+        self.assertListEqual(
+            response.json(),
+            [
+                {
+                    "id": layer.layer_identifier,
+                    "layerId": layer.pk,
+                    "source": f"terra_{geolayer_pk}",
+                    "source-layer": "test_view_2",
+                    "advanced_style": {},
+                },
+                {
+                    "id": cs.layer_identifier,
+                    "layerId": layer.pk,
+                    "source": f"terra_{geolayer_pk}",
+                    "source-layer": "test_view_2",
+                    "advanced_style": {},
+                },
+            ],
+        )
+
+        # Request for a layer with unauthorized source should return 404
+        restricted_group = Group.objects.create(name="restricted")
+        unauthorized_source = Source.objects.create(geom_type=10, name="unauthorized")
+        unauthorized_geolayer = unauthorized_source.get_layer()
+        unauthorized_geolayer.authorized_groups.add(restricted_group)
+        unauthorized_layer = Layer.objects.create(
+            source=unauthorized_source,
+            name="Unauthorized Layer",
+            group=LayerGroup.objects.get(view=Scene.objects.get(slug=scene["slug"])),
+        )
+        response = self.client.get(
+            reverse(
+                "scene-customstyle-layer",
+                args=[scene["slug"], unauthorized_layer.pk],
+            ),
+        )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+        response = self.client.get(
+            reverse("scene-customstyle-source", args=[scene["slug"], layer.pk]),
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(len(response.json()), 2)
+
+    def test_layer_custom_style_source_view(self):
+        source = Source.objects.create(
+            geom_type=10,
+            name="test_view_2",
+        )
+        layer = Layer.objects.create(
+            source=source,
+            name="Layer",
+        )
+
+        query = {
+            "name": "Scene Name",
+            "category": "map",
+            "tree": [{"geolayer": layer.id}],
+            "baselayer": [],
+        }
+
+        response = self.client.post(reverse("scene-list"), query)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        scene = response.json()
+
+        geolayer = source.get_layer()
+        url = reverse("layer-tilejson", args=(geolayer.pk,))
+
+        # First request: populates cache (get_or_set branch)
+        response = self.client.get(
+            reverse("scene-customstyle-source", args=[scene["slug"], layer.pk]),
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()[0]
+        self.assertEqual(data["id"], f"terra_{geolayer.pk}")
+        self.assertEqual(data["type"], "vector")
+        # Authenticated user: URL should contain idb64 and token params
+        self.assertIn("idb64=", data["url"])
+        self.assertIn("token=", data["url"])
+        self.assertTrue(data["url"].startswith(url))
+
+        # Second request with ?cache=false: covers cache.set branch
+        response = self.client.get(
+            reverse("scene-customstyle-source", args=[scene["slug"], layer.pk]),
+            {"cache": "false"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data_refreshed = response.json()[0]
+        self.assertEqual(data_refreshed["id"], data["id"])
+        self.assertEqual(data_refreshed["type"], data["type"])
+
+        # Anonymous user: URL should have no auth params
+        self.client.force_authenticate(user=None)
+        response = self.client.get(
+            reverse("scene-customstyle-source", args=[scene["slug"], layer.pk]),
+            {"cache": "false"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        anon_data = response.json()[0]
+        self.assertEqual(anon_data["url"], f"{url}?")
+        self.client.force_authenticate(self.user)
+
+        # Unauthorized source: should return 404
+        restricted_group = Group.objects.create(name="restricted_src")
+        unauthorized_source = Source.objects.create(geom_type=10, name="unauthorized")
+        unauthorized_geolayer = unauthorized_source.get_layer()
+        unauthorized_geolayer.authorized_groups.add(restricted_group)
+        unauthorized_layer = Layer.objects.create(
+            source=unauthorized_source,
+            name="Unauthorized Layer",
+            group=LayerGroup.objects.get(view=Scene.objects.get(slug=scene["slug"])),
+        )
+        response = self.client.get(
+            reverse(
+                "scene-customstyle-source",
+                args=[scene["slug"], unauthorized_layer.pk],
+            ),
+        )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_layer_view_with_wmtsource(self):
         source = WMTSSource.objects.create(
@@ -266,11 +412,15 @@ class SceneViewsetTestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         scene = response.json()
 
-        response = self.client.get(reverse("layerview", args=[scene["slug"]]))
+        response = self.client.get(
+            reverse(
+                "scene-customstyle-layer",
+                args=[scene["slug"], layer.pk],
+            )
+        )
 
-        json_response = response.json()
         self.assertEqual(
-            json_response["map"]["customStyle"]["layers"],
+            response.json(),
             [
                 {
                     "id": layer.layer_identifier,
@@ -360,11 +510,13 @@ class SceneViewsetTestCase(APITestCase):
 
         scene = response.json()
 
-        response = self.client.get(reverse("layerview", args=[scene["slug"]]))
-        layer_tree = response.json()
+        response = self.client.get(
+            reverse("scene-layer-detail", args=[scene["slug"], layer.pk])
+        )
+        layer_detail = response.json()
 
         self.assertEqual(
-            layer_tree["layersTree"][0]["filters"]["fields"][0],
+            layer_detail["filters"]["fields"][0],
             {
                 "value": "_test_field",
                 "label": "test layer fields",
@@ -374,6 +526,101 @@ class SceneViewsetTestCase(APITestCase):
                 "settings": {},
             },
         )
+
+    def test_layer_detail_view(self):
+        field = self.source.fields.create(
+            name="_report_field",
+            label="Report Label",
+            data_type=FieldTypes.String.value,
+        )
+        field_2 = self.source.fields.create(
+            name="_report_field_2",
+            label="Report Label 2",
+            data_type=FieldTypes.Integer.value,
+        )
+        layer = Layer.objects.create(
+            source=self.source,
+            name="Detail Layer",
+            table_enable=True,
+            table_export_enable=True,
+        )
+        FilterField.objects.create(
+            label="shown field",
+            layer=layer,
+            field=field,
+            filter_settings={"type": "single"},
+            filter_enable=True,
+            shown=True,
+            format_type="string",
+            exportable=True,
+        )
+        report_config = ReportConfig.objects.create(label="Test Report", layer=layer)
+        ReportField.objects.create(
+            config=report_config, field=field, order=1, required=True, helptext="Help"
+        )
+        ReportField.objects.create(config=report_config, field=field_2, order=2)
+
+        query = {
+            "name": "Scene Detail",
+            "category": "map",
+            "tree": [{"geolayer": layer.id}],
+            "baselayer": [],
+        }
+        response = self.client.post(reverse("scene-list"), query)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        scene = response.json()
+
+        # First request: cache miss (covers get_prefetched_layer, get_full_layer_dict)
+        response = self.client.get(
+            reverse("scene-layer-detail", args=[scene["slug"], layer.pk])
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+
+        # Verify report_configs (covers lines 508-525)
+        self.assertEqual(len(data["report_configs"]), 1)
+        rc = data["report_configs"][0]
+        self.assertEqual(rc["label"], "Test Report")
+        self.assertEqual(rc["id"], report_config.id)
+        self.assertEqual(len(rc["fields"]), 2)
+        self.assertEqual(rc["fields"][0]["value"], "_report_field")
+        self.assertEqual(rc["fields"][0]["label"], "Report Label")
+        self.assertEqual(rc["fields"][0]["required"], True)
+        self.assertEqual(rc["fields"][0]["helptext"], "Help")
+        self.assertEqual(rc["fields"][1]["value"], "_report_field_2")
+        self.assertEqual(rc["fields"][1]["order"], 2)
+
+        # Verify filter fields and exportable
+        self.assertTrue(data["filters"]["exportable"])
+
+        # Second request: cache hit
+        response = self.client.get(
+            reverse("scene-layer-detail", args=[scene["slug"], layer.pk])
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json(), data)
+
+        # Third request with ?cache=false: covers cache.set branch (line 644-647)
+        response = self.client.get(
+            reverse("scene-layer-detail", args=[scene["slug"], layer.pk]),
+            {"cache": "false"},
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # Unauthorized layer: covers response is None -> 404
+        restricted_group = Group.objects.create(name="restricted_detail")
+        unauth_source = Source.objects.create(geom_type=10, name="unauth_detail")
+        unauth_geolayer = unauth_source.get_layer()
+        unauth_geolayer.authorized_groups.add(restricted_group)
+        unauth_layer = Layer.objects.create(
+            source=unauth_source,
+            name="Unauthorized",
+            group=LayerGroup.objects.get(view=Scene.objects.get(slug=scene["slug"])),
+        )
+        response = self.client.get(
+            reverse("scene-layer-detail", args=[scene["slug"], unauth_layer.pk])
+        )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
 
     def test_layer_view_with_table_enable_no_layer(self):
         self.source.fields.create(
@@ -726,7 +973,7 @@ class SceneTreeAPITestCase(APITestCase):
         ReportField.objects.create(config=report_config, field=field_2, order=2)
 
         self.client.force_authenticate(self.user)
-        with self.assertNumQueries(46):
+        with self.assertNumQueries(35):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
         with self.assertNumQueries(10):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
@@ -735,7 +982,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer.name = "new_name"
         layer.save()
 
-        with self.assertNumQueries(44):
+        with self.assertNumQueries(33):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
     def test_cache_cleared_after_public_layer_update(self):
@@ -743,18 +990,22 @@ class SceneTreeAPITestCase(APITestCase):
         layer = Layer.objects.create(
             name="public_layer", source=source, group=self.layer_group
         )
-        with self.assertNumQueries(46):
-            self.client.get(reverse("layerview", args=[self.scene.slug]))
+        # First request populates the cache (avoid flaky tests)
+        self.client.get(reverse("layerview", args=[self.scene.slug]))
 
+        # Second request should be a cache hit with minimal queries
         with self.assertNumQueries(9):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
-        # updating layer to trigger cache reset
+        # Updating the layer changes updated_at, which changes the cache key
         layer.name = "new_name"
         layer.save()
-        with self.assertNumQueries(38):
-            # still differences in original query number because callbacks auto create geostore layers and groups
-            self.client.get(reverse("layerview", args=[self.scene.slug]))
+
+        # Next request should be a cache miss (key changed due to updated_at)
+        with self.assertNumQueries(27):
+            response = self.client.get(reverse("layerview", args=[self.scene.slug]))
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.json()["layersTree"][0]["label"], "new_name")
 
     def test_cache_updated_with_query_parameter(self):
         source = PostGISSource.objects.create(**self.source_params)
