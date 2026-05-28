@@ -1102,27 +1102,294 @@ Il est possible de remonter/descendre les champs dans l’ordre souhaité.
 
 .. image :: ../_static/images/admin/admin_couche_tableactivee.png
 
-
 Onglet WIDGET
-~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
 
-L’outil de widget permet de récapituler dans un tableau dynamique des indicateurs utiles à l'analyse de la couche.
+Les widgets permettent de représenter visuellement et dynamiquement les données d’une couche sous différentes formes :
 
-Plusieurs widgets peuvent être créés par couche. L'icône et le libellé de chacun d'entre eux est personnalisable.
+- chiffres clés ;
+- graphiques en barres ;
+- graphiques en barres empilées ;
+- graphiques circulaires (*Pie*).
 
-Trois types de calculs statistiques sont proposés :
+Une même couche peut contenir plusieurs widgets.
+Chaque widget peut lui-même contenir plusieurs éléments de visualisation
+(chiffres clés ou graphiques).
 
-- le comptage du nombre d'éléments présents
-- la somme de leur valeur
-- la moyenne de leur valeur
+Par exemple, une couche peut proposer :
 
-.. image :: ../_static/images/admin/admin_couche_widget.png
+- un widget « Population » contenant :
+  
+  - un chiffre clé représentant la population totale ;
+  - un graphique en barres représentant la population par commune ;
 
-Il est possible de choisir si le résultat de ces calculs se réactualise en fonction des éléments qui se trouvent dans l'emprise spatiale, lors du zoom sur la carte, ou non.
+- un widget « Habitat » contenant :
+  
+  - un chiffre clé représentant le nombre total de logements ;
+  - un graphique circulaire représentant la répartition des types de logements.
 
-Un champ de saisie avancée à destination des utilisateurs développeurs est également disponible. Il requiert l’écriture en `JSON <https://developer.mozilla.org/fr/docs/Web/JavaScript/Reference/Global_Objects/JSON>`_ avec dans la clé "template" une chaîne de caractère contenant le code en `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_ du format de données attendu.
+Le libellé et l’icône de chaque widget sont personnalisables.
 
-.. image :: ../_static/images/admin/admin_couche_widget_devs.png
+Trois types de calculs statistiques sont disponibles :
+
+- le comptage du nombre d’éléments ;
+- la somme des valeurs ;
+- la moyenne des valeurs.
+
+.. image:: ../_static/images/admin/admin_couche_widget.png
+
+Il est possible de choisir si les résultats des widgets se réactualisent
+dynamiquement selon l’emprise visible de la carte lors des opérations de zoom
+et de déplacement.
+
+Un champ de configuration avancée est également disponible pour les utilisateurs
+développeurs. Celui-ci nécessite l’écriture d’un objet JSON contenant une clé
+``template`` utilisant la syntaxe `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_.
+
+.. image:: ../_static/images/admin/admin_couche_widget_devs.png
+
+**Principe général de configuration**
+
+La configuration d’un widget suit généralement les étapes suivantes :
+
+#. Créer un widget pour la couche ;
+#. Ajouter un ou plusieurs éléments de visualisation ;
+#. Choisir le type de widget ;
+#. Sélectionner les champs de données ;
+#. Définir le type d’agrégation ;
+#. Choisir le type de graphique ;
+#. Configurer l’orientation ;
+#. Paramétrer l’affichage des valeurs ;
+#. Définir les unités et l’arrondi éventuel.
+
+**Types de widgets**
+
+Résumé des types disponibles :
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 35 25 20
+
+   * - Type
+     - Usage
+     - Données attendues
+     - Agrégations disponibles
+
+   * - ``Sum``
+     - Afficher un chiffre clé basé sur une somme
+     - Champ numérique
+     - Sum
+
+   * - ``Average``
+     - Afficher une moyenne
+     - Champ numérique
+     - Average
+
+   * - ``Count``
+     - Afficher un nombre d’objets
+     - Aucun champ obligatoire
+     - Count
+
+   * - ``Distribution``
+     - Représenter une répartition par catégorie
+     - Champ textuel
+     - Comptage automatique
+
+   * - ``Numeric``
+     - Comparer plusieurs indicateurs numériques
+     - Un ou plusieurs champs numériques
+     - Sum, Average, Count
+
+   * - ``Categoric``
+     - Croiser une catégorie et une valeur numérique
+     - Champ textuel + champ numérique
+     - Sum, Average, Count
+
+
+**Widgets de type chiffre clé**
+
+*Sum*
+
+Le widget ``Sum`` affiche un chiffre clé correspondant à la somme d’un champ numérique.
+
+Exemples :
+
+- somme de la population ;
+- total des logements ;
+- surface totale.
+
+*Average*
+
+Le widget ``Average`` affiche la moyenne d’un champ numérique.
+
+Exemples :
+
+- revenu moyen ;
+- âge moyen ;
+- surface moyenne.
+
+*Count*
+
+Le widget ``Count`` affiche le nombre total d’objets présents dans la couche.
+
+Exemples :
+
+- nombre de communes ;
+- nombre d’entreprises ;
+- nombre de parcelles.
+
+**Widgets graphiques**
+
+*Distribution*
+
+Le widget ``Distribution`` permet de représenter la répartition des données
+à partir d’un champ textuel.
+
+Exemples :
+
+- répartition par type de culture ;
+- répartition par catégorie d’activité ;
+- répartition par statut.
+
+Configuration des données :
+
+- sélection d’un champ textuel.
+
+*Numeric*
+
+Le widget ``Numeric`` permet d’analyser un ou plusieurs champs numériques.
+
+Exemples :
+
+- comparaison de plusieurs indicateurs ;
+- analyse de surfaces, populations ou revenus.
+
+Configuration des données :
+
+- sélection d’un ou plusieurs champs numériques ;
+- choix du type d’agrégation :
+  
+  - ``Sum`` ;
+  - ``Average`` ;
+  - ``Count``.
+
+*Categoric*
+
+Le widget ``Categoric`` permet de croiser :
+
+- un champ de catégorie textuel ;
+- un champ de valeur numérique.
+
+Exemples :
+
+- population par commune ;
+- surface agricole par type de culture ;
+- nombre d’emplois par secteur.
+
+Configuration des données :
+
+- champ de catégorie textuel ;
+- champ numérique ;
+- type d’agrégation :
+
+  - ``Sum`` ;
+  - ``Average`` ;
+  - ``Count``.
+
+**Paramètres graphiques**
+
+Les widgets graphiques disposent des paramètres de représentation suivants :
+
+.. list-table::
+   :header-rows: 1
+   :widths: 25 35 40
+
+   * - Paramètre
+     - Description
+     - Options disponibles
+
+   * - Type de graphique
+     - Définit le rendu visuel du widget
+     - Pie, Barres, Barres empilées
+
+   * - Orientation
+     - Sens d’affichage des graphiques en barres
+     - Horizontale, Verticale
+
+   * - Affichage des valeurs
+     - Format des valeurs affichées
+     - Valeur brute, pourcentage, unité personnalisée
+
+   * - Unité de mesure
+     - Texte affiché après la valeur
+     - %, habitants, ha, km², etc.
+
+   * - Arrondi
+     - Nombre de décimales affichées
+     - 0, 1, 2 décimales, etc.
+
+
+**Exemples de configuration**
+
+*Exemple 1 — Chiffre clé*
+
+Objectif :
+
+Afficher le nombre d'espace d'activité (nombre d'entités dans une couche)
+
+Configuration :
+
+- Type : ``Count``
+- Champ : ``id``
+
+*Exemple 2 — Chiffre clé*
+
+Objectif :
+
+Afficher le nombre d'emplois
+Configuration :
+
+- Type : ``Sum``
+- Champ : ``nb_emplois``
+
+*Exemple 3 — Répartition*
+
+Objectif :
+
+Afficher la part des espaces d'activité par secteur d'activité
+
+Configuration :
+
+- Type : ``Distribution``
+- Champ textuel : ``voc_regr``
+- Graphique : ``Pie``
+
+*Exemple 4 — Répartition*
+
+Objectif :
+
+Afficher la répartition des emplois par secteur d'acitvité
+
+Configuration :
+
+- Type : ``Numeric``
+- Champ numérique : ``comdetail_eff``, ``comgros_eff``, ``const_eff``, ``indus_eff``, ...
+- Agrégation : ``Sum``
+- Graphique : ``Stacked Bars``
+
+*Exemple 5 — Valeur par catégorie*
+
+Objectif :
+
+Afficher la surface agricole par commune.
+
+Configuration :
+
+- Type : ``Categoric``
+- Champ catégorie : ``commune``
+- Champ numérique : ``surface``
+- Agrégation : ``Sum``
+- Graphique : ``Barres horizontales``
 
 Onglet INCLUSIONS
 ~~~~~~~~~~~~~~~~~~
