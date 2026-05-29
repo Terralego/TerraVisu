@@ -228,10 +228,10 @@ class SheetBlock(OrderedModel):
             "Please set the maximum number of features to return in this block"
         ),
     )
-    is_main_table = models.BooleanField(
+    is_tab = models.BooleanField(
         default=False,
-        verbose_name=_("Main table"),
-        help_text=_("These fields are to be displayed in the 'All values' tab"),
+        verbose_name=_("Display as tab"),
+        help_text=_("This block will be displayed in a dedicated tab."),
     )
 
     class Meta:

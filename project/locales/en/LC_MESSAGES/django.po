@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-29 12:09+0000\n"
+"POT-Creation-Date: 2026-05-29 12:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -976,10 +976,6 @@ msgid "Order field must be from selected source: '%(fields_source)s'."
 msgstr ""
 
 #, python-format
-msgid "Block '%(bloc_title)s is already set as main table for this sheet."
-msgstr ""
-
-#, python-format
 msgid "Field '%(unique_identifier)s' does not exist in source '%(source)s'."
 msgstr ""
 
@@ -1120,10 +1116,10 @@ msgstr ""
 msgid "Please set the maximum number of features to return in this block"
 msgstr ""
 
-msgid "Main table"
+msgid "Display as tab"
 msgstr ""
 
-msgid "These fields are to be displayed in the 'All values' tab"
+msgid "This block will be displayed in a dedicated tab."
 msgstr ""
 
 msgid "Sheet block"

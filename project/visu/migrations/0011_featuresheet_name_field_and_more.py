@@ -60,4 +60,17 @@ class Migration(migrations.Migration):
                 verbose_name="Sheets list fields",
             ),
         ),
+        migrations.RemoveField(
+            model_name="sheetblock",
+            name="is_main_table",
+        ),
+        migrations.AddField(
+            model_name="sheetblock",
+            name="is_tab",
+            field=models.BooleanField(
+                default=False,
+                help_text="This block will be displayed in a dedicated tab.",
+                verbose_name="Display as tab",
+            ),
+        ),
     ]
