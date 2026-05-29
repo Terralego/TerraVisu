@@ -97,7 +97,7 @@ class SheetListFieldInlineFormSet(BaseInlineFormSet):
                 _("Please select at least 1 field to display in the sheets list.")
             )
 
-        unique_sources = {f.source for f in fields}
+        unique_sources = {f.field.source for f in fields}
         if len(unique_sources) > 1:
             raise ValidationError(_("These fields must all come from the same source."))
         if next(iter(unique_sources)) not in sources:
@@ -239,20 +239,21 @@ class FeatureSheetAdminForm(ModelForm):
                     }
                 )
         name_field = cleaned_data.get("name_field")
-        name_found = False
-        for source in sources:
-            if name_field.source == source:
-                name_found = True
-                break
-        if not name_found:
-            raise ValidationError(
-                _(
-                    "Field '%(name_field)s' does not match the sources of the Feature Sheet"
+        if name_field:
+            name_found = False
+            for source in sources:
+                if name_field.source == source:
+                    name_found = True
+                    break
+            if not name_found:
+                raise ValidationError(
+                    _(
+                        "Field '%(name_field)s' does not match the sources of the Feature Sheet"
+                    )
+                    % {
+                        "name_field": name_field.name,
+                    }
                 )
-                % {
-                    "name_field": name_field.name,
-                }
-            )
         return cleaned_data
 
     class Meta:
