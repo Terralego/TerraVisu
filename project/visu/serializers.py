@@ -84,7 +84,7 @@ class SheetBlockSerializer(serializers.ModelSerializer):
             "order_field",
             "limit",
             "text",
-            "is_main_table",
+            "is_tab",
         )
 
 

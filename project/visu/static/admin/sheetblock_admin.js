@@ -16,7 +16,6 @@
         var secondGeomSourceRow = document.querySelector('.field-second_geom_source');
         var orderRow = document.querySelector('.field-order_field');
         var limitRow = document.querySelector('.field-limit');
-        var isMainTableRow = document.querySelector('.field-is_main_table');
 
         function toggleFields() {
             var selectedType = typeField.value;
@@ -28,7 +27,6 @@
             if (secondGeomSourceRow) secondGeomSourceRow.style.display = 'none';
             if (orderRow) orderRow.style.display = 'none';
             if (limitRow) limitRow.style.display = 'none';
-            if (isMainTableRow) isMainTableRow.style.display = 'none';
 
             // Show relevant fields based on type
             if ((selectedType === 'BOOLEANS') || (selectedType === 'BAR_PLOT') || (selectedType === 'DISTRIB_PLOT')) {
@@ -37,7 +35,6 @@
             } else if (selectedType === 'FIELDS') {
                 if (fieldsSourceRow) fieldsSourceRow.style.display = '';
                 if (fieldsRow) fieldsRow.style.display = '';
-                if (isMainTableRow) isMainTableRow.style.display = '';
             } else if (selectedType === 'TEXT') {
                 if (textRow) textRow.style.display = '';
             } else if (selectedType === 'PANORAMAX') {

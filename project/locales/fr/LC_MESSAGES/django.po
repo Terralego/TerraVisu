@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-29 12:09+0000\n"
+"POT-Creation-Date: 2026-05-29 12:36+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1161,12 +1161,6 @@ msgstr ""
 "'%(fields_source)s'"
 
 #, python-format
-msgid "Block '%(bloc_title)s is already set as main table for this sheet."
-msgstr ""
-"Le bloc '%(bloc_title)s est déjà sélectionné comme tableau principal pour "
-"cette Fiche détaillée."
-
-#, python-format
 msgid "Field '%(unique_identifier)s' does not exist in source '%(source)s'."
 msgstr ""
 "Le champ '%(unique_identifier)s' n'existe pas dans la source '%(source)s'."
@@ -1321,11 +1315,11 @@ msgstr "Limite"
 msgid "Please set the maximum number of features to return in this block"
 msgstr "Veuillez entrer un nombre maximum d'éléments à remonter dans ce bloc"
 
-msgid "Main table"
-msgstr "Tableau principal"
+msgid "Display as tab"
+msgstr "Afficher dans un onglet"
 
-msgid "These fields are to be displayed in the 'All values' tab"
-msgstr "Ces champs s'afficheront dans l'onglet 'Toutes les valeurs'"
+msgid "This block will be displayed in a dedicated tab."
+msgstr "Ce bloc sera affiché dans un onglet dédié."
 
 msgid "Sheet block"
 msgstr "Bloc de fiche"

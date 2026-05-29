@@ -226,49 +226,14 @@ class SheetBlockAdminFormTest(AdminTestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("Order field must be from selected source", str(form.errors))
 
-    def test_is_main_table_unique_per_sheet(self):
+    def test_is_tab_false_does_not_conflict(self):
         form = SheetBlockAdminForm(
             data={
                 "sheet": self.feature_sheet,
                 "type": SheetBlockType.FIELDS,
                 "fields_source": self.source,
                 "title": "Main block",
-                "is_main_table": True,
-            }
-        )
-        self.assertTrue(form.is_valid(), form.errors)
-        instance = form.save()
-        form = SheetBlockAdminForm(
-            instance=instance,
-            data={
-                "sheet": self.feature_sheet,
-                "type": SheetBlockType.FIELDS,
-                "fields_source": self.source,
-                "title": "Main block",
-                "is_main_table": True,
-            },
-        )
-        form.save()
-        form2 = SheetBlockAdminForm(
-            data={
-                "sheet": self.feature_sheet,
-                "type": SheetBlockType.FIELDS,
-                "fields_source": self.source,
-                "title": "Another block",
-                "is_main_table": True,
-            }
-        )
-        self.assertFalse(form2.is_valid())
-        self.assertIn("is already set as main table", str(form2.errors))
-
-    def test_is_main_table_false_does_not_conflict(self):
-        form = SheetBlockAdminForm(
-            data={
-                "sheet": self.feature_sheet,
-                "type": SheetBlockType.FIELDS,
-                "fields_source": self.source,
-                "title": "Main block",
-                "is_main_table": True,
+                "is_tab": True,
             }
         )
         self.assertTrue(form.is_valid(), form.errors)
@@ -279,7 +244,7 @@ class SheetBlockAdminFormTest(AdminTestCase):
                 "type": SheetBlockType.FIELDS,
                 "fields_source": self.source,
                 "title": "Another block",
-                "is_main_table": False,
+                "is_tab": False,
             }
         )
         self.assertTrue(form2.is_valid(), form2.errors)
@@ -481,9 +446,7 @@ class FeatureSheetAdminFormTest(AdminTestCase):
         sheet.refresh_from_db()
         self.assertTrue(formset.is_valid(), form.errors)
         self.assertEqual(sheet.list_fields.count(), 1)
-        self.assertEqual(
-            str(sheet.list_fields.first()), str(self.textual_field_2)
-        )
+        self.assertEqual(str(sheet.list_fields.first()), str(self.textual_field_2))
         self.assertEqual(
             str(
                 SheetListFieldThroughModel.objects.filter(
