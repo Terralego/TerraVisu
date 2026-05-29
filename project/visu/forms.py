@@ -238,8 +238,23 @@ class FeatureSheetAdminForm(ModelForm):
                         "source": source.name,
                     }
                 )
+        name_field = cleaned_data.get("name_field")
+        name_found = False
+        for source in sources:
+            if name_field.source == source:
+                name_found = True
+                break
+        if not name_found:
+            raise ValidationError(
+                _(
+                    "Field '%(name_field)s' does not match the sources of the Feature Sheet"
+                )
+                % {
+                    "name_field": name_field.name,
+                }
+            )
         return cleaned_data
 
     class Meta:
         model = FeatureSheet
-        fields = ("name", "unique_identifier", "sources", "list_fields")
+        fields = ("name", "unique_identifier", "name_field", "sources", "list_fields")

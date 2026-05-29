@@ -90,7 +90,7 @@ class FeatureSheetAdmin(OrderedInlineModelAdminMixin, admin.ModelAdmin):
     list_display = ("name", "get_sources")
     form = FeatureSheetAdminForm
     inlines = (SheetsListFieldTabularInline,)
-    autocomplete_fields = ("sources",)
+    autocomplete_fields = ("sources", "unique_identifier", "name_field")
 
     def get_queryset(self, request):
         return (

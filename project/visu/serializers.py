@@ -102,8 +102,17 @@ class FeatureSheetSerializer(serializers.ModelSerializer):
     unique_identifier = serializers.CharField(
         source="unique_identifier.name", read_only=True
     )
+    name_field = serializers.CharField(source="name_field.name", read_only=True)
     list_fields = SheetsListFieldsSerializer(many=True, read_only=True)
 
     class Meta:
         model = FeatureSheet
-        fields = ("id", "name", "unique_identifier", "blocks", "sources", "list_fields")
+        fields = (
+            "id",
+            "name",
+            "unique_identifier",
+            "name_field",
+            "blocks",
+            "sources",
+            "list_fields",
+        )
