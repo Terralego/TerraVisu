@@ -63,7 +63,7 @@ class SheetBlockSerializer(serializers.ModelSerializer):
     first_geom_source = SourceGeometrySerializer(read_only=True)
     second_geom_source = SourceGeometrySerializer(read_only=True)
     order_field = serializers.CharField(
-        source="order_field.label", read_only=True, allow_null=True
+        source="order_field.name", read_only=True, allow_null=True
     )
     fields_source = serializers.CharField(
         source="fields_source.slug", read_only=True, allow_null=True
