@@ -10,6 +10,13 @@ def delete_orphan_list_fields(apps, schema_editor):
     SheetListFieldThroughModel.objects.all().delete()
 
 
+def copy_unique_identifier_to_name_field(apps, schema_editor):
+    FeatureSheet = apps.get_model("visu", "FeatureSheet")
+    for f in FeatureSheet.objects.all():
+        f.name_field = f.unique_identifier
+        f.save()
+
+
 class Migration(migrations.Migration):
     dependencies = [
         ("geosource", "0016_alter_source_task_id"),
@@ -71,6 +78,17 @@ class Migration(migrations.Migration):
                 default=False,
                 help_text="This block will be displayed in a dedicated tab.",
                 verbose_name="Display as tab",
+            ),
+        ),
+        migrations.RunPython(copy_unique_identifier_to_name_field, RunPython.noop),
+        migrations.AlterField(
+            model_name="featuresheet",
+            name="name_field",
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="feature_sheets_as_name",
+                to="geosource.field",
+                verbose_name="Name field",
             ),
         ),
     ]
