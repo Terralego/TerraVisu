@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-05 10:28+0000\n"
+"POT-Creation-Date: 2026-05-29 08:19+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -983,6 +983,10 @@ msgstr ""
 msgid "Field '%(unique_identifier)s' does not exist in source '%(source)s'."
 msgstr ""
 
+#, python-format
+msgid "Field '%(name_field)s' does not match the sources of the Feature Sheet"
+msgstr ""
+
 msgid "Sprite icon"
 msgstr ""
 
@@ -1030,6 +1034,9 @@ msgid "Distribution plot"
 msgstr ""
 
 msgid "Sheet name"
+msgstr ""
+
+msgid "Name field"
 msgstr ""
 
 msgid "Sheets list field"

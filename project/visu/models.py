@@ -73,6 +73,15 @@ class FeatureSheet(models.Model):
         Field,
         on_delete=models.CASCADE,
         verbose_name=_("Unique identifier"),
+        related_name="feature_sheets_as_identifier",
+        blank=False,
+    )
+    name_field = models.ForeignKey(
+        Field,
+        on_delete=models.CASCADE,
+        verbose_name=_("Name field"),
+        related_name="feature_sheets_as_name",
+        null=True,
         blank=False,
     )
     sources = models.ManyToManyField(
