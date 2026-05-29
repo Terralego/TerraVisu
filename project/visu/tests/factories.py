@@ -64,6 +64,7 @@ class FeatureSheetFactory(factory.django.DjangoModelFactory):
 
     name = factory.Sequence(lambda n: f"Feature Sheet {n}")
     unique_identifier = factory.SubFactory(FieldFactory)
+    name_field = factory.SubFactory(FieldFactory)
 
     @factory.post_generation
     def sources(self, create, extracted, **kwargs):

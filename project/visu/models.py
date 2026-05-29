@@ -119,7 +119,6 @@ class FeatureSheet(models.Model):
         on_delete=models.CASCADE,
         verbose_name=_("Name field"),
         related_name="feature_sheets_as_name",
-        null=True,
         blank=False,
     )
     sources = models.ManyToManyField(
