@@ -128,6 +128,7 @@ class SheetFieldAdmin(admin.ModelAdmin):
         "get_picto_true",
         "get_picto_false",
     )
+    search_fields = ["field__name", "field__source__name", "label"]
     autocomplete_fields = ("field",)
 
     class Media:

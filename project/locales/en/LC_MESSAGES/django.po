@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-29 08:19+0000\n"
+"POT-Creation-Date: 2026-05-29 12:09+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1033,21 +1033,6 @@ msgstr ""
 msgid "Distribution plot"
 msgstr ""
 
-msgid "Sheet name"
-msgstr ""
-
-msgid "Name field"
-msgstr ""
-
-msgid "Sheets list field"
-msgstr ""
-
-msgid "Please select the fields to display in the sheets list view"
-msgstr ""
-
-msgid "Feature sheet"
-msgstr ""
-
 msgid "Source field"
 msgstr ""
 
@@ -1067,6 +1052,21 @@ msgid "Sheet field"
 msgstr ""
 
 msgid "Sheet fields"
+msgstr ""
+
+msgid "Sheet name"
+msgstr ""
+
+msgid "Name field"
+msgstr ""
+
+msgid "Sheets list field"
+msgstr ""
+
+msgid "Please select the fields to display in the sheets list view"
+msgstr ""
+
+msgid "Feature sheet"
 msgstr ""
 
 msgid "Block title"
