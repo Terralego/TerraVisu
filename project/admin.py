@@ -18,18 +18,25 @@ class ConfigSite(AdminSite):
                 new_app_config = copy.deepcopy(app_config)
                 new_app_config["name"] = new_app
                 new_app_config["models"] = []
-                for model_config in copy.deepcopy(app_config["models"]):
-                    # Remove selected models from old app, and put them in new app
-                    if model_config["model"] in models:
-                        new_app_config["models"].append(model_config)
-                        app_config["models"].remove(model_config)
+                models_config = copy.deepcopy(app_config["models"])
+                # Remove selected models from old app and put them in new app,
+                # by iterating over 'models' to ensure ordering
+                for idx, model in enumerate(models, start=1):
+                    for model_config in models_config:
+                        current_model = model_config["model"]
+                        if current_model == model:
+                            # Found model config : add name prefix and move it to new app
+                            prefix = f"{idx} - "
+                            app_config["models"].remove(model_config)
+                            model_config["name"] = prefix + model_config["name"]
+                            new_app_config["models"].append(model_config)
                 apps.append(new_app_config)
         return apps
 
     def get_app_list(self, request, app_label=None):
         apps = super().get_app_list(request, app_label)
         self.move_models_to_new_app(
-            apps, [FeatureSheet, SheetField, SheetBlock], "Visu", _("Feature sheets")
+            apps, [SheetField, FeatureSheet, SheetBlock], "Visu", _("Feature sheets")
         )
         return apps
 
