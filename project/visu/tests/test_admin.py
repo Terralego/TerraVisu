@@ -407,11 +407,23 @@ class FeatureSheetAdminFormTest(AdminTestCase):
                 # source has no field matching textual_field_2
                 "sources": [self.source],
                 "unique_identifier": self.textual_field_2.field,
-                "name_field": self.textual_field_2.field,
+                "name_field": self.textual_field.field,
             }
         )
         self.assertFalse(form.is_valid())
         self.assertIn("does not exist in source", str(form.errors))
+
+    def test_name_field_not_in_source(self):
+        form = FeatureSheetAdminForm(
+            data={
+                "name": "Test sheet",
+                # source has no field matching textual_field_2
+                "sources": [self.source],
+                "unique_identifier": self.textual_field.field,
+                "name_field": self.textual_field_2.field,
+            }
+        )
+        self.assertFalse(form.is_valid())
         self.assertIn(
             "does not match the sources of the Feature Sheet", str(form.errors)
         )
