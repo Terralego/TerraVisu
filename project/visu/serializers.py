@@ -3,7 +3,6 @@ from rest_framework import serializers
 
 from project.visu.models import (
     ExtraMenuItem,
-    SheetListFieldThroughModel,
 )
 
 from ..geosource.models import Source
@@ -23,18 +22,6 @@ class SourceGeometrySerializer(serializers.ModelSerializer):
 
     def get_geom_field(self, instance):
         return instance.SOURCE_GEOM_ATTRIBUTE
-
-
-class SheetsListFieldsSerializer(OrderedModelSerializer):
-    source = serializers.CharField(source="source.slug", read_only=True)
-    field = serializers.CharField(source="name", read_only=True)
-
-    class Meta:
-        model = SheetListFieldThroughModel
-        fields = (
-            "source",
-            "field",
-        )
 
 
 class SheetFieldSerializer(OrderedModelSerializer):
@@ -103,7 +90,7 @@ class FeatureSheetSerializer(serializers.ModelSerializer):
         source="unique_identifier.name", read_only=True
     )
     name_field = serializers.CharField(source="name_field.name", read_only=True)
-    list_fields = SheetsListFieldsSerializer(many=True, read_only=True)
+    list_fields = SheetFieldSerializer(many=True, read_only=True)
 
     class Meta:
         model = FeatureSheet
