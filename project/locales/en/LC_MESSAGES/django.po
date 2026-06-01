@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-05 10:28+0000\n"
+"POT-Creation-Date: 2026-03-10 14:05+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -591,6 +591,140 @@ msgstr ""
 msgid "Creation month"
 msgstr ""
 
+#, python-format
+msgid ""
+"Invalid %(option)s value '%(value)s'. Expected format: \"old_value,"
+"new_value\""
+msgstr ""
+
+#, python-format
+msgid "Field '%(name)s' does not exist on original source %(source)s"
+msgstr ""
+
+#, python-format
+msgid "Field '%(name)s' does not exist on target source %(source)s"
+msgstr ""
+
+#, python-format
+msgid "Fields mapping need to include '%(old_field_name)s'."
+msgstr ""
+
+msgid "Primary key of the layer to duplicate"
+msgstr ""
+
+msgid "Custom name for the duplicated layer"
+msgstr ""
+
+msgid "Primary key of the source to use for the duplicated layer"
+msgstr ""
+
+msgid ""
+"Name of the field to use as main_field for the duplicated layer. The field "
+"is looked up on the target source. Mandatory when --source is specified."
+msgstr ""
+
+msgid ""
+"Source PKs for extra styles, comma-separated in order. Use \"_\" to keep the "
+"original source. Example: \"12,_,17\" updates 1st and 3rd extra style "
+"sources."
+msgstr ""
+
+msgid ""
+"Rename legend titles. Each value is \"old_title,new_title\". Example: --"
+"legend-titles-search-and-replace \"Old title,New title\" \"Other title,"
+"Changed title\""
+msgstr ""
+
+msgid ""
+"Update legend comments. Each value is \"old_comment,new_comment\". Example: "
+"--legend-comments-search-and-replace \"Old comment,New comment here\""
+msgstr ""
+
+msgid ""
+"Search and replace in popup template. Each value is \"old_string,"
+"new_string\". Example: --popup-search-and-replace \"old text,new text\""
+msgstr ""
+
+msgid ""
+"Search and replace in minisheet template. Each value is \"old_string,"
+"new_string\". Example: --minisheet-search-and-replace \"old text,new text\""
+msgstr ""
+
+msgid ""
+"Keep the duplicated layer in the same scene (group) as the original. By "
+"default the clone is detached from any scene."
+msgstr ""
+
+msgid ""
+"Map fields from the original source to the target source. Each value is "
+"\"old_field_name,new_field_name\". Example: --fields-mapping \"nom_m,"
+"name_field\" \"pop,population\"."
+msgstr ""
+
+#, python-format
+msgid "Layer with pk %(pk)s does not exist"
+msgstr ""
+
+msgid "Copy"
+msgstr ""
+
+msgid "--main-field is required when --source is specified"
+msgstr ""
+
+#, python-format
+msgid "Source with pk %(pk)s does not exist"
+msgstr ""
+
+#, python-format
+msgid "Field '%(name)s' does not exist on source %(source)s"
+msgstr ""
+
+#, python-format
+msgid "No legend with title '%(title)s' found"
+msgstr ""
+
+#, python-format
+msgid "No legend with comment '%(comment)s' found"
+msgstr ""
+
+#, python-format
+msgid "String '%(string)s' not found in popup config"
+msgstr ""
+
+msgid "Popup template:"
+msgstr ""
+
+#, python-format
+msgid "String '%(string)s' not found in minisheet config"
+msgstr ""
+
+msgid "Minisheet template:"
+msgstr ""
+
+msgid "Minisheet config:"
+msgstr ""
+
+msgid "Popup config:"
+msgstr ""
+
+#, python-format
+msgid ""
+"This layer has %(expected)s extra style(s), please enter as many sources "
+"(found %(got)s sources)"
+msgstr ""
+
+#, python-format
+msgid ""
+"Invalid value '%(value)s' in --extra-styles-sources. Expected an integer PK "
+"or \"_\"."
+msgstr ""
+
+#, python-format
+msgid ""
+"Layer %(old_pk)s duplicated successfully. New layer: pk=%(new_pk)s, "
+"name=\"%(name)s\""
+msgstr ""
+
 msgid "Monthly declarations summary"
 msgstr ""
 
@@ -613,9 +747,6 @@ msgid "Source field to get value to compare."
 msgstr ""
 
 msgid "Separator to generate query params from field values."
-msgstr ""
-
-msgid "Copy"
 msgstr ""
 
 msgid "New"
