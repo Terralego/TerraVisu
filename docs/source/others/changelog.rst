@@ -2,6 +2,13 @@
 Changelog
 ==========
 
+2026.xx.xx      (2026-xx-xx)
+----------------------------
+
+**Documentation:**
+
+- Add doc about charts in widget and sheet configuration
+
 2026.02.00      (2026-02-02)
 ----------------------------
 

@@ -1107,34 +1107,34 @@ Onglet WIDGET
 
 Les widgets permettent de représenter visuellement et dynamiquement les données d’une couche sous différentes formes :
 
-- chiffres clés ;
-- graphiques en barres ;
-- graphiques en barres empilées ;
-- graphiques circulaires (*Pie*).
+- chiffres clés 
+- graphiques en barres 
+- graphiques en barres empilées 
+- graphiques en donut
 
 Une même couche peut contenir plusieurs widgets.
 Chaque widget peut lui-même contenir plusieurs éléments de visualisation
-(chiffres clés ou graphiques).
+(numérique ou graphiques).
 
 Par exemple, une couche peut proposer :
 
 - un widget « Population » contenant :
   
-  - un chiffre clé représentant la population totale ;
-  - un graphique en barres représentant la population par commune ;
+  - un chiffre clé représentant la population totale 
+  - un graphique en barres représentant la population par commune 
 
 - un widget « Habitat » contenant :
   
-  - un chiffre clé représentant le nombre total de logements ;
-  - un graphique circulaire représentant la répartition des types de logements.
+  - un chiffre clé représentant le nombre total de logements 
+  - un graphique en donut représentant la répartition des types de logements
 
 Le libellé et l’icône de chaque widget sont personnalisables.
 
 Trois types de calculs statistiques sont disponibles :
 
-- le comptage du nombre d’éléments ;
-- la somme des valeurs ;
-- la moyenne des valeurs.
+- le comptage du nombre d’éléments 
+- la somme des valeurs 
+- la moyenne des valeurs
 
 .. image:: ../_static/images/admin/admin_couche_widget.png
 
@@ -1142,9 +1142,7 @@ Il est possible de choisir si les résultats des widgets se réactualisent
 dynamiquement selon l’emprise visible de la carte lors des opérations de zoom
 et de déplacement.
 
-Un champ de configuration avancée est également disponible pour les utilisateurs
-développeurs. Celui-ci nécessite l’écriture d’un objet JSON contenant une clé
-``template`` utilisant la syntaxe `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_.
+Un champ de configuration avancée est également disponible pour les utilisateurs développeurs. Celui-ci nécessite l’écriture d’un objet JSON contenant une clé ``template`` utilisant la syntaxe `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_.
 
 .. image:: ../_static/images/admin/admin_couche_widget_devs.png
 
@@ -1152,17 +1150,17 @@ développeurs. Celui-ci nécessite l’écriture d’un objet JSON contenant une
 
 La configuration d’un widget suit généralement les étapes suivantes :
 
-#. Créer un widget pour la couche ;
-#. Ajouter un ou plusieurs éléments de visualisation ;
-#. Choisir le type de widget ;
-#. Sélectionner les champs de données ;
-#. Définir le type d’agrégation ;
-#. Choisir le type de graphique ;
-#. Configurer l’orientation ;
-#. Paramétrer l’affichage des valeurs ;
-#. Définir les unités et l’arrondi éventuel.
+#. Créer un widget pour la couche 
+#. Ajouter un ou plusieurs éléments de visualisation 
+#. Choisir le type de widget 
+#. Sélectionner les champs de données 
+#. Définir le type d’agrégation 
+#. Choisir le type de graphique 
+#. Configurer l’orientation 
+#. Paramétrer l’affichage des valeurs 
+#. Définir les unités et l’arrondi éventuel
 
-**Types de widgets**
+**Types de visualisation**
 
 Résumé des types disponibles :
 
@@ -1175,130 +1173,130 @@ Résumé des types disponibles :
      - Données attendues
      - Agrégations disponibles
 
-   * - ``Sum``
+   * - ``Somme``
      - Afficher un chiffre clé basé sur une somme
      - Champ numérique
-     - Sum
+     - Somme
 
-   * - ``Average``
+   * - ``Moyenne``
      - Afficher une moyenne
      - Champ numérique
-     - Average
+     - Moyenne
 
-   * - ``Count``
+   * - ``Compte``
      - Afficher un nombre d’objets
      - Aucun champ obligatoire
-     - Count
+     - Compte
 
    * - ``Distribution``
      - Représenter une répartition par catégorie
      - Champ textuel
      - Comptage automatique
 
-   * - ``Numeric``
+   * - ``Numérique``
      - Comparer plusieurs indicateurs numériques
      - Un ou plusieurs champs numériques
-     - Sum, Average, Count
+     - Somme, Moyenne, Comptage
 
-   * - ``Categoric``
+   * - ``Catégorique``
      - Croiser une catégorie et une valeur numérique
      - Champ textuel + champ numérique
-     - Sum, Average, Count
+     - Somme, Moyenne, Comptage
 
 
-**Widgets de type chiffre clé**
+**Visualisation de type numérique**
 
-*Sum*
+*Somme*
 
-Le widget ``Sum`` affiche un chiffre clé correspondant à la somme d’un champ numérique.
-
-Exemples :
-
-- somme de la population ;
-- total des logements ;
-- surface totale.
-
-*Average*
-
-Le widget ``Average`` affiche la moyenne d’un champ numérique.
+Le type ``Somme`` affiche un chiffre clé correspondant à la somme d’un champ numérique.
 
 Exemples :
 
-- revenu moyen ;
-- âge moyen ;
-- surface moyenne.
+- somme de la population 
+- total des logements 
+- surface totale
 
-*Count*
+*Moyenne*
 
-Le widget ``Count`` affiche le nombre total d’objets présents dans la couche.
+Le type ``Moyenne`` affiche la moyenne d’un champ numérique.
 
 Exemples :
 
-- nombre de communes ;
-- nombre d’entreprises ;
-- nombre de parcelles.
+- revenu moyen 
+- âge moyen 
+- surface moyenne
+
+*Compte*
+
+Le type ``Compte`` affiche le nombre total d’objets présents dans la couche.
+
+Exemples :
+
+- nombre de communes 
+- nombre d’entreprises 
+- nombre de parcelles
 
 **Widgets graphiques**
 
 *Distribution*
 
-Le widget ``Distribution`` permet de représenter la répartition des données
+Le type ``Distribution`` permet de représenter la répartition des données
 à partir d’un champ textuel.
 
 Exemples :
 
-- répartition par type de culture ;
-- répartition par catégorie d’activité ;
-- répartition par statut.
+- répartition par type de culture 
+- répartition par catégorie d’activité 
+- répartition par statut
 
 Configuration des données :
 
 - sélection d’un champ textuel.
 
-*Numeric*
+*Numérique*
 
-Le widget ``Numeric`` permet d’analyser un ou plusieurs champs numériques.
+Le type ``Numérique`` permet d’analyser un ou plusieurs champs numériques.
 
 Exemples :
 
-- comparaison de plusieurs indicateurs ;
-- analyse de surfaces, populations ou revenus.
+- comparaison de plusieurs indicateurs 
+- analyse de surfaces, populations ou revenus
 
 Configuration des données :
 
-- sélection d’un ou plusieurs champs numériques ;
+- sélection d’un ou plusieurs champs numériques 
 - choix du type d’agrégation :
   
-  - ``Sum`` ;
-  - ``Average`` ;
-  - ``Count``.
+  - ``Somme`` 
+  - ``Moyenne`` 
+  - ``Comptage``
 
-*Categoric*
+*Catégorique*
 
-Le widget ``Categoric`` permet de croiser :
+Le type ``Catégorique`` permet de croiser :
 
-- un champ de catégorie textuel ;
-- un champ de valeur numérique.
+- un champ de catégorie textuel 
+- un champ de valeur numérique
 
 Exemples :
 
-- population par commune ;
-- surface agricole par type de culture ;
-- nombre d’emplois par secteur.
+- population par commune 
+- surface agricole par type de culture 
+- nombre d’emplois par secteur
 
 Configuration des données :
 
-- champ de catégorie textuel ;
-- champ numérique ;
+- champ de catégorie textuel 
+- champ numérique 
 - type d’agrégation :
 
-  - ``Sum`` ;
-  - ``Average`` ;
-  - ``Count``.
+   - ``Somme`` 
+  - ``Moyenne`` 
+  - ``Comptage``
 
 **Paramètres graphiques**
 
-Les widgets graphiques disposent des paramètres de représentation suivants :
+Les types graphiques disposent des paramètres de représentation suivants :
 
 .. list-table::
    :header-rows: 1
@@ -1339,8 +1337,14 @@ Afficher le nombre d'espace d'activité (nombre d'entités dans une couche)
 
 Configuration :
 
-- Type : ``Count``
+- Type : ``Compte``
 - Champ : ``id``
+
+.. image:: ../_static/images/admin/admin_couche_widget_compte1.png
+  :width: 250
+
+.. image:: ../_static/images/admin/admin_couche_widget_compte2.png
+  :width: 250
 
 *Exemple 2 — Chiffre clé*
 
@@ -1349,47 +1353,74 @@ Objectif :
 Afficher le nombre d'emplois
 Configuration :
 
-- Type : ``Sum``
+- Type : ``Somme``
 - Champ : ``nb_emplois``
+
+.. image:: ../_static/images/admin/admin_couche_widget_somme1.png
+  :width: 250
+
+.. image:: ../_static/images/admin/admin_couche_widget_somme2.png
+  :width: 250
 
 *Exemple 3 — Répartition*
 
 Objectif :
 
-Afficher la part des espaces d'activité par secteur d'activité
+Afficher la répartition des vocations dans les EAE
 
 Configuration :
 
 - Type : ``Distribution``
 - Champ textuel : ``voc_regr``
-- Graphique : ``Pie``
+- Graphique : ``Donut``
+
+.. image:: ../_static/images/admin/admin_couche_widget_distribution1.png
+  :width: 250
+
+.. image:: ../_static/images/admin/admin_couche_widget_distribution2.png
+  :width: 250
 
 *Exemple 4 — Répartition*
 
 Objectif :
 
-Afficher la répartition des emplois par secteur d'acitvité
+Afficher la répartition des emplois par type d’activité
 
 Configuration :
 
-- Type : ``Numeric``
+- Type : ``Numérique``
 - Champ numérique : ``comdetail_eff``, ``comgros_eff``, ``const_eff``, ``indus_eff``, ...
-- Agrégation : ``Sum``
-- Graphique : ``Stacked Bars``
+- Agrégation : ``Somme``
+- Graphique : ``Barres empilées``
+- Orientation : ``Vertical``
+
+.. image:: ../_static/images/admin/admin_couche_widget_numeric1.png
+  :width: 250
+
+.. image:: ../_static/images/admin/admin_couche_widget_numeric2.png
+  :width: 250
 
 *Exemple 5 — Valeur par catégorie*
 
 Objectif :
 
-Afficher la surface agricole par commune.
+Afficher la part du territoire en EAE par département
 
 Configuration :
 
-- Type : ``Categoric``
-- Champ catégorie : ``commune``
-- Champ numérique : ``surface``
-- Agrégation : ``Sum``
-- Graphique : ``Barres horizontales``
+- Type : ``Catégorique``
+- Champ catégorie : ``nom_dept``
+- Champ numérique : ``surf_total``
+- Agrégation : ``Somme``
+- Graphique : ``Barres``
+- Orientation : ``Vertical``
+
+.. image:: ../_static/images/admin/admin_couche_widget_categoric1.png
+  :width: 250
+
+.. image:: ../_static/images/admin/admin_couche_widget_categoric2.png
+  :width: 250
+
 
 Onglet INCLUSIONS
 ~~~~~~~~~~~~~~~~~~

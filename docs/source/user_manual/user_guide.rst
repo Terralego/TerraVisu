@@ -66,6 +66,9 @@ Depuis le panneau latéral des vues, il est possible de rajouter des boutons ren
 
 .. image :: ../_static/images/visu/visu_sitesexternes.png
 
+.. note::
+	Il est possible de `définir le lien des fiches détaillées <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#les-fiches-detaillees>`_ en menu supplémentaire.
+
 Le bouton Informations
 ^^^^^^^^^^^^^^^^^^^^^^
 
@@ -178,7 +181,7 @@ La table attributaire de **TerraVisu** propose les fonctionnalités suivantes :
 * Agrandir ou réduire l’affichage de la table
 
 .. note::
-    La table attributaire est synchronisée avec la carte interactive**.
+    La table attributaire est synchronisée avec la carte interactive.
 
     La sélection d’une entité dans la table entraîne :
 
@@ -190,6 +193,12 @@ La table attributaire de **TerraVisu** propose les fonctionnalités suivantes :
 .. image :: ../_static/images/visu/visu_table.png
 
 Une fois la table exportée, vous pouvez travailler vos données avec votre tableur habituel et créer des graphiques, des tableaux dynamiques croisés, etc., depuis votre ordinateur.
+
+**Exemple de sélection d'entités pour comparaison**
+
+.. image :: ../_static/images/visu/visu_comparaison.png
+
+Il est possible de sélectionner jusqu’à trois entités dans la table attributaire afin de comparer leurs attributs. Pour accéder à la page de comparaison, cliquez sur le bouton « Comparer ces données ».
 
 Le filtrage des données
 ~~~~~~~~~~~~~~~~~~~~~~~~~~
