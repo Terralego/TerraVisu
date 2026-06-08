@@ -7,13 +7,13 @@ Explorer les fiches détaillées
 
 Le module de fiches détaillées permet d'explorer, d'analyser et de comparer les données associées à une entité.
 
-Il est accessible via l’URL du visualiseur, suivie de ``/sheet``.
+L’accès à une fiche détaillée se fait via l’URL du visualiseur, suivie de ``/sheet/{id}``, où ``id`` représente l’identifiant du modèle de fiche détaillée configuré dans le module d’administration.
 
 Par exemple :
 
 ::
 
-   https://visu.mon-instance.fr/sheet
+   https://visu.mon-instance.fr/sheet/2
 
 Les fiches détaillées sont entièrement configurables depuis `le module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#les-fiches-detaillees>`_.
 
@@ -34,7 +34,7 @@ Depuis cette interface, il est possible de :
 
    Liste des fiches détaillées.
 
-Consulter une fiche détaillée simple
+Consulter une fiche détaillée unique
 -------------------------------------
 
 Une fiche détaillée regroupe l'ensemble des informations relatives à une entité.
@@ -52,9 +52,9 @@ Selon sa configuration, elle peut contenir différents types de contenus :
 Les informations sont organisées en sections afin de faciliter leur consultation.
 
 .. figure:: ../_static/images/sheet/sheet_individuelle.png
-   :alt: Consultation d'une fiche détaillée simple
+   :alt: Consultation d'une fiche détaillée unique
 
-   Consultation d'une fiche détaillée simple
+   Consultation d'une fiche détaillée unique
 
 Comparer plusieurs entités
 ---------------------------
@@ -63,7 +63,7 @@ Il est possible de sélectionner jusqu'à trois entités dans la liste afin de c
 
 Pour accéder à la page de comparaison :
 
-* Sélectionnez les entités à comparer depuis la liste (``/sheet``) ou `la table attributaire <https://terravisu.readthedocs.io/en/latest/user_manual/user_guide.html#la-table-attributaire>`_.
+* Sélectionnez les entités à comparer depuis la liste (``/sheet/{id}``) ou `la table attributaire <https://terravisu.readthedocs.io/en/latest/user_manual/user_guide.html#la-table-attributaire>`_.
 * Cliquez sur le bouton **Comparer ces données**.
 
 La comparaison permet d'identifier rapidement les différences et similitudes entre plusieurs entités à travers l'ensemble des informations configurées dans la fiche.
@@ -76,9 +76,9 @@ La comparaison permet d'identifier rapidement les différences et similitudes en
 Consulter une fiche détaillée en comparaison
 ----------------------------------------------
 
-La vue de comparaison affiche les informations de chaque entité côte à côte afin de faciliter l'analyse et l'identification des différences entre elles.
+La page de comparaison affiche les informations de chaque entité côte à côte afin de faciliter l'analyse et l'identification des différences entre elles.
 
-Les différents blocs configurés dans la fiche détaillée sont également disponibles dans la vue de comparaison :
+Les différentes sections configurées dans la fiche détaillée sont également disponibles dans la page de comparaison :
 
 * champs descriptifs 
 * tableaux de données 
@@ -90,11 +90,11 @@ Les différents blocs configurés dans la fiche détaillée sont également disp
 
 Les valeurs de chaque entité sont affichées en colonnes afin de permettre une lecture comparative rapide entre les entités sélectionnées.
 
-Afin d'éviter l'affichage d'informations incomplètes ou non pertinentes, certains blocs peuvent être masqués automatiquement dans la vue de comparaison.
+Afin d'éviter l'affichage d'informations incomplètes ou non pertinentes, certaines sections peuvent être masquées automatiquement dans la page de comparaison.
 
-C'est notamment le cas des blocs **Panoramax** : lorsqu'aucune image Panoramax n'est disponible pour l'ensemble des entités comparées, le bloc n'est pas affiché.
+C'est notamment le cas des sections **Panoramax** : lorsqu'aucune image Panoramax n'est disponible pour l'ensemble des entités comparées, la section n'est pas affichée.
 
-À l'inverse, si au moins une des entités dispose d'une image Panoramax, le bloc reste visible dans la comparaison.
+À l'inverse, si au moins une des entités dispose d'une image Panoramax, la section reste visible dans la comparaison.
 
 .. figure:: ../_static/images/sheet/sheet_comparaison.png
    :alt: Consultation d'une fiche détaillée en comparaison

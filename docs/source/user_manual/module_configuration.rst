@@ -283,8 +283,8 @@ Pour cela, il est nécessaire de renseigner :
 
 Cette section permet également de définir les champs qui seront affichés dans `la liste des fiches <https://terravisu.readthedocs.io/en/latest/user_manual/module_sheet.html#liste-des-fiches>`_.
 
-3. Blocs de fiche
-~~~~~~~~~~~~~~~~~~~~
+3. Blocs de fiche (sections)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 .. figure:: ../_static/images/django/config_fiche_bloc_liste.png
    :alt: Liste des sections de fiche
