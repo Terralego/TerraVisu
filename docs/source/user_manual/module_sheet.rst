@@ -7,7 +7,7 @@ Explorer les fiches détaillées
 
 Le module de fiches détaillées permet d'explorer, d'analyser et de comparer les données associées à une entité.
 
-Le module de configuration est accessible via l’URL du visualiseur, suivie de ``/sheet``.
+Il est accessible via l’URL du visualiseur, suivie de ``/sheet``.
 
 Par exemple :
 
@@ -15,7 +15,7 @@ Par exemple :
 
    https://visu.mon-instance.fr/sheet
 
-Les fiches détaillées sont entièrement configurables depuis le `le module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#les-fiches-detaillees>`_.
+Les fiches détaillées sont entièrement configurables depuis `le module de configuration <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#les-fiches-detaillees>`_.
 
 Liste des fiches
 -----------------
@@ -63,7 +63,7 @@ Il est possible de sélectionner jusqu'à trois entités dans la liste afin de c
 
 Pour accéder à la page de comparaison :
 
-* Sélectionnez les entités à comparer depuis la liste ou la table attributaire.
+* Sélectionnez les entités à comparer depuis la liste (``/sheet``) ou `la table attributaire <https://terravisu.readthedocs.io/en/latest/user_manual/user_guide.html#la-table-attributaire>`_.
 * Cliquez sur le bouton **Comparer ces données**.
 
 La comparaison permet d'identifier rapidement les différences et similitudes entre plusieurs entités à travers l'ensemble des informations configurées dans la fiche.
@@ -81,12 +81,12 @@ La vue de comparaison affiche les informations de chaque entité côte à côte 
 Les différents blocs configurés dans la fiche détaillée sont également disponibles dans la vue de comparaison :
 
 * champs descriptifs 
-* indicateurs 
-* tableaux 
-* cartes 
-* graphiques 
-* vues Panoramax 
-* autres composants personnalisés
+* tableaux de données 
+* cartes interactives 
+* visualisations immersives Panoramax 
+* graphiques statistiques 
+* images et médias 
+* textes libres
 
 Les valeurs de chaque entité sont affichées en colonnes afin de permettre une lecture comparative rapide entre les entités sélectionnées.
 

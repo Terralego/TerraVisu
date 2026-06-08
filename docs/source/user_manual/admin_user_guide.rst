@@ -1208,7 +1208,7 @@ Résumé des types disponibles :
 
 
 Visualisations de type numérique
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""""
 
 **Somme**
 
@@ -1241,7 +1241,7 @@ Le type ``Compte`` affiche le nombre total d’objets présents dans la couche.
 - nombre de parcelles
 
 Visualisations de type graphique
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""""""""""
 
 **Distribution**
 
@@ -1300,7 +1300,7 @@ Le type ``Catégorique`` permet de croiser :
   - ``Comptage``
 
 Paramètrage des graphiques
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+****************************
 
 Les types graphiques disposent des paramètres de représentation suivants :
 

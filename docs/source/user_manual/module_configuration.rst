@@ -222,9 +222,9 @@ Ces fiches apportent une réelle valeur ajoutée aux données sources en les str
 
 La configuration se déroule en trois étapes :
 
-`1. Définir les champs de fiche <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#champs-de-fiche>`_
-`2. Créer une fiche <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#fiches-detaillees>`_
-`3. Ajouter et organiser les sections de contenu <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#sections-de-fiche>`_
+1. `Définir les champs de fiche <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#champs-de-fiche>`_
+2. `Créer une fiche <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#fiches-detaillees>`_
+3. `Ajouter et organiser les sections de contenu <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#sections-de-fiche>`_
 
 Configuration 
 ~~~~~~~~~~~~~~~
@@ -281,13 +281,7 @@ Pour cela, il est nécessaire de renseigner :
 
    Modification de fiche détaillée
 
-Cette section permet également de définir les champs qui seront affichés dans la liste des fiches sur le site.
-
-.. figure:: ../_static/images/django/config_fiche_liste.png
-   :alt: Liste des fiches détaillées
-   :align: center
-
-   Liste des fiches détaillées
+Cette section permet également de définir les champs qui seront affichés dans `la liste des fiches <https://terravisu.readthedocs.io/en/latest/user_manual/module_sheet.html#liste-des-fiches>`_.
 
 3. Blocs de fiche
 ~~~~~~~~~~~~~~~~~~~~
