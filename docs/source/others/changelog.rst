@@ -2,6 +2,14 @@
 Changelog
 ==========
 
+2026.06.00+dev  (XXXX-XX-XX)
+----------------------------
+
+**Improvements:**
+
+- (Admin) Allow variable type for extrusion base height in layer style
+
+
 2026.06.00      (2026-06-16)
 ----------------------------
 
