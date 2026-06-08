@@ -216,6 +216,9 @@ Il est également possible de restreindre l’accès à ces menus à certains gr
 Les fiches détaillées
 -----------------------
 
+Présentation
+~~~~~~~~~~~~~~~~
+
 Le module de fiches détaillées permet de créer des fiches enrichies, intégrant différents types de contenus : graphiques, textes, tableaux, pictogrammes, etc.
 
 Ces fiches apportent une réelle valeur ajoutée aux données sources en les structurant, en les mettant en forme et en les rendant plus accessibles.
@@ -226,8 +229,16 @@ La configuration se déroule en trois étapes :
 2. `Créer une fiche <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#fiches-detaillees>`_
 3. `Ajouter et organiser les sections de contenu <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#sections-de-fiche>`_
 
-Configuration 
-~~~~~~~~~~~~~~~
+
+Mise à jour en temps réel
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Les modifications apportées à la configuration des fiches sont appliquées immédiatement.
+
+Aucun redéploiement de l'application n'est nécessaire pour visualiser les changements. Les sections, champs et données sont mis à jour en temps réel dans l'interface utilisateur.
+
+Principe de configuration 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Le module de configuration permet de construire des fiches adaptées aux besoins des utilisateurs afin de faciliter l'analyse des données.
 
@@ -242,15 +253,8 @@ Il est notamment possible de :
 * configurer des vues Panoramax ;
 * personnaliser l'affichage des indicateurs.
 
-Mise à jour en temps réel
-~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Les modifications apportées à la configuration des fiches sont appliquées immédiatement.
-
-Aucun redéploiement de l'application n'est nécessaire pour visualiser les changements. Les sections, champs et données sont mis à jour en temps réel dans l'interface utilisateur.
-
 1. Champs de fiche
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^
 
 Plusieurs types de champs sont disponibles :
 
@@ -265,7 +269,7 @@ Plusieurs types de champs sont disponibles :
    Liste des champs de fiche
 
 2. Fiches détaillées
-~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^
 
 La sous-section **Fiches détaillées** permet de déclarer une nouvelle fiche.
 
@@ -284,7 +288,7 @@ Pour cela, il est nécessaire de renseigner :
 Cette section permet également de définir les champs qui seront affichés dans `la liste des fiches <https://terravisu.readthedocs.io/en/latest/user_manual/module_sheet.html#liste-des-fiches>`_.
 
 3. Blocs de fiche (sections)
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. figure:: ../_static/images/django/config_fiche_bloc_liste.png
    :alt: Liste des sections de fiche
@@ -293,7 +297,7 @@ Cette section permet également de définir les champs qui seront affichés dans
    Liste des sections de fiche
 
 Champs
-^^^^^^
+""""""""
 
 .. figure:: ../_static/images/django/config_bloc_champ.png
    :alt: Édition d'une section de type "Champs"
@@ -308,7 +312,7 @@ Champs
    Rendu d'une section de type "Champs"
 
 Carte
-^^^^^^
+""""""""
 
 .. figure:: ../_static/images/django/config_bloc_carte.png
    :alt: Édition d'une section de type "Carte"
@@ -323,7 +327,7 @@ Carte
    Rendu d'une section de type "Carte"
 
 Panoramax
-^^^^^^^^^^
+""""""""""""
 
 .. figure:: ../_static/images/django/config_bloc_panoramax.png
    :alt: Édition d'une section de type "Panoramax"
@@ -338,7 +342,7 @@ Panoramax
    Rendu d'une section de type "Panoramax"
 
 Booléens
-^^^^^^^^^^
+""""""""""
 
 .. figure:: ../_static/images/django/config_bloc_booleen.png
    :alt: Édition d'une section de type "Booléens"
@@ -353,7 +357,7 @@ Booléens
    Rendu d'une section de type "Booléens"
 
 Graphique radar
-^^^^^^^^^^^^^^^^
+""""""""""""""""
 
 .. figure:: ../_static/images/django/config_bloc_graphiqueradar.png
    :alt: Édition d'une section de type "Graphique radar"
@@ -368,7 +372,7 @@ Graphique radar
    Rendu d'une section de type "Graphique radar"
 
 Graphique de distribution
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""
 
 .. figure:: ../_static/images/django/config_bloc_graphiquedistrib.png
    :alt: Édition d'une section de type "Graphique de distribution"
@@ -383,7 +387,7 @@ Graphique de distribution
    Rendu d'une section de type "Graphique de distribution"
 
 Graphique en barre
-^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""
 
 .. figure:: ../_static/images/django/config_bloc_graphiqueenbarre.png
    :alt: Édition d'une section de type "Graphique en barre"
@@ -398,7 +402,7 @@ Graphique en barre
    Rendu d'une section de type "Graphique en barre"
 
 Tableau de champs
-^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""
 
 .. figure:: ../_static/images/django/config_bloc_tableauchamps.png
    :alt: Édition d'une section de type "Tableau de champs"
@@ -413,7 +417,7 @@ Tableau de champs
    Rendu d'une section de type "Tableau de champs"
 
 Texte
-^^^^^^
+""""""""
 
 .. figure:: ../_static/images/django/config_bloc_texte.png
    :alt: Édition d'une section de type "Texte"

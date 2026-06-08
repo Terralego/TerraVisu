@@ -1167,50 +1167,60 @@ Types de visualisation
 
 Résumé des types disponibles :
 
+Résumé des types disponibles
+----------------------------
+
 .. list-table::
    :header-rows: 1
-   :widths: 20 35 25 20
+   :widths: 15 20 35 25 20
 
    * - Type
+     - Sous-type
      - Usage
      - Données attendues
      - Agrégations disponibles
 
-   * - ``Somme``
-     - Afficher un chiffre clé basé sur une somme
+   * - Numérique
+     - Somme
+     - Afficher un chiffre clé correspondant à la somme d'un champ.
      - Champ numérique
      - Somme
 
-   * - ``Moyenne``
-     - Afficher une moyenne
+   * - Numérique
+     - Moyenne
+     - Afficher un chiffre clé correspondant à la moyenne d'un champ.
      - Champ numérique
      - Moyenne
 
-   * - ``Compte``
-     - Afficher un nombre d’objets
+   * - Numérique
+     - Compte
+     - Afficher le nombre total d'objets.
      - Aucun champ obligatoire
      - Compte
 
-   * - ``Distribution``
-     - Représenter une répartition par catégorie
+   * - Graphique
+     - Distribution
+     - Représenter la répartition des objets par catégorie.
      - Champ textuel
      - Comptage automatique
 
-   * - ``Numérique``
-     - Comparer plusieurs indicateurs numériques
+   * - Graphique
+     - Numérique
+     - Comparer plusieurs indicateurs numériques.
      - Un ou plusieurs champs numériques
-     - Somme, Moyenne, Comptage
+     - Somme, Moyenne, Compte
 
-   * - ``Catégorique``
-     - Croiser une catégorie et une valeur numérique
+   * - Graphique
+     - Catégorique
+     - Croiser une catégorie avec une valeur numérique.
      - Champ textuel + champ numérique
-     - Somme, Moyenne, Comptage
-
+     - Somme, Moyenne, Compte
 
 Visualisations de type numérique
 """"""""""""""""""""""""""""""""""
 
-**Somme**
+Somme
+********
 
 Le type ``Somme`` affiche un chiffre clé correspondant à la somme d’un champ numérique.
 
@@ -1220,7 +1230,8 @@ Le type ``Somme`` affiche un chiffre clé correspondant à la somme d’un champ
 - total des logements 
 - surface totale
 
-**Moyenne**
+Moyenne
+*********
 
 Le type ``Moyenne`` affiche la moyenne d’un champ numérique.
 
@@ -1230,7 +1241,8 @@ Le type ``Moyenne`` affiche la moyenne d’un champ numérique.
 - âge moyen 
 - surface moyenne
 
-**Compte**
+Compte
+********
 
 Le type ``Compte`` affiche le nombre total d’objets présents dans la couche.
 
@@ -1243,7 +1255,8 @@ Le type ``Compte`` affiche le nombre total d’objets présents dans la couche.
 Visualisations de type graphique
 """"""""""""""""""""""""""""""""""
 
-**Distribution**
+Distribution
+*************
 
 Le type ``Distribution`` permet de représenter la répartition des données
 à partir d’un champ textuel.
@@ -1258,7 +1271,8 @@ Le type ``Distribution`` permet de représenter la répartition des données
 
 - sélection d’un champ textuel.
 
-**Numérique**
+Numérique
+*************
 
 Le type ``Numérique`` permet d’analyser un ou plusieurs champs numériques.
 
@@ -1276,7 +1290,8 @@ Le type ``Numérique`` permet d’analyser un ou plusieurs champs numériques.
   - ``Moyenne`` 
   - ``Comptage``
 
-**Catégorique**
+Catégorique
+*************
 
 Le type ``Catégorique`` permet de croiser :
 
@@ -1313,25 +1328,20 @@ Les types graphiques disposent des paramètres de représentation suivants :
      - Options disponibles
 
    * - Type de graphique
-     - Définit le rendu visuel du widget
-     - Pie, Barres, Barres empilées
+     - Définit le rendu visuel du widget.
+     - Donut, Barres, Barres empilées
 
    * - Orientation
-     - Sens d’affichage des graphiques en barres
+     - Sens d'affichage des graphiques en barres.
      - Horizontale, Verticale
 
-   * - Affichage des valeurs
-     - Format des valeurs affichées
-     - Valeur brute, pourcentage, unité personnalisée
+   * - Afficher en pourcentage
+     - Affiche les valeurs sous forme de pourcentage lorsque le type de graphique le permet.
+     - Oui / Non
 
-   * - Unité de mesure
-     - Texte affiché après la valeur
-     - %, habitants, ha, km², etc.
-
-   * - Arrondi
-     - Nombre de décimales affichées
-     - 0, 1, 2 décimales, etc.
-
+   * - Nombre de chiffres après la virgule
+     - Définit le nombre de décimales affichées dans les valeurs du widget.
+     - 0, 1, 2 décimales ou plus
 
 Exemples de configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
