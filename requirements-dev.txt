@@ -187,7 +187,7 @@ django-polymorphic==4.5.2
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-django-timezone-field==7.2.1
+django-timezone-field==7.2.2
     # via
     #   -c requirements.txt
     #   django-celery-beat
@@ -392,7 +392,7 @@ rsa==4.9.1
     #   python-jose
 ruff==0.15.13
     # via terravisu (pyproject.toml)
-sentry-sdk==2.60.0
+sentry-sdk==2.61.1
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
