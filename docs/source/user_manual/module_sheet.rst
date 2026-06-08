@@ -29,7 +29,7 @@ Depuis cette interface, il est possible de :
 * accéder à une fiche détaillée en cliquant sur le nom d'une entité ;
 * sélectionner jusqu'à trois entités afin de comparer leurs données.
 
-.. image:: ../_static/images/visu/sheet_list.png
+.. image:: ../_static/images/sheet/sheet_list.png
   :width: 200
   :alt: Liste des fiches détaillées
 
@@ -52,7 +52,7 @@ Selon sa configuration, elle peut contenir différents types de contenus :
 
 Les informations sont organisées en sections afin de faciliter leur consultation.
 
-.. image:: ../_static/images/visu/sheet_individuelle.png
+.. image:: ../_static/images/sheet/sheet_individuelle.png
   :width: 200
   :alt: Consultation d'une fiche détaillée simple
 
@@ -68,7 +68,7 @@ Pour accéder à la page de comparaison :
 
 La comparaison permet d'identifier rapidement les différences et similitudes entre plusieurs entités à travers l'ensemble des informations configurées dans la fiche.
 
-.. image:: ../_static/images/visu/sheet_list_comparaison.png
+.. image:: ../_static/images/sheet/sheet_list_comparaison.png
   :width: 200
   :alt: Comparaison de plusieurs entités
 
@@ -95,7 +95,7 @@ C'est notamment le cas des blocs **Panoramax** : lorsqu'aucune image Panoramax n
 
 À l'inverse, si au moins une des entités dispose d'une image Panoramax, le bloc reste visible dans la comparaison.
 
-.. image:: ../_static/images/visu/sheet_comparaison.png
+.. image:: ../_static/images/sheet/sheet_comparaison.png
   :width: 200
   :alt: Consultation d'une fiche détaillée en comparaison
 
@@ -110,7 +110,7 @@ Cette organisation permet notamment de :
 * regrouper des informations thématiques ;
 * faciliter la navigation entre les différents jeux de données.
 
-.. image:: ../_static/images/visu/sheet_onglet.png
+.. image:: ../_static/images/sheet/sheet_onglet.png
   :width: 200
   :alt: Consultation d'un onglet de fiche détaillée
 
@@ -121,7 +121,7 @@ Chaque onglet d'une fiche détaillée peut être exporté au format PDF.
 
 Cette fonctionnalité permet de générer rapidement un document imprimable ou partageable contenant les informations affichées dans l'onglet sélectionné.
 
-.. image:: ../_static/images/visu/sheet_impression.png
+.. image:: ../_static/images/sheet/sheet_impression.png
   :width: 200
   :alt: Bouton impression PDF
 
@@ -132,6 +132,6 @@ Lorsque certaines données ne sont pas renseignées, il est possible d'activer l
 
 Cette option masque automatiquement les champs ne contenant aucune valeur afin d'améliorer la lisibilité de la fiche.
 
-.. image:: ../_static/images/visu/sheet_champvide.png
+.. image:: ../_static/images/sheet/sheet_champvide.png
   :width: 200
   :alt: Option "Masquer les champs vides" activée
