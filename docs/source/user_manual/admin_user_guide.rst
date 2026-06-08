@@ -1290,7 +1290,7 @@ Configuration des données :
 - champ numérique 
 - type d’agrégation :
 
-   - ``Somme`` 
+  - ``Somme`` 
   - ``Moyenne`` 
   - ``Comptage``
 
