@@ -30,8 +30,8 @@ Depuis cette interface, il est possible de :
 * sélectionner jusqu'à trois entités afin de comparer leurs données.
 
 .. figure:: ../_static/images/sheet/sheet_list.png
-  :width: 200
-  :alt: Liste des fiches détaillées
+   :width: 200
+   :alt: Liste des fiches détaillées
 
    Liste des fiches détaillées.
 
@@ -53,8 +53,10 @@ Selon sa configuration, elle peut contenir différents types de contenus :
 Les informations sont organisées en sections afin de faciliter leur consultation.
 
 .. figure:: ../_static/images/sheet/sheet_individuelle.png
-  :width: 200
-  :alt: Consultation d'une fiche détaillée simple
+   :width: 200
+   :alt: Consultation d'une fiche détaillée simple
+
+   Consultation d'une fiche détaillée simple
 
 Comparer plusieurs entités
 ---------------------------
@@ -69,8 +71,10 @@ Pour accéder à la page de comparaison :
 La comparaison permet d'identifier rapidement les différences et similitudes entre plusieurs entités à travers l'ensemble des informations configurées dans la fiche.
 
 .. figure:: ../_static/images/sheet/sheet_list_comparaison.png
-  :width: 200
-  :alt: Comparaison de plusieurs entités
+   :width: 200
+   :alt: Comparaison de plusieurs entités
+
+   Comparaison de plusieurs entités
 
 Consulter une fiche détaillée en comparaison
 ----------------------------------------------
@@ -96,8 +100,10 @@ C'est notamment le cas des blocs **Panoramax** : lorsqu'aucune image Panoramax n
 À l'inverse, si au moins une des entités dispose d'une image Panoramax, le bloc reste visible dans la comparaison.
 
 .. figure:: ../_static/images/sheet/sheet_comparaison.png
-  :width: 200
-  :alt: Consultation d'une fiche détaillée en comparaison
+   :width: 200
+   :alt: Consultation d'une fiche détaillée en comparaison
+
+   Consultation d'une fiche détaillée en comparaison
 
 Onglets
 --------
@@ -111,8 +117,10 @@ Cette organisation permet notamment de :
 * faciliter la navigation entre les différents jeux de données.
 
 .. figure:: ../_static/images/sheet/sheet_onglet.png
-  :width: 200
-  :alt: Consultation d'un onglet de fiche détaillée
+   :width: 200
+   :alt: Consultation d'un onglet de fiche détaillée
+
+   Consultation d'un onglet de fiche détaillée
 
 Impression PDF
 ---------------
@@ -122,8 +130,10 @@ Chaque onglet d'une fiche détaillée peut être exporté au format PDF.
 Cette fonctionnalité permet de générer rapidement un document imprimable ou partageable contenant les informations affichées dans l'onglet sélectionné.
 
 .. figure:: ../_static/images/sheet/sheet_impression.png
-  :width: 200
-  :alt: Bouton impression PDF
+   :width: 200
+   :alt: Bouton impression PDF
+
+   Bouton impression PDF
 
 Masquer les champs vides
 -------------------------
@@ -133,5 +143,7 @@ Lorsque certaines données ne sont pas renseignées, il est possible d'activer l
 Cette option masque automatiquement les champs ne contenant aucune valeur afin d'améliorer la lisibilité de la fiche.
 
 .. figure:: ../_static/images/sheet/sheet_champvide.png
-  :width: 200
-  :alt: Option "Masquer les champs vides" activée
+   :width: 200
+   :alt: Option "Masquer les champs vides" activée
+
+   Option "Masquer les champs vides" activée
