@@ -1352,7 +1352,7 @@ Afficher le nombre d'espace d'activité (nombre d'entités dans une couche)
 
    Configuration dans le backoffice
 
-.. image:: ../_static/images/admin/admin_couche_widget_compte2.png
+.. figure:: ../_static/images/admin/admin_couche_widget_compte2.png
    :alt: Rendu front-office
 
    Rendu front-office
@@ -1368,12 +1368,12 @@ Afficher le nombre d'emplois
 - Type : ``Somme``
 - Champ : ``nb_emplois``
 
-.. image:: ../_static/images/admin/admin_couche_widget_somme1.png
+.. figure:: ../_static/images/admin/admin_couche_widget_somme1.png
    :alt: Configuration dans le backoffice
 
    Configuration dans le backoffice
 
-.. image:: ../_static/images/admin/admin_couche_widget_somme2.png
+.. figure:: ../_static/images/admin/admin_couche_widget_somme2.png
    :alt: Rendu front-office
 
    Rendu front-office
@@ -1390,12 +1390,12 @@ Afficher la répartition des vocations dans les EAE
 - Champ textuel : ``voc_regr``
 - Graphique : ``Donut``
 
-.. image:: ../_static/images/admin/admin_couche_widget_distribution1.png
+.. figure:: ../_static/images/admin/admin_couche_widget_distribution1.png
    :alt: Configuration dans le backoffice
 
    Configuration dans le backoffice
 
-.. image:: ../_static/images/admin/admin_couche_widget_distribution2.png
+.. figure:: ../_static/images/admin/admin_couche_widget_distribution2.png
    :alt: Rendu front-office
 
    Rendu front-office
@@ -1414,12 +1414,12 @@ Afficher la répartition des emplois par type d’activité
 - Graphique : ``Barres empilées``
 - Orientation : ``Vertical``
 
-.. image:: ../_static/images/admin/admin_couche_widget_numeric1.png
+.. figure:: ../_static/images/admin/admin_couche_widget_numeric1.png
    :alt: Configuration dans le backoffice
 
    Configuration dans le backoffice
 
-.. image:: ../_static/images/admin/admin_couche_widget_numeric2.png
+.. figure:: ../_static/images/admin/admin_couche_widget_numeric2.png
    :alt: Rendu front-office
 
    Rendu front-office
@@ -1439,12 +1439,12 @@ Afficher la part du territoire en EAE par département
 - Graphique : ``Barres``
 - Orientation : ``Vertical``
 
-.. image:: ../_static/images/admin/admin_couche_widget_categoric1.png
+.. figure:: ../_static/images/admin/admin_couche_widget_categoric1.png
    :alt: Configuration dans le backoffice
 
    Configuration dans le backoffice
 
-.. image:: ../_static/images/admin/admin_couche_widget_categoric2.png
+.. figure:: ../_static/images/admin/admin_couche_widget_categoric2.png
    :alt: Rendu front-office
 
    Rendu front-office
