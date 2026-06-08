@@ -59,7 +59,7 @@ cryptography==48.0.0
     # via pyjwt
 deepmerge==2.0
     # via django-geostore
-django==5.2.14
+django==5.2.15
     # via
     #   terravisu (pyproject.toml)
     #   crispy-bootstrap5
