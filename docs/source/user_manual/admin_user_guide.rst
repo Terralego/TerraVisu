@@ -1165,11 +1165,6 @@ La configuration d’un widget suit généralement les étapes suivantes :
 Types de visualisation
 ^^^^^^^^^^^^^^^^^^^^^^^^
 
-Résumé des types disponibles :
-
-Résumé des types disponibles
-----------------------------
-
 .. list-table::
    :header-rows: 1
    :widths: 15 20 35 25 20
