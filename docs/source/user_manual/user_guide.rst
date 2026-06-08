@@ -67,7 +67,7 @@ Depuis le panneau latéral des vues, il est possible de rajouter des boutons ren
 .. image :: ../_static/images/visu/visu_sitesexternes.png
 
 .. note::
-	Il est possible de `définir le lien des fiches détaillées <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#les-fiches-detaillees>`_ en menu supplémentaire.
+	Il est possible de `définir le lien des fiches détaillées <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#les-fiches-detaillees>`_ en entrée de menu supplémentaire.
 
 Le bouton Informations
 ^^^^^^^^^^^^^^^^^^^^^^

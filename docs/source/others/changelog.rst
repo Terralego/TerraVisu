@@ -7,7 +7,7 @@ Changelog
 
 **Documentation:**
 
-- Add doc about charts in widget and sheet configuration
+- Add doc about charts in widget and sheet configuration (ref #1260)
 
 2026.02.00      (2026-02-02)
 ----------------------------

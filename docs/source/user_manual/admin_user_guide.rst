@@ -4,6 +4,13 @@ Outil d'administration
 
 L'outil d'administration est accessible via l’URL du visualiseur, suivie de ``/admin``.
 
+Par exemple :
+
+::
+
+   https://visu.mon-instance.fr/admin
+
+
 L'outil d'administration
 ========================
 
@@ -1130,12 +1137,6 @@ Par exemple, une couche peut proposer :
 
 Le libellé et l’icône de chaque widget sont personnalisables.
 
-Trois types de calculs statistiques sont disponibles :
-
-- le comptage du nombre d’éléments 
-- la somme des valeurs 
-- la moyenne des valeurs
-
 .. image:: ../_static/images/admin/admin_couche_widget.png
 
 Il est possible de choisir si les résultats des widgets se réactualisent
@@ -1146,7 +1147,8 @@ Un champ de configuration avancée est également disponible pour les utilisateu
 
 .. image:: ../_static/images/admin/admin_couche_widget_devs.png
 
-**Principe général de configuration**
+Principe général de configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 La configuration d’un widget suit généralement les étapes suivantes :
 
@@ -1160,7 +1162,8 @@ La configuration d’un widget suit généralement les étapes suivantes :
 #. Paramétrer l’affichage des valeurs 
 #. Définir les unités et l’arrondi éventuel
 
-**Types de visualisation**
+Types de visualisation
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 Résumé des types disponibles :
 
@@ -1204,65 +1207,67 @@ Résumé des types disponibles :
      - Somme, Moyenne, Comptage
 
 
-**Visualisation de type numérique**
+Visualisations de type numérique
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-*Somme*
+**Somme**
 
 Le type ``Somme`` affiche un chiffre clé correspondant à la somme d’un champ numérique.
 
-Exemples :
+*Exemples* :
 
 - somme de la population 
 - total des logements 
 - surface totale
 
-*Moyenne*
+**Moyenne**
 
 Le type ``Moyenne`` affiche la moyenne d’un champ numérique.
 
-Exemples :
+*Exemples* :
 
 - revenu moyen 
 - âge moyen 
 - surface moyenne
 
-*Compte*
+**Compte**
 
 Le type ``Compte`` affiche le nombre total d’objets présents dans la couche.
 
-Exemples :
+*Exemples* :
 
 - nombre de communes 
 - nombre d’entreprises 
 - nombre de parcelles
 
-**Widgets graphiques**
+Visualisations de type graphique
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-*Distribution*
+**Distribution**
 
 Le type ``Distribution`` permet de représenter la répartition des données
 à partir d’un champ textuel.
 
-Exemples :
+*Exemples* :
 
 - répartition par type de culture 
 - répartition par catégorie d’activité 
 - répartition par statut
 
-Configuration des données :
+*Configuration des données* :
 
 - sélection d’un champ textuel.
 
-*Numérique*
+**Numérique**
 
 Le type ``Numérique`` permet d’analyser un ou plusieurs champs numériques.
 
-Exemples :
+*Exemples* :
 
 - comparaison de plusieurs indicateurs 
 - analyse de surfaces, populations ou revenus
 
-Configuration des données :
+*Configuration des données* :
 
 - sélection d’un ou plusieurs champs numériques 
 - choix du type d’agrégation :
@@ -1271,20 +1276,20 @@ Configuration des données :
   - ``Moyenne`` 
   - ``Comptage``
 
-*Catégorique*
+**Catégorique**
 
 Le type ``Catégorique`` permet de croiser :
 
 - un champ de catégorie textuel 
 - un champ de valeur numérique
 
-Exemples :
+*Exemples* :
 
 - population par commune 
 - surface agricole par type de culture 
 - nombre d’emplois par secteur
 
-Configuration des données :
+*Configuration des données* :
 
 - champ de catégorie textuel 
 - champ numérique 
@@ -1294,7 +1299,8 @@ Configuration des données :
   - ``Moyenne`` 
   - ``Comptage``
 
-**Paramètres graphiques**
+Paramètrage des graphiques
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Les types graphiques disposent des paramètres de représentation suivants :
 
@@ -1327,66 +1333,80 @@ Les types graphiques disposent des paramètres de représentation suivants :
      - 0, 1, 2 décimales, etc.
 
 
-**Exemples de configuration**
+Exemples de configuration
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-*Exemple 1 — Chiffre clé*
+**Exemple 1 — Chiffre clé**
 
-Objectif :
+*Objectif* :
 
 Afficher le nombre d'espace d'activité (nombre d'entités dans une couche)
 
-Configuration :
+*Configuration* :
 
 - Type : ``Compte``
 - Champ : ``id``
 
-.. image:: ../_static/images/admin/admin_couche_widget_compte1.png
-  :width: 250
+.. figure:: ../_static/images/admin/admin_couche_widget_compte1.png
+   :alt: Configuration dans le backoffice
+
+   Configuration dans le backoffice
 
 .. image:: ../_static/images/admin/admin_couche_widget_compte2.png
-  :width: 250
+   :alt: Rendu front-office
 
-*Exemple 2 — Chiffre clé*
+   Rendu front-office
 
-Objectif :
+**Exemple 2 — Chiffre clé**
+
+*Objectif* :
 
 Afficher le nombre d'emplois
-Configuration :
+
+*Configuration* :
 
 - Type : ``Somme``
 - Champ : ``nb_emplois``
 
 .. image:: ../_static/images/admin/admin_couche_widget_somme1.png
-  :width: 250
+   :alt: Configuration dans le backoffice
+
+   Configuration dans le backoffice
 
 .. image:: ../_static/images/admin/admin_couche_widget_somme2.png
-  :width: 250
+   :alt: Rendu front-office
 
-*Exemple 3 — Répartition*
+   Rendu front-office
 
-Objectif :
+**Exemple 3 — Répartition**
+
+*Objectif* :
 
 Afficher la répartition des vocations dans les EAE
 
-Configuration :
+*Configuration* :
 
 - Type : ``Distribution``
 - Champ textuel : ``voc_regr``
 - Graphique : ``Donut``
 
 .. image:: ../_static/images/admin/admin_couche_widget_distribution1.png
-  :width: 250
+   :alt: Configuration dans le backoffice
+
+   Configuration dans le backoffice
 
 .. image:: ../_static/images/admin/admin_couche_widget_distribution2.png
-  :width: 250
+   :alt: Rendu front-office
 
-*Exemple 4 — Répartition*
+   Rendu front-office
 
-Objectif :
+**Exemple 4 — Répartition**
+
+*Objectif* :
 
 Afficher la répartition des emplois par type d’activité
 
-Configuration :
+*Configuration* :
 
 - Type : ``Numérique``
 - Champ numérique : ``comdetail_eff``, ``comgros_eff``, ``const_eff``, ``indus_eff``, ...
@@ -1395,18 +1415,22 @@ Configuration :
 - Orientation : ``Vertical``
 
 .. image:: ../_static/images/admin/admin_couche_widget_numeric1.png
-  :width: 250
+   :alt: Configuration dans le backoffice
+
+   Configuration dans le backoffice
 
 .. image:: ../_static/images/admin/admin_couche_widget_numeric2.png
-  :width: 250
+   :alt: Rendu front-office
 
-*Exemple 5 — Valeur par catégorie*
+   Rendu front-office
 
-Objectif :
+**Exemple 5 — Valeur par catégorie**
+
+*Objectif* :
 
 Afficher la part du territoire en EAE par département
 
-Configuration :
+*Configuration* :
 
 - Type : ``Catégorique``
 - Champ catégorie : ``nom_dept``
@@ -1416,11 +1440,14 @@ Configuration :
 - Orientation : ``Vertical``
 
 .. image:: ../_static/images/admin/admin_couche_widget_categoric1.png
-  :width: 250
+   :alt: Configuration dans le backoffice
+
+   Configuration dans le backoffice
 
 .. image:: ../_static/images/admin/admin_couche_widget_categoric2.png
-  :width: 250
+   :alt: Rendu front-office
 
+   Rendu front-office
 
 Onglet INCLUSIONS
 ~~~~~~~~~~~~~~~~~~

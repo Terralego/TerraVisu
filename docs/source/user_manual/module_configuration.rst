@@ -4,6 +4,12 @@ Module de configuration
 
 Le module de configuration est accessible via l’URL du visualiseur, suivie de ``/config``.
 
+Par exemple :
+
+::
+
+   https://visu.mon-instance.fr/config
+
 Depuis le bandeau supérieur (header), il est possible de naviguer entre les interfaces :
 
 - le bouton **« ADMIN »** permet de revenir à l’outil d’administration ;
@@ -216,9 +222,9 @@ Ces fiches apportent une réelle valeur ajoutée aux données sources en les str
 
 La configuration se déroule en trois étapes :
 
-1. `définir les champs de fiche <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#champs-de-fiche>`_
-2. `créer une fiche <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#fiches-detaillees>`_
-3. `ajouter et organiser les sections de contenu <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#sections-de-fiche>`_
+`1. Définir les champs de fiche <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#champs-de-fiche>`_
+`2. Créer une fiche <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#fiches-detaillees>`_
+`3. Ajouter et organiser les sections de contenu <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#sections-de-fiche>`_
 
 Configuration 
 ~~~~~~~~~~~~~~~
@@ -236,43 +242,29 @@ Il est notamment possible de :
 * configurer des vues Panoramax ;
 * personnaliser l'affichage des indicateurs.
 
-Catalogue de champs
--------------------
-
-Le catalogue de champs permet de gérer les propriétés d'affichage des données.
-
-Pour chaque champ, il est possible de définir :
-
-* son libellé ;
-* son infobulle d'aide ;
-* son suffixe d'unité ;
-* le nombre de décimales à afficher ;
-* sa visibilité ;
-* son comportement dans les pictogrammes d'aménités (présence ou absence).
-
-Structure de la fiche
----------------------
-
-La structure de la fiche permet d'organiser les informations affichées à l'utilisateur.
-
-Chaque section peut être configuré individuellement :
-
-* type de section ;
-* titre ;
-* ordre d'affichage ;
-* affichage ou non du titre ;
-* champs associés ;
-* source de données ;
-* organisation en sections ou onglets.
-
 Mise à jour en temps réel
--------------------------
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 Les modifications apportées à la configuration des fiches sont appliquées immédiatement.
 
 Aucun redéploiement de l'application n'est nécessaire pour visualiser les changements. Les sections, champs et données sont mis à jour en temps réel dans l'interface utilisateur.
 
-Fiches détaillées
+1. Champs de fiche
+~~~~~~~~~~~~~~~~~~~~
+
+Plusieurs types de champs sont disponibles :
+
+- **booléen** : avec possibilité d’associer des pictogrammes 
+- **textuel** 
+- **numérique** : avec possibilité de définir un suffixe et le nombre de décimales
+
+.. figure:: ../_static/images/django/config_fiche_champs.png
+   :alt: Liste des champs de fiche
+   :align: center
+
+   Liste des champs de fiche
+
+2. Fiches détaillées
 ~~~~~~~~~~~~~~~~~~~~
 
 La sous-section **Fiches détaillées** permet de déclarer une nouvelle fiche.
@@ -297,22 +289,7 @@ Cette section permet également de définir les champs qui seront affichés dans
 
    Liste des fiches détaillées
 
-Champs de fiche
-~~~~~~~~~~~~~~~~~~~~
-
-Plusieurs types de champs sont disponibles :
-
-- **booléen** : avec possibilité d’associer des pictogrammes 
-- **textuel** 
-- **numérique** : avec possibilité de définir un suffixe et le nombre de décimales
-
-.. figure:: ../_static/images/django/config_fiche_champs.png
-   :alt: Liste des champs de fiche
-   :align: center
-
-   Liste des champs de fiche
-
-Sections de fiche
+3. Blocs de fiche
 ~~~~~~~~~~~~~~~~~~~~
 
 .. figure:: ../_static/images/django/config_fiche_bloc_liste.png
