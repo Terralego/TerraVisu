@@ -76,6 +76,9 @@ INSTALLED_APPS = [
     "project.visu",
     "project.geosource",
     "project.terra_layer",
+    "project.endpoint_sql",
+    "project.geo_api",
+    # "project.geo_api_v1",
     "drf_spectacular",
 ]
 
