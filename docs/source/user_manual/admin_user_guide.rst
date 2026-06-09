@@ -1141,7 +1141,7 @@ Le libellé et l’icône de chaque widget sont personnalisables.
 
 Il est possible de choisir si les résultats des widgets se réactualisent
 dynamiquement selon l’emprise visible de la carte lors des opérations de zoom
-et de déplacement.
+et de déplacement ou si les résultats dépendent d'une zone fixe.
 
 Un champ de configuration avancée est également disponible pour les utilisateurs développeurs. Celui-ci nécessite l’écriture d’un objet JSON contenant une clé ``template`` utilisant la syntaxe `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_.
 
