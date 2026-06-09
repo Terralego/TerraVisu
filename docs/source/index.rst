@@ -1,4 +1,4 @@
-TerraVisu — Documentation
+TerraVisu - Documentation
 =========================
 
 .. image:: ./_static/logo_color_origine.png
