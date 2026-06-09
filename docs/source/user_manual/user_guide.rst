@@ -214,15 +214,22 @@ Les éléments qui ne correspondent pas au filtre sont cachés et la carte est a
 
 Les filtres peuvent prendre plusieurs formes (case à cocher, intervalle de valeurs, curseur, champ recherche avec autocomplétion, etc.) et sont paramétrables dans `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-filtre>`__.
 
-Le widget
+Les widgets
 ~~~~~~~~~~~~
 
-Le widget permet de récapituler dans un tableau dynamique, des indicateurs utiles à l'analyse de la couche. La synthèse des informations se réactualise en fonction des éléments qui se trouvent dans l'emprise spatiale. Le widget s’affiche à droite de l’écran.
+Les widgets permettent de synthétiser, sous forme de tableaux et de graphiques dynamiques, des indicateurs utiles à l’analyse d’une couche de données. Les informations affichées se mettent automatiquement à jour en fonction des objets présents dans l’emprise spatiale courante ou dans une zone géographique fixe définie lors de la configuration de la couche dans l’outil d’administration.
 
-**Exemple d'un widget**
+Pour afficher les widgets, cliquez sur l’icône située à côté du bouton « Zoomer sur la couche ». Les widgets apparaissent alors dans le panneau situé à droite de l’écran.
 
-.. image :: ../_static/images/visu/visu_widget.png
-  :width: 300
+.. figure:: ../_static/images/visu/visu_widget_bouton.png
+   :alt: Bouton d'un widget depuis une couche
+
+   Bouton d'un widget depuis une couche
+
+.. figure:: ../_static/images/visu/visu_widget.png
+   :alt: Exemple du rendu d'un widget
+
+   Exemple du rendu d'un widget
 
 Les données à afficher dans le widget sont définies par l’utilisateur dans `l'outil administration <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-widget>`__.
 

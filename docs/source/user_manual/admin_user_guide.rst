@@ -1145,7 +1145,45 @@ et de déplacement ou si les résultats dépendent d'une zone fixe.
 
 Un champ de configuration avancée est également disponible pour les utilisateurs développeurs. Celui-ci nécessite l’écriture d’un objet JSON contenant une clé ``template`` utilisant la syntaxe `Nunjucks <https://mozilla.github.io/nunjucks/fr/templating.html>`_.
 
-.. image:: ../_static/images/admin/admin_couche_widget_devs.png
+Les modèles Nunjucks permettent de personnaliser l'affichage des valeurs dans les widgets. Les exemples ci-dessous illustrent quelques cas d'usage courants.
+
+.. list-table:: Exemples de templates Nunjucks
+   :header-rows: 1
+   :widths: 30 35 35
+
+   * - Cas d'usage
+     - Template
+     - Exemple de rendu
+
+   * - Affichage simple
+     - ``{{ value }}``
+     - ``1250`` → 1250
+
+   * - Nombre entier avec séparateur de milliers
+     - ``{{ value | int | formatNumber }}``
+     - ``1250000`` → 1 250 000
+
+   * - Nombre décimal
+     - ``{{ value | round(2) }}``
+     - ``1250.5678`` → 1250.57
+
+   * - Pourcentage
+     - ``{{ value | round(1) }} %``
+     - ``15.678`` → 15.7 %
+
+   * - Valeur monétaire
+     - ``{{ value | int | formatNumber }} €``
+     - ``1250000`` → 1 250 000 €
+
+   * - Valeur avec unité dynamique
+     - ``{{ value | round(2) }} km²``
+     - ``125.6789`` → 125.68 km²
+
+.. figure:: ../_static/images/admin/admin_couche_widget_devs.png
+   :alt: Exemple du champ avancé JSON d'un widget
+
+   Exemple du champ avancé JSON d'un widget
+
 
 Principe général de configuration
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
