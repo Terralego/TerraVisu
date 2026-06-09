@@ -5,6 +5,10 @@ Changelog
 2026.xx.xx      (2026-xx-xx)
 ----------------------------
 
+**Improvements**
+
+- (Admin) Allow variable type for extrusion base height in layer style
+
 **Documentation:**
 
 - Add doc about charts in widget and sheet configuration (ref #1260)
