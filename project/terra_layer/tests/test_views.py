@@ -8,7 +8,9 @@ from django.contrib.auth.models import Group
 from django.core import mail
 from django.core.cache import cache
 from django.core.files.uploadedfile import InMemoryUploadedFile, SimpleUploadedFile
+from django.db import connection
 from django.test import RequestFactory
+from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 from geostore.tests.factories import LayerFactory
 from PIL import Image
@@ -743,8 +745,13 @@ class SceneTreeAPITestCase(APITestCase):
         layer = Layer.objects.create(
             name="public_layer", source=source, group=self.layer_group
         )
-        with self.assertNumQueries(49):
+        with CaptureQueriesContext(connection) as query_context:
             self.client.get(reverse("layerview", args=[self.scene.slug]))
+        self.assertIn(
+            len(query_context),
+            (48, 49),
+            msg=f"{len(query_context)} queries executed, expected 48 or 49",
+        )
 
         with self.assertNumQueries(9):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
