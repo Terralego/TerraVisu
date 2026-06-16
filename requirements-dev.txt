@@ -227,7 +227,7 @@ ecdsa==0.19.2
     # via
     #   -c requirements.txt
     #   python-jose
-elastic-transport==8.17.1
+elastic-transport==9.4.1
     # via
     #   -c requirements.txt
     #   elasticsearch
