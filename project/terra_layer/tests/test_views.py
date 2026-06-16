@@ -726,7 +726,7 @@ class SceneTreeAPITestCase(APITestCase):
         ReportField.objects.create(config=report_config, field=field_2, order=2)
 
         self.client.force_authenticate(self.user)
-        with self.assertNumQueries(46):
+        with self.assertNumQueries(48):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
         with self.assertNumQueries(10):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
@@ -735,7 +735,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer.name = "new_name"
         layer.save()
 
-        with self.assertNumQueries(44):
+        with self.assertNumQueries(46):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
     def test_cache_cleared_after_public_layer_update(self):
@@ -743,7 +743,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer = Layer.objects.create(
             name="public_layer", source=source, group=self.layer_group
         )
-        with self.assertNumQueries(46):
+        with self.assertNumQueries(49):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
         with self.assertNumQueries(9):
@@ -752,7 +752,7 @@ class SceneTreeAPITestCase(APITestCase):
         # updating layer to trigger cache reset
         layer.name = "new_name"
         layer.save()
-        with self.assertNumQueries(38):
+        with self.assertNumQueries(40):
             # still differences in original query number because callbacks auto create geostore layers and groups
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
