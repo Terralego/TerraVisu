@@ -183,7 +183,7 @@ django-ordered-model==3.7.4
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-django-polymorphic==4.5.2
+django-polymorphic==4.11.2
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
