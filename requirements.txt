@@ -155,7 +155,7 @@ gpxpy==1.6.2
     # via django-geostore
 gunicorn==26.0.0
     # via terravisu (pyproject.toml)
-idna==3.11
+idna==3.15
     # via requests
 inflection==0.5.1
     # via drf-spectacular
@@ -258,7 +258,7 @@ tzlocal==5.3.1
     # via celery
 uritemplate==4.2.0
     # via drf-spectacular
-urllib3==2.6.3
+urllib3==2.7.0
     # via
     #   elastic-transport
     #   requests
