@@ -2,7 +2,7 @@ import math
 import unicodedata
 
 from django.contrib.gis.db.models.aggregates import Extent
-from django.db.models import Avg, Case, Count, FloatField, IntegerField, Max, Min, Value, When, StdDev
+from django.db.models import Avg, Case, Count, FloatField, IntegerField, Max, Min, Value, When, StdDev, Q
 from django.db.models.aggregates import Aggregate
 from django.db.models.fields.json import KeyTextTransform
 from django.db.models.functions import Cast
@@ -12,6 +12,7 @@ from geostore.views.mixins import MultipleFieldLookupMixin
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.response import Response
+
 
 from project.terra_layer.style.utils import discretize
 
@@ -32,11 +33,51 @@ from .serializers import FeatureGeoSerializer, FeatureListSerializer
 from .filters import CONTROL_PARAMS
 
 
-class Median(Aggregate): # pas de median en django?? pas trouvé 
+class Quantile(Aggregate): # quantiles et median à quantile 0.5
     function = 'PERCENTILE_CONT'
-    name = 'median'
     output_field = FloatField()
-    template = "%(function)s(0.5) WITHIN GROUP (ORDER BY %(expressions)s)"
+    template = "%(function)s(%(quantile)s) WITHIN GROUP (ORDER BY %(expressions)s)"
+
+def _compute_fd_bins(values_qs, field, min_val, max_val, q1, q3):
+    """
+    calcul des bins selon Freedman-Diaconis (cf Magrit) 
+    """
+
+    count = values_qs.count()
+    if count < 2 or min_val == max_val:
+        return [{"x0": float(min_val), "x1": float(max_val), "count": count}]
+
+    iqr = q3 - q1 
+    if iqr == 0:
+        bin_width = (max_val - min_val) / 10
+    else:
+        bin_width = 2 * iqr / (count ** (1 / 3))
+
+    if bin_width <= 0:
+        bin_width = (max_val - min_val) / 10
+
+    nb_bins = max(1, math.ceil((max_val - min_val) / bin_width))
+    nb_bins = min(nb_bins, 100)
+
+    bins = []
+    for i in range(nb_bins):
+        x0 = min_val + i * bin_width
+        x1 = min_val + (i + 1) * bin_width
+        if i == nb_bins -1:
+            x1 = max_val + 0.0001
+
+        lookup = f"properties__{field}"
+        count_in_bin = values_qs.filter(
+            **{f"{lookup}__gte": x0, f"{lookup}__lt": x1}
+        ).count()
+        bins.append({
+            "x0": round(x0, 2),
+            "x1": round(x1, 2),
+            "count": count_in_bin,
+        })
+
+    return bins
+
 
 class FeatureViewSet(MultipleFieldLookupMixin, # recherche par ok ou identifir via geostore
                      PrefixBoostMixin, # tri avec boost prefix (commence par ...)
@@ -176,30 +217,6 @@ class FeatureViewSet(MultipleFieldLookupMixin, # recherche par ok ou identifir v
         data = self._format_feature_response(serializer.data, search_param)
         return Response(data)
 
-    @action(detail=False, methods=["get"])
-    def count(self, request, layer=None):
-        # retourne juste le nombre de résultats pour les filtres appliqués
-        return Response({"count": self.filter_queryset(self.get_queryset()).count()})
-
-    @action(detail=False, methods=["get"], url_path="stats/(?P<field>[^/.]+)")
-    def stats(self, request, layer=None, field=None):
-        qs = Feature.objects.filter(layer=self.get_layer())
-        stats = qs.aggregate(
-            min=Min(Cast(KeyTextTransform(field, "properties"), FloatField())),
-            max=Max(Cast(KeyTextTransform(field, "properties"), FloatField())),
-            avg=Avg(Cast(KeyTextTransform(field, "properties"), FloatField())),
-            median=Median(Cast(KeyTextTransform(field, "properties"), FloatField())),
-            std_dev=StdDev(Cast(KeyTextTransform(field, "properties"), FloatField())),
-            count=Count("*"),
-        )
-        for k in ("min", "max", "avg", "median", "std_dev"):
-            if stats.get(k) is not None:
-                try:
-                    stats[k] = round(float(stats[k]), 2) # on arrdondi à 2, à déterminer si interessant
-                except (ValueError, TypeError):
-                    pass
-        return Response(stats)
-
     def _get_distinct_values_queryset(self, layer, field, q=""):
         # retourne les valeurs distinctes d'un champ
         qs = Feature.objects.filter(layer=layer)
@@ -247,4 +264,81 @@ class FeatureViewSet(MultipleFieldLookupMixin, # recherche par ok ou identifir v
             return Response({"error": "Aucune donnée"}, status=404)
         return Response({"bbox": list(extent)})
     
-    
+    @action(detail=False, methods=["get"])
+    def count(self, request, layer=None):
+        # retourne juste le nombre de résultats pour les filtres appliqués
+        return Response({"count": self.filter_queryset(self.get_queryset()).count()})
+
+    @action(detail=False, methods=["get"], url_path="stats/(?P<field>[^/.]+)")
+    def stats(self, request, layer=None, field=None):
+        qs = Feature.objects.filter(layer=self.get_layer())
+        stats = qs.aggregate(
+            min=Min(Cast(KeyTextTransform(field, "properties"), FloatField())),
+            max=Max(Cast(KeyTextTransform(field, "properties"), FloatField())),
+            avg=Avg(Cast(KeyTextTransform(field, "properties"), FloatField())),
+            median=Quantile(Cast(KeyTextTransform(field, "properties"), FloatField()), quantile=0.50),
+            std_dev=StdDev(Cast(KeyTextTransform(field, "properties"), FloatField())),
+            count=Count("*"),
+        )
+        for k in ("min", "max", "avg", "median", "std_dev"):
+            if stats.get(k) is not None:
+                try:
+                    stats[k] = round(float(stats[k]), 2) # on arrdondi à 2, à déterminer si interessant
+                except (ValueError, TypeError):
+                    pass
+        return Response(stats)
+
+    @action(detail=False, methods=["get"],
+        url_path="stats/(?P<field>[^/.]+)/distribution")
+    def distribution(self, request, layer=None, field=None):
+        cast_field = Cast(KeyTextTransform(field, "properties"), FloatField())
+        qs = Feature.objects.filter(layer=self.get_layer())
+
+        stats = qs.aggregate(
+            min=Min(cast_field),
+            max=Max(cast_field),
+            q1=Quantile(cast_field, quantile=0.25),
+            median=Quantile(cast_field, quantile=0.50),
+            q3=Quantile(cast_field, quantile=0.75),
+        )
+
+        min_val = stats.get("min")
+        max_val = stats.get("max")
+        if min_val is None or max_val is None:
+            return Response({"bins": [], "boxplot": {}, "sample": []})
+
+        q1_val = stats.get("q1")
+        q3_val = stats.get("q3")
+
+        bins = _compute_fd_bins(
+            qs, field,
+            float(min_val), float(max_val),
+            float(q1_val or 0), float(q3_val or 0),
+        )
+
+        boxplot = {
+            "min": round(float(min_val), 2),
+            "q1": round(float(q1_val), 2) if q1_val else None,
+            "median": round(float(stats["median"]), 2) if stats.get("median") else None,
+            "q3": round(float(q3_val), 2) if q3_val else None,
+            "max": round(float(max_val), 2),
+        }
+
+        lookup = f"properties__{field}"
+        sample = list(
+            qs.filter(**{f"{lookup}__isnull": False})
+            .exclude(**{lookup: ""})
+            .values_list(lookup, flat=True)
+            .order_by("?")[:1000]
+        )
+        sample = [float(v) for v in sample if v is not None]
+
+        for key in ("min", "max", "q1", "median", "q3"):
+            if boxplot.get(key) is not None:
+                try:
+                    boxplot[key] = round(float(boxplot[key]), 2)
+                except (ValueError, TypeError):
+                    pass
+
+        return Response({"bins": bins, "boxplot": boxplot, "sample": sample})
+
