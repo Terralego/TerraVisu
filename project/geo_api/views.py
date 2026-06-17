@@ -341,4 +341,66 @@ class FeatureViewSet(MultipleFieldLookupMixin, # recherche par ok ou identifir v
                     pass
 
         return Response({"bins": bins, "boxplot": boxplot, "sample": sample})
+    
+    @action(detail=False, methods=["get"],
+        url_path="discretize/(?P<field>[^/.]+)")
+    def discretize(self, request, layer=None, field=None):
+
+        layer_obj = self.get_layer()
+        method = request.query_params.get("method", "jenks")
+        classes = int(request.query_params.get("classes", 5))
+
+        
+        breaks = discretize(layer_obj, field, method, classes) or []
+
+        # combien d'entité par classe
+        qs = Feature.objects.filter(layer=layer_obj)
+        cast_field = Cast(KeyTextTransform(field, "properties"), FloatField())
+        entities_by_class = []
+        last_idx = len(breaks) - 2
+        for i in range(len(breaks) - 1):
+            upper = {f"properties__{field}__lte": breaks[i + 1]} if i == last_idx else {f"properties__{field}__lt": breaks[i + 1]}
+            cnt = qs.filter(
+                **{f"properties__{field}__gte": breaks[i]},
+                **upper,
+            ).count()
+            entities_by_class.append(cnt)
+
+        # recap stats
+        stats = qs.aggregate(
+            min=Min(cast_field),
+            max=Max(cast_field),
+            avg=Avg(cast_field),
+            median=Quantile(cast_field, quantile=0.50),
+            std_dev=StdDev(cast_field),
+            count=Count("*"),
+        )
+        for k in ("min", "max", "avg", "median", "std_dev"):
+            if stats.get(k) is not None:
+                try:
+                    stats[k] = round(float(stats[k]), 2)
+                except (ValueError, TypeError):
+                    pass
+
+        # si le nombre de classes retourné est inférieur à ce qui a été demandé
+        # (cas de données peu nombreuses), on pad avec des 0
+        if not breaks or len(breaks) < 2:
+            breaks = [stats.get("min") or 0, stats.get("max") or 1]
+            entities_by_class = []
+            for i in range(len(breaks) - 1):
+                cnt = qs.filter(
+                    **{f"properties__{field}__gte": breaks[i]},
+                    **{f"properties__{field}__lte": breaks[i + 1]},
+                ).count()
+                entities_by_class.append(cnt)
+
+        while len(entities_by_class) < classes:
+            entities_by_class.append(0)
+            breaks.append(breaks[-1])
+
+        return Response({
+            "breaks": breaks,
+            "entitiesByClass": entities_by_class,
+            "stats": stats,
+        })
 
