@@ -3,7 +3,7 @@ import re
 from functools import reduce
 
 from django.contrib.gis.geos import Polygon
-from django.db.models import Case, F, FloatField, Func, IntegerField, Q, Value, When
+from django.db.models import F, FloatField, Func, Q, Value
 from django.db.models.fields.json import KeyTextTransform
 from django.db.models.functions import Cast, NullIf
 from geostore.filters import JSONSearchField
@@ -16,20 +16,24 @@ class Unaccent(Func):
 
 class RegexpReplace(Func):
     function = "REGEXP_REPLACE"
-    arity = 3
+    arity = 3 # prend 3 params, le texte, le pattern et le remplacement
 
 
+## Paramètres de l'URL qui ne sont pas des filtres
 CONTROL_PARAMS = {"limit", "offset", "ordering", "format", "fields", "search",
                   "bbox", "all", "geometry"}
 
+## regex pour opérateurs
 _RE_OPERATOR = re.compile(r"^(>=|<=|>|<)(.+)$")
+
+## regex pour intervalles
 _RE_RANGE = re.compile(r"^(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)$")
 
 
 def _classify_params(query_params):
     # classe les params en types pour faciliter les filtres
     for key, value in _clean_params(query_params):
-        if not value or key in SPECIAL_PARAMS:
+        if not value or key in CONTROL_PARAMS:
             yield "skip", None, None
             continue
 
@@ -74,6 +78,7 @@ def _clean_params(query_params):
 
 
 class SearchAllFieldsBackend(JSONSearchField):
+    #récupère les champs à chercher
     def get_search_fields(self, view, request):
         # règle bug geostore bug quand pas de schema défini 
         fields = super().get_search_fields(view, request)
@@ -84,6 +89,7 @@ class SearchAllFieldsBackend(JSONSearchField):
                 fields = [f"properties__{k}" for k in first["properties"] if k]
         return fields
 
+    # cherche dasn tous les champs
     def filter_queryset(self, request, queryset, view):
         # équivalent de search dans tous les champs, insensible aux accents
         search_fields = self.get_search_fields(view, request)
@@ -112,7 +118,7 @@ class NoAccentFilterBackend(BaseFilterBackend):
 
     def filter_queryset(self, request, queryset, view):
         for cat, key, *rest in _classify_params(request.query_params):
-            if cat != "text":
+            if cat != "text": # pas la peine de unaccent si pas du texte
                 continue
             ann = f"_una_{key}"
             queryset = queryset.annotate(**{
@@ -165,7 +171,7 @@ class OperatorFilterBackend(BaseFilterBackend):
         return Cast(NullIf(RegexpReplace(KeyTextTransform(key, "properties"), Value(r"[^\d.\-]"), Value("")), Value("")), FloatField())
 
 
-class BBoxFilterBackend(BaseFilterBackend):
+class BBoxFilterBackend(BaseFilterBackend): # pour le moment pas utile
     """?bbox=min_lng,min_lat,max_lng,max_lat"""
 
     def filter_queryset(self, request, queryset, view):
