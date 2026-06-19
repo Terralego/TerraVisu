@@ -40,7 +40,8 @@ class Quantile(Aggregate): # quantiles et median à quantile 0.5
 
 def _compute_fd_bins(values_qs, field, min_val, max_val, q1, q3):
     """
-    calcul des bins selon Freedman-Diaconis (cf Magrit) 
+    calcul des bins selon Freedman-Diaconis 
+    (cf Magrit qui utilise d3 mais même formule derrière) 
     """
 
     count = values_qs.count()
@@ -69,7 +70,7 @@ def _compute_fd_bins(values_qs, field, min_val, max_val, q1, q3):
         lookup = f"properties__{field}"
         count_in_bin = values_qs.filter(
             **{f"{lookup}__gte": x0, f"{lookup}__lt": x1}
-        ).count()
+        ).count() # mais ça veut dire N requete donc pas terrible
         bins.append({
             "x0": round(x0, 2),
             "x1": round(x1, 2),
