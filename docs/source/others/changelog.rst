@@ -2,6 +2,18 @@
 Changelog
 ==========
 
+2026.06.00      (2026-06-16)
+----------------------------
+
+**Improvements:**
+
+- Add option to configure chart in widget and sheet configuration (ref #1260)
+
+**Documentation:**
+
+- Add doc about charts in widget and sheet configuration (ref #1260)
+
+
 2026.02.00      (2026-02-02)
 ----------------------------
 

@@ -18,7 +18,6 @@ from project.visu.models import ExtraMenuItem, SheetBlock, SheetField, SpriteVal
 from project.visu.serializers import ExtraMenuItemSerializer
 from project.visu.utils import get_logo_url
 
-from ..geosource.models import Field
 from .models import FeatureSheet
 from .serializers import FeatureSheetSerializer
 
@@ -254,6 +253,6 @@ class FeatureSheetAPIView(ListAPIView):
         ),
         Prefetch(
             "list_fields",
-            queryset=Field.objects.order_by("sheetlistfieldthroughmodel__order"),
+            queryset=SheetField.objects.order_by("sheetlistfieldthroughmodel__order"),
         ),
     )

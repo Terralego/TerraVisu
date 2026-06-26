@@ -4,6 +4,12 @@ Module de configuration
 
 Le module de configuration est accessible via l’URL du visualiseur, suivie de ``/config``.
 
+Par exemple :
+
+::
+
+   https://visu.mon-instance.fr/config
+
 Depuis le bandeau supérieur (header), il est possible de naviguer entre les interfaces :
 
 - le bouton **« ADMIN »** permet de revenir à l’outil d’administration ;
@@ -210,18 +216,60 @@ Il est également possible de restreindre l’accès à ces menus à certains gr
 Les fiches détaillées
 -----------------------
 
+Présentation
+~~~~~~~~~~~~~~~~
+
 Le module de fiches détaillées permet de créer des fiches enrichies, intégrant différents types de contenus : graphiques, textes, tableaux, pictogrammes, etc.
 
 Ces fiches apportent une réelle valeur ajoutée aux données sources en les structurant, en les mettant en forme et en les rendant plus accessibles.
 
 La configuration se déroule en trois étapes :
 
-- `créer une fiche <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#fiches-detaillees>`_
-- `définir les champs associés <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#champs-de-fiche>`_
-- `ajouter et organiser les blocs de contenu <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#blocs-de-fiche>`_
+1. `Définir les champs de fiche <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#champs-de-fiche>`_
+2. `Créer une fiche <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#fiches-detaillees>`_
+3. `Ajouter et organiser les sections de contenu <https://terravisu.readthedocs.io/en/latest/user_manual/module_configuration.html#sections-de-fiche>`_
 
-Fiches détaillées
-~~~~~~~~~~~~~~~~~~~~
+
+Mise à jour en temps réel
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Les modifications apportées à la configuration des fiches sont appliquées immédiatement.
+
+Aucun redéploiement de l'application n'est nécessaire pour visualiser les changements. Les sections, champs et données sont mis à jour en temps réel dans l'interface utilisateur.
+
+Principe de configuration 
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Le module de configuration permet de construire des fiches adaptées aux besoins des utilisateurs afin de faciliter l'analyse des données.
+
+Il est notamment possible de :
+
+* ajouter ou supprimer des champs ;
+* modifier l'ordre des informations ;
+* organiser les données en sections ;
+* ajouter des tableaux ;
+* intégrer des cartes ;
+* afficher des graphiques ;
+* configurer des vues Panoramax ;
+* personnaliser l'affichage des indicateurs.
+
+1. Champs de fiche
+^^^^^^^^^^^^^^^^^^^^^
+
+Plusieurs types de champs sont disponibles :
+
+- **booléen** : avec possibilité d’associer des pictogrammes 
+- **textuel** 
+- **numérique** : avec possibilité de définir un suffixe et le nombre de décimales
+
+.. figure:: ../_static/images/django/config_fiche_champs.png
+   :alt: Liste des champs de fiche
+   :align: center
+
+   Liste des champs de fiche
+
+2. Fiches détaillées
+^^^^^^^^^^^^^^^^^^^^^^
 
 La sous-section **Fiches détaillées** permet de déclarer une nouvelle fiche.
 
@@ -237,170 +285,149 @@ Pour cela, il est nécessaire de renseigner :
 
    Modification de fiche détaillée
 
-Cette section permet également de définir les champs qui seront affichés dans la liste des fiches sur le site.
+Cette section permet également de définir les champs qui seront affichés dans `la liste des fiches <https://terravisu.readthedocs.io/en/latest/user_manual/module_sheet.html#liste-des-fiches>`_.
 
-.. figure:: ../_static/images/django/config_fiche_liste.png
-   :alt: Liste des fiches détaillées
-   :align: center
-
-   Liste des fiches détaillées
-
-Champs de fiche
-~~~~~~~~~~~~~~~~~~~~
-
-Plusieurs types de champs sont disponibles :
-
-- **booléen** : avec possibilité d’associer des pictogrammes 
-- **textuel** 
-- **numérique** : avec possibilité de définir un suffixe et le nombre de décimales
-
-.. figure:: ../_static/images/django/config_fiche_champs.png
-   :alt: Liste des champs de fiche
-   :align: center
-
-   Liste des champs de fiche
-
-Blocs de fiche
-~~~~~~~~~~~~~~~~~~~~
+3. Blocs de fiche (sections)
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 .. figure:: ../_static/images/django/config_fiche_bloc_liste.png
-   :alt: Liste des blocs de fiche
+   :alt: Liste des sections de fiche
    :align: center
 
-   Liste des blocs de fiche
+   Liste des sections de fiche
 
 Champs
-^^^^^^
+""""""""
 
 .. figure:: ../_static/images/django/config_bloc_champ.png
-   :alt: Édition d'un bloc de type "Champs"
+   :alt: Édition d'une section de type "Champs"
    :align: center
 
-   Édition d'un bloc de type "Champs"
+   Édition d'une section de type "Champs"
 
 .. figure:: ../_static/images/django/config_bloc_champ_visu.png
-   :alt: Rendu du bloc de type "Champs"
+   :alt: Rendu d'une section de type "Champs"
    :align: center
 
-   Rendu du bloc de type "Champs"
+   Rendu d'une section de type "Champs"
 
 Carte
-^^^^^^
+""""""""
 
 .. figure:: ../_static/images/django/config_bloc_carte.png
-   :alt: Édition d'un bloc de type "Carte"
+   :alt: Édition d'une section de type "Carte"
    :align: center
 
-   Édition d'un bloc de type "Carte"
+   Édition d'une section de type "Carte"
 
 .. figure:: ../_static/images/django/config_bloc_carte_visu.png
-   :alt: Rendu du bloc de type "Carte"
+   :alt: Rendu d'une section de type "Carte"
    :align: center
 
-   Rendu du bloc de type "Carte"
+   Rendu d'une section de type "Carte"
 
 Panoramax
-^^^^^^^^^^
+""""""""""""
 
 .. figure:: ../_static/images/django/config_bloc_panoramax.png
-   :alt: Édition d'un bloc de type "Panoramax"
+   :alt: Édition d'une section de type "Panoramax"
    :align: center
 
-   Édition d'un bloc de type "Panoramax"
+   Édition d'une section de type "Panoramax"
 
 .. figure:: ../_static/images/django/config_bloc_panoramax_visu.png
-   :alt: Rendu du bloc de type "Panoramax"
+   :alt: Rendu d'une section de type "Panoramax"
    :align: center
 
-   Rendu du bloc de type "Panoramax"
+   Rendu d'une section de type "Panoramax"
 
 Booléens
-^^^^^^^^^^
+""""""""""
 
 .. figure:: ../_static/images/django/config_bloc_booleen.png
-   :alt: Édition d'un bloc de type "Booléens"
+   :alt: Édition d'une section de type "Booléens"
    :align: center
 
-   Édition d'un bloc de type "Booléens"
+   Édition d'une section de type "Booléens"
 
 .. figure:: ../_static/images/django/config_bloc_booleen_visu.png
-   :alt: Rendu du bloc de type "Booléens"
+   :alt: Rendu d'une section de type "Booléens"
    :align: center
 
-   Rendu du bloc de type "Booléens"
+   Rendu d'une section de type "Booléens"
 
 Graphique radar
-^^^^^^^^^^^^^^^^
+""""""""""""""""
 
 .. figure:: ../_static/images/django/config_bloc_graphiqueradar.png
-   :alt: Édition d'un bloc de type "Graphique radar"
+   :alt: Édition d'une section de type "Graphique radar"
    :align: center
 
-   Édition d'un bloc de type "Graphique radar"
+   Édition d'une section de type "Graphique radar"
 
 .. figure:: ../_static/images/django/config_bloc_graphiqueradar_visu.png
-   :alt: Rendu du bloc de type "Graphique radar"
+   :alt: Rendu d'une section de type "Graphique radar"
    :align: center
 
-   Rendu du bloc de type "Graphique radar"
+   Rendu d'une section de type "Graphique radar"
 
 Graphique de distribution
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+""""""""""""""""""""""""""
 
 .. figure:: ../_static/images/django/config_bloc_graphiquedistrib.png
-   :alt: Édition d'un bloc de type "Graphique de distribution"
+   :alt: Édition d'une section de type "Graphique de distribution"
    :align: center
 
-   Édition d'un bloc de type "Graphique de distribution"
+   Édition d'une section de type "Graphique de distribution"
 
 .. figure:: ../_static/images/django/config_bloc_graphiquedistrib_visu.png
-   :alt: Rendu du bloc de type "Graphique de distribution"
+   :alt: Rendu d'une section de type "Graphique de distribution"
    :align: center
 
-   Rendu du bloc de type "Graphique de distribution"
+   Rendu d'une section de type "Graphique de distribution"
 
 Graphique en barre
-^^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""
 
 .. figure:: ../_static/images/django/config_bloc_graphiqueenbarre.png
-   :alt: Édition d'un bloc de type "Graphique en barre"
+   :alt: Édition d'une section de type "Graphique en barre"
    :align: center
 
-   Édition d'un bloc de type "Graphique en barre"
+   Édition d'une section de type "Graphique en barre"
 
 .. figure:: ../_static/images/django/config_bloc_graphiqueenbarre_visu.png
-   :alt: Rendu du bloc de type "Graphique en barre"
+   :alt: Rendu d'une section de type "Graphique en barre"
    :align: center
 
-   Rendu du bloc de type "Graphique en barre"
+   Rendu d'une section de type "Graphique en barre"
 
 Tableau de champs
-^^^^^^^^^^^^^^^^^^
+"""""""""""""""""""
 
 .. figure:: ../_static/images/django/config_bloc_tableauchamps.png
-   :alt: Édition d'un bloc de type "Tableau de champs"
+   :alt: Édition d'une section de type "Tableau de champs"
    :align: center
 
-   Édition d'un bloc de type "Tableau de champs"
+   Édition d'une section de type "Tableau de champs"
 
 .. figure:: ../_static/images/django/config_bloc_tableauchamps_visu.png
-   :alt: Rendu du bloc de type "Tableau de champs"
+   :alt: Rendu d'une section de type "Tableau de champs"
    :align: center
 
-   Rendu du bloc de type "Tableau de champs"
+   Rendu d'une section de type "Tableau de champs"
 
 Texte
-^^^^^^
+""""""""
 
 .. figure:: ../_static/images/django/config_bloc_texte.png
-   :alt: Édition d'un bloc de type "Texte"
+   :alt: Édition d'une section de type "Texte"
    :align: center
 
-   Édition d'un bloc de type "Texte"
+   Édition d'une section de type "Texte"
 
 .. figure:: ../_static/images/django/config_bloc_texte_visu.png
-   :alt: Rendu du bloc de type "Texte"
+   :alt: Rendu d'une section de type "Texte"
    :align: center
 
-   Rendu du bloc de type "Texte"
+   Rendu d'une section de type "Texte"
 

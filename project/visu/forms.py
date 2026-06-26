@@ -97,7 +97,7 @@ class SheetListFieldInlineFormSet(BaseInlineFormSet):
                 _("Please select at least 1 field to display in the sheets list.")
             )
 
-        unique_sources = {f.source for f in fields}
+        unique_sources = {f.field.source for f in fields}
         if len(unique_sources) > 1:
             raise ValidationError(_("These fields must all come from the same source."))
         if next(iter(unique_sources)) not in sources:
@@ -124,6 +124,7 @@ class SheetBlockAdminForm(ModelForm):
             "title",
             "display_title",
             "type",
+            "is_tab",
             "fields_source",
             "first_geom_source",
             "second_geom_source",
@@ -135,7 +136,6 @@ class SheetBlockAdminForm(ModelForm):
             "fields_source",
             "first_geom_source",
             "second_geom_source",
-            "is_main_table",
         )
 
     def clean(self):
@@ -198,22 +198,6 @@ class SheetBlockAdminForm(ModelForm):
                 % {"fields_source": fields_source.slug}
             )
 
-        # Only one main table per sheet
-        is_main_table = cleaned_data.get("is_main_table")
-        if is_main_table and sheet:
-            main_table_block = SheetBlock.objects.filter(
-                sheet=sheet, is_main_table=True
-            )
-            if self.instance.pk:
-                main_table_block = main_table_block.exclude(pk=self.instance.pk)
-            if main_table_block.exists():
-                raise ValidationError(
-                    _(
-                        "Block '%(bloc_title)s is already set as main table for this sheet."
-                    )
-                    % {"bloc_title": main_table_block.first().title}
-                )
-
         return cleaned_data
 
 
@@ -238,8 +222,24 @@ class FeatureSheetAdminForm(ModelForm):
                         "source": source.name,
                     }
                 )
+        name_field = cleaned_data.get("name_field")
+        if name_field:
+            name_found = False
+            for source in sources:
+                if name_field.source == source:
+                    name_found = True
+                    break
+            if not name_found:
+                raise ValidationError(
+                    _(
+                        "Field '%(name_field)s' does not match the sources of the Feature Sheet"
+                    )
+                    % {
+                        "name_field": name_field.name,
+                    }
+                )
         return cleaned_data
 
     class Meta:
         model = FeatureSheet
-        fields = ("name", "unique_identifier", "sources", "list_fields")
+        fields = ("name", "unique_identifier", "name_field", "sources", "list_fields")

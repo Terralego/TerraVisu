@@ -226,49 +226,14 @@ class SheetBlockAdminFormTest(AdminTestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("Order field must be from selected source", str(form.errors))
 
-    def test_is_main_table_unique_per_sheet(self):
+    def test_is_tab_false_does_not_conflict(self):
         form = SheetBlockAdminForm(
             data={
                 "sheet": self.feature_sheet,
                 "type": SheetBlockType.FIELDS,
                 "fields_source": self.source,
                 "title": "Main block",
-                "is_main_table": True,
-            }
-        )
-        self.assertTrue(form.is_valid(), form.errors)
-        instance = form.save()
-        form = SheetBlockAdminForm(
-            instance=instance,
-            data={
-                "sheet": self.feature_sheet,
-                "type": SheetBlockType.FIELDS,
-                "fields_source": self.source,
-                "title": "Main block",
-                "is_main_table": True,
-            },
-        )
-        form.save()
-        form2 = SheetBlockAdminForm(
-            data={
-                "sheet": self.feature_sheet,
-                "type": SheetBlockType.FIELDS,
-                "fields_source": self.source,
-                "title": "Another block",
-                "is_main_table": True,
-            }
-        )
-        self.assertFalse(form2.is_valid())
-        self.assertIn("is already set as main table", str(form2.errors))
-
-    def test_is_main_table_false_does_not_conflict(self):
-        form = SheetBlockAdminForm(
-            data={
-                "sheet": self.feature_sheet,
-                "type": SheetBlockType.FIELDS,
-                "fields_source": self.source,
-                "title": "Main block",
-                "is_main_table": True,
+                "is_tab": True,
             }
         )
         self.assertTrue(form.is_valid(), form.errors)
@@ -279,7 +244,7 @@ class SheetBlockAdminFormTest(AdminTestCase):
                 "type": SheetBlockType.FIELDS,
                 "fields_source": self.source,
                 "title": "Another block",
-                "is_main_table": False,
+                "is_tab": False,
             }
         )
         self.assertTrue(form2.is_valid(), form2.errors)
@@ -346,6 +311,7 @@ class FeatureSheetAdminFormTest(AdminTestCase):
                 "name": "Test sheet",
                 "sources": [self.source_2],
                 "unique_identifier": self.textual_field_2.field,
+                "name_field": self.textual_field_2.field.pk,
             }
         )
         # One field from another source
@@ -355,7 +321,7 @@ class FeatureSheetAdminFormTest(AdminTestCase):
             "sheetlistfieldthroughmodel_set-INITIAL_FORMS": "0",
             "sheetlistfieldthroughmodel_set-MIN_NUM_FORMS": "0",
             "sheetlistfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
-            "sheetlistfieldthroughmodel_set-0-list_field": self.textual_field.field.pk,
+            "sheetlistfieldthroughmodel_set-0-list_field": self.textual_field.pk,
         }
         self.assertTrue(form.is_valid(), form.errors)
         sheet = form.save()
@@ -378,6 +344,7 @@ class FeatureSheetAdminFormTest(AdminTestCase):
                 "name": "Test sheet",
                 "sources": [self.source_2],
                 "unique_identifier": self.textual_field_2.field,
+                "name_field": self.textual_field_2.field,
             }
         )
         # Fields from different sources
@@ -387,8 +354,8 @@ class FeatureSheetAdminFormTest(AdminTestCase):
             "sheetlistfieldthroughmodel_set-INITIAL_FORMS": "0",
             "sheetlistfieldthroughmodel_set-MIN_NUM_FORMS": "0",
             "sheetlistfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
-            "sheetlistfieldthroughmodel_set-0-list_field": self.textual_field.field.pk,
-            "sheetlistfieldthroughmodel_set-1-list_field": self.textual_field_2.field.pk,
+            "sheetlistfieldthroughmodel_set-0-list_field": self.textual_field.pk,
+            "sheetlistfieldthroughmodel_set-1-list_field": self.textual_field_2.pk,
         }
         self.assertTrue(form.is_valid(), form.errors)
         sheet = form.save()
@@ -408,6 +375,7 @@ class FeatureSheetAdminFormTest(AdminTestCase):
                 "name": "Test sheet",
                 "sources": [self.source_2],
                 "unique_identifier": self.textual_field_2.field,
+                "name_field": self.textual_field_2.field,
             }
         )
         formset_data = {
@@ -439,10 +407,26 @@ class FeatureSheetAdminFormTest(AdminTestCase):
                 # source has no field matching textual_field_2
                 "sources": [self.source],
                 "unique_identifier": self.textual_field_2.field,
+                "name_field": self.textual_field.field,
             }
         )
         self.assertFalse(form.is_valid())
         self.assertIn("does not exist in source", str(form.errors))
+
+    def test_name_field_not_in_source(self):
+        form = FeatureSheetAdminForm(
+            data={
+                "name": "Test sheet",
+                # source has no field matching textual_field_2
+                "sources": [self.source],
+                "unique_identifier": self.textual_field.field,
+                "name_field": self.textual_field_2.field,
+            }
+        )
+        self.assertFalse(form.is_valid())
+        self.assertIn(
+            "does not match the sources of the Feature Sheet", str(form.errors)
+        )
 
     def test_valid_sheets_list_fields(self):
         form = FeatureSheetAdminForm(
@@ -450,6 +434,7 @@ class FeatureSheetAdminFormTest(AdminTestCase):
                 "name": "Test sheet",
                 "sources": [self.source_2],
                 "unique_identifier": self.textual_field_2.field,
+                "name_field": self.textual_field_2.field,
             }
         )
         # Fields from different sources
@@ -459,7 +444,7 @@ class FeatureSheetAdminFormTest(AdminTestCase):
             "sheetlistfieldthroughmodel_set-INITIAL_FORMS": "0",
             "sheetlistfieldthroughmodel_set-MIN_NUM_FORMS": "0",
             "sheetlistfieldthroughmodel_set-MAX_NUM_FORMS": "1000",
-            "sheetlistfieldthroughmodel_set-0-list_field": self.textual_field_2.field.pk,
+            "sheetlistfieldthroughmodel_set-0-list_field": self.textual_field_2.pk,
         }
         self.assertTrue(form.is_valid(), form.errors)
         sheet = form.save()
@@ -473,14 +458,12 @@ class FeatureSheetAdminFormTest(AdminTestCase):
         sheet.refresh_from_db()
         self.assertTrue(formset.is_valid(), form.errors)
         self.assertEqual(sheet.list_fields.count(), 1)
-        self.assertEqual(
-            str(sheet.list_fields.first()), str(self.textual_field_2.field)
-        )
+        self.assertEqual(str(sheet.list_fields.first()), str(self.textual_field_2))
         self.assertEqual(
             str(
                 SheetListFieldThroughModel.objects.filter(
-                    sheet=sheet, list_field=self.textual_field_2.field
+                    sheet=sheet, list_field=self.textual_field_2
                 ).first()
             ),
-            str(self.textual_field_2.field),
+            str(self.textual_field_2),
         )

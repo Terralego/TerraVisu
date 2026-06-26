@@ -67,37 +67,6 @@ class SheetBlockType(models.TextChoices):
     DISTRIB_PLOT = "DISTRIB_PLOT", _("Distribution plot")
 
 
-class FeatureSheet(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_("Sheet name"))
-    unique_identifier = models.ForeignKey(
-        Field,
-        on_delete=models.CASCADE,
-        verbose_name=_("Unique identifier"),
-        blank=False,
-    )
-    sources = models.ManyToManyField(
-        Source,
-        verbose_name=_("Sources"),
-        related_name="feature_sheet",
-        blank=False,
-    )
-    list_fields = models.ManyToManyField(
-        Field,
-        verbose_name=_("Sheets list field"),
-        related_name="sheets_list",
-        blank=True,
-        through="SheetListFieldThroughModel",
-        help_text=_("Please select the fields to display in the sheets list view"),
-    )
-
-    class Meta:
-        verbose_name = _("Feature sheet")
-        verbose_name_plural = _("Feature sheets")
-
-    def __str__(self):
-        return self.name
-
-
 class SheetField(OrderedModel):
     field = models.ForeignKey(
         Field, on_delete=models.CASCADE, verbose_name=_("Source field")
@@ -134,6 +103,45 @@ class SheetField(OrderedModel):
 
     def __str__(self):
         return f"{self.label} ({self.field.source.slug})"
+
+
+class FeatureSheet(models.Model):
+    name = models.CharField(max_length=255, verbose_name=_("Sheet name"))
+    unique_identifier = models.ForeignKey(
+        Field,
+        on_delete=models.CASCADE,
+        verbose_name=_("Unique identifier"),
+        related_name="feature_sheets_as_identifier",
+        blank=False,
+    )
+    name_field = models.ForeignKey(
+        Field,
+        on_delete=models.CASCADE,
+        verbose_name=_("Name field"),
+        related_name="feature_sheets_as_name",
+        blank=False,
+    )
+    sources = models.ManyToManyField(
+        Source,
+        verbose_name=_("Sources"),
+        related_name="feature_sheet",
+        blank=False,
+    )
+    list_fields = models.ManyToManyField(
+        SheetField,
+        verbose_name=_("Sheets list field"),
+        related_name="sheets_list",
+        blank=True,
+        through="SheetListFieldThroughModel",
+        help_text=_("Please select the fields to display in the sheets list view"),
+    )
+
+    class Meta:
+        verbose_name = _("Feature sheet")
+        verbose_name_plural = _("Feature sheets")
+
+    def __str__(self):
+        return self.name
 
 
 class SheetBlock(OrderedModel):
@@ -219,10 +227,10 @@ class SheetBlock(OrderedModel):
             "Please set the maximum number of features to return in this block"
         ),
     )
-    is_main_table = models.BooleanField(
+    is_tab = models.BooleanField(
         default=False,
-        verbose_name=_("Main table"),
-        help_text=_("These fields are to be displayed in the 'All values' tab"),
+        verbose_name=_("Display as tab"),
+        help_text=_("This block will be displayed in a dedicated tab."),
     )
 
     class Meta:
@@ -272,7 +280,7 @@ class ExtraSheetFieldThroughModel(OrderedModel):
 class SheetListFieldThroughModel(OrderedModel):
     sheet = models.ForeignKey(FeatureSheet, on_delete=models.CASCADE)
     list_field = models.ForeignKey(
-        Field, on_delete=models.CASCADE, verbose_name=_("Sheets list fields")
+        SheetField, on_delete=models.CASCADE, verbose_name=_("Sheets list fields")
     )
     order_with_respect_to = "sheet"
 
