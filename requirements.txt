@@ -195,9 +195,9 @@ pyasn1==0.6.3
     #   rsa
 pycparser==3.0
     # via cffi
-pyexcel==0.7.4
+pyexcel==0.7.5
     # via terravisu (pyproject.toml)
-pyexcel-io==0.6.7
+pyexcel-io==0.6.8
     # via pyexcel
 pyjwt==2.13.0
     # via drf-jwt
