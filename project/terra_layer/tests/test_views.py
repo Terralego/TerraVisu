@@ -8,9 +8,7 @@ from django.contrib.auth.models import Group
 from django.core import mail
 from django.core.cache import cache
 from django.core.files.uploadedfile import InMemoryUploadedFile, SimpleUploadedFile
-from django.db import connection
 from django.test import RequestFactory
-from django.test.utils import CaptureQueriesContext
 from django.urls import reverse
 from geostore.tests.factories import LayerFactory
 from PIL import Image
