@@ -4,6 +4,16 @@ from functools import reduce
 
 from django.db import connection
 
+from .classifiers import (
+    discretize_jenks_kmeans1d,
+    discretize_equal_interval as discretize_equal_interval_mapclassify,
+    discretize_quantile as discretize_quantile_mapclassify,
+    discretize_prettybreaks,
+    discretize_fisherjenkssampled,
+)
+
+
+
 style_type_2_legend_shape = {
     "fill-extrusion": "square",
     "fill": "square",
@@ -132,10 +142,7 @@ def discretize_quantile(geo_layer, field, class_count):
 
 
 def discretize_jenks(geo_layer, field, class_count):
-    """
-    Compute Jenks class boundaries from a layer property.
-    Note: Use PostGIS ST_ClusterKMeans() as k-means function.
-    """
+    """Compute Jenks (ST_ClusterKMeans) class boundaries from a layer property."""
     with connection.cursor() as cursor:
         cursor.execute(
             """
@@ -189,19 +196,25 @@ def discretize_equal_interval(geo_layer, field, class_count):
 
 def discretize(geo_layer, field, method, class_count):
     """
-    Select a method to compute class boundaries.
-    Compute (len(class_count) + 1) boundaries.
-    Note, can returns less boundaries than requested if lesser values in property than class_count
+    Select a method to compute class boundaries.
+    Compute (len(class_count) + 1) boundaries.
+    Note, can returns less boundaries than requested if lesser values in property than class_count
     """
-    if method == "quantile":
-        return discretize_quantile(geo_layer, field, class_count)
-    elif method == "jenks":
-        return discretize_jenks(geo_layer, field, class_count)
-    elif method == "equal_interval":
-        return discretize_equal_interval(geo_layer, field, class_count)
-    else:
-        msg = f'Unknow discretize method "{method}"'
-        raise ValueError(msg)
+    dispatch = {
+        "jenks": discretize_jenks,
+        "jenks_kmeans1d": discretize_jenks_kmeans1d,
+        "quantile": discretize_quantile,
+        "quantile_mapclassify": discretize_quantile_mapclassify,
+        "equal_interval": discretize_equal_interval,
+        "equal_interval_mapclassify": discretize_equal_interval_mapclassify,
+        "prettybreaks": discretize_prettybreaks,
+        "fisherjenkssampled": discretize_fisherjenkssampled,
+    }
+    fn = dispatch.get(method)
+    if fn:
+        return fn(geo_layer, field, class_count)
+    msg = f'Unknown discretize method "{method}"'
+    raise ValueError(msg)
 
 
 def get_style_no_value_condition(key, with_value, with_no_value):
