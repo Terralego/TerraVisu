@@ -430,7 +430,7 @@ tzdata==2026.2
     #   -c requirements.txt
     #   django-celery-beat
     #   kombu
-tzlocal==5.3.1
+tzlocal==5.4.3
     # via
     #   -c requirements.txt
     #   celery
