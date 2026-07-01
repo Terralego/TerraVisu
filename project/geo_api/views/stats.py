@@ -15,6 +15,38 @@ class Quantile(Aggregate):
     template = "%(function)s(%(quantile)s) WITHIN GROUP (ORDER BY %(expressions)s)"
 
 
+def _count_by_intervals(qs, cast_field, intervals):
+    """
+    intervals: list of (x0, x1) tuples
+    Returns list of counts, one per interval.
+    All intervals use val__gte x0 + val__lt x1, except the last which uses val__lte x1.
+    """
+    if not intervals:
+        return []
+    cases = []
+    last_idx = len(intervals) - 1
+    for i, (x0, x1) in enumerate(intervals):
+        if i == last_idx:
+            w = When(val__gte=Value(x0, output_field=FloatField()),
+                     val__lte=Value(x1, output_field=FloatField()),
+                     then=Value(i))
+        else:
+            w = When(val__gte=Value(x0, output_field=FloatField()),
+                     val__lt=Value(x1, output_field=FloatField()),
+                     then=Value(i))
+        cases.append(w)
+    bucket_counts = dict(
+        (qs
+         .annotate(val=cast_field)
+         .annotate(bucket=Case(*cases, output_field=IntegerField(), default=Value(-1)))
+         .exclude(bucket__lt=0)
+         .values('bucket')
+         .annotate(cnt=Count('*'))
+         .values_list('bucket', 'cnt'))
+    )
+    return [bucket_counts.get(i, 0) for i in range(len(intervals))]
+
+
 def _round_val(val, precision=2):
     if val is not None:
         try:
@@ -62,25 +94,13 @@ def _compute_fd_bins(values_qs, field, min_val, max_val, q1, q3, count=None):
 
     cast_field = Cast(KeyTextTransform(field, "properties"), FloatField())
 
-    cases = []
+    intervals = []
     for i in range(nb_bins):
         x0 = min_val + i * bin_width
         x1 = (min_val + (i + 1) * bin_width) if i < nb_bins - 1 else (max_val + 0.0001)
-        cases.append(
-            When(val__gte=Value(x0, output_field=FloatField()),
-                 val__lt=Value(x1, output_field=FloatField()),
-                 then=Value(i))
-        )
+        intervals.append((x0, x1))
 
-    bucket_counts = dict(
-        (values_qs
-         .annotate(val=cast_field)
-         .annotate(bucket=Case(*cases, output_field=IntegerField(), default=Value(-1)))
-         .exclude(bucket__lt=0)
-         .values('bucket')
-         .annotate(cnt=Count('*'))
-         .values_list('bucket', 'cnt'))
-    )
+    bucket_counts = _count_by_intervals(values_qs, cast_field, intervals)
 
     bins = []
     for i in range(nb_bins):
@@ -89,7 +109,7 @@ def _compute_fd_bins(values_qs, field, min_val, max_val, q1, q3, count=None):
         bins.append({
             "x0": _round_val(x0),
             "x1": _round_val(x1),
-            "count": bucket_counts.get(i, 0),
+            "count": bucket_counts[i],
         })
 
     return bins

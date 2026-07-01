@@ -1,4 +1,4 @@
-from django.db.models import Case, Count, FloatField, IntegerField, Value, When
+from django.db.models import FloatField
 from django.db.models.fields.json import KeyTextTransform
 from django.db.models.functions import Cast
 from geostore.models import Feature
@@ -8,7 +8,7 @@ from rest_framework import status
 
 from project.terra_layer.style.utils import discretize as _discretize
 
-from .stats import _aggregate_stats
+from .stats import _aggregate_stats, _count_by_intervals
 
 
 def _parse_manual_breaks(breaks_str):
@@ -27,33 +27,6 @@ def _parse_manual_breaks(breaks_str):
     if not all(raw[i] < raw[i + 1] for i in range(len(raw) - 1)):
         return None
     return raw
-
-
-def _compute_entities(qs, cast_field, breaks):
-    if not breaks or len(breaks) < 2:
-        return []
-    cases = []
-    last_idx = len(breaks) - 2
-    for i in range(last_idx + 1):
-        if i == last_idx:
-            w = When(val__gte=Value(breaks[i], output_field=FloatField()),
-                     val__lte=Value(breaks[i + 1], output_field=FloatField()),
-                     then=Value(i))
-        else:
-            w = When(val__gte=Value(breaks[i], output_field=FloatField()),
-                     val__lt=Value(breaks[i + 1], output_field=FloatField()),
-                     then=Value(i))
-        cases.append(w)
-    class_counts = dict(
-        (qs
-         .annotate(val=cast_field)
-         .annotate(klass=Case(*cases, output_field=IntegerField(), default=Value(-1)))
-         .exclude(klass__lt=0)
-         .values('klass')
-         .annotate(cnt=Count('*'))
-         .values_list('klass', 'cnt'))
-    )
-    return [class_counts.get(i, 0) for i in range(len(breaks) - 1)]
 
 
 class DiscretizeMixin:
@@ -82,7 +55,7 @@ class DiscretizeMixin:
                     status=status.HTTP_400_BAD_REQUEST,
                 )
             classes = len(breaks) - 1
-            entities_by_class = _compute_entities(qs, cast_field, breaks)
+            entities_by_class = _count_by_intervals(qs, cast_field, list(zip(breaks[:-1], breaks[1:])))
             stats = _aggregate_stats(qs, cast_field)
             return Response({
                 "breaks": breaks,
@@ -91,19 +64,14 @@ class DiscretizeMixin:
             })
 
         breaks = _discretize(layer_obj, field, method, classes) or []
-        entities_by_class = _compute_entities(qs, cast_field, breaks)
+        intervals = list(zip(breaks[:-1], breaks[1:])) if len(breaks) >= 2 else []
+        entities_by_class = _count_by_intervals(qs, cast_field, intervals)
 
         stats = _aggregate_stats(qs, cast_field)
 
         if not breaks or len(breaks) < 2:
             breaks = [stats.get("min") or 0, stats.get("max") or 1]
-            entities_by_class = []
-            for i in range(len(breaks) - 1):
-                cnt = qs.filter(
-                    **{f"properties__{field}__gte": breaks[i]},
-                    **{f"properties__{field}__lte": breaks[i + 1]},
-                ).count()
-                entities_by_class.append(cnt)
+            entities_by_class = _count_by_intervals(qs, cast_field, list(zip(breaks[:-1], breaks[1:])))
 
         while len(entities_by_class) < classes:
             entities_by_class.append(0)
