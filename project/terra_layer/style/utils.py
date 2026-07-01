@@ -6,10 +6,6 @@ from django.db import connection
 
 from .classifiers import (
     discretize_jenks_kmeans1d,
-    discretize_equal_interval as discretize_equal_interval_mapclassify,
-    discretize_quantile as discretize_quantile_mapclassify,
-    discretize_prettybreaks,
-    discretize_fisherjenkssampled,
 )
 
 
@@ -204,11 +200,7 @@ def discretize(geo_layer, field, method, class_count):
         "jenks": discretize_jenks,
         "jenks_kmeans1d": discretize_jenks_kmeans1d,
         "quantile": discretize_quantile,
-        "quantile_mapclassify": discretize_quantile_mapclassify,
         "equal_interval": discretize_equal_interval,
-        "equal_interval_mapclassify": discretize_equal_interval_mapclassify,
-        "prettybreaks": discretize_prettybreaks,
-        "fisherjenkssampled": discretize_fisherjenkssampled,
     }
     fn = dispatch.get(method)
     if fn:

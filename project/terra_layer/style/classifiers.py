@@ -1,7 +1,4 @@
-import numpy as np
-
 import kmeans1d
-import mapclassify
 from django.db import connection
 
 
@@ -35,41 +32,3 @@ def discretize_jenks_kmeans1d(geo_layer, field, class_count):
     return breaks
 
 
-def discretize_quantile(geo_layer, field, class_count):
-    """Quantiles via mapclassify : effectifs égaux par classe.  list[float] de class_count+1 bornes."""
-    values = _fetch_values(geo_layer, field)
-    if len(values) < 2:
-        return []
-    arr = np.array(values)
-    q = mapclassify.Quantiles(arr, k=class_count)
-    return [float(arr.min())] + [float(b) for b in q.bins]
-
-
-def discretize_equal_interval(geo_layer, field, class_count):
-    """Intervalles égaux via mapclassify : sensible aux outliers.  list[float] de class_count+1 bornes."""
-    values = _fetch_values(geo_layer, field)
-    if len(values) < 2:
-        return []
-    arr = np.array(values)
-    ei = mapclassify.EqualInterval(arr, k=class_count)
-    return [float(arr.min())] + [float(b) for b in ei.bins]
-
-
-def discretize_prettybreaks(geo_layer, field, class_count):
-    """Pretty Breaks via mapclassify : bornes arrondies « jolies ».  list[float] de class_count+1 bornes."""
-    values = _fetch_values(geo_layer, field)
-    if len(values) < 2:
-        return []
-    arr = np.array(values)
-    pb = mapclassify.PrettyBreaks(arr, k=class_count)
-    return [float(arr.min())] + [float(b) for b in pb.bins]
-
-
-def discretize_fisherjenkssampled(geo_layer, field, class_count):
-    """FisherJenks Sampled via mapclassify (échantillon 10%) : optimal mais potentiellement lent.  list[float] de class_count+1 bornes."""
-    values = _fetch_values(geo_layer, field)
-    if len(values) < 2:
-        return []
-    arr = np.array(values)
-    fj = mapclassify.FisherJenksSampled(arr, k=class_count, pct=0.1)
-    return [float(arr.min())] + [float(b) for b in fj.bins]
