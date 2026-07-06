@@ -227,7 +227,7 @@ requests==2.33.0
     # via
     #   django-geostore
     #   openid-connect
-rpds-py==0.30.0
+rpds-py==2026.6.3
     # via
     #   jsonschema
     #   referencing
