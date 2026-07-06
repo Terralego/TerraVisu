@@ -8,7 +8,7 @@ from rest_framework import status
 
 from project.terra_layer.style.utils import discretize as _discretize
 
-from .stats import _aggregate_stats, _count_by_intervals
+from .stats import _aggregate_stats, _count_by_intervals, ALL_STATS_FIELDS
 
 
 def _parse_manual_breaks(breaks_str):
@@ -56,7 +56,7 @@ class DiscretizeMixin:
                 )
             classes = len(breaks) - 1
             entities_by_class = _count_by_intervals(qs, cast_field, list(zip(breaks[:-1], breaks[1:])))
-            stats = _aggregate_stats(qs, cast_field)
+            stats = _aggregate_stats(qs, cast_field, fields=ALL_STATS_FIELDS)
             return Response({
                 "breaks": breaks,
                 "entitiesByClass": entities_by_class,
@@ -67,7 +67,7 @@ class DiscretizeMixin:
         intervals = list(zip(breaks[:-1], breaks[1:])) if len(breaks) >= 2 else []
         entities_by_class = _count_by_intervals(qs, cast_field, intervals)
 
-        stats = _aggregate_stats(qs, cast_field)
+        stats = _aggregate_stats(qs, cast_field, fields=ALL_STATS_FIELDS)
 
         if not breaks or len(breaks) < 2:
             breaks = [stats.get("min") or 0, stats.get("max") or 1]

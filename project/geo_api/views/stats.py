@@ -1,12 +1,22 @@
 import math
 
-from django.db.models import Avg, Case, Count, FloatField, IntegerField, Max, Min, StdDev, Value, When
+from django.db.models import Avg, Case, Count, FloatField, IntegerField, Max, Min, StdDev, Sum, Value, When
 from django.db.models.aggregates import Aggregate
 from django.db.models.fields.json import KeyTextTransform
 from django.db.models.functions import Cast, Random
 from geostore.models import Feature
 from rest_framework.decorators import action
 from rest_framework.response import Response
+
+
+STD_AGGS = frozenset({"min", "max", "avg", "sum", "count", "std_dev", "total_count"})
+QUANTILE_AGGS = {"median": 0.50, "q1": 0.25, "q3": 0.75}
+ALL_STATS_FIELDS = STD_AGGS | set(QUANTILE_AGGS.keys())
+
+
+def _cast_field(field):
+    clean = field.replace(".keyword", "")
+    return Cast(KeyTextTransform(clean, "properties"), FloatField())
 
 
 class Quantile(Aggregate):
@@ -56,20 +66,30 @@ def _round_val(val, precision=2):
     return val
 
 
-def _aggregate_stats(qs, cast_field):
-    stats = qs.aggregate(
-        min=Min(cast_field),
-        max=Max(cast_field),
-        avg=Avg(cast_field),
-        median=Quantile(cast_field, quantile=0.50),
-        std_dev=StdDev(cast_field),
-        count=Count(cast_field),
-        q1=Quantile(cast_field, quantile=0.25),
-        q3=Quantile(cast_field, quantile=0.75),
-        total_count=Count("*"),
-    )
-    for k in ("min", "max", "avg", "median", "std_dev", "q1", "q3"):
-        stats[k] = _round_val(stats.get(k))
+def _aggregate_stats(qs, cast_field, fields=None):
+    if fields is None:
+        fields = STD_AGGS
+
+    agg_kwargs = {}
+    for f in fields:
+        if f == "min": agg_kwargs[f] = Min(cast_field)
+        elif f == "max": agg_kwargs[f] = Max(cast_field)
+        elif f == "avg": agg_kwargs[f] = Avg(cast_field)
+        elif f == "sum": agg_kwargs[f] = Sum(cast_field)
+        elif f == "count": agg_kwargs[f] = Count(cast_field)
+        elif f == "std_dev": agg_kwargs[f] = StdDev(cast_field)
+        elif f == "total_count": agg_kwargs[f] = Count("*")
+        elif f in QUANTILE_AGGS:
+            agg_kwargs[f] = Quantile(cast_field, quantile=QUANTILE_AGGS[f])
+
+    if not agg_kwargs:
+        return {}
+
+    stats = qs.aggregate(**agg_kwargs)
+
+    for k in stats:
+        if k not in ("count", "total_count"):
+            stats[k] = _round_val(stats.get(k))
     return stats
 
 
@@ -92,24 +112,20 @@ def _compute_fd_bins(values_qs, field, min_val, max_val, q1, q3, count=None):
     nb_bins = max(1, math.ceil((max_val - min_val) / bin_width))
     nb_bins = min(nb_bins, 100)
 
-    cast_field = Cast(KeyTextTransform(field, "properties"), FloatField())
-
     intervals = []
     for i in range(nb_bins):
         x0 = min_val + i * bin_width
         x1 = (min_val + (i + 1) * bin_width) if i < nb_bins - 1 else (max_val + 0.0001)
         intervals.append((x0, x1))
 
-    bucket_counts = _count_by_intervals(values_qs, cast_field, intervals)
+    bucket_counts = _count_by_intervals(values_qs, _cast_field(field), intervals)
 
     bins = []
-    for i in range(nb_bins):
-        x0 = min_val + i * bin_width
-        x1 = (min_val + (i + 1) * bin_width) if i < nb_bins - 1 else (max_val + 0.0001)
+    for (x0, x1), count in zip(intervals, bucket_counts):
         bins.append({
             "x0": _round_val(x0),
             "x1": _round_val(x1),
-            "count": bucket_counts[i],
+            "count": count,
         })
 
     return bins
@@ -119,17 +135,18 @@ class StatsMixin:
     @action(detail=False, methods=["get"], url_path="stats/(?P<field>[^/.]+)")
     def stats(self, request, layer=None, field=None):
         qs = Feature.objects.filter(layer=self.get_layer())
-        cast_field = Cast(KeyTextTransform(field, "properties"), FloatField())
-        stats = _aggregate_stats(qs, cast_field)
+        cast_field = _cast_field(field)
+        stats = _aggregate_stats(qs, cast_field, fields=ALL_STATS_FIELDS)
         return Response(stats)
 
     @action(detail=False, methods=["get"],
             url_path="stats/(?P<field>[^/.]+)/distribution")
     def distribution(self, request, layer=None, field=None):
-        cast_field = Cast(KeyTextTransform(field, "properties"), FloatField())
+        cast_field = _cast_field(field)
         qs = Feature.objects.filter(layer=self.get_layer())
 
-        stats = _aggregate_stats(qs, cast_field)
+        needed = {"min", "max", "q1", "q3", "median", "count", "total_count"}
+        stats = _aggregate_stats(qs, cast_field, fields=needed)
 
         min_val = stats.get("min")
         max_val = stats.get("max")
