@@ -1,6 +1,0 @@
-{% load i18n %}
-{% blocktrans %}
-Hello {{ username }}
-
-Your file is ready : {{ url }}
-{% endblocktrans %}
