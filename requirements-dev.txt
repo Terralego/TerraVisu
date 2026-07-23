@@ -69,7 +69,7 @@ cligj==0.7.2
     # via
     #   -c requirements.txt
     #   fiona
-conditional==2.0
+conditional==2.2
     # via
     #   -c requirements.txt
     #   django-clone
