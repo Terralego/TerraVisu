@@ -189,7 +189,7 @@ psycopg2==2.9.12
     # via
     #   terravisu (pyproject.toml)
     #   django-geostore
-pyasn1==0.6.3
+pyasn1==0.6.4
     # via
     #   python-jose
     #   rsa
