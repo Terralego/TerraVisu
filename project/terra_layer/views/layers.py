@@ -270,9 +270,7 @@ class SceneTreeAPIView(APIView):
         ]
 
         layer_structure["styleImages"] = StyleImageSerializer(
-            StyleImage.objects.filter(
-                layer__in=self.scene.layers.values_list("pk", flat=True)
-            ),
+            StyleImage.objects.all(),
             many=True,
             context={"request": self.request},
         ).data

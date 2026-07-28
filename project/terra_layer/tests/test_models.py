@@ -142,23 +142,16 @@ class LayerTestCase(TestCase):
 
     def test_clone(self):
         layer = LayerFactory(group=LayerGroupFactory())
-        style_image = StyleImageFactory(layer=layer)
+        style_image = StyleImageFactory()
         layer.main_style = {"symbol": {"image": style_image.slug}}
         layer.save()
         clone = layer.make_clone()
         # clone should have "Copy" in name
         self.assertEqual(clone.name, f"{layer.name} (Copy)")
-        # style images and extra styles should be copied
-        self.assertEqual(clone.style_images.count(), layer.style_images.count())
+        # extra styles should be copied
         self.assertEqual(clone.extra_styles.count(), layer.extra_styles.count())
         # layer group should not be defined (excluded by default from any view)
         self.assertIsNone(clone.group)
-        # style image references in styles should be updated with new ones)
-        self.assertNotEqual(
-            style_image.slug,
-            clone.main_style["symbol"]["image"],
-            clone.style_images.values_list("slug", flat=True),
-        )
 
 
 class LayerGroupTestCase(TestCase):
