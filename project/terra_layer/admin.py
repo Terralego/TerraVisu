@@ -36,9 +36,6 @@ class StyleImageInline(admin.TabularInline):
 
 @admin.register(Layer)
 class LayerAdmin(CloneModelAdmin):
-    inlines = [
-        StyleImageInline,
-    ]
     list_display = ("id", "name", "source", "layer_identifier", "uuid")
     list_filter = ("source",)
     search_fields = ("name", "layer_identifier", "id", "uuid")
