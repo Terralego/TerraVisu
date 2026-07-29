@@ -42,7 +42,7 @@ charset-normalizer==3.4.6
     # via
     #   -c requirements.txt
     #   requests
-click==8.3.1
+click==8.4.2
     # via
     #   -c requirements.txt
     #   celery
@@ -258,7 +258,7 @@ gunicorn==26.0.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-idna==3.11
+idna==3.15
     # via
     #   -c requirements.txt
     #   requests
@@ -424,6 +424,7 @@ texttable==1.7.0
 typing-extensions==4.15.0
     # via
     #   -c requirements.txt
+    #   django-polymorphic
     #   referencing
 tzdata==2026.3
     # via
@@ -438,7 +439,7 @@ uritemplate==4.2.0
     # via
     #   -c requirements.txt
     #   drf-spectacular
-urllib3==2.6.3
+urllib3==2.7.0
     # via
     #   -c requirements.txt
     #   elastic-transport
