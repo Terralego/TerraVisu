@@ -2,7 +2,7 @@
 #    uv pip compile pyproject.toml -o requirements.txt
 amqp==5.3.1
     # via kombu
-asgiref==3.11.1
+asgiref==3.12.1
     # via
     #   django
     #   django-cors-headers
@@ -49,7 +49,7 @@ click-repl==0.3.0
     # via celery
 cligj==0.7.2
     # via fiona
-conditional==2.0
+conditional==2.2
     # via django-clone
 crispy-bootstrap5==2026.3
     # via terravisu (pyproject.toml)
@@ -116,7 +116,7 @@ django-mapbox-baselayer==1.2.2
     # via terravisu (pyproject.toml)
 django-ordered-model==3.7.4
     # via terravisu (pyproject.toml)
-django-polymorphic==4.11.5
+django-polymorphic==4.11.6
     # via terravisu (pyproject.toml)
 django-timezone-field==7.2.2
     # via django-celery-beat
@@ -137,7 +137,7 @@ drf-extra-fields==3.7.0
     # via terravisu (pyproject.toml)
 drf-jwt==1.19.2
     # via terravisu (pyproject.toml)
-drf-spectacular==0.29.0
+drf-spectacular==0.30.0
     # via terravisu (pyproject.toml)
 ecdsa==0.19.2
     # via python-jose
@@ -189,7 +189,7 @@ psycopg2==2.9.12
     # via
     #   terravisu (pyproject.toml)
     #   django-geostore
-pyasn1==0.6.3
+pyasn1==0.6.4
     # via
     #   python-jose
     #   rsa
@@ -252,7 +252,7 @@ typing-extensions==4.15.0
     # via
     #   django-polymorphic
     #   referencing
-tzdata==2026.2
+tzdata==2026.3
     # via
     #   django-celery-beat
     #   kombu
@@ -270,5 +270,5 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-wcwidth==0.8.1
+wcwidth==0.8.2
     # via prompt-toolkit
