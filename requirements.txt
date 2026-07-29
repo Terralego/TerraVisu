@@ -19,7 +19,7 @@ celery==5.6.3
     #   django-celery-beat
     #   django-celery-results
     #   django-geostore
-certifi==2026.2.25
+certifi==2026.7.22
     # via
     #   elastic-transport
     #   fiona
@@ -28,9 +28,9 @@ certifi==2026.2.25
     #   sentry-sdk
 cffi==2.0.0
     # via cryptography
-charset-normalizer==3.4.6
+charset-normalizer==3.4.9
     # via requests
-click==8.3.1
+click==8.4.2
     # via
     #   celery
     #   click-didyoumean
