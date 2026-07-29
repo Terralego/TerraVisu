@@ -46,7 +46,7 @@ markupsafe==2.1.5
     # via
     #   jinja2
     #   sphinx-immaterial
-packaging==26.0
+packaging==26.2
     # via
     #   -c ../requirements.txt
     #   sphinx
