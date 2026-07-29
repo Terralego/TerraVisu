@@ -4,7 +4,7 @@ amqp==5.3.1
     # via
     #   -c requirements.txt
     #   kombu
-asgiref==3.11.1
+asgiref==3.12.1
     # via
     #   -c requirements.txt
     #   django
@@ -69,11 +69,11 @@ cligj==0.7.2
     # via
     #   -c requirements.txt
     #   fiona
-conditional==2.0
+conditional==2.2
     # via
     #   -c requirements.txt
     #   django-clone
-coverage==7.15.0
+coverage==7.15.2
     # via terravisu (pyproject.toml)
 crispy-bootstrap5==2026.3
     # via
@@ -183,7 +183,7 @@ django-ordered-model==3.7.4
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-django-polymorphic==4.11.5
+django-polymorphic==4.11.6
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
@@ -219,7 +219,7 @@ drf-jwt==1.19.2
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-drf-spectacular==0.29.0
+drf-spectacular==0.30.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
@@ -237,7 +237,7 @@ elasticsearch==8.17.2
     #   terravisu (pyproject.toml)
 factory-boy==3.3.3
     # via terravisu (pyproject.toml)
-faker==40.28.1
+faker==40.36.0
     # via factory-boy
 filetype==1.2.0
     # via
@@ -313,7 +313,7 @@ psycopg2==2.9.12
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
     #   django-geostore
-pyasn1==0.6.3
+pyasn1==0.6.4
     # via
     #   -c requirements.txt
     #   python-jose
@@ -390,7 +390,7 @@ rsa==4.9.1
     # via
     #   -c requirements.txt
     #   python-jose
-ruff==0.15.20
+ruff==0.16.0
     # via terravisu (pyproject.toml)
 sentry-sdk==2.64.0
     # via
@@ -426,7 +426,7 @@ typing-extensions==4.15.0
     #   -c requirements.txt
     #   django-polymorphic
     #   referencing
-tzdata==2026.2
+tzdata==2026.3
     # via
     #   -c requirements.txt
     #   django-celery-beat
@@ -451,7 +451,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-wcwidth==0.8.1
+wcwidth==0.8.2
     # via
     #   -c requirements.txt
     #   prompt-toolkit
