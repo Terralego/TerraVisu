@@ -3,8 +3,7 @@ from django.utils.text import slugify
 from django.utils.translation import gettext_lazy as _
 from ordered_model.models import OrderedModel
 
-from project.geosource.models import Field
-from project.terra_layer.models import Layer
+from project.geosource.models import Field, Source
 
 
 class SpriteValue(models.Model):
@@ -68,23 +67,6 @@ class SheetBlockType(models.TextChoices):
     DISTRIB_PLOT = "DISTRIB_PLOT", _("Distribution plot")
 
 
-class FeatureSheet(models.Model):
-    name = models.CharField(max_length=255, verbose_name=_("Sheet name"))
-    unique_identifier = models.ForeignKey(
-        Field, on_delete=models.CASCADE, verbose_name=_("Unique identifier")
-    )
-    accessible_from = models.ManyToManyField(
-        Layer, verbose_name=_("Accessible from"), related_name="feature_sheet"
-    )
-
-    class Meta:
-        verbose_name = _("Feature sheet")
-        verbose_name_plural = _("Feature sheets")
-
-    def __str__(self):
-        return self.name
-
-
 class SheetField(OrderedModel):
     field = models.ForeignKey(
         Field, on_delete=models.CASCADE, verbose_name=_("Source field")
@@ -120,7 +102,46 @@ class SheetField(OrderedModel):
         ordering = ("order",)
 
     def __str__(self):
-        return self.label
+        return f"{self.label} ({self.field.source.slug})"
+
+
+class FeatureSheet(models.Model):
+    name = models.CharField(max_length=255, verbose_name=_("Sheet name"))
+    unique_identifier = models.ForeignKey(
+        Field,
+        on_delete=models.CASCADE,
+        verbose_name=_("Unique identifier"),
+        related_name="feature_sheets_as_identifier",
+        blank=False,
+    )
+    name_field = models.ForeignKey(
+        Field,
+        on_delete=models.CASCADE,
+        verbose_name=_("Name field"),
+        related_name="feature_sheets_as_name",
+        blank=False,
+    )
+    sources = models.ManyToManyField(
+        Source,
+        verbose_name=_("Sources"),
+        related_name="feature_sheet",
+        blank=False,
+    )
+    list_fields = models.ManyToManyField(
+        SheetField,
+        verbose_name=_("Sheets list field"),
+        related_name="sheets_list",
+        blank=True,
+        through="SheetListFieldThroughModel",
+        help_text=_("Please select the fields to display in the sheets list view"),
+    )
+
+    class Meta:
+        verbose_name = _("Feature sheet")
+        verbose_name_plural = _("Feature sheets")
+
+    def __str__(self):
+        return self.name
 
 
 class SheetBlock(OrderedModel):
@@ -157,15 +178,59 @@ class SheetBlock(OrderedModel):
         ),
     )
     text = models.TextField(blank=True, verbose_name=_("Text"))
-    geom_field = models.ForeignKey(
-        Field,
+    fields_source = models.ForeignKey(
+        Source,
         on_delete=models.CASCADE,
-        verbose_name=_("Geometry field"),
+        verbose_name=_("Fields source"),
         blank=True,
         null=True,
         help_text=_(
-            "Please select a field corresponding to the centroid of the feature"
+            "Please select a source from which to retrieve the fields for this block."
         ),
+        related_name="sheetblock_as_fields",
+    )
+    first_geom_source = models.ForeignKey(
+        Source,
+        on_delete=models.CASCADE,
+        verbose_name=_("Geometry source"),
+        blank=True,
+        null=True,
+        help_text=_(
+            "Please select a source from which to retrieve a geometry field for this block."
+        ),
+        related_name="sheetblock_as_first_geom",
+    )
+    second_geom_source = models.ForeignKey(
+        Source,
+        on_delete=models.CASCADE,
+        verbose_name=_("Second geometry source"),
+        blank=True,
+        null=True,
+        help_text=_(
+            "Optionally select a source from which to retrieve a second geometry field for this map."
+        ),
+        related_name="sheetblock_as_second_geom",
+    )
+    order_field = models.ForeignKey(
+        Field,
+        on_delete=models.CASCADE,
+        verbose_name=_("Order field"),
+        blank=True,
+        null=True,
+        help_text=_("Please select the field that defines ordering for this block"),
+    )
+    limit = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        verbose_name=_("Limit"),
+        help_text=_(
+            "Please set the maximum number of features to return in this block"
+        ),
+    )
+    is_tab = models.BooleanField(
+        default=False,
+        verbose_name=_("Display as tab"),
+        help_text=_("This block will be displayed in a dedicated tab."),
     )
 
     class Meta:
@@ -210,3 +275,19 @@ class ExtraSheetFieldThroughModel(OrderedModel):
 
     def __str__(self):
         return str(self.extra_field)
+
+
+class SheetListFieldThroughModel(OrderedModel):
+    sheet = models.ForeignKey(FeatureSheet, on_delete=models.CASCADE)
+    list_field = models.ForeignKey(
+        SheetField, on_delete=models.CASCADE, verbose_name=_("Sheets list fields")
+    )
+    order_with_respect_to = "sheet"
+
+    class Meta:
+        ordering = ("order",)
+        verbose_name = _("Sheets list field")
+        verbose_name_plural = _("Sheets list fields")
+
+    def __str__(self):
+        return str(self.list_field)

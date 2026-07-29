@@ -25,6 +25,7 @@ TerraVisu — Documentation
    user_manual/user_guide.rst
    user_manual/admin_user_guide.rst
    user_manual/module_configuration.rst
+   user_manual/module_sheet.rst
 
 .. toctree::
    :maxdepth: 2
@@ -61,6 +62,7 @@ TerraVisu — Documentation
 - :doc:`Discover the TerraVisu platform <user_manual/user_guide>`
 - :doc:`First steps with the admin interface <user_manual/admin_user_guide>`
 - :doc:`Customize your modules <user_manual/module_configuration>`
+- :doc:`Explore detailed sheets <user_manual/module_sheet>`
 
 🔧 Install & Configure
 ------------------------

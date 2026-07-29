@@ -12,7 +12,12 @@ from project.visu.api import CommonSettings
 from project.visu.serializers import ExtraMenuItemSerializer
 from project.visu.tests.factories import ExtraMenuItemFactory, SpriteValueFactory
 
-from ..models import ExtraSheetFieldThroughModel, SheetFieldThroughModel, SheetFieldType
+from ..models import (
+    ExtraSheetFieldThroughModel,
+    SheetBlockType,
+    SheetFieldThroughModel,
+    SheetFieldType,
+)
 from .factories import FeatureSheetFactory, SheetBlockFactory, SheetFieldFactory
 
 
@@ -359,16 +364,18 @@ class SheetFieldAdminTest(APITestCase):
     @classmethod
     def setUpTestData(cls):
         cls.superuser = SuperUserFactory()
-        cls.layer = LayerFactory(name="My Layer")
-        cls.sheet = FeatureSheetFactory(
-            name="My Test Sheet", accessible_from=[cls.layer]
-        )
         cls.field_1 = SheetFieldFactory(
             label="My Test Field 1", type=SheetFieldType.BOOLEAN
         )
+        cls.source = cls.field_1.field.source
         cls.field_2 = SheetFieldFactory(
             label="My Test Field 2",
         )
+        cls.sheet = FeatureSheetFactory(name="My Test Sheet", sources=[cls.source])
+        # Change field source for test coherence
+        field = cls.field_2.field
+        field.source = cls.source
+        field.save()
         cls.block = SheetBlockFactory(
             title="My Test Block",
             sheet=cls.sheet,
@@ -382,7 +389,7 @@ class SheetFieldAdminTest(APITestCase):
         url = reverse("config_site:visu_featuresheet_changelist")
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, "My Layer")
+        self.assertContains(response, self.source.slug)
         self.assertContains(response, "My Test Sheet")
         self.assertEqual(str(self.sheet), "My Test Sheet")
 
@@ -393,7 +400,7 @@ class SheetFieldAdminTest(APITestCase):
         self.assertContains(response, "My Test Block")
         self.assertContains(response, "My Test Field 1, My Test Field 2")
         self.assertEqual(str(self.block), "My Test Block")
-        self.assertEqual(str(self.field_1), "My Test Field 1")
+        self.assertEqual(str(self.field_1), f"My Test Field 1 ({self.source.slug})")
 
     def test_sheet_field_admin_list(self):
         url = reverse("config_site:visu_sheetfield_changelist")
@@ -410,5 +417,43 @@ class SheetFieldAdminTest(APITestCase):
         through_model_2 = ExtraSheetFieldThroughModel.objects.create(
             block=self.block, extra_field=self.field_2
         )
-        self.assertEqual(str(through_model_1), "My Test Field 1")
-        self.assertEqual(str(through_model_2), "My Test Field 2")
+        self.assertEqual(str(through_model_1), f"My Test Field 1 ({self.source.slug})")
+        self.assertEqual(str(through_model_2), f"My Test Field 2 ({self.source.slug})")
+
+
+class FeatureSheetAPITest(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.superuser = SuperUserFactory()
+        cls.field_1 = SheetFieldFactory(
+            label="My map test field", type=SheetFieldType.TEXTUAL
+        )
+        cls.source = cls.field_1.field.source
+        cls.source.geom_field = "geometry_column"
+        cls.source.save()
+        cls.field_2 = SheetFieldFactory(
+            label="My Test Field 2",
+        )
+        cls.sheet = FeatureSheetFactory(name="My Test Sheet", sources=[cls.source])
+        # Change field source for test coherence
+        field = cls.field_2.field
+        field.source = cls.source
+        field.save()
+        cls.block_1 = SheetBlockFactory(
+            title="My Test Block",
+            sheet=cls.sheet,
+            fields=[cls.field_1, cls.field_2],
+        )
+        cls.block_2 = SheetBlockFactory(
+            sheet=cls.sheet,
+            type=SheetBlockType.MAP,
+            first_geom_source=cls.source,
+        )
+
+    def setUp(self):
+        self.client.force_login(self.superuser)
+
+    def test_geom_source_serializer(self):
+        response = self.client.get(reverse("feature-sheet"))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("geometry_column", str(response.json()))
