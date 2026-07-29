@@ -249,7 +249,9 @@ text-unidecode==1.3
 texttable==1.7.0
     # via pyexcel
 typing-extensions==4.15.0
-    # via referencing
+    # via
+    #   django-polymorphic
+    #   referencing
 tzdata==2026.2
     # via
     #   django-celery-beat
