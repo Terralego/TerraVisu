@@ -5,6 +5,12 @@ Changelog
 2026.06.00+dev  (XXXX-XX-XX)
 ----------------------------
 
+**New features:**
+
+- Manage icons in a dedicated view, shared across all layers instead of per-layer
+- Add a customizable SVG icon picker in layer styles
+
+
 **Improvements:**
 
 - (Admin) Allow variable type for extrusion base height in layer style
