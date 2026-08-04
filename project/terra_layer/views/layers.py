@@ -486,6 +486,7 @@ class SceneTreeAPIView(APIView):
             "group": group.label,
             "exclusive": group.exclusive,
             "byVariable": group.by_variable,
+            "closedByDefault": group.closed_by_default,
             "variables": group.variables,
             "selectors": group.selectors,
             "order": group.order,
@@ -539,7 +540,7 @@ class SceneTreeAPIView(APIView):
         layer_object = {
             **dict_merge(default_values, layer.settings),
             "id": layer.id,
-            "label": layer.name,
+            "label": layer.tree_label or layer.name,
             "order": layer.order,
             "content": layer.description,
             "source_filter": layer.source_filter,
