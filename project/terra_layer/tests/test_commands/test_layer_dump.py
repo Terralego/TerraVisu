@@ -49,6 +49,7 @@ class LayerDumpTestCase(TestCase):
                 "updated_at": "2020-01-01T00:00:00Z",
                 "uuid": "91c60192-9060-4bf6-b0de-818c5a362d89",
                 "name": "Layer_without_custom_style",
+                "tree_label": "",
                 "source_filter": "",
                 "in_tree": True,
                 "order": 0,

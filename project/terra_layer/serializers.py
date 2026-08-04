@@ -298,6 +298,7 @@ class LayerDetailSerializer(serializers.ModelSerializer):
     fields = FilterFieldSerializer(many=True, read_only=True, source="fields_filters")
     extra_styles = CustomStyleSerializer(many=True, read_only=True)
     group = serializers.PrimaryKeyRelatedField(read_only=True)
+    tree_label = serializers.CharField(read_only=True)
     report_configs = ReportConfigSerializer(many=True, read_only=False, required=False)
     comparaison = LayerComparaison(required=False)
 
