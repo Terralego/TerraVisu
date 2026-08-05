@@ -5,6 +5,19 @@ Changelog
 2026.07.00+dev  (XXXX-XX-XX)
 ----------------------------
 
+**New features:**
+
+- Add option to collapse layer groups by default
+
+**Improvements:**
+
+- (Front) Improve layers tree groups behaviour and design
+- (Admin) Improve view edit form and layer tree
+
+**Bugfix:**
+
+- (Admin) Fix renaming layer in tree not updating the layer label on the front
+
 2026.07.00      (2026-07-31)
 ----------------------------
 
