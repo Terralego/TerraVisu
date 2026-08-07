@@ -8,11 +8,13 @@ Changelog
 **New features:**
 
 - Add option to collapse layer groups by default
+- Add an API to search, filter and analyse layer features
 
 **Improvements:**
 
 - (Front) Improve layers tree groups behaviour and design
 - (Admin) Improve view edit form and layer tree
+- Add a k-means discretization method for layer styling
 
 **Bugfix:**
 
