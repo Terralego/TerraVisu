@@ -118,16 +118,18 @@ Au niveau d'une couche de données, vous pouvez ainsi activer les fonctionnalit�
 .. image :: ../_static/images/visu/visu_interfacecarto_couche.png
   :width: 300
 
-L'interface cartographique se met automatiquement à jour selon les fonctionnalités activées.
+L'arbre des couches
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Les données sont agencées de manière personnalisée dans l'arbre des couches. 
+Les données sont agencées de manière personnalisée dans l'arbre des couches.
 
 Vous pouvez créer autant de grandes catégories et de sous-catégories de groupes de données que vous le souhaitez.
 
 Dans le cas où il y aurait un grand nombre de couches dans l'arbre, vous pouvez utiliser la barre de recherche présente en haut du panneau pour filtrer une couche par son nom.
 
 .. note::
-	Le filtrage de couche ne peut se faire que dans la vue en cours.
+
+  Le filtrage de couche ne peut se faire que dans la vue en cours.
 
 **Exemple de barre de filtre**
 
@@ -135,7 +137,30 @@ Dans le cas où il y aurait un grand nombre de couches dans l'arbre, vous pouvez
   :width: 200
   :alt: Filtre dans l'arbre des couches
 
+Gestion des groupes de couches
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Les groupes permettent d'organiser les couches par thématique et peuvent être ouverts ou repliés afin de faciliter la navigation dans l'arbre des couches.
+
+Pour chaque groupe, l'interface permet :
+
+* d'afficher son nom complet ;
+* de connaître le nombre total de couches qu'il contient ;
+* de connaître le nombre de couches actuellement activées.
+
+Le compteur permet ainsi d'identifier rapidement les couches actives d'un groupe, y compris lorsque celui-ci est replié.
+
+Les couches d'un groupe peuvent être activées ou désactivées individuellement. Une action au niveau du groupe permet également de **désactiver en une seule fois toutes les couches actives du groupe**.
+
+**Exemple d'un arbre de couche**
+
+.. image:: ../_static/images/visu/visu_arbrecouches.png
+  :width: 200
+  :alt: Gestion des groupes de couches
+
+.. note::
+
+  Lorsqu'un groupe contient une couche activée par défaut, celui-ci est automatiquement ouvert afin de rendre visible la couche concernée.
 
 L'affichage de la couche
 ~~~~~~~~~~~~~~~~~~~~~~~~~
