@@ -1700,7 +1700,7 @@ Les groupes de couches permettent d'organiser les couches de la carte par théma
 Les groupes peuvent être **ouverts ou repliés** afin de limiter l'espace occupé dans l'interface et de mettre en avant les thématiques les plus pertinentes.
 
 Ouverture et fermeture des groupes
-""""""""""""""""""""""""""""""""""""""
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 Chaque groupe de couches peut être ouvert ou replié manuellement depuis l'arbre des couches.
 

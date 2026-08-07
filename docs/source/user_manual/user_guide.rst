@@ -154,7 +154,7 @@ Les couches d'un groupe peuvent être activées ou désactivées individuellemen
 
 **Exemple d'un arbre de couche**
 
-.. image:: ../_static/images/visu/visu_arbrecouches.gif
+.. image:: ../_static/images/visu/visu_arbrecouches.png
   :width: 200
   :alt: Gestion des groupes de couches
 
