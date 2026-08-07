@@ -34,6 +34,7 @@ urlpatterns = [
     path("base-layers/", include("mapbox_baselayer.urls")),
     path("api/geosource/", include("project.geosource.urls", namespace="geosource")),
     path("api/geolayer/", include("project.terra_layer.urls")),
+    path("api/geo-api/", include("project.geo_api.urls")),
     path("api/auth/", include("project.accounts.urls")),
     path("api/", include(router.urls)),
     path("private/<path:path>", serve_private_files, name="serve_private_files"),
