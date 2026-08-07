@@ -9,6 +9,8 @@ Changelog
 
 - Add option to collapse layer groups by default
 - Add an API to search, filter and analyse layer features
+- (Admin) Add a discretization editor with palettes and previews
+- (Admin) Support GeoPackage sources
 
 **Improvements:**
 
