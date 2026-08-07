@@ -140,8 +140,8 @@ La gestion des icônes est centralisée à l'échelle de l'instance : une icône
 
 Les icônes sont administrées depuis l'entrée :guilabel:Liste des icônes, accessible dans la section :guilabel:VISUALISEUR de la page d'accueil du back-office.
 
-.. image:: .. image :: ../_static/images/admin/admin_icone.png
-:alt: Liste des icônes disponibles dans TerraVisu
+.. figure:: ../_static/images/admin/admin_icone.png
+   :alt: Liste des icônes disponibles dans TerraVisu
 
 Ajouter une icône personnalisée
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -558,7 +558,6 @@ Les curseur de la plage de visibilité permettent de définir des niveaux de zoo
 
 Pour utiliser une icône existante dans un style simple, sélectionnez la représentation ``Icône`` et choisissez l'image que vous avez enregistré dans `la liste des icônes <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#liste-des-icones>`_.
 
-.. image :: ../_static/images/admin/admin_couche_style_icone.png
 
 Style avec icône
 ^^^^^^^^^^^^^^^^^
@@ -578,8 +577,8 @@ Utiliser une icône personnalisée
 
 Pour utiliser une icône personnalisée dans le style d'une couche, ouvrez le menu déroulant :guilabel:Valeur du bloc :guilabel:ICÔNE, puis sélectionnez l'icône souhaitée parmi celles préalablement importées au niveau de l'instance.
 
-.. image:: ../_static/images/admin/admin_couche_style_icone2.png
-:alt: Sélection d'une icône personnalisée dans le style d'une couche
+.. figure:: ../_static/images/admin/admin_couche_style_icone2.png
+   :alt: Sélection d'une icône personnalisée dans le style d'une couche
 
 Utiliser une icône Temaki
 **********************************
@@ -590,19 +589,20 @@ Pour utiliser une icône Temaki, cliquez sur le sélecteur d'icône du bloc :gui
 
 Sélectionnez ensuite le pictogramme souhaité dans la bibliothèque.
 
-.. image:: ../_static/images/admin/admin_couche_style_icone1.png
-:alt: Sélection d'une icône Temaki dans le style d'une couche
+.. figure:: ../_static/images/admin/admin_couche_style_icone1.png
+   :alt: Sélection d'une icône Temaki dans le style d'une couche
 
 Pour retirer une icône Temaki déjà sélectionnée, cliquez sur :guilabel:`SUPPRIMER`.
 
-.. image:: ../_static/images/admin/admin_couche_style_icone3.png
-:alt: Sélection d'une icône Temaki dans le style d'une couche
+.. figure:: ../_static/images/admin/admin_couche_style_icone3.png
+   :alt: Sélection d'une icône Temaki dans le style d'une couche
+
 
 L'ensemble des pictogrammes proposés par Temaki peut être consulté sur `le site officiel de Temaki <https://rapideditor.github.io/temaki/docs/>`_.
 
 .. note::
 
-La bibliothèque d'icônes disponible dans TerraVisu pourra être enrichie avec de nouvelles sources de pictogrammes dans les prochaines versions.
+  La bibliothèque d'icônes disponible dans TerraVisu pourra être enrichie avec de nouvelles sources de pictogrammes dans les prochaines versions.
 
 Catégoriser les objets avec des icônes
 """"""""""""""""""""""""""""""""""""""""
@@ -613,8 +613,8 @@ Il est ainsi possible d'associer des pictogrammes différents aux objets selon l
 
 Cette fonctionnalité permet de combiner la catégorisation des données avec les icônes disponibles dans la bibliothèque ou importées au niveau de l'instance.
 
-.. image:: ../_static/images/admin/admin_couche_style_icone4.png
-:alt: Catégorisation avec des icones
+.. figure:: ../_static/images/admin/admin_couche_style_icone4.png
+   :alt: Catégorisation avec des icônes
 
 Style avec motif: 
 ^^^^^^^^^^^^^^^^^
