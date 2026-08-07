@@ -1692,6 +1692,30 @@ L’enregistrement de la vue aura pour effet immédiat de rajouter automatiqueme
 
 Pour modifier une vue existante, cliquez sur la vue dans la liste et effectuez vos changements.
 
+Gestion des groupes de couches
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Les groupes de couches permettent d'organiser les couches de la carte par thématique et de faciliter leur consultation dans le gestionnaire de couches.
+
+Les groupes peuvent être **ouverts ou repliés** afin de limiter l'espace occupé dans l'interface et de mettre en avant les thématiques les plus pertinentes.
+
+Ouverture et fermeture des groupes
+""""""""""""""""""""""""""""""""""""""
+
+Chaque groupe de couches peut être ouvert ou replié manuellement depuis l'arbre des couches.
+
+Il est également possible de définir **l'état d'ouverture par défaut de chaque groupe**. Certains groupes peuvent ainsi être repliés au chargement de la carte tandis que d'autres restent ouverts.
+
+Cette configuration permet notamment de laisser ouverts les groupes contenant les informations les plus importantes pour l'utilisateur et de replier les groupes secondaires.
+
+Par exemple, sur une vue consacrée au développement économique, les groupes `Limites administratives`, `Périmètres de projets` et `Transports` peuvent être repliés par défaut, tandis que les groupes relatifs au développement économique restent ouverts.
+
+.. note::
+
+  Lorsqu'un groupe contient une couche activée par défaut, le groupe est automatiquement ouvert afin que l'utilisateur puisse identifier facilement les couches affichées sur la carte.
+
+.. image :: ../_static/images/admin/admin_vue1.png
+
 Sélection des couches par variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
