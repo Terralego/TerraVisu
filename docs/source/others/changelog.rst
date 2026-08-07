@@ -11,6 +11,7 @@ Changelog
 - Add an API to search, filter and analyse layer features
 - (Admin) Add a discretization editor with palettes and previews
 - (Admin) Support GeoPackage sources
+- (Front) New search UI, using the geo API instead of Elasticsearch
 
 **Improvements:**
 
