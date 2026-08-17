@@ -175,7 +175,7 @@ lml==0.2.0
     #   pyexcel-io
 mercantile==1.2.1
     # via django-geostore
-numpy==2.5.0
+numpy==2.5.2
     # via terravisu (pyproject.toml)
 openid-connect==0.5.0
     # via django-auth-oidc
