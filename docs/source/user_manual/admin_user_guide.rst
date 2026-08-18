@@ -138,7 +138,7 @@ TerraVisu permet d'utiliser des pictogrammes personnalisés pour représenter le
 
 La gestion des icônes est centralisée à l'échelle de l'instance : une icône importée peut ainsi être réutilisée dans plusieurs couches, sans avoir à être importée individuellement pour chacune d'elles.
 
-Les icônes sont administrées depuis l'entrée :guilabel:Liste des icônes, accessible dans la section :guilabel:VISUALISEUR de la page d'accueil du back-office.
+Les icônes sont administrées depuis l'entrée :guilabel:`Liste des icônes`, accessible dans la section :guilabel:`VISUALISEUR` de la page d'accueil du back-office.
 
 .. figure:: ../_static/images/admin/admin_icone.png
    :alt: Liste des icônes disponibles dans TerraVisu
@@ -565,7 +565,7 @@ Style avec icône
 Utiliser une icône dans une couche
 """"""""""""""""""""""""""""""""""""
 
-Le choix des icônes utilisées pour représenter les objets d'une couche s'effectue désormais depuis l'onglet :guilabel:STYLE de la couche.
+Le choix des icônes utilisées pour représenter les objets d'une couche s'effectue désormais depuis l'onglet :guilabel:`STYLE de la couche`.
 
 Il est possible d'utiliser :
 
@@ -575,7 +575,7 @@ Il est possible d'utiliser :
 Utiliser une icône personnalisée
 **********************************
 
-Pour utiliser une icône personnalisée dans le style d'une couche, ouvrez le menu déroulant :guilabel:Valeur du bloc :guilabel:ICÔNE, puis sélectionnez l'icône souhaitée parmi celles préalablement importées au niveau de l'instance.
+Pour utiliser une icône personnalisée dans le style d'une couche, ouvrez le menu déroulant :guilabel:`Valeur du bloc`` :guilabel:`ICÔNE`, puis sélectionnez l'icône souhaitée parmi celles préalablement importées au niveau de l'instance.
 
 .. figure:: ../_static/images/admin/admin_couche_style_icone2.png
    :alt: Sélection d'une icône personnalisée dans le style d'une couche

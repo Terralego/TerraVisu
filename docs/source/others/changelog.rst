@@ -5,7 +5,9 @@ Changelog
 2026.08.00+dev  (XXXX-XX-XX)
 ----------------------------
 
+**Documentation:**
 
+- Update python version for Read the Docs - (ref #1340)
 
 2026.08.00      (2026-08-14)
 ----------------------------
