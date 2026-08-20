@@ -1,4 +1,5 @@
 from .extras import (  # NOQA
+    ExtentListView,
     GeostoreFeatureViewSet,
     GeostoreLayerGroupViewsSet,
     GeostoreLayerViewSet,

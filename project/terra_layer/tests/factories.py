@@ -11,6 +11,8 @@ from ..models import (
     DeclarationConfig,
     DeclarationField,
     DeclarationFile,
+    Extent,
+    ExtentCategory,
     Layer,
     LayerGroup,
     Report,
@@ -187,3 +189,22 @@ class DeclarationFileFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = DeclarationFile
+
+
+class ExtentCategoryFactory(factory.django.DjangoModelFactory):
+    name = factory.Faker("name")
+
+    class Meta:
+        model = ExtentCategory
+
+
+class ExtentFactory(factory.django.DjangoModelFactory):
+    name = factory.Faker("name")
+    category = factory.SubFactory(ExtentCategoryFactory)
+    minLat = factory.Faker("latitude")
+    minLon = factory.Faker("latitude")
+    maxLat = factory.Faker("longitude")
+    maxLon = factory.Faker("longitude")
+
+    class Meta:
+        model = Extent

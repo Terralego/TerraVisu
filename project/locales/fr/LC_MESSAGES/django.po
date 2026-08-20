@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-29 12:36+0000\n"
+"POT-Creation-Date: 2026-08-20 14:14+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -675,6 +675,12 @@ msgstr "Longitude"
 msgid "Export selected declarations as CSV"
 msgstr "Exporter les déclarations sélectionnées en CSV"
 
+msgid "No pictogram"
+msgstr "Pas de pictogramme"
+
+msgid "Pictogram"
+msgstr "Pictogramme"
+
 msgid "Creation month"
 msgstr "Mois de création"
 
@@ -687,11 +693,50 @@ msgstr "Récapitulatif mensuel des signalements"
 msgid "Object"
 msgstr "Objet"
 
+msgid "Name"
+msgstr "Nom"
+
+msgid "Extents category"
+msgstr "Catégorie d'emprises"
+
+msgid "Extents categories"
+msgstr "Catégories d'emprises"
+
+msgid "Latitude min"
+msgstr "Latitude min"
+
+msgid "Longitude min"
+msgstr "Longitude min"
+
+msgid "Latitude max"
+msgstr "Latitude max"
+
+msgid "Longitude max"
+msgstr "Longitude max"
+
+msgid "Adapt to theme"
+msgstr "Adapter au thème"
+
+msgid "Update the pictogram color to match theme"
+msgstr "Surcharger la couleur du pictogramme par celle du thème"
+
+msgid "Category"
+msgstr "Catégorie"
+
+msgid "Extent"
+msgstr "Emprise"
+
+msgid "Extents"
+msgstr "Emprises"
+
 msgid "Map"
 msgstr "Carte"
 
 msgid "Story"
 msgstr "Histoire"
+
+msgid "Define extra extents to enable on map."
+msgstr "Ajouter des emprises supplémentaires sur la carte."
 
 msgid "URL to compare feature from this layer to another one."
 msgstr "URL pour comparer les objets de cette couche entre eux."
@@ -1092,9 +1137,6 @@ msgstr "Votre déclaration a été mise à jour"
 
 msgid "Sources"
 msgstr "Sources"
-
-msgid "No pictogram"
-msgstr "Pas de pictogramme"
 
 msgid "Pictogram for True values"
 msgstr "Pictogramme pour les valeurs Vrai"

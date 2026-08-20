@@ -23,6 +23,7 @@ from .models import (
     DeclarationConfig,
     DeclarationField,
     DeclarationFile,
+    Extent,
     FilterField,
     Layer,
     Report,
@@ -32,6 +33,30 @@ from .models import (
     Scene,
     StyleImage,
 )
+
+
+class ExtentSerializer(serializers.ModelSerializer):
+    pictogram = serializers.SerializerMethodField(source="get_pictogram")
+    category = serializers.SerializerMethodField(source="get_category")
+
+    def get_pictogram(self, obj):
+        return obj.pictogram.url if obj.pictogram else None
+
+    def get_category(self, obj):
+        return obj.category.name if obj.category else None
+
+    class Meta:
+        model = Extent
+        fields = (
+            "category",
+            "name",
+            "minLat",
+            "minLon",
+            "maxLat",
+            "maxLon",
+            "pictogram",
+            "adapts_to_theme",
+        )
 
 
 class SceneListSerializer(serializers.ModelSerializer):

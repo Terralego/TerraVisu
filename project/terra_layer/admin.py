@@ -17,6 +17,8 @@ from project.terra_layer.models import (
     Declaration,
     DeclarationConfig,
     DeclarationField,
+    Extent,
+    ExtentCategory,
     Layer,
     Report,
     ReportConfig,
@@ -466,4 +468,31 @@ class DeclarationConfigAdmin(admin.ModelAdmin):
         return perms
 
 
+class ExtentAdmin(admin.ModelAdmin):
+    list_display = (
+        "name",
+        "category",
+        "minLat",
+        "minLon",
+        "maxLat",
+        "maxLon",
+        "get_pictogram",
+    )
+    list_filter = ("category",)
+
+    class Meta:
+        model = Extent
+
+    def get_pictogram(self, obj):
+        return (
+            format_html('<img src="{}"/>', obj.pictogram.url)
+            if obj.pictogram
+            else _("No pictogram")
+        )
+
+    get_pictogram.short_description = _("Pictogram")
+
+
 config_site.register(DeclarationConfig, DeclarationConfigAdmin)
+config_site.register(Extent, ExtentAdmin)
+config_site.register(ExtentCategory)
