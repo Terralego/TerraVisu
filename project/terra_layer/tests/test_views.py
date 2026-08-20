@@ -35,6 +35,7 @@ from project.terra_layer.utils import get_scene_tree_cache_key
 
 from .factories import (
     DeclarationFieldFactory,
+    ExtentFactory,
     FeatureFactory,
     ReportConfigFactory,
     ReportFactory,
@@ -78,6 +79,8 @@ class SceneViewsetTestCase(APITestCase):
         cls.source = PostGISSourceFactory()
         cls.layer_group = LayerGroup.objects.create(label="test_group", view=cls.scene)
         cls.layer = TerraLayerFactory(group=cls.layer_group, source=cls.source)
+        cls.extent_1 = ExtentFactory(category=None)
+        cls.extent_2 = ExtentFactory()
 
     def setUp(self):
         self.client.force_authenticate(self.user)
@@ -196,6 +199,61 @@ class SceneViewsetTestCase(APITestCase):
         layer.refresh_from_db()
 
         self.assertEqual(layer.group.label, "Root")
+
+    def test_create_scene_with_extra_extents(self):
+        layer = Layer.objects.create(
+            group=None, source=self.source, minisheet_config={"enable": False}
+        )
+        query = {
+            "name": "Scene Name",
+            "category": "map",
+            "tree": [{"geolayer": layer.id}],
+            "baselayer": [],
+            "extra_extents": [self.extent_1.pk, self.extent_2.pk],
+        }
+
+        response = self.client.post(reverse("scene-list"), query)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        response = self.client.get(reverse("layerview", args=("scene-name",)))
+        response = response.json()
+        extra_extents = response.get("map").get("extra_extents")
+        self.assertEqual(len(extra_extents), 2)
+
+        first_extent, second_extent = extra_extents
+
+        self.assertEqual(first_extent.get("category"), str(self.extent_2.category))
+        self.assertEqual(first_extent.get("name"), str(self.extent_2))
+        self.assertIsNone(first_extent.get("pictogram"))
+        self.assertFalse(first_extent.get("adapts_to_theme"))
+        self.assertAlmostEqual(
+            float(first_extent.get("minLat")), float(self.extent_2.minLat)
+        )
+        self.assertAlmostEqual(
+            float(first_extent.get("minLon")), float(self.extent_2.minLon)
+        )
+        self.assertAlmostEqual(
+            float(first_extent.get("maxLat")), float(self.extent_2.maxLat)
+        )
+        self.assertAlmostEqual(
+            float(first_extent.get("maxLon")), float(self.extent_2.maxLon)
+        )
+
+        self.assertIsNone(second_extent.get("category"))
+        self.assertEqual(second_extent.get("name"), self.extent_1.name)
+        self.assertIsNone(second_extent.get("pictogram"))
+        self.assertFalse(second_extent.get("adapts_to_theme"))
+        self.assertAlmostEqual(
+            float(second_extent.get("minLat")), float(self.extent_1.minLat)
+        )
+        self.assertAlmostEqual(
+            float(second_extent.get("minLon")), float(self.extent_1.minLon)
+        )
+        self.assertAlmostEqual(
+            float(second_extent.get("maxLat")), float(self.extent_1.maxLat)
+        )
+        self.assertAlmostEqual(
+            float(second_extent.get("maxLon")), float(self.extent_1.maxLon)
+        )
 
     def test_layer_view_with_source_model(self):
         source = Source.objects.create(
@@ -727,7 +785,7 @@ class SceneTreeAPITestCase(APITestCase):
         ReportField.objects.create(config=report_config, field=field_2, order=2)
 
         self.client.force_authenticate(self.user)
-        with self.assertNumQueries(48):
+        with self.assertNumQueries(49):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
         with self.assertNumQueries(10):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
@@ -736,7 +794,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer.name = "new_name"
         layer.save()
 
-        with self.assertNumQueries(46):
+        with self.assertNumQueries(47):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
     def test_cache_cleared_after_public_layer_update(self):
@@ -758,7 +816,7 @@ class SceneTreeAPITestCase(APITestCase):
         # updating layer to trigger cache reset
         layer.name = "new_name"
         layer.save()
-        with self.assertNumQueries(40):
+        with self.assertNumQueries(41):
             # still differences in original query number because callbacks auto create geostore layers and groups
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 

@@ -5,6 +5,7 @@ import freezegun
 from django.core import mail
 from django.test import TestCase
 from django.utils.html import format_html
+from factory.django import ImageField
 
 from project.accounts.tests.factories import SuperUserFactory
 from project.geosource.models import FieldTypes
@@ -13,6 +14,7 @@ from project.terra_layer.tests.factories import (
     AuthentifiedDeclarationFactory,
     DeclarationFieldFactory,
     DeclarationFileFactory,
+    ExtentFactory,
     LayerFactory,
     ReportFactory,
     ReportFileFactory,
@@ -291,3 +293,26 @@ class DeclarationAdminTestCase(TestCase):
         self.assertIn(
             "Some information about your declaration", response.content.decode()
         )
+
+
+class ExtentAdminTestCase(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.user = SuperUserFactory.create()
+        cls.file = ImageField()  # file is called 'example.jpg'
+        cls.extent = ExtentFactory.create(pictogram=cls.file)
+
+    def setUp(self):
+        self.client.force_login(self.user)
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        # Remove file from disk
+        cls.extent.pictogram.delete(save=False)
+
+    def test_extents_list(self):
+        response = self.client.get("/config/terra_layer/extent/")
+        self.assertEqual(response.status_code, 200)
+        html_content = response.content.decode()
+        self.assertIn('<img src="/media/example.jpg"/>', html_content)

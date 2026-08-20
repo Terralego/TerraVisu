@@ -32,6 +32,55 @@ def scene_icon_path(instance, filename):
     return f"terra_layer/scenes/custom_icon/{y}/{m}/{d}/{filename}"
 
 
+class ExtentCategory(models.Model):
+    name = models.CharField(verbose_name=_("Name"), max_length=255)
+
+    class Meta:
+        verbose_name = _("Extents category")
+        verbose_name_plural = _("Extents categories")
+
+    def __str__(self):
+        return self.name
+
+
+class Extent(models.Model):
+    name = models.CharField(verbose_name=_("Name"), max_length=255)
+    minLat = models.DecimalField(
+        verbose_name=_("Latitude min"), max_digits=10, decimal_places=7
+    )
+    minLon = models.DecimalField(
+        verbose_name=_("Longitude min"), max_digits=10, decimal_places=7
+    )
+    maxLat = models.DecimalField(
+        verbose_name=_("Latitude max"), max_digits=10, decimal_places=7
+    )
+    maxLon = models.DecimalField(
+        verbose_name=_("Longitude max"), max_digits=10, decimal_places=7
+    )
+    pictogram = models.ImageField(max_length=255, null=True, default=None, blank=True)
+    adapts_to_theme = models.BooleanField(
+        verbose_name=_("Adapt to theme"),
+        default=False,
+        help_text=_("Update the pictogram color to match theme"),
+    )
+    category = models.ForeignKey(
+        ExtentCategory,
+        on_delete=models.CASCADE,
+        null=True,
+        verbose_name=_("Category"),
+        blank=True,
+        related_name="extents",
+    )
+
+    class Meta:
+        verbose_name = _("Extent")
+        verbose_name_plural = _("Extents")
+        ordering = ["category", "pk"]
+
+    def __str__(self):
+        return self.name
+
+
 class Scene(models.Model):
     """A scene is a group of data visualisation in terra-visu.
     It's also a main menu entry.
@@ -62,6 +111,11 @@ class Scene(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    extra_extents = models.ManyToManyField(
+        Extent,
+        blank=True,
+        help_text=_("Define extra extents to enable on map."),
+    )
 
     objects = SceneManager()
 

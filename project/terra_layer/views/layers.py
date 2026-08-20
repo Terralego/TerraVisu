@@ -34,6 +34,7 @@ from ..models import (
 )
 from ..permissions import LayerPermission, ScenePermission
 from ..serializers import (
+    ExtentSerializer,
     LayerDetailSerializer,
     LayerListSerializer,
     SceneDetailSerializer,
@@ -345,6 +346,10 @@ class SceneTreeAPIView(APIView):
                 baselayers = [{"label": "", "url": background_styles}]
 
         layer_structure["map"]["backgroundStyle"] = baselayers
+
+        extra_extents = self.scene.extra_extents.select_related("category").all()
+        extra_extents_data = [ExtentSerializer(extent).data for extent in extra_extents]
+        layer_structure["map"]["extra_extents"] = extra_extents_data
 
         return layer_structure
 
