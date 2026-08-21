@@ -5,7 +5,14 @@ Changelog
 2026.08.00+dev  (XXXX-XX-XX)
 ----------------------------
 
+**New features:**
 
+- Add support for multiple extents (Territories selector)
+- (Admin) Add a "multiple extents" in view form
+
+**Improvements:**
+
+- (Front) total rewrite of map controls, now based on MUI and using React Portals for performance
 
 2026.08.00      (2026-08-14)
 ----------------------------
