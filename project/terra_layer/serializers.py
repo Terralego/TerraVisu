@@ -48,6 +48,7 @@ class ExtentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Extent
         fields = (
+            "id",
             "category",
             "name",
             "minLat",

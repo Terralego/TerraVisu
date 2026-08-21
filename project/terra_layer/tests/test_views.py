@@ -221,6 +221,7 @@ class SceneViewsetTestCase(APITestCase):
 
         first_extent, second_extent = extra_extents
 
+        self.assertEqual(first_extent.get("id"), self.extent_2.id)
         self.assertEqual(first_extent.get("category"), str(self.extent_2.category))
         self.assertEqual(first_extent.get("name"), str(self.extent_2))
         self.assertIsNone(first_extent.get("pictogram"))
@@ -239,6 +240,7 @@ class SceneViewsetTestCase(APITestCase):
         )
 
         self.assertIsNone(second_extent.get("category"))
+        self.assertEqual(second_extent.get("id"), self.extent_1.id)
         self.assertEqual(second_extent.get("name"), self.extent_1.name)
         self.assertIsNone(second_extent.get("pictogram"))
         self.assertFalse(second_extent.get("adapts_to_theme"))
