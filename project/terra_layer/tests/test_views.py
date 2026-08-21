@@ -221,40 +221,40 @@ class SceneViewsetTestCase(APITestCase):
 
         first_extent, second_extent = extra_extents
 
-        self.assertEqual(first_extent.get("id"), self.extent_2.id)
-        self.assertEqual(first_extent.get("category"), str(self.extent_2.category))
-        self.assertEqual(first_extent.get("name"), str(self.extent_2))
+        self.assertEqual(first_extent.get("id"), self.extent_1.id)
+        self.assertIsNone(first_extent.get("category"))
+        self.assertEqual(first_extent.get("name"), str(self.extent_1))
         self.assertIsNone(first_extent.get("pictogram"))
         self.assertFalse(first_extent.get("adapts_to_theme"))
         self.assertAlmostEqual(
-            float(first_extent.get("minLat")), float(self.extent_2.minLat)
+            float(first_extent.get("minLat")), float(self.extent_1.minLat)
         )
         self.assertAlmostEqual(
-            float(first_extent.get("minLon")), float(self.extent_2.minLon)
+            float(first_extent.get("minLon")), float(self.extent_1.minLon)
         )
         self.assertAlmostEqual(
-            float(first_extent.get("maxLat")), float(self.extent_2.maxLat)
+            float(first_extent.get("maxLat")), float(self.extent_1.maxLat)
         )
         self.assertAlmostEqual(
-            float(first_extent.get("maxLon")), float(self.extent_2.maxLon)
+            float(first_extent.get("maxLon")), float(self.extent_1.maxLon)
         )
 
-        self.assertIsNone(second_extent.get("category"))
-        self.assertEqual(second_extent.get("id"), self.extent_1.id)
-        self.assertEqual(second_extent.get("name"), self.extent_1.name)
+        self.assertEqual(second_extent.get("category"), str(self.extent_2.category))
+        self.assertEqual(second_extent.get("id"), self.extent_2.id)
+        self.assertEqual(second_extent.get("name"), self.extent_2.name)
         self.assertIsNone(second_extent.get("pictogram"))
         self.assertFalse(second_extent.get("adapts_to_theme"))
         self.assertAlmostEqual(
-            float(second_extent.get("minLat")), float(self.extent_1.minLat)
+            float(second_extent.get("minLat")), float(self.extent_2.minLat)
         )
         self.assertAlmostEqual(
-            float(second_extent.get("minLon")), float(self.extent_1.minLon)
+            float(second_extent.get("minLon")), float(self.extent_2.minLon)
         )
         self.assertAlmostEqual(
-            float(second_extent.get("maxLat")), float(self.extent_1.maxLat)
+            float(second_extent.get("maxLat")), float(self.extent_2.maxLat)
         )
         self.assertAlmostEqual(
-            float(second_extent.get("maxLon")), float(self.extent_1.maxLon)
+            float(second_extent.get("maxLon")), float(self.extent_2.maxLon)
         )
 
     def test_layer_view_with_source_model(self):

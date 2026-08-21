@@ -75,7 +75,6 @@ class Extent(models.Model):
     class Meta:
         verbose_name = _("Extent")
         verbose_name_plural = _("Extents")
-        ordering = ["category", "pk"]
 
     def __str__(self):
         return self.name

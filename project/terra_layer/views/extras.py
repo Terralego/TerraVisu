@@ -211,5 +211,7 @@ class IconViewSet(viewsets.ModelViewSet):
 
 
 class ExtentListView(generics.ListAPIView):
-    queryset = Extent.objects.select_related("category").all()
+    queryset = (
+        Extent.objects.select_related("category").order_by("category", "pk").all()
+    )
     serializer_class = ExtentSerializer
