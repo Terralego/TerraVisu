@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-29 12:36+0000\n"
+"POT-Creation-Date: 2026-08-21 15:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -588,6 +588,12 @@ msgstr ""
 msgid "Export selected declarations as CSV"
 msgstr ""
 
+msgid "No pictogram"
+msgstr ""
+
+msgid "Pictogram"
+msgstr ""
+
 msgid "Creation month"
 msgstr ""
 
@@ -600,10 +606,55 @@ msgstr ""
 msgid "Object"
 msgstr ""
 
+msgid "Name"
+msgstr ""
+
+msgid "Extents category"
+msgstr ""
+
+msgid "Extents categories"
+msgstr ""
+
+msgid "Latitude min"
+msgstr ""
+
+msgid "Longitude min"
+msgstr ""
+
+msgid "Latitude max"
+msgstr ""
+
+msgid "Longitude max"
+msgstr ""
+
+msgid "Adapt to theme"
+msgstr ""
+
+msgid "Update the pictogram color to match theme"
+msgstr ""
+
+msgid "Category"
+msgstr ""
+
+msgid "Extent"
+msgstr ""
+
+msgid "Extents"
+msgstr ""
+
 msgid "Map"
 msgstr ""
 
 msgid "Story"
+msgstr ""
+
+msgid "Define extra extents to enable on map."
+msgstr ""
+
+msgid "Scene extent"
+msgstr ""
+
+msgid "Scene extents"
 msgstr ""
 
 msgid "URL to compare feature from this layer to another one."
@@ -917,9 +968,6 @@ msgid "Your declaration has been updated"
 msgstr ""
 
 msgid "Sources"
-msgstr ""
-
-msgid "No pictogram"
 msgstr ""
 
 msgid "Pictogram for True values"

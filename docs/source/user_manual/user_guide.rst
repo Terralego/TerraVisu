@@ -118,16 +118,18 @@ Au niveau d'une couche de données, vous pouvez ainsi activer les fonctionnalit�
 .. image :: ../_static/images/visu/visu_interfacecarto_couche.png
   :width: 300
 
-L'interface cartographique se met automatiquement à jour selon les fonctionnalités activées.
+L'arbre des couches
+~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Les données sont agencées de manière personnalisée dans l'arbre des couches. 
+Les données sont agencées de manière personnalisée dans l'arbre des couches.
 
 Vous pouvez créer autant de grandes catégories et de sous-catégories de groupes de données que vous le souhaitez.
 
 Dans le cas où il y aurait un grand nombre de couches dans l'arbre, vous pouvez utiliser la barre de recherche présente en haut du panneau pour filtrer une couche par son nom.
 
 .. note::
-	Le filtrage de couche ne peut se faire que dans la vue en cours.
+
+  Le filtrage de couche ne peut se faire que dans la vue en cours.
 
 **Exemple de barre de filtre**
 
@@ -135,7 +137,30 @@ Dans le cas où il y aurait un grand nombre de couches dans l'arbre, vous pouvez
   :width: 200
   :alt: Filtre dans l'arbre des couches
 
+Gestion des groupes de couches
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
+Les groupes permettent d'organiser les couches par thématique et peuvent être ouverts ou repliés afin de faciliter la navigation dans l'arbre des couches.
+
+Pour chaque groupe, l'interface permet :
+
+* d'afficher son nom complet ;
+* de connaître le nombre total de couches qu'il contient ;
+* de connaître le nombre de couches actuellement activées.
+
+Le compteur permet ainsi d'identifier rapidement les couches actives d'un groupe, y compris lorsque celui-ci est replié.
+
+Les couches d'un groupe peuvent être activées ou désactivées individuellement. Une action au niveau du groupe permet également de **désactiver en une seule fois toutes les couches actives du groupe**.
+
+**Exemple d'un arbre de couche**
+
+.. image:: ../_static/images/visu/visu_arbrecouches.png
+  :width: 200
+  :alt: Gestion des groupes de couches
+
+.. note::
+
+  Lorsqu'un groupe contient une couche activée par défaut, celui-ci est automatiquement ouvert afin de rendre visible la couche concernée.
 
 L'affichage de la couche
 ~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -340,19 +365,36 @@ Quelques uns de ces outils de navigation sont détaillés ci-après.
 La recherche sur la carte
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-La recherche sur la carte (via l'outil loupe) permet d'effectuer à la fois :
+La recherche sur la carte est accessible depuis l'outil :guilabel:`Loupe`. Un clic sur cet outil ouvre une **barre de recherche située en haut et au centre de la carte**.
 
-* une recherche de lieu ou d'adresse par à un appel à la base d'adresses Nominatim implémenté,
-* une recherche dans les champs textuels d'une ou plusieurs couches activées (exemple : une parcelle par le nom du propriétaire).
+Cette barre permet d'effectuer deux types de recherche :
 
-Le fait de sélectionner un résultat dans les attributs de la ou les couches activées permet de zoomer sur ce résultat, de sélectionner l'objet en surbrillance et d'ouvrir la mini-fiche (si elle est `configurée <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-mini-fiche>`_).
+* une **recherche de lieu ou d'adresse**, à partir du service de recherche géographique `Nominatim <https://nominatim.org/>`_
+* une **recherche dans les champs textuels des couches activées** dans la vue. Il est par exemple possible de rechercher une parcelle à partir du nom de son propriétaire.
 
-Le comportement est différent si on sélectionne un résultat pour la recherche de lieu puisqu'il permet uniquement de centrer et zoomer sur l'emprise géographique correspondante sans réaliser d'intéraction avec la ou les couches activées.
+La recherche affiche jusqu'à **10 résultats**, classés selon leur pertinence par rapport aux termes saisis.
+
+La recherche d'un **lieu ou d'une adresse est disponible indépendamment des couches activées** dans la vue. Il n'est donc pas nécessaire d'activer une couche pour rechercher et localiser un lieu ou une adresse sur la carte.
 
 **Exemple de recherche**
 
 .. image :: ../_static/images/visu/visu_recherche.png
 
+Recherche dans les couches activées
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Lorsqu'un résultat correspond aux attributs d'une couche activée, sa sélection permet :
+
+* de zoomer sur l'objet correspondant 
+* de sélectionner et mettre en surbrillance l'objet sur la carte 
+* d'ouvrir sa mini-fiche, si celle-ci est `configurée <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#onglet-mini-fiche>`_
+
+Recherche d'un lieu ou d'une adresse
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+La recherche de lieu ou d'adresse fonctionne indépendamment des couches présentes sur la carte : **aucune couche n'a besoin d'être activée pour l'utiliser**.
+
+Lorsqu'un résultat de ce type est sélectionné, la carte est automatiquement centrée et zoomée sur l'emprise géographique correspondante. Contrairement à une recherche effectuée dans les attributs d'une couche, aucun objet n'est sélectionné et aucune mini-fiche n'est ouverte.
 
 Le retour à l'emprise d'origine
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

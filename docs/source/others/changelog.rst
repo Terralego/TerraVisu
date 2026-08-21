@@ -2,6 +2,57 @@
 Changelog
 ==========
 
+2026.08.00+dev  (XXXX-XX-XX)
+----------------------------
+
+**New features:**
+
+- Add support for multiple extents (Territories selector)
+- (Admin) Add a "multiple extents" in view form
+
+**Improvements:**
+
+- (Front) total rewrite of map controls, now based on MUI and using React Portals for performance
+
+2026.08.00      (2026-08-14)
+----------------------------
+
+**New features:**
+
+- Add option to collapse layer groups by default
+- Add an API to search, filter and analyse layer features
+- (Admin) Add a discretization editor with palettes and previews
+- (Admin) Support GeoPackage sources
+- (Front) New search UI, using ElasticSearch for now but designed to work with GeoAPI
+
+**Improvements:**
+
+- (Front) Improve layers tree groups behaviour and design
+- (Admin) Improve view edit form and layer tree
+- Add a k-means discretization method for layer styling
+
+**Bugfix:**
+
+- (Admin) Fix renaming layer in tree not updating the layer label on the front
+
+**Documentation:**
+
+- Icons, search bar, group layer's management and discretization improvements (ref #1321)
+
+2026.07.00      (2026-07-31)
+----------------------------
+
+**New features:**
+
+- Manage icons in a dedicated view, shared across all layers instead of per-layer
+- Add a customizable SVG icon picker in layer styles
+
+
+**Improvements:**
+
+- (Admin) Allow variable type for extrusion base height in layer style
+
+
 2026.06.00      (2026-06-16)
 ----------------------------
 

@@ -1,4 +1,3 @@
-import base64
 import io
 import json
 from unittest import mock
@@ -8,7 +7,6 @@ from django.contrib.auth.models import Group
 from django.core import mail
 from django.core.cache import cache
 from django.core.files.uploadedfile import InMemoryUploadedFile, SimpleUploadedFile
-from django.test import RequestFactory
 from django.urls import reverse
 from geostore.tests.factories import LayerFactory
 from PIL import Image
@@ -30,17 +28,16 @@ from project.terra_layer.models import (
     ReportField,
     ReportFile,
     Scene,
-    StyleImage,
 )
 from project.terra_layer.utils import get_scene_tree_cache_key
 
 from .factories import (
     DeclarationFieldFactory,
+    ExtentFactory,
     FeatureFactory,
     ReportConfigFactory,
     ReportFactory,
     SceneFactory,
-    StyleImageFactory,
 )
 from .factories import LayerFactory as TerraLayerFactory
 
@@ -80,6 +77,8 @@ class SceneViewsetTestCase(APITestCase):
         cls.source = PostGISSourceFactory()
         cls.layer_group = LayerGroup.objects.create(label="test_group", view=cls.scene)
         cls.layer = TerraLayerFactory(group=cls.layer_group, source=cls.source)
+        cls.extent_1 = ExtentFactory(category=None)
+        cls.extent_2 = ExtentFactory()
 
     def setUp(self):
         self.client.force_authenticate(self.user)
@@ -198,6 +197,78 @@ class SceneViewsetTestCase(APITestCase):
         layer.refresh_from_db()
 
         self.assertEqual(layer.group.label, "Root")
+
+    def test_create_scene_with_extra_extents(self):
+        layer = Layer.objects.create(
+            group=None, source=self.source, minisheet_config={"enable": False}
+        )
+        query = {
+            "name": "Scene Name",
+            "category": "map",
+            "tree": [{"geolayer": layer.id}],
+            "baselayer": [],
+            "extra_extents": [self.extent_1.pk, self.extent_2.pk],
+        }
+
+        response = self.client.post(reverse("scene-list"), query)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        scene_id = response.json()["id"]
+
+        response = self.client.get(reverse("layerview", args=("scene-name",)))
+        response = response.json()
+        extra_extents = response.get("map").get("extra_extents")
+        self.assertEqual(len(extra_extents), 2)
+
+        first_extent, second_extent = extra_extents
+
+        self.assertEqual(first_extent.get("id"), self.extent_1.id)
+        self.assertIsNone(first_extent.get("category"))
+        self.assertEqual(first_extent.get("name"), str(self.extent_1))
+        self.assertIsNone(first_extent.get("pictogram"))
+        self.assertFalse(first_extent.get("adapts_to_theme"))
+        self.assertAlmostEqual(
+            float(first_extent.get("minLat")), float(self.extent_1.minLat)
+        )
+        self.assertAlmostEqual(
+            float(first_extent.get("minLon")), float(self.extent_1.minLon)
+        )
+        self.assertAlmostEqual(
+            float(first_extent.get("maxLat")), float(self.extent_1.maxLat)
+        )
+        self.assertAlmostEqual(
+            float(first_extent.get("maxLon")), float(self.extent_1.maxLon)
+        )
+
+        self.assertEqual(second_extent.get("category"), str(self.extent_2.category))
+        self.assertEqual(second_extent.get("id"), self.extent_2.id)
+        self.assertEqual(second_extent.get("name"), self.extent_2.name)
+        self.assertIsNone(second_extent.get("pictogram"))
+        self.assertFalse(second_extent.get("adapts_to_theme"))
+        self.assertAlmostEqual(
+            float(second_extent.get("minLat")), float(self.extent_2.minLat)
+        )
+        self.assertAlmostEqual(
+            float(second_extent.get("minLon")), float(self.extent_2.minLon)
+        )
+        self.assertAlmostEqual(
+            float(second_extent.get("maxLat")), float(self.extent_2.maxLat)
+        )
+        self.assertAlmostEqual(
+            float(second_extent.get("maxLon")), float(self.extent_2.maxLon)
+        )
+
+        # Update to change order
+        query = {"extra_extents": [self.extent_2.pk, self.extent_1.pk]}
+        response = self.client.patch(reverse("scene-detail", args=[scene_id]), query)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response = self.client.get(reverse("layerview", args=("scene-name",)))
+        response = response.json()
+        extra_extents = response.get("map").get("extra_extents")
+        self.assertEqual(len(extra_extents), 2)
+        first_extent, second_extent = extra_extents
+        self.assertEqual(first_extent.get("id"), self.extent_2.id)
+        self.assertEqual(second_extent.get("id"), self.extent_1.id)
 
     def test_layer_custom_styles_view(self):
         source = Source.objects.create(
@@ -674,6 +745,7 @@ class SceneViewsetTestCase(APITestCase):
             {
                 "label": "My group 2",
                 "group": True,
+                "closedByDefault": True,
                 "children": [{"geolayer": layers[4].id}],
             },
             {"geolayer": layers[5].id},
@@ -726,6 +798,8 @@ class SceneViewsetTestCase(APITestCase):
             layer_tree["layersTree"][1]["group"], scene["tree"][1]["label"]
         )
         self.assertEqual(layer_tree["layersTree"][2]["label"], layers[5].name)
+        self.assertFalse(layer_tree["layersTree"][0]["closedByDefault"])
+        self.assertTrue(layer_tree["layersTree"][1]["closedByDefault"])
 
         # Subgroup test
         self.assertEqual(
@@ -973,7 +1047,7 @@ class SceneTreeAPITestCase(APITestCase):
         ReportField.objects.create(config=report_config, field=field_2, order=2)
 
         self.client.force_authenticate(self.user)
-        with self.assertNumQueries(35):
+        with self.assertNumQueries(36):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
         with self.assertNumQueries(10):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
@@ -982,7 +1056,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer.name = "new_name"
         layer.save()
 
-        with self.assertNumQueries(33):
+        with self.assertNumQueries(34):
             self.client.get(reverse("layerview", args=[self.scene.slug]))
 
     def test_cache_cleared_after_public_layer_update(self):
@@ -1002,7 +1076,7 @@ class SceneTreeAPITestCase(APITestCase):
         layer.save()
 
         # Next request should be a cache miss (key changed due to updated_at)
-        with self.assertNumQueries(27):
+        with self.assertNumQueries(28):
             response = self.client.get(reverse("layerview", args=[self.scene.slug]))
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json()["layersTree"][0]["label"], "new_name")
@@ -1045,30 +1119,6 @@ class LayerViewSetAPITestCase(APITestCase):
         response = self.client.post(reverse("layer-duplicate", args=[self.layer.pk]))
         self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.json())
         self.assertEqual(Layer.objects.count(), original_count + 1)
-
-    def test_viewset_retrieve(self):
-        style_image = StyleImage.objects.create(
-            name="test image",
-            layer=self.layer,
-            file=SimpleUploadedFile(content=b"abcdefgh", name="test file"),
-        )
-
-        response = self.client.get(reverse("layer-detail", args=[self.layer.pk]))
-        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
-
-        # Needed to build the absolute url of the Image
-        request = RequestFactory().get("/")
-        self.assertEqual(
-            response.json().get("style_images"),
-            [
-                {
-                    "id": style_image.id,
-                    "name": style_image.name,
-                    "slug": style_image.slug,
-                    "file": request.build_absolute_uri(style_image.file.url),
-                }
-            ],
-        )
 
     def test_viewset_create(self):
         query = {
@@ -1116,89 +1166,6 @@ class LayerViewSetAPITestCase(APITestCase):
 
         response = response.json()
         self.assertTrue(response.get("minisheet_config", {}).get("enable"))
-
-    def test_viewset_create_with_style_image(self):
-        small_gif = (
-            b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00"
-            b"\x00\x05\x04\x04\x00\x00\x00\x2c\x00\x00\x00\x00"
-            b"\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"
-        )
-        self.assertEqual(StyleImage.objects.count(), 0)
-        request_data = {
-            "name": "test create layer",
-            "source": self.layer.source.pk,
-            "style_images": [
-                {
-                    "name": "small.gif",
-                    "file": base64.b64encode(small_gif).decode("utf-8"),
-                }
-            ],
-        }
-        response = self.client.post(reverse("layer-list"), request_data)
-        self.assertEqual(response.status_code, status.HTTP_201_CREATED, response.json())
-        self.assertEqual(StyleImage.objects.count(), 1)
-
-    def test_style_image_creation_when_update(self):
-        """On update on layer viewset, new style images should be created"""
-        # No StyleImage created yet
-        self.assertEqual(StyleImage.objects.count(), 0)
-        small_gif = (
-            b"\x47\x49\x46\x38\x39\x61\x01\x00\x01\x00\x80\x00"
-            b"\x00\x05\x04\x04\x00\x00\x00\x2c\x00\x00\x00\x00"
-            b"\x01\x00\x01\x00\x00\x02\x02\x44\x01\x00\x3b"
-        )
-        response = self.client.patch(
-            reverse("layer-detail", args=[self.layer.pk]),
-            {
-                "style_images": [
-                    {
-                        "name": "test_image",
-                        "data": base64.b64encode(small_gif).decode("utf-8"),
-                    }
-                ],
-            },
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
-
-        # StyleImage should be created
-        self.assertEqual(StyleImage.objects.count(), 1)
-
-    def test_style_image_deletion_when_update(self):
-        """On update on layer viewset, new style images should be created"""
-        # No StyleImage created yet
-        StyleImageFactory(layer=self.layer)
-
-        response = self.client.patch(
-            reverse("layer-detail", args=[self.layer.pk]),
-            {
-                "style_images": [],
-            },
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
-
-        # StyleImage should be created
-        self.assertEqual(StyleImage.objects.count(), 0)
-
-    def test_style_image_edition_when_update(self):
-        """On update on layer viewset, new style images should be created"""
-        style_image = StyleImageFactory(layer=self.layer)
-
-        response = self.client.patch(
-            reverse("layer-detail", args=[self.layer.pk]),
-            {
-                "style_images": [
-                    {
-                        "id": style_image.pk,
-                        "name": "Test2",
-                    }
-                ],
-            },
-        )
-        self.assertEqual(response.status_code, status.HTTP_200_OK, response.json())
-
-        # StyleImage should be changed
-        self.assertEqual(StyleImage.objects.count(), 1)
-        self.assertIn("Test2", response.json().get("style_images")[0].get("name"))
 
     def test_create_and_update_report_config(self):
         """On update on layer viewset, new report configs should be created"""

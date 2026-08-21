@@ -124,11 +124,31 @@ Module Visualiseur
 
 Le module :guilabel:`Visualiseur` de TerraVisu permet de gérer les données de l’application et le paramétrage de leur(s) représentation(s).
 
-Il comporte trois entrées :
+Il comporte quatre entrées :
 
+* Les icônes
 * Les sources de données
 * Les couches
 * Les vues
+
+Liste des icônes
+-----------------
+
+TerraVisu permet d'utiliser des pictogrammes personnalisés pour représenter les objets d'une couche sur la carte.
+
+La gestion des icônes est centralisée à l'échelle de l'instance : une icône importée peut ainsi être réutilisée dans plusieurs couches, sans avoir à être importée individuellement pour chacune d'elles.
+
+Les icônes sont administrées depuis l'entrée :guilabel:Liste des icônes, accessible dans la section :guilabel:VISUALISEUR de la page d'accueil du back-office.
+
+.. figure:: ../_static/images/admin/admin_icone.png
+   :alt: Liste des icônes disponibles dans TerraVisu
+
+Ajouter une icône personnalisée
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Il est possible d'afficher ses propres pictogrammes sur une couche. Ils pourront servir d'icônes ou de motifs sur la carte créée.
+
+Pour ajouter une icône personnalisée, il suffit de cliquer sur le bouton :guilabel:`CRÉER`, d'importer son image (png) et de la nommer dans le champ ``Nom``. 
 
 Liste des sources de données
 ----------------------------
@@ -497,22 +517,6 @@ Pour ajouter un média (image, vidéo), il est nécessaire de basculer sur l’�
    Ne pas oublier d'activer l'option "Activer la description dans l'arbre des couches"
 
 
-Onglet ICÔNES
-~~~~~~~~~~~~~~
-
-Il est possible d'afficher ses propres pictogrammes sur une couche. Ils pourront servir d'icônes ou de motifs sur la carte créée.
-
-Pour cela il suffit de cliquer sur le bouton :guilabel:`AJOUTER`, d'importer son image (png/jpeg) et de la nommer dans le champ ``Nom``. 
-
-.. image :: ../_static/images/admin/admin_couche_icone.png
-
-Il est possible de modifier la couleur de fond de l'image en utilisant l'outil :guilabel:`COMPOSER`. Pour cela il est nécessaire que l'image ait été enregistrée au préalable afin qu'elle soit disponible dans la liste. 
-
-Pour enregistrer l'image, enregistrez la couche.
-
-.. image :: ../_static/images/admin/admin_couche_icone_bleue.png
-
-
 Onglet STYLE
 ~~~~~~~~~~~~~
 
@@ -552,17 +556,73 @@ Pour renseigner une valeur numérique (exemple le ``Diamètre`` pour une représ
 
 Les curseur de la plage de visibilité permettent de définir des niveaux de zoom d’apparition/disparition d’un style sur la carte (exemple : on affiche des zones du zoom 0 jusqu’au zoom 13 et à partir du zoom 13 on affiche des icônes).
 
-Pour utiliser une icône existante dans un style simple, sélectionnez la représentation ``Icône`` et choisissez l'image que vous avez enregistré dans l'onglet :guilabel:`ICÔNES`.
+Pour utiliser une icône existante dans un style simple, sélectionnez la représentation ``Icône`` et choisissez l'image que vous avez enregistré dans `la liste des icônes <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#liste-des-icones>`_.
 
-.. image :: ../_static/images/admin/admin_couche_style_icone.png
 
-Style avec motif
+Style avec icône
+^^^^^^^^^^^^^^^^^
+
+Utiliser une icône dans une couche
+""""""""""""""""""""""""""""""""""""
+
+Le choix des icônes utilisées pour représenter les objets d'une couche s'effectue désormais depuis l'onglet :guilabel:STYLE de la couche.
+
+Il est possible d'utiliser :
+
+* une icône issue de la bibliothèque Temaki 
+* une icône personnalisée importée au niveau de l'instance
+
+Utiliser une icône personnalisée
+**********************************
+
+Pour utiliser une icône personnalisée dans le style d'une couche, ouvrez le menu déroulant :guilabel:Valeur du bloc :guilabel:ICÔNE, puis sélectionnez l'icône souhaitée parmi celles préalablement importées au niveau de l'instance.
+
+.. figure:: ../_static/images/admin/admin_couche_style_icone2.png
+   :alt: Sélection d'une icône personnalisée dans le style d'une couche
+
+Utiliser une icône Temaki
+**********************************
+
+TerraVisu intègre également la bibliothèque libre d'icônes **Temaki**, qui propose de nombreux pictogrammes adaptés notamment à la représentation d'équipements, de services, de transports ou de points d'intérêt.
+
+Pour utiliser une icône Temaki, cliquez sur le sélecteur d'icône du bloc :guilabel:`ICÔNE` afin d'ouvrir la bibliothèque.
+
+Sélectionnez ensuite le pictogramme souhaité dans la bibliothèque.
+
+.. figure:: ../_static/images/admin/admin_couche_style_icone1.png
+   :alt: Sélection d'une icône Temaki dans le style d'une couche
+
+Pour retirer une icône Temaki déjà sélectionnée, cliquez sur :guilabel:`SUPPRIMER`.
+
+.. figure:: ../_static/images/admin/admin_couche_style_icone3.png
+   :alt: Sélection d'une icône Temaki dans le style d'une couche
+
+
+L'ensemble des pictogrammes proposés par Temaki peut être consulté sur `le site officiel de Temaki <https://rapideditor.github.io/temaki/docs/>`_.
+
+.. note::
+
+  La bibliothèque d'icônes disponible dans TerraVisu pourra être enrichie avec de nouvelles sources de pictogrammes dans les prochaines versions.
+
+Catégoriser les objets avec des icônes
+""""""""""""""""""""""""""""""""""""""""
+
+Les icônes peuvent également être utilisées dans les règles de catégorisation d'une couche.
+
+Il est ainsi possible d'associer des pictogrammes différents aux objets selon la valeur d'un de leurs attributs. Une même couche peut, par exemple, afficher une icône différente pour chaque catégorie d'équipement ou de point d'intérêt.
+
+Cette fonctionnalité permet de combiner la catégorisation des données avec les icônes disponibles dans la bibliothèque ou importées au niveau de l'instance.
+
+.. figure:: ../_static/images/admin/admin_couche_style_icone4.png
+   :alt: Catégorisation avec des icônes
+
+Style avec motif: 
 ^^^^^^^^^^^^^^^^^
 
 Il est possible d’utiliser des motifs au lieu des couleurs pour remplir un polygone.
 
     1. Création d’un motif
-       La première étape est de créer le motif, dans l’onglet :guilabel:`ICÔNES`. 
+       La première étape est d'ajouter le motif en tant qu'icône dans `la liste des icônes <https://terravisu.readthedocs.io/en/latest/user_manual/admin_user_guide.html#liste-des-icones>`_.
        Pour cela, il est nécessaire d’importer une image servant de base au motif (le motif est idéalement blanc et de taille 28 x 28 pixels). L’import d’image se fait via le bouton :guilabel:`UPLOAD`. 
        Il est ensuite possible de colorer l’image précédemment importée dans l’application. Le bouton :guilabel:`COMPOSE` permet ce choix de couleur à appliquer sur le motif.
  
@@ -635,6 +695,34 @@ Le choix du type d’analyse constitue la dernière étape. Le **type d’analys
 Lors de la conception d’un style avec une analyse, il est possible d’activer l’option :guilabel:`Générer la légende associée` pour que la légende soit exactement conforme au style représenté.
 
 .. image :: ../_static/images/admin/admin_couche_style_assistant.png
+
+Analyser la distribution des données
+""""""""""""""""""""""""""""""""""""
+
+Lors de la création d'un style basé sur la **discrétisation d'un champ numérique**, TerraVisu fournit plusieurs informations statistiques permettant de mieux comprendre la répartition des valeurs et d'adapter le découpage en classes.
+
+Cette visualisation, inspirée de `Magrit <https://magrit.cnrs.fr/>`_, permet notamment d'identifier rapidement une distribution déséquilibrée, la présence de valeurs extrêmes ou une forte concentration des données sur certaines plages de valeurs.
+
+.. image :: ../_static/images/admin/admin_couche_style_distributiondonnees.png
+
+Plusieurs informations sont disponibles pour analyser les données :
+
+* **Résumé statistique** : présente les principaux indicateurs du champ sélectionné : nombre de valeurs, minimum, maximum, moyenne, médiane et écart-type.
+* **Distribution des données** : représente graphiquement la répartition des valeurs du champ. Les lignes correspondant à la moyenne, à la médiane et à l'écart-type sont affichées par défaut afin de faciliter l'interprétation de la distribution.
+* **Distribution par classe** : représente la répartition des données selon la méthode de discrétisation et le nombre de classes sélectionnés. Les bornes de chaque classe ainsi que le nombre d'entités qu'elle contient sont affichés afin de visualiser immédiatement le résultat de la discrétisation.
+
+Ces représentations sont automatiquement mises à jour en fonction des paramètres choisis, notamment :
+
+* la **méthode de discrétisation** (Jenks, quantiles, intervalles égaux, etc.) ;
+* le **nombre de classes** ;
+* la **palette de couleurs** (séquentielle, divergente ou personnalisée).
+
+Réutiliser une palette de couleurs
+*************************************
+
+Il est également possible de **copier la configuration des couleurs d'une palette et de ses classes**, puis de l'importer dans la discrétisation d'une autre couche.
+
+Cette fonctionnalité permet de réutiliser facilement une même représentation colorimétrique et d'harmoniser les styles entre plusieurs couches.
 
 Exemples de styles Mapbox avancés
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -1631,6 +1719,30 @@ A partir d’un groupe, en cliquant sur les trois petits points verticaux vous a
 L’enregistrement de la vue aura pour effet immédiat de rajouter automatiquement l’ensemble des éléments de l’arbre des couches dans le visualiseur cartographique.
 
 Pour modifier une vue existante, cliquez sur la vue dans la liste et effectuez vos changements.
+
+Gestion des groupes de couches
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Les groupes de couches permettent d'organiser les couches de la carte par thématique et de faciliter leur consultation dans le gestionnaire de couches.
+
+Les groupes peuvent être **ouverts ou repliés** afin de limiter l'espace occupé dans l'interface et de mettre en avant les thématiques les plus pertinentes.
+
+Ouverture et fermeture des groupes
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Chaque groupe de couches peut être ouvert ou replié manuellement depuis l'arbre des couches.
+
+Il est également possible de définir **l'état d'ouverture par défaut de chaque groupe**. Certains groupes peuvent ainsi être repliés au chargement de la carte tandis que d'autres restent ouverts.
+
+Cette configuration permet notamment de laisser ouverts les groupes contenant les informations les plus importantes pour l'utilisateur et de replier les groupes secondaires.
+
+Par exemple, sur une vue consacrée au développement économique, les groupes `Limites administratives`, `Périmètres de projets` et `Transports` peuvent être repliés par défaut, tandis que les groupes relatifs au développement économique restent ouverts.
+
+.. note::
+
+  Lorsqu'un groupe contient une couche activée par défaut, le groupe est automatiquement ouvert afin que l'utilisateur puisse identifier facilement les couches affichées sur la carte.
+
+.. image :: ../_static/images/admin/admin_vue1.png
 
 Sélection des couches par variables
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

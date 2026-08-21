@@ -23,6 +23,7 @@ from .models import (
     DeclarationConfig,
     DeclarationField,
     DeclarationFile,
+    Extent,
     FilterField,
     Layer,
     Report,
@@ -30,8 +31,34 @@ from .models import (
     ReportField,
     ReportFile,
     Scene,
+    SceneExtent,
     StyleImage,
 )
+
+
+class ExtentSerializer(serializers.ModelSerializer):
+    pictogram = serializers.SerializerMethodField(source="get_pictogram")
+    category = serializers.SerializerMethodField(source="get_category")
+
+    def get_pictogram(self, obj):
+        return obj.pictogram.url if obj.pictogram else None
+
+    def get_category(self, obj):
+        return obj.category.name if obj.category else None
+
+    class Meta:
+        model = Extent
+        fields = (
+            "id",
+            "category",
+            "name",
+            "minLat",
+            "minLon",
+            "maxLat",
+            "maxLon",
+            "pictogram",
+            "adapts_to_theme",
+        )
 
 
 class SceneListSerializer(serializers.ModelSerializer):
@@ -61,6 +88,13 @@ class SceneDetailSerializer(serializers.ModelSerializer):
         queryset=MapBaseLayer.objects.all(), source="base_layers", many=True
     )  # compat with old name of m2m attribute. to fix in admin.
 
+    extra_extents = serializers.PrimaryKeyRelatedField(
+        queryset=Extent.objects.all(),
+        many=True,
+        required=False,
+        source="ordered_extents",
+    )
+
     class Meta:
         model = Scene
         exclude = ("base_layers",)
@@ -75,6 +109,30 @@ class SceneDetailSerializer(serializers.ModelSerializer):
         querydict = data.copy()
         querydict.setlist("baselayer", json.loads(baselayer))
         return super().to_internal_value(querydict)
+
+    def set_extra_extents(self, instance, extents):
+        """Store extents with their submitted order, through SceneExtent"""
+        instance.scene_extents.all().delete()
+        SceneExtent.objects.bulk_create(
+            [
+                SceneExtent(scene=instance, extent=extent, order=order)
+                for order, extent in enumerate(extents)
+            ]
+        )
+
+    def create(self, validated_data):
+        extra_extents = validated_data.pop("ordered_extents", [])
+        instance = super().create(validated_data)
+        self.set_extra_extents(instance, extra_extents)
+        return instance
+
+    def update(self, instance, validated_data):
+        extra_extents = validated_data.pop("ordered_extents", None)
+        instance = super().update(instance, validated_data)
+
+        if extra_extents is not None:
+            self.set_extra_extents(instance, extra_extents)
+        return instance
 
 
 class FilterFieldSerializer(serializers.ModelSerializer):
@@ -97,7 +155,7 @@ class StyleImageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = StyleImage
-        exclude = ("layer",)
+        exclude = ()
         read_only_fields = ("slug", "file")
 
 
@@ -298,7 +356,7 @@ class LayerDetailSerializer(serializers.ModelSerializer):
     fields = FilterFieldSerializer(many=True, read_only=True, source="fields_filters")
     extra_styles = CustomStyleSerializer(many=True, read_only=True)
     group = serializers.PrimaryKeyRelatedField(read_only=True)
-    style_images = StyleImageSerializer(many=True, read_only=False, required=False)
+    tree_label = serializers.CharField(read_only=True)
     report_configs = ReportConfigSerializer(many=True, read_only=False, required=False)
     comparaison = LayerComparaison(required=False)
 
@@ -315,11 +373,8 @@ class LayerDetailSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def create(self, validated_data):
-        style_images = validated_data.pop("style_images", [])
         report_configs = validated_data.pop("report_configs", [])
         instance = super().create(validated_data)
-        for image_data in style_images:
-            StyleImage.objects.create(layer=instance, **image_data)
 
         # Update m2m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)
@@ -339,23 +394,8 @@ class LayerDetailSerializer(serializers.ModelSerializer):
 
     @transaction.atomic
     def update(self, instance, validated_data):
-        style_images = validated_data.pop("style_images", [])
         report_configs = validated_data.pop("report_configs", [])
         instance = super().update(instance, validated_data)
-
-        # Delete first
-        image_ids = [image["id"] for image in style_images if image.get("id")]
-        instance.style_images.exclude(id__in=image_ids).delete()
-        for image_data in style_images:
-            if not image_data.get("id"):
-                StyleImage.objects.create(layer=instance, **image_data)
-            else:
-                style_image_id = image_data.pop("id")
-                style_image = instance.style_images.get(id=style_image_id)
-                style_image.name = image_data.get("name")
-                if image_data.get("file"):
-                    style_image.file = image_data.get("file")
-                style_image.save()
 
         # Update m1m through field
         self._update_m2m_through(instance, "fields", FilterFieldSerializer)

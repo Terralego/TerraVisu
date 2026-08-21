@@ -18,10 +18,18 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.throttling import AnonRateThrottle
 
-from project.terra_layer.models import Declaration, DeclarationConfig, Report, Status
+from project.terra_layer.models import (
+    Declaration,
+    DeclarationConfig,
+    Extent,
+    Report,
+    Status,
+    StyleImage,
+)
 from project.terra_layer.serializers import (
     DeclarationConfigSerializer,
     DeclarationSerializer,
+    ExtentSerializer,
     ReportAuthenticatedListSerializer,
     ReportCreateSerializer,
     ReportUnauthenticatedListSerializer,
@@ -29,7 +37,7 @@ from project.terra_layer.serializers import (
 
 from ...accounts.models import User
 from ..permissions import ReadOnly
-from ..serializers import MapBaseLayerSerializer
+from ..serializers import MapBaseLayerSerializer, StyleImageSerializer
 
 
 class GeostoreLayerViewSet(LayerViewSet):
@@ -190,3 +198,20 @@ class DeclarationCreateAPIView(NotifyManagersViewMixin, generics.CreateAPIView):
             _("New declaration submitted"),
         )
         return declaration
+
+
+class IconViewSet(viewsets.ModelViewSet):
+    serializer_class = StyleImageSerializer
+    queryset = StyleImage.objects.all()
+    ordering_fields = (
+        "id",
+        "name",
+    )
+    search_fields = ["name"]
+
+
+class ExtentListView(generics.ListAPIView):
+    queryset = (
+        Extent.objects.select_related("category").order_by("category", "pk").all()
+    )
+    serializer_class = ExtentSerializer

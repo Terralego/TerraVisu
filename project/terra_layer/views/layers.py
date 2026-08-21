@@ -34,6 +34,7 @@ from ..models import (
 )
 from ..permissions import LayerPermission, ScenePermission
 from ..serializers import (
+    ExtentSerializer,
     LayerDetailSerializer,
     LayerListSerializer,
     SceneDetailSerializer,
@@ -230,9 +231,7 @@ class SceneTreeAPIView(APIView):
             )
 
         layer_structure["styleImages"] = StyleImageSerializer(
-            StyleImage.objects.filter(
-                layer__in=self.scene.layers.values_list("pk", flat=True)
-            ),
+            StyleImage.objects.all(),
             many=True,
             context={"request": self.request},
         ).data
@@ -304,6 +303,12 @@ class SceneTreeAPIView(APIView):
                 baselayers = [{"label": "", "url": background_styles}]
 
         layer_structure["map"]["backgroundStyle"] = baselayers
+
+        scene_extents = self.scene.scene_extents.select_related("extent__category")
+        extra_extents_data = [
+            ExtentSerializer(scene_extent.extent).data for scene_extent in scene_extents
+        ]
+        layer_structure["map"]["extra_extents"] = extra_extents_data
 
         return layer_structure
 
@@ -416,6 +421,7 @@ class SceneTreeAPIView(APIView):
             "group": group.label,
             "exclusive": group.exclusive,
             "byVariable": group.by_variable,
+            "closedByDefault": group.closed_by_default,
             "variables": group.variables,
             "selectors": group.selectors,
             "order": group.order,
@@ -469,7 +475,7 @@ class SceneTreeAPIView(APIView):
         layer_object = {
             **dict_merge(default_values, layer.settings),
             "id": layer.id,
-            "label": layer.name,
+            "label": layer.tree_label or layer.name,
             "order": layer.order,
             "layers": self.get_layers_list_for_layer(layer),
         }

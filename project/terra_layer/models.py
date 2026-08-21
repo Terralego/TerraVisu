@@ -1,4 +1,3 @@
-import json
 import logging
 import uuid
 from hashlib import md5
@@ -33,6 +32,54 @@ def scene_icon_path(instance, filename):
     return f"terra_layer/scenes/custom_icon/{y}/{m}/{d}/{filename}"
 
 
+class ExtentCategory(models.Model):
+    name = models.CharField(verbose_name=_("Name"), max_length=255)
+
+    class Meta:
+        verbose_name = _("Extents category")
+        verbose_name_plural = _("Extents categories")
+
+    def __str__(self):
+        return self.name
+
+
+class Extent(models.Model):
+    name = models.CharField(verbose_name=_("Name"), max_length=255)
+    minLat = models.DecimalField(
+        verbose_name=_("Latitude min"), max_digits=10, decimal_places=7
+    )
+    minLon = models.DecimalField(
+        verbose_name=_("Longitude min"), max_digits=10, decimal_places=7
+    )
+    maxLat = models.DecimalField(
+        verbose_name=_("Latitude max"), max_digits=10, decimal_places=7
+    )
+    maxLon = models.DecimalField(
+        verbose_name=_("Longitude max"), max_digits=10, decimal_places=7
+    )
+    pictogram = models.ImageField(max_length=255, null=True, default=None, blank=True)
+    adapts_to_theme = models.BooleanField(
+        verbose_name=_("Adapt to theme"),
+        default=False,
+        help_text=_("Update the pictogram color to match theme"),
+    )
+    category = models.ForeignKey(
+        ExtentCategory,
+        on_delete=models.CASCADE,
+        null=True,
+        verbose_name=_("Category"),
+        blank=True,
+        related_name="extents",
+    )
+
+    class Meta:
+        verbose_name = _("Extent")
+        verbose_name_plural = _("Extents")
+
+    def __str__(self):
+        return self.name
+
+
 class Scene(models.Model):
     """A scene is a group of data visualisation in terra-visu.
     It's also a main menu entry.
@@ -63,6 +110,12 @@ class Scene(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    extra_extents = models.ManyToManyField(
+        Extent,
+        blank=True,
+        through="SceneExtent",
+        help_text=_("Define extra extents to enable on map."),
+    )
 
     objects = SceneManager()
 
@@ -81,6 +134,12 @@ class Scene(models.Model):
 
     def get_absolute_url(self):
         return reverse("scene-detail", args=[self.pk])
+
+    @property
+    def ordered_extents(self):
+        return Extent.objects.filter(extent_scenes__scene=self).order_by(
+            "extent_scenes__order"
+        )
 
     def tree2models(self, current_node=None, parent=None, order=0):
         """
@@ -114,6 +173,7 @@ class Scene(models.Model):
                 exclusive=current_node.get("exclusive", False),
                 variables=current_node.get("variables", []),
                 by_variable=current_node.get("byVariable", False),
+                closed_by_default=current_node.get("closedByDefault", False),
                 selectors=current_node.get("selectors"),
                 settings=current_node.get("settings", {}),
                 order=order,
@@ -128,6 +188,7 @@ class Scene(models.Model):
             layer.group = parent
             layer.variables = current_node.get("variables", [])
             layer.order = order
+            layer.tree_label = current_node.get("label") or ""
             layer.save(wizard_update=False)
 
     def insert_in_tree(self, layer, parts, group_config=None):
@@ -156,7 +217,7 @@ class Scene(models.Model):
                 current_node = new_group["children"]
 
         # Node if found (or created) we can add the geolayer now
-        current_node.append({"geolayer": layer.id, "label": layer.name})
+        current_node.append({"geolayer": layer.id})
 
         if group_config and last_group:
             # And update tho config
@@ -167,6 +228,25 @@ class Scene(models.Model):
     def layers(self):
         """all scene layers"""
         return Layer.objects.filter(group__view=self).order_by("group__order", "order")
+
+
+class SceneExtent(models.Model):
+    scene = models.ForeignKey(
+        Scene, on_delete=models.CASCADE, related_name="scene_extents"
+    )
+    extent = models.ForeignKey(
+        Extent, on_delete=models.CASCADE, related_name="extent_scenes"
+    )
+    order = models.PositiveSmallIntegerField(default=0, db_index=True)
+
+    class Meta:
+        ordering = ["order", "pk"]
+        unique_together = [("scene", "extent")]
+        verbose_name = _("Scene extent")
+        verbose_name_plural = _("Scene extents")
+
+    def __str__(self):
+        return f"{self.scene} - {self.extent}"
 
 
 class LayerGroup(models.Model):
@@ -180,6 +260,7 @@ class LayerGroup(models.Model):
     order = models.IntegerField(default=0)
     exclusive = models.BooleanField(default=False)
     by_variable = models.BooleanField(default=False)
+    closed_by_default = models.BooleanField(default=False)
     variables = models.JSONField(default=list, blank=True)
     selectors = models.JSONField(null=True, default=None)
     settings = models.JSONField(default=dict)
@@ -210,6 +291,11 @@ class Layer(CloneMixin, models.Model):
         blank=True,
     )
     name = models.CharField(max_length=255, blank=False)
+    tree_label = models.CharField(
+        max_length=255,
+        blank=True,
+        help_text="Label overriding the layer name in the scene tree",
+    )
     in_tree = models.BooleanField(
         default=True, help_text="Whether the layer is shown in tree or hidden"
     )
@@ -363,13 +449,6 @@ class Layer(CloneMixin, models.Model):
     def make_clone(self, *args, **kwargs):
         kwargs.setdefault("attrs", {"name": f"{self.name} (" + _("Copy") + ")"})
         obj = super().make_clone(*args, **kwargs)
-        # fix style images references in main style
-        style_text = str(json.dumps(obj.main_style))
-        for i, style_image in enumerate(self.style_images.all()):
-            style_text = style_text.replace(
-                style_image.slug, obj.style_images.all()[i].slug
-            )
-        obj.main_style = json.loads(style_text)
         obj.save()
         return obj
 
@@ -475,19 +554,13 @@ class FilterField(models.Model):
 
 def style_image_path(instance, filename):
     y, m, d = timezone_today().isoformat().split("-")
-    return f"terra_layer/layers/{instance.layer_id}/style_images/{y}/{m}/{d}/{filename}"
+    return f"terra_layer/icon/{y}/{m}/{d}/{filename}"
 
 
 class StyleImage(models.Model):
     name = models.CharField(max_length=255)
     slug = AutoSlugField(populate_from="name", unique=True)
-    layer = models.ForeignKey(
-        Layer, related_name="style_images", on_delete=models.CASCADE
-    )
     file = models.ImageField(upload_to=style_image_path)
-
-    class Meta:
-        unique_together = (("name", "layer"),)
 
     def __str__(self):
         return self.name
