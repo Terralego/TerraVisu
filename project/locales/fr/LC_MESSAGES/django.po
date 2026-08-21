@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-20 14:14+0000\n"
+"POT-Creation-Date: 2026-08-21 15:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -737,6 +737,12 @@ msgstr "Histoire"
 
 msgid "Define extra extents to enable on map."
 msgstr "Ajouter des emprises supplémentaires sur la carte."
+
+msgid "Scene extent"
+msgstr "Emprise de la vue"
+
+msgid "Scene extents"
+msgstr "Emprises de la vue"
 
 msgid "URL to compare feature from this layer to another one."
 msgstr "URL pour comparer les objets de cette couche entre eux."
