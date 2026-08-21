@@ -347,8 +347,10 @@ class SceneTreeAPIView(APIView):
 
         layer_structure["map"]["backgroundStyle"] = baselayers
 
-        extra_extents = self.scene.extra_extents.select_related("category").all()
-        extra_extents_data = [ExtentSerializer(extent).data for extent in extra_extents]
+        scene_extents = self.scene.scene_extents.select_related("extent__category")
+        extra_extents_data = [
+            ExtentSerializer(scene_extent.extent).data for scene_extent in scene_extents
+        ]
         layer_structure["map"]["extra_extents"] = extra_extents_data
 
         return layer_structure

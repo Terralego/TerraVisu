@@ -113,6 +113,7 @@ class Scene(models.Model):
     extra_extents = models.ManyToManyField(
         Extent,
         blank=True,
+        through="SceneExtent",
         help_text=_("Define extra extents to enable on map."),
     )
 
@@ -133,6 +134,12 @@ class Scene(models.Model):
 
     def get_absolute_url(self):
         return reverse("scene-detail", args=[self.pk])
+
+    @property
+    def ordered_extents(self):
+        return Extent.objects.filter(extent_scenes__scene=self).order_by(
+            "extent_scenes__order"
+        )
 
     def tree2models(self, current_node=None, parent=None, order=0):
         """
@@ -221,6 +228,25 @@ class Scene(models.Model):
     def layers(self):
         """all scene layers"""
         return Layer.objects.filter(group__view=self).order_by("group__order", "order")
+
+
+class SceneExtent(models.Model):
+    scene = models.ForeignKey(
+        Scene, on_delete=models.CASCADE, related_name="scene_extents"
+    )
+    extent = models.ForeignKey(
+        Extent, on_delete=models.CASCADE, related_name="extent_scenes"
+    )
+    order = models.PositiveSmallIntegerField(default=0, db_index=True)
+
+    class Meta:
+        ordering = ["order", "pk"]
+        unique_together = [("scene", "extent")]
+        verbose_name = _("Scene extent")
+        verbose_name_plural = _("Scene extents")
+
+    def __str__(self):
+        return f"{self.scene} - {self.extent}"
 
 
 class LayerGroup(models.Model):
