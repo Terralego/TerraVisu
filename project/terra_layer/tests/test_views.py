@@ -214,6 +214,8 @@ class SceneViewsetTestCase(APITestCase):
 
         response = self.client.post(reverse("scene-list"), query)
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+        scene_id = response.json()["id"]
+
         response = self.client.get(reverse("layerview", args=("scene-name",)))
         response = response.json()
         extra_extents = response.get("map").get("extra_extents")
@@ -256,6 +258,19 @@ class SceneViewsetTestCase(APITestCase):
         self.assertAlmostEqual(
             float(second_extent.get("maxLon")), float(self.extent_2.maxLon)
         )
+
+        # Update to change order
+        query = {"extra_extents": [self.extent_2.pk, self.extent_1.pk]}
+        response = self.client.patch(reverse("scene-detail", args=[scene_id]), query)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        response = self.client.get(reverse("layerview", args=("scene-name",)))
+        response = response.json()
+        extra_extents = response.get("map").get("extra_extents")
+        self.assertEqual(len(extra_extents), 2)
+        first_extent, second_extent = extra_extents
+        self.assertEqual(first_extent.get("id"), self.extent_2.id)
+        self.assertEqual(second_extent.get("id"), self.extent_1.id)
 
     def test_layer_view_with_source_model(self):
         source = Source.objects.create(
