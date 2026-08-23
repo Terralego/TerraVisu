@@ -179,7 +179,7 @@ numpy==2.5.0
     # via terravisu (pyproject.toml)
 openid-connect==0.5.0
     # via django-auth-oidc
-packaging==26.2
+packaging==26.3
     # via
     #   gunicorn
     #   kombu
