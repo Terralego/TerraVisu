@@ -4,6 +4,7 @@ from hashlib import md5
 
 from autoslug import AutoSlugField
 from django.contrib.gis.db import models as gis_models
+from django.core.validators import FileExtensionValidator
 from django.db import models, transaction
 from django.db.models import Q, TextChoices, UniqueConstraint
 from django.db.models.signals import post_delete
@@ -57,7 +58,19 @@ class Extent(models.Model):
     maxLon = models.DecimalField(
         verbose_name=_("Longitude max"), max_digits=10, decimal_places=7
     )
-    pictogram = models.ImageField(max_length=255, null=True, default=None, blank=True)
+    pictogram = models.FileField(
+        verbose_name=_("Pictogram"),
+        upload_to="terra_layer/extents/pictograms",
+        max_length=255,
+        null=True,
+        default=None,
+        blank=True,
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=["svg", "png", "jpg", "jpeg", "gif", "webp"]
+            )
+        ],
+    )
     adapts_to_theme = models.BooleanField(
         verbose_name=_("Adapt to theme"),
         default=False,

@@ -22,7 +22,7 @@
       "minLon": "-5.1328020",
       "maxLat": "51.0875410",
       "maxLon": "9.5595810",
-      "pictogram": null,
+      "pictogram": "terra_layer/extents/pictograms/france-metropolitaine.svg",
       "adapts_to_theme": true,
       "category": 1
     }
@@ -36,7 +36,7 @@
       "minLon": "-61.7978410",
       "maxLat": "16.5130880",
       "maxLon": "-60.9892470",
-      "pictogram": null,
+      "pictogram": "terra_layer/extents/pictograms/guadeloupe.svg",
       "adapts_to_theme": true,
       "category": 2
     }
@@ -50,7 +50,7 @@
       "minLon": "-61.2288310",
       "maxLat": "14.8768990",
       "maxLon": "-60.8104140",
-      "pictogram": null,
+      "pictogram": "terra_layer/extents/pictograms/martinique.svg",
       "adapts_to_theme": true,
       "category": 2
     }
@@ -64,7 +64,7 @@
       "minLon": "-54.6152920",
       "maxLat": "5.7447650",
       "maxLon": "-51.6490370",
-      "pictogram": null,
+      "pictogram": "terra_layer/extents/pictograms/guyane.svg",
       "adapts_to_theme": true,
       "category": 2
     }
@@ -78,7 +78,7 @@
       "minLon": "55.2254340",
       "maxLat": "-20.8614230",
       "maxLon": "55.8545030",
-      "pictogram": null,
+      "pictogram": "terra_layer/extents/pictograms/la-reunion.svg",
       "adapts_to_theme": true,
       "category": 2
     }
@@ -92,7 +92,7 @@
       "minLon": "45.0424910",
       "maxLat": "-12.6472310",
       "maxLon": "45.2908630",
-      "pictogram": null,
+      "pictogram": "terra_layer/extents/pictograms/mayotte.svg",
       "adapts_to_theme": true,
       "category": 2
     }
@@ -106,7 +106,7 @@
       "minLon": "-56.3965960",
       "maxLat": "47.1412620",
       "maxLon": "-56.1447650",
-      "pictogram": null,
+      "pictogram": "terra_layer/extents/pictograms/saint-pierre-et-miquelon.svg",
       "adapts_to_theme": true,
       "category": 2
     }
@@ -120,7 +120,7 @@
       "minLon": "-62.8673400",
       "maxLat": "17.9291450",
       "maxLon": "-62.7916560",
-      "pictogram":  null,
+      "pictogram": "terra_layer/extents/pictograms/saint-barthelemy.svg",
       "adapts_to_theme": true,
       "category": 2
     }
@@ -134,7 +134,7 @@
       "minLon": "-63.1468400",
       "maxLat": "18.1221380",
       "maxLon": "-63.0107320",
-      "pictogram": null,
+      "pictogram": "terra_layer/extents/pictograms/saint-martin.svg",
       "adapts_to_theme": true,
       "category": 2
     }
@@ -148,7 +148,7 @@
       "minLon": "163.6157330",
       "maxLat": "-19.6237120",
       "maxLon": "171.3437650",
-      "pictogram": null,
+      "pictogram": "terra_layer/extents/pictograms/nouvelle-caledonie.svg",
       "adapts_to_theme": true,
       "category": 2
     }
@@ -162,7 +162,7 @@
       "minLon": "-154.5369770",
       "maxLat": "-7.9501280",
       "maxLon": "-134.9429830",
-      "pictogram": null,
+      "pictogram": "terra_layer/extents/pictograms/polynesie-francaise.svg",
       "adapts_to_theme": true,
       "category": 2
     }
@@ -176,7 +176,7 @@
       "minLon": "-178.1857400",
       "maxLat": "-13.2089170",
       "maxLon": "-176.1256000",
-      "pictogram": null,
+      "pictogram": "terra_layer/extents/pictograms/wallis-et-futuna.svg",
       "adapts_to_theme": true,
       "category": 2
     }
