@@ -3,13 +3,17 @@ import io
 
 import freezegun
 from django.core import mail
+from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from django.utils.html import format_html
-from factory.django import ImageField
 
 from project.accounts.tests.factories import SuperUserFactory
 from project.geosource.models import FieldTypes
-from project.terra_layer.models import ManagersMessage, ReportField, StatusChange
+from project.terra_layer.models import (
+    ManagersMessage,
+    ReportField,
+    StatusChange,
+)
 from project.terra_layer.tests.factories import (
     AuthentifiedDeclarationFactory,
     DeclarationFieldFactory,
@@ -299,8 +303,12 @@ class ExtentAdminTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.user = SuperUserFactory.create()
-        cls.file = ImageField()  # file is called 'example.jpg'
-        cls.extent = ExtentFactory.create(pictogram=cls.file)
+        cls.svg_file = SimpleUploadedFile(
+            "pictogram.svg",
+            b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1 1"></svg>',
+            content_type="image/svg+xml",
+        )
+        cls.extent = ExtentFactory.create(pictogram=cls.svg_file)
 
     def setUp(self):
         self.client.force_login(self.user)
@@ -315,4 +323,7 @@ class ExtentAdminTestCase(TestCase):
         response = self.client.get("/config/terra_layer/extent/")
         self.assertEqual(response.status_code, 200)
         html_content = response.content.decode()
-        self.assertIn('<img src="/media/example.jpg"/>', html_content)
+        self.assertIn(
+            '<img src="/media/terra_layer/extents/pictograms/pictogram.svg"/>',
+            html_content,
+        )
