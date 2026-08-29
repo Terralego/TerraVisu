@@ -166,7 +166,7 @@ django-debug-toolbar==7.0.0
     # via terravisu (pyproject.toml)
 django-extensions==4.1
     # via terravisu (pyproject.toml)
-django-filter==25.2
+django-filter==26.1
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
