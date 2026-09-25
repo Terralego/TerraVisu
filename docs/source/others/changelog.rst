@@ -14,6 +14,9 @@ Changelog
 
 - (Front) total rewrite of map controls, now based on MUI and using React Portals for performance
 
+**Bugfix:**
+- (front) Print title had a black background
+
 2026.08.00      (2026-08-14)
 ----------------------------
 
