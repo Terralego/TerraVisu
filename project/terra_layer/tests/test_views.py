@@ -425,6 +425,7 @@ class SceneViewsetTestCase(APITestCase):
             {
                 "label": "My group 2",
                 "group": True,
+                "closedByDefault": True,
                 "children": [{"geolayer": layers[4].id}],
             },
             {"geolayer": layers[5].id},
@@ -477,6 +478,8 @@ class SceneViewsetTestCase(APITestCase):
             layer_tree["layersTree"][1]["group"], scene["tree"][1]["label"]
         )
         self.assertEqual(layer_tree["layersTree"][2]["label"], layers[5].name)
+        self.assertFalse(layer_tree["layersTree"][0]["closedByDefault"])
+        self.assertTrue(layer_tree["layersTree"][1]["closedByDefault"])
 
         # Subgroup test
         self.assertEqual(
