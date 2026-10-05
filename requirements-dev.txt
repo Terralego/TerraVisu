@@ -359,7 +359,7 @@ python-magic==0.4.27
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
-python-slugify==8.0.4
+python-slugify==9.1.2
     # via
     #   -c requirements.txt
     #   django-admin-interface
