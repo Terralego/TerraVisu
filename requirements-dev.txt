@@ -451,7 +451,7 @@ vine==5.1.0
     #   amqp
     #   celery
     #   kombu
-wcwidth==0.8.2
+wcwidth==0.9.1
     # via
     #   -c requirements.txt
     #   prompt-toolkit
