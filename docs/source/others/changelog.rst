@@ -7,7 +7,7 @@ Changelog
 
 **Improvements:**
 
-- Add referer tag to prevent 403 with OSM tiles
+- Add referrer tag to prevent 403 errors with OSM tiles
 
 **Documentation:**
 
