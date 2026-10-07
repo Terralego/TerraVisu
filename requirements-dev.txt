@@ -61,7 +61,7 @@ click-plugins==1.1.1.2
     #   -c requirements.txt
     #   celery
     #   fiona
-click-repl==0.3.0
+click-repl==0.4.0
     # via
     #   -c requirements.txt
     #   celery
