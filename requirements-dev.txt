@@ -426,7 +426,7 @@ typing-extensions==4.16.0
     #   -c requirements.txt
     #   django-polymorphic
     #   referencing
-tzdata==2026.3
+tzdata==2026.5
     # via
     #   -c requirements.txt
     #   django-celery-beat
