@@ -57,7 +57,7 @@ cron-descriptor==1.4.5
     # via django-celery-beat
 cryptography==50.0.2
     # via pyjwt
-deepmerge==3.0
+deepmerge==3.0.1
     # via django-geostore
 django==5.2.17
     # via
