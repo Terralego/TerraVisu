@@ -1,5 +1,10 @@
 {% extends "admin/base.html" %}
 
+{% block extrahead %}
+    <meta name="referrer" content="strict-origin-when-cross-origin">
+    {{ block.super }}
+{% endblock %}
+
 {% block userlinks %}
     {% if user.is_superuser and request.path|slice:":7" != "/debug/" %}
     <a href="/debug/">Debug</a> /
