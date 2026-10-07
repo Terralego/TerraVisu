@@ -10,12 +10,17 @@ Changelog
 - Add support for multiple extents (Territories selector)
 - (Admin) Add a "multiple extents" in view form
 
+**Tooling**
+- (Front) Migrate front-end tooling to Vite + vitest + oxlint
+
 **Improvements:**
 
 - (Front) total rewrite of map controls, now based on MUI and using React Portals for performance
 
 **Bugfix:**
 - (front) Print title had a black background
+- (front) Sharing an URL with private layer could crash the app
+- (front) Loading the app from another URL than `view` could cause the CSS to not load properly
 
 2026.08.00      (2026-08-14)
 ----------------------------
