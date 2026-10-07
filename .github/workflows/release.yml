@@ -161,9 +161,6 @@ jobs:
           cp * ./terra_visu 2>/dev/null || :
           cp -r ./conf ./terra_visu
           zip -r ../install.zip terra_visu/
+
       - name: Attach zip archive as release binary
-        uses: skx/github-action-publish-binaries@master
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          args: 'install.zip'
+        run: gh release upload "${{ github.ref_name }}" *.zip --clobber
