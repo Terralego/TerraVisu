@@ -35,7 +35,7 @@ dependencies = [
     "pyexcel",
     "python-decouple",
     "django-auth-oidc@git+https://github.com/Terralego/django-auth-oidc.git@master",
-    "numpy>=2.5.2",
+    "numpy>=2.5.3",
     "kmeans1d>=0.2",
     "drf-jwt",
     "drf-spectacular",
