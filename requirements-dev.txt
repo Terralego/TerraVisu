@@ -15,7 +15,7 @@ attrs==26.1.0
     #   fiona
     #   jsonschema
     #   referencing
-billiard==4.2.4
+billiard==4.3.0
     # via
     #   -c requirements.txt
     #   celery
