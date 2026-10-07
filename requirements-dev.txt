@@ -334,7 +334,7 @@ pyjwt==2.15.1
     # via
     #   -c requirements.txt
     #   drf-jwt
-pyproj==3.7.2
+pyproj==3.8.0
     # via
     #   -c requirements.txt
     #   terravisu (pyproject.toml)
