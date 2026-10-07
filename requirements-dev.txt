@@ -87,7 +87,7 @@ cryptography==50.0.2
     # via
     #   -c requirements.txt
     #   pyjwt
-deepmerge==3.0
+deepmerge==3.0.1
     # via
     #   -c requirements.txt
     #   django-geostore
