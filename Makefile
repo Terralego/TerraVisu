@@ -12,7 +12,7 @@ export CURRENT_GID
 build_admin:
 	rm -rf ./public/admin
 	docker compose -f .docker/admin/docker-compose.yml pull
-	docker compose -f .docker/admin/docker-compose.yml run --rm admin bash -c "npm ci --legacy-peer-deps && npx react-scripts --openssl-legacy-provider build"
+	docker compose -f .docker/admin/docker-compose.yml run --rm admin bash -c "npm ci --legacy-peer-deps && npm run build"
 	mv ./admin/build ./public/admin
 	rm -rf ./admin/node_modules
 
