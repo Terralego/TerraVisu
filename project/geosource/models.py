@@ -1,6 +1,8 @@
 import json
+import os
 import subprocess
 import sys
+import tempfile
 from contextlib import contextmanager
 from datetime import date, timedelta
 from enum import Enum, auto
@@ -17,6 +19,7 @@ from django.contrib.auth.models import Group
 from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.gdal.error import GDALException
 from django.contrib.gis.geos import GEOSGeometry
+from django.core.files.uploadedfile import TemporaryUploadedFile
 from django.core.management import call_command
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models, transaction
@@ -50,10 +53,20 @@ def detect_boolean_fields(file_path, layer_name):
     try:
         result = subprocess.run(
             [
-                "ogrinfo", "-json", "-al", "-so", "-noextent", "-nocount", "-nogeomtype",
-                file_path, layer_name,
+                "ogrinfo",
+                "-json",
+                "-al",
+                "-so",
+                "-noextent",
+                "-nocount",
+                "-nogeomtype",
+                file_path,
+                layer_name,
             ],
-            capture_output=True, text=True, timeout=60, check=True,
+            capture_output=True,
+            text=True,
+            timeout=60,
+            check=True,
         )
         data = json.loads(result.stdout)
         layers = data.get("layers") or []
@@ -61,6 +74,36 @@ def detect_boolean_fields(file_path, layer_name):
         return {f["name"] for f in fields if f.get("subType") == "Boolean"}
     except (subprocess.SubprocessError, ValueError, KeyError, IndexError):
         return set()
+
+
+@contextmanager
+def uploaded_file_path(uploaded_file):
+    """Yield a filesystem path for an uploaded file, reusing Django's
+    temporary upload file when already on disk."""
+    if isinstance(uploaded_file, TemporaryUploadedFile):
+        yield uploaded_file.temporary_file_path()
+    else:
+        suffix = os.path.splitext(uploaded_file.name)[1]
+        tmp = tempfile.NamedTemporaryFile(suffix=suffix, delete=False)
+        uploaded_file.seek(0)
+        tmp.write(uploaded_file.read())
+        uploaded_file.seek(0)
+        tmp.close()
+        try:
+            yield tmp.name
+        finally:
+            os.unlink(tmp.name)
+
+
+@contextmanager
+def field_file_path(field_file):
+    """Yield a filesystem path for a FileField value, including a file that
+    is not saved to the storage yet (source validated before its creation)."""
+    if field_file._committed:
+        yield field_file.path
+    else:
+        with uploaded_file_path(field_file.file) as path:
+            yield path
 
 
 @contextmanager
@@ -364,7 +407,12 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             for fn, ft in zip(layer.fields, layer.field_types):
                 if ft.__name__ in ("OFTInteger", "OFTInteger64"):
                     vals = [r.get(fn) for r in records if r.get(fn) is not None]
-                    if vals and 0 in vals and 1 in vals and all(v in (0, 1, True, False) for v in vals):
+                    if (
+                        vals
+                        and 0 in vals
+                        and 1 in vals
+                        and all(v in (0, 1, True, False) for v in vals)
+                    ):
                         bool_fields.add(fn)
 
         for record in records:
@@ -394,9 +442,6 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                 errors.append(f"Feature fid {feature.fid}: {exc}")
 
         return self._coerce_booleans(records, layer, bool_fields=bool_fields), errors
-
-    def _open_shapefile_layer(self):
-        return open_zipped_shapefile_layer(self.file.path)
 
     def _resolve_gpkg_layer(self, ds):
         available = [ds[i].name for i in range(ds.layer_count)]
@@ -512,10 +557,11 @@ class GeoJSONSource(Source):
     file = models.FileField(upload_to="geosource/geojson/%Y/")
 
     def _get_records(self, limit=None):
-        ds = DataSource(self.file.path)
-        layer = ds[0]
-        srid = layer.srs.srid if layer.srs else 4326
-        return self._records_from_layer(layer, srid, limit)
+        with field_file_path(self.file) as file_path:
+            ds = DataSource(file_path)
+            layer = ds[0]
+            srid = layer.srs.srid if layer.srs else 4326
+            return self._records_from_layer(layer, srid, limit)
 
     class Meta:
         verbose_name = _("GeoJSON Source")
@@ -526,7 +572,10 @@ class ShapefileSource(Source):
     file = models.FileField(upload_to="geosource/shapefile/%Y/")
 
     def _get_records(self, limit=None):
-        with self._open_shapefile_layer() as layer:
+        with (
+            field_file_path(self.file) as file_path,
+            open_zipped_shapefile_layer(file_path) as layer,
+        ):
             if layer is None:
                 return [], [{"error": "No .shp file found in archive"}]
             srid = layer.srs.srid if layer.srs else 4326
@@ -542,11 +591,12 @@ class GeoPackageSource(Source):
     layer_name = models.CharField(max_length=255, blank=True, default="")
 
     def _get_records(self, limit=None):
-        ds = DataSource(self.file.path)
-        layer = self._resolve_gpkg_layer(ds)
-        srid = layer.srs.srid if layer.srs else 4326
-        bool_fields = detect_boolean_fields(self.file.path, layer.name)
-        return self._records_from_layer(layer, srid, limit, bool_fields=bool_fields)
+        with field_file_path(self.file) as file_path:
+            ds = DataSource(file_path)
+            layer = self._resolve_gpkg_layer(ds)
+            srid = layer.srs.srid if layer.srs else 4326
+            bool_fields = detect_boolean_fields(file_path, layer.name)
+            return self._records_from_layer(layer, srid, limit, bool_fields=bool_fields)
 
     class Meta:
         verbose_name = _("GeoPackage Source")
@@ -560,19 +610,22 @@ class GeoFileSource(Source):
     def _get_records(self, limit=None):
         name = self.file.name.lower()
 
-        if name.endswith(".zip") or name.endswith(".shp"):
-            with self._open_shapefile_layer() as layer:
-                if layer is None:
-                    return [], [{"error": "No .shp file found in archive"}]
-                srid = layer.srs.srid if layer.srs else 4326
-                return self._records_from_layer(layer, srid, limit)
+        with field_file_path(self.file) as file_path:
+            if name.endswith(".zip") or name.endswith(".shp"):
+                with open_zipped_shapefile_layer(file_path) as layer:
+                    if layer is None:
+                        return [], [{"error": "No .shp file found in archive"}]
+                    srid = layer.srs.srid if layer.srs else 4326
+                    return self._records_from_layer(layer, srid, limit)
 
-        ds = DataSource(self.file.path)
-        is_gpkg = name.endswith(".gpkg")
-        layer = self._resolve_gpkg_layer(ds) if is_gpkg else ds[0]
-        srid = layer.srs.srid if layer.srs else 4326
-        bool_fields = detect_boolean_fields(self.file.path, layer.name) if is_gpkg else None
-        return self._records_from_layer(layer, srid, limit, bool_fields=bool_fields)
+            ds = DataSource(file_path)
+            is_gpkg = name.endswith(".gpkg")
+            layer = self._resolve_gpkg_layer(ds) if is_gpkg else ds[0]
+            srid = layer.srs.srid if layer.srs else 4326
+            bool_fields = (
+                detect_boolean_fields(file_path, layer.name) if is_gpkg else None
+            )
+            return self._records_from_layer(layer, srid, limit, bool_fields=bool_fields)
 
     class Meta:
         verbose_name = _("GeoFile Source")

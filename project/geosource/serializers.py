@@ -181,13 +181,13 @@ class SourceListSerializer(serializers.ModelSerializer):
         extras = {"read_only": {"updated_at": True}}
 
     def get__type(self, instance):
-        if instance.__class__.__name__ == 'GeoFileSource':
+        if instance.__class__.__name__ == "GeoFileSource":
             name = instance.file.name.lower()
-            if name.endswith('.gpkg'):
-                return 'GeoPackageSource'
-            if name.endswith('.zip') or name.endswith('.shp'):
-                return 'ShapefileSource'
-            return 'GeoJSONSource'
+            if name.endswith(".gpkg"):
+                return "GeoPackageSource"
+            if name.endswith(".zip") or name.endswith(".shp"):
+                return "ShapefileSource"
+            return "GeoJSONSource"
         return instance.__class__.__name__
 
     def get_status(self, instance):

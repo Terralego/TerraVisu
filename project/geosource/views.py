@@ -5,8 +5,6 @@ import mimetypes
 import os
 import re
 import subprocess
-import tempfile
-from contextlib import contextmanager
 from zipfile import is_zipfile
 
 from django.contrib.gis.gdal import (
@@ -16,7 +14,6 @@ from django.contrib.gis.gdal import (
     SpatialReference,
 )
 from django.contrib.gis.gdal.geometries import Point
-from django.core.files.uploadedfile import TemporaryUploadedFile
 from django.db.models import Count
 from django.http import Http404
 from geostore import GeometryTypes
@@ -33,6 +30,7 @@ from .models import (
     SourceReporting,
     detect_boolean_fields,
     open_zipped_shapefile_layer,
+    uploaded_file_path,
 )
 from .parsers import NestedMultipartJSONParser
 from .permissions import SourcePermission
@@ -55,23 +53,6 @@ OFT_NAME_MAP = {
 }
 
 
-@contextmanager
-def uploaded_file_path(uploaded_file):
-    """Yield a filesystem path for an uploaded file, reusing Django's
-    temporary upload file when already on disk."""
-    if isinstance(uploaded_file, TemporaryUploadedFile):
-        yield uploaded_file.temporary_file_path()
-    else:
-        suffix = os.path.splitext(uploaded_file.name)[1]
-        tmp = tempfile.NamedTemporaryFile(suffix=suffix, delete=False)
-        tmp.write(uploaded_file.read())
-        tmp.close()
-        try:
-            yield tmp.name
-        finally:
-            os.unlink(tmp.name)
-
-
 def _geom_type_id(geom_type_name):
     if geom_type_name in GeometryTypes.__members__:
         return GeometryTypes[geom_type_name].value
@@ -86,10 +67,21 @@ def _detect_geometry_types(file_path, layer_name):
     try:
         result = subprocess.run(
             [
-                "ogrinfo", "-json", "-al", "-features", "-geom=NO",
-                "-dialect", "OGRSQL", "-sql", sql, file_path,
+                "ogrinfo",
+                "-json",
+                "-al",
+                "-features",
+                "-geom=NO",
+                "-dialect",
+                "OGRSQL",
+                "-sql",
+                sql,
+                file_path,
             ],
-            capture_output=True, text=True, timeout=60, check=True,
+            capture_output=True,
+            text=True,
+            timeout=60,
+            check=True,
         )
         data = json.loads(result.stdout)
         layers = data.get("layers") or []
@@ -98,11 +90,12 @@ def _detect_geometry_types(file_path, layer_name):
             for feat in (layers[0].get("features", []) if layers else [])
         }
         return {
-            _OGR_GEOMETRY_TO_NAME.get(v.upper(), v.title())
-            for v in raw_values if v
+            _OGR_GEOMETRY_TO_NAME.get(v.upper(), v.title()) for v in raw_values if v
         }
     except (subprocess.SubprocessError, ValueError, KeyError, IndexError) as exc:
-        logger.warning("ogrinfo geometry-type detection failed for %s: %s", file_path, exc)
+        logger.warning(
+            "ogrinfo geometry-type detection failed for %s: %s", file_path, exc
+        )
         return set()
 
 
@@ -118,7 +111,9 @@ def _detect_geojson_geometry_types(file_path):
             data = f.read()
         return {m.decode() for m in _GEOJSON_GEOM_TYPE_RE.findall(data)}
     except OSError as exc:
-        logger.warning("regex geometry-type detection failed for %s: %s", file_path, exc)
+        logger.warning(
+            "regex geometry-type detection failed for %s: %s", file_path, exc
+        )
         return set()
 
 
@@ -130,7 +125,12 @@ def _preview_bool_fields(layer, features, file_path, is_gpkg):
     for fn, ft in zip(layer.fields, layer.field_types):
         if ft.__name__ in ("OFTInteger", "OFTInteger64"):
             vals = [row[fn] for row in features if fn in row and row[fn] is not None]
-            if vals and 0 in vals and 1 in vals and all(v in (0, 1, True, False) for v in vals):
+            if (
+                vals
+                and 0 in vals
+                and 1 in vals
+                and all(v in (0, 1, True, False) for v in vals)
+            ):
                 bool_fields.add(fn)
     return bool_fields
 
@@ -178,8 +178,10 @@ class SourceModelViewset(ModelViewSet):
             layer = ds[0]
 
         return self._extract_layer_data(
-            layer, file_path=file_path,
-            is_geojson=is_geojson, is_gpkg=is_gpkg,
+            layer,
+            file_path=file_path,
+            is_geojson=is_geojson,
+            is_gpkg=is_gpkg,
         )
 
     def _preview_shapefile(self, file_path):
@@ -194,7 +196,8 @@ class SourceModelViewset(ModelViewSet):
         return self._extract_layer_data(ds[0])
 
     def _preview_csv(
-        self, file_path,
+        self,
+        file_path,
         field_separator="semicolon",
         char_delimiter="doublequote",
         decimal_separator="point",
@@ -210,9 +213,15 @@ class SourceModelViewset(ModelViewSet):
         coordinate_reference_system=None,
     ):
         SEP_MAP = {
-            "comma": ",", "semicolon": ";", "tab": "\t", "tabulation": "\t",
-            "colon": ":", "space": " ", "point": ".",
-            "doublequote": '"', "simplequote": "'",
+            "comma": ",",
+            "semicolon": ";",
+            "tab": "\t",
+            "tabulation": "\t",
+            "colon": ":",
+            "space": " ",
+            "point": ".",
+            "doublequote": '"',
+            "simplequote": "'",
         }
         delimiter = SEP_MAP.get(field_separator, field_separator)
         quotechar = SEP_MAP.get(char_delimiter, char_delimiter)
@@ -220,10 +229,15 @@ class SourceModelViewset(ModelViewSet):
 
         result = {
             "record_count": 0,
-            "geometry_type": None, "geometry_type_name": None,
-            "geometry_types": None, "mixed_geometries": False,
-            "crs": None, "fields": [], "features": [],
-            "bbox": None, "column_count": 0,
+            "geometry_type": None,
+            "geometry_type_name": None,
+            "geometry_types": None,
+            "mixed_geometries": False,
+            "crs": None,
+            "fields": [],
+            "features": [],
+            "bbox": None,
+            "column_count": 0,
         }
 
         with open(file_path, encoding=encoding, errors="replace", newline="") as fh:
@@ -239,7 +253,7 @@ class SourceModelViewset(ModelViewSet):
             if use_header:
                 headers = first_row
             else:
-                headers = [f"Col_{i+1}" for i in range(len(first_row))]
+                headers = [f"Col_{i + 1}" for i in range(len(first_row))]
 
             srid = None
             if coordinate_reference_system:
@@ -251,25 +265,45 @@ class SourceModelViewset(ModelViewSet):
             coord_indexes = None
             is_xy = True
             one_column_sep = None
-            if coordinates_field == "two_columns" and latitude_field and longitude_field:
+            if (
+                coordinates_field == "two_columns"
+                and latitude_field
+                and longitude_field
+            ):
                 try:
-                    lat_idx = headers.index(latitude_field) if use_header else int(latitude_field)
-                    lng_idx = headers.index(longitude_field) if use_header else int(longitude_field)
+                    lat_idx = (
+                        headers.index(latitude_field)
+                        if use_header
+                        else int(latitude_field)
+                    )
+                    lng_idx = (
+                        headers.index(longitude_field)
+                        if use_header
+                        else int(longitude_field)
+                    )
                     coord_indexes = (lng_idx, lat_idx)
                 except (ValueError, TypeError):
                     coord_indexes = None
             elif (
                 coordinates_field == "one_column"
-                and latlong_field and coordinates_field_count and coordinates_separator
+                and latlong_field
+                and coordinates_field_count
+                and coordinates_separator
             ):
                 try:
-                    col_idx = headers.index(latlong_field) if use_header else int(latlong_field)
+                    col_idx = (
+                        headers.index(latlong_field)
+                        if use_header
+                        else int(latlong_field)
+                    )
                 except (ValueError, TypeError):
                     col_idx = None
                 if col_idx is not None:
                     coord_indexes = (col_idx,)
                     is_xy = coordinates_field_count == "xy"
-                    one_column_sep = SEP_MAP.get(coordinates_separator, coordinates_separator)
+                    one_column_sep = SEP_MAP.get(
+                        coordinates_separator, coordinates_separator
+                    )
 
             def extract_xy(row):
                 if coord_indexes is None:
@@ -327,7 +361,9 @@ class SourceModelViewset(ModelViewSet):
             try:
                 [float(v.replace(decimal_sep, ".")) for v in values]
                 if decimal_sep != ".":
-                    if not any(decimal_sep in v for v in values) and any("." in v for v in values):
+                    if not any(decimal_sep in v for v in values) and any(
+                        "." in v for v in values
+                    ):
                         return "str"
                 return "float"
             except ValueError:
@@ -338,10 +374,7 @@ class SourceModelViewset(ModelViewSet):
 
         fields = []
         for i, col in enumerate(headers):
-            col_values = [
-                row[i] for row in data_rows
-                if i < len(row) and row[i] != ""
-            ]
+            col_values = [row[i] for row in data_rows if i < len(row) and row[i] != ""]
             fields.append({"name": col, "type": detect_type(col_values)})
 
         features = [
@@ -364,17 +397,21 @@ class SourceModelViewset(ModelViewSet):
             else:
                 bbox = [minx, miny, maxx, maxy]
 
-        result.update({
-            "record_count": record_count,
-            "crs": f"EPSG:{srid}" if srid else None,
-            "fields": fields,
-            "features": features,
-            "bbox": bbox,
-            "column_count": len(headers),
-        })
+        result.update(
+            {
+                "record_count": record_count,
+                "crs": f"EPSG:{srid}" if srid else None,
+                "fields": fields,
+                "features": features,
+                "bbox": bbox,
+                "column_count": len(headers),
+            }
+        )
         return result
 
-    def _extract_layer_data(self, layer, file_path=None, is_geojson=False, is_gpkg=False):
+    def _extract_layer_data(
+        self, layer, file_path=None, is_geojson=False, is_gpkg=False
+    ):
         features = []
         for feature in layer:
             if len(features) >= 5:
@@ -386,7 +423,9 @@ class SourceModelViewset(ModelViewSet):
         fields = [
             {
                 "name": fn,
-                "type": "boolean" if fn in bool_fields else OFT_NAME_MAP.get(ft.__name__, ft.__name__),
+                "type": "boolean"
+                if fn in bool_fields
+                else OFT_NAME_MAP.get(ft.__name__, ft.__name__),
             }
             for fn, ft in zip(layer.fields, layer.field_types)
         ]
@@ -423,7 +462,9 @@ class SourceModelViewset(ModelViewSet):
             extent = layer.extent
             if layer.srs and layer.srs.srid and layer.srs.srid != 4326:
                 ct = CoordTransform(layer.srs, SpatialReference(4326))
-                ring = OGRGeometry.from_bbox([extent.min_x, extent.min_y, extent.max_x, extent.max_y])
+                ring = OGRGeometry.from_bbox(
+                    [extent.min_x, extent.min_y, extent.max_x, extent.max_y]
+                )
                 ring.transform(ct)
                 env = ring.extent
                 bbox = [env[0], env[1], env[2], env[3]]
@@ -523,7 +564,9 @@ class SourceModelViewset(ModelViewSet):
         try:
             with uploaded_file_path(uploaded_file) as file_path:
                 if filename.endswith(".gpkg"):
-                    result = self._preview_ogr(file_path, layer_name=layer_name, is_gpkg=True)
+                    result = self._preview_ogr(
+                        file_path, layer_name=layer_name, is_gpkg=True
+                    )
                 elif filename.endswith(".zip") or filename.endswith(".shp"):
                     result = self._preview_shapefile(file_path)
                 elif filename.endswith(".geojson") or filename.endswith(".json"):
@@ -531,19 +574,32 @@ class SourceModelViewset(ModelViewSet):
                 elif filename.endswith(".csv"):
                     result = self._preview_csv(
                         file_path,
-                        field_separator=request.data.get("field_separator", "semicolon"),
-                        char_delimiter=request.data.get("char_delimiter", "doublequote"),
-                        decimal_separator=request.data.get("decimal_separator", "point"),
+                        field_separator=request.data.get(
+                            "field_separator", "semicolon"
+                        ),
+                        char_delimiter=request.data.get(
+                            "char_delimiter", "doublequote"
+                        ),
+                        decimal_separator=request.data.get(
+                            "decimal_separator", "point"
+                        ),
                         encoding=request.data.get("encoding", "UTF-8"),
-                        number_lines_to_ignore=int(request.data.get("number_lines_to_ignore", 0)),
-                        use_header=request.data.get("use_header", "true") in ("true", "True", True),
+                        number_lines_to_ignore=int(
+                            request.data.get("number_lines_to_ignore", 0)
+                        ),
+                        use_header=request.data.get("use_header", "true")
+                        in ("true", "True", True),
                         coordinates_field=request.data.get("coordinates_field"),
                         latitude_field=request.data.get("latitude_field"),
                         longitude_field=request.data.get("longitude_field"),
                         latlong_field=request.data.get("latlong_field"),
-                        coordinates_field_count=request.data.get("coordinates_field_count"),
+                        coordinates_field_count=request.data.get(
+                            "coordinates_field_count"
+                        ),
                         coordinates_separator=request.data.get("coordinates_separator"),
-                        coordinate_reference_system=request.data.get("coordinate_reference_system"),
+                        coordinate_reference_system=request.data.get(
+                            "coordinate_reference_system"
+                        ),
                     )
                 else:
                     return Response(
@@ -582,8 +638,7 @@ class SourceModelViewset(ModelViewSet):
             all_samples[f.name] = f.sample[:5] if f.sample else []
 
         features = [
-            dict(zip(all_samples.keys(), row))
-            for row in zip(*all_samples.values())
+            dict(zip(all_samples.keys(), row)) for row in zip(*all_samples.values())
         ]
 
         record_count = 0
@@ -622,7 +677,9 @@ class SourceModelViewset(ModelViewSet):
                     ext = layer.extent
                     if layer.srs and layer.srs.srid and layer.srs.srid != 4326:
                         ct = CoordTransform(layer.srs, SpatialReference(4326))
-                        ring = OGRGeometry.from_bbox([ext.min_x, ext.min_y, ext.max_x, ext.max_y])
+                        ring = OGRGeometry.from_bbox(
+                            [ext.min_x, ext.min_y, ext.max_x, ext.max_y]
+                        )
                         ring.transform(ct)
                         bbox = list(ring.extent)
                     else:
@@ -635,19 +692,21 @@ class SourceModelViewset(ModelViewSet):
         if geom_name:
             geometry_types = [geom_name]
 
-        return Response({
-            "record_count": record_count,
-            "geometry_type": geom_id,
-            "geometry_type_name": geom_name,
-            "geometry_types": geometry_types,
-            "mixed_geometries": mixed_geometries,
-            "crs": crs,
-            "fields": fields,
-            "features": features,
-            "file_size": file_size,
-            "bbox": bbox,
-            "column_count": column_count,
-        })
+        return Response(
+            {
+                "record_count": record_count,
+                "geometry_type": geom_id,
+                "geometry_type_name": geom_name,
+                "geometry_types": geometry_types,
+                "mixed_geometries": mixed_geometries,
+                "crs": crs,
+                "fields": fields,
+                "features": features,
+                "file_size": file_size,
+                "bbox": bbox,
+                "column_count": column_count,
+            }
+        )
 
     @action(detail=True, methods=["get"])
     def download(self, request, pk=None):
@@ -657,7 +716,8 @@ class SourceModelViewset(ModelViewSet):
         source = self.get_object()
         file_field = getattr(source, "file", None)
         if not file_field:
-            raise Http404("No file associated with this source")
+            msg = "No file associated with this source"
+            raise Http404(msg)
         filename = strip_storage_suffix(os.path.basename(file_field.name))
         content_type, _ = mimetypes.guess_type(filename)
         return FileResponse(
@@ -666,4 +726,3 @@ class SourceModelViewset(ModelViewSet):
             filename=filename,
             content_type=content_type,
         )
-

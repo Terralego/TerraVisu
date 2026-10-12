@@ -1,11 +1,11 @@
 from io import StringIO
 from unittest import mock
 
+from django.contrib.gis.gdal.error import GDALException
 from django.contrib.gis.geos.point import Point
 from django.test import TestCase
 from geostore.models import Layer
 
-from project.geosource.exceptions import GeoJSONSourceException
 from project.geosource.models import (
     CommandSource,
     CSVSource,
@@ -166,39 +166,15 @@ class ModelPostGISSourceTestCase(TestCase):
 
 
 class ModelGeoJSONSourceTestCase(TestCase):
-    def test_get_file_as_dict(self):
-        source = GeoJSONSource.objects.create(
-            name="Titi",
-            geom_type=GeometryTypes.Point,
-            file=get_file("test.geojson"),
-        )
-
-        self.assertEqual(
-            source.get_file_as_dict(),
-            {
-                "type": "FeatureCollection",
-                "features": [
-                    {
-                        "type": "Feature",
-                        "properties": {"id": 1, "test": 5},
-                        "geometry": {
-                            "type": "Point",
-                            "coordinates": [3.0808067321777344, 45.77488685869771],
-                        },
-                    }
-                ],
-            },
-        )
-
-    def test_get_file_as_dict_wrong_file(self):
+    def test_get_records_wrong_file(self):
         source = GeoJSONSource.objects.create(
             name="Titi",
             geom_type=GeometryTypes.Point,
             file=get_file("bad.geojson"),
         )
 
-        with self.assertRaises(GeoJSONSourceException):
-            source.get_file_as_dict()
+        with self.assertRaises(GDALException):
+            source._get_records()
 
     def test_get_records_wrong_geom_file(self):
         source = GeoJSONSource.objects.create(
@@ -210,7 +186,7 @@ class ModelGeoJSONSourceTestCase(TestCase):
         #        with self.assertRaises(ValueError) as m:
         records, errors = source._get_records(1)
         self.assertIn(
-            'Feature id 1: Invalid geometry pointer returned from "OGR_G_CreateGeometryFromJson".',
+            'Feature fid 1: Invalid geometry pointer returned from "OGR_F_GetGeometryRef".',
             errors,
         )
 
@@ -302,7 +278,7 @@ class ModelCSVSourceTestCase(TestCase):
 
         records, errors = source._get_records()
         self.assertEqual(len(records), 6, len(records))
-        with self.assertNumQueries(71):
+        with self.assertNumQueries(78):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -328,7 +304,7 @@ class ModelCSVSourceTestCase(TestCase):
 
         records, errors = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(95):
+        with self.assertNumQueries(105):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -358,7 +334,7 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records, errors = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(95):
+        with self.assertNumQueries(105):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -389,7 +365,7 @@ class ModelCSVSourceTestCase(TestCase):
             if record.get("photoEtablissement")
         ]
         self.assertEqual(len(empty_entry), 0, empty_entry)
-        with self.assertNumQueries(71):
+        with self.assertNumQueries(78):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -415,7 +391,7 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records, errors = source._get_records()
         self.assertEqual(len(records), 9, len(records))
-        with self.assertNumQueries(95):
+        with self.assertNumQueries(105):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -441,7 +417,7 @@ class ModelCSVSourceTestCase(TestCase):
         )
         records, errors = source._get_records()
         self.assertEqual(len(records), 10, len(records))
-        with self.assertNumQueries(103):
+        with self.assertNumQueries(114):
             row_count = source.refresh_data()
         self.assertEqual(row_count["count"], len(records), row_count)
 
@@ -461,7 +437,7 @@ class ModelCSVSourceTestCase(TestCase):
         sheet = source.get_file_as_sheet()
         sheet.name_columns_by_row(0)
         colnames = [name for name in sheet.colnames if name not in ("XCOORD", "YCOORD")]
-        with self.assertNumQueries(698):
+        with self.assertNumQueries(699):
             source.update_fields()
         fields = [f.name for f in Field.objects.filter(source=source)]
         self.assertTrue(fields == colnames)
