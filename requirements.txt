@@ -256,7 +256,7 @@ typing-extensions==4.16.0
     # via
     #   django-polymorphic
     #   referencing
-tzdata==2026.3
+tzdata==2026.5
     # via
     #   django-celery-beat
     #   kombu
