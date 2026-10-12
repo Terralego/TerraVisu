@@ -1,3 +1,4 @@
+import re
 from os.path import basename
 
 import psycopg2
@@ -15,7 +16,9 @@ from .models import (
     CommandSource,
     CSVSource,
     Field,
+    GeoFileSource,
     GeoJSONSource,
+    GeoPackageSource,
     PostGISSource,
     ShapefileSource,
     Source,
@@ -178,6 +181,13 @@ class SourceListSerializer(serializers.ModelSerializer):
         extras = {"read_only": {"updated_at": True}}
 
     def get__type(self, instance):
+        if instance.__class__.__name__ == 'GeoFileSource':
+            name = instance.file.name.lower()
+            if name.endswith('.gpkg'):
+                return 'GeoPackageSource'
+            if name.endswith('.zip') or name.endswith('.shp'):
+                return 'ShapefileSource'
+            return 'GeoJSONSource'
         return instance.__class__.__name__
 
     def get_status(self, instance):
@@ -252,6 +262,14 @@ class PostGISSourceSerializer(SourceSerializer):
         extra_kwargs = {"db_password": {"write_only": True}}
 
 
+def strip_storage_suffix(name):
+    """Strip Django storage suffix: \"name_RANDOM7chars.ext\" -> \"name.ext\"."""
+    match = re.match(r"^(.+)_[A-Za-z0-9]{7}(\.[^.]+)$", name)
+    if match:
+        return f"{match.group(1)}{match.group(2)}"
+    return name
+
+
 class FileSourceSerializer(SourceSerializer):
     filename = serializers.SerializerMethodField()
 
@@ -263,17 +281,7 @@ class FileSourceSerializer(SourceSerializer):
 
     def get_filename(self, instance):
         if instance.file:
-            return basename(instance.file.name)
-
-    class Meta:
-        model = None
-
-
-class GeoJSONSourceSerializer(FileSourceSerializer):
-    class Meta:
-        model = GeoJSONSource
-        fields = "__all__"
-        extra_kwargs = {"file": {"write_only": True}}
+            return strip_storage_suffix(basename(instance.file.name))
 
     def _validate_field_infos(self, data):
         # remove _type field as it is not needed by the model
@@ -304,10 +312,34 @@ class GeoJSONSourceSerializer(FileSourceSerializer):
         self._validate_field_infos(data)
         return super().validate(data)
 
+    class Meta:
+        model = None
+
+
+class GeoJSONSourceSerializer(FileSourceSerializer):
+    class Meta:
+        model = GeoJSONSource
+        fields = "__all__"
+        extra_kwargs = {"file": {"write_only": True}}
+
 
 class ShapefileSourceSerializer(FileSourceSerializer):
     class Meta:
         model = ShapefileSource
+        fields = "__all__"
+        extra_kwargs = {"file": {"write_only": True}}
+
+
+class GeoPackageSourceSerializer(FileSourceSerializer):
+    class Meta:
+        model = GeoPackageSource
+        fields = "__all__"
+        extra_kwargs = {"file": {"write_only": True}}
+
+
+class GeoFileSourceSerializer(FileSourceSerializer):
+    class Meta:
+        model = GeoFileSource
         fields = "__all__"
         extra_kwargs = {"file": {"write_only": True}}
 

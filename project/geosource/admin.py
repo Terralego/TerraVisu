@@ -5,6 +5,7 @@ from project.geosource.models import (
     CSVSource,
     Field,
     GeoJSONSource,
+    GeoPackageSource,
     PostGISSource,
     ShapefileSource,
     WMTSSource,
@@ -17,7 +18,7 @@ class FieldInline(admin.TabularInline):
 
 
 @admin.register(
-    CSVSource, CommandSource, GeoJSONSource, PostGISSource, ShapefileSource, WMTSSource
+    CSVSource, CommandSource, GeoJSONSource, GeoPackageSource, PostGISSource, ShapefileSource, WMTSSource
 )
 class SourceAdmin(admin.ModelAdmin):
     inlines = [FieldInline]
