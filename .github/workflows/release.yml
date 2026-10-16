@@ -8,7 +8,6 @@ on:
     branches:
       - master
       - develop
-      - optim_split_endpoints
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
