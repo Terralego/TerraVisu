@@ -602,10 +602,13 @@ class SourceModelViewset(ModelViewSet):
                         ),
                     )
                 else:
-                    return Response(
-                        {"error": f"Unsupported file type: {filename}"},
-                        status=status.HTTP_400_BAD_REQUEST,
-                    )
+                    try:
+                        result = self._preview_ogr(file_path)
+                    except Exception:
+                        return Response(
+                            {"error": f"Unsupported file type: {filename}"},
+                            status=status.HTTP_400_BAD_REQUEST,
+                        )
         except Exception as e:
             return Response(
                 {"error": f"Failed to read file: {str(e)}"},

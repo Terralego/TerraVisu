@@ -17,10 +17,7 @@ from .models import (
     CSVSource,
     Field,
     GeoFileSource,
-    GeoJSONSource,
-    GeoPackageSource,
     PostGISSource,
-    ShapefileSource,
     Source,
     SourceReporting,
     WMTSSource,
@@ -58,6 +55,8 @@ class PolymorphicModelSerializer(serializers.ModelSerializer):
         """
         Returns the serializer class from datatype
         """
+        if data_type in ("GeoJSONSource", "ShapefileSource", "GeoPackageSource"):
+            data_type = "GeoFileSource"
         if data_type in cls.type_class_map:
             return cls.type_class_map[data_type]
         raise ValidationError({cls.type_field: f"{data_type}'s type is unknown"})
@@ -181,13 +180,6 @@ class SourceListSerializer(serializers.ModelSerializer):
         extras = {"read_only": {"updated_at": True}}
 
     def get__type(self, instance):
-        if instance.__class__.__name__ == "GeoFileSource":
-            name = instance.file.name.lower()
-            if name.endswith(".gpkg"):
-                return "GeoPackageSource"
-            if name.endswith(".zip") or name.endswith(".shp"):
-                return "ShapefileSource"
-            return "GeoJSONSource"
         return instance.__class__.__name__
 
     def get_status(self, instance):
@@ -314,27 +306,6 @@ class FileSourceSerializer(SourceSerializer):
 
     class Meta:
         model = None
-
-
-class GeoJSONSourceSerializer(FileSourceSerializer):
-    class Meta:
-        model = GeoJSONSource
-        fields = "__all__"
-        extra_kwargs = {"file": {"write_only": True}}
-
-
-class ShapefileSourceSerializer(FileSourceSerializer):
-    class Meta:
-        model = ShapefileSource
-        fields = "__all__"
-        extra_kwargs = {"file": {"write_only": True}}
-
-
-class GeoPackageSourceSerializer(FileSourceSerializer):
-    class Meta:
-        model = GeoPackageSource
-        fields = "__all__"
-        extra_kwargs = {"file": {"write_only": True}}
 
 
 class GeoFileSourceSerializer(FileSourceSerializer):

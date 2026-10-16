@@ -31,7 +31,7 @@ services:
 
   elasticsearch:
     hostname: elasticsearch
-    image: elasticsearch:7.16.2
+    image: elasticsearch:8.19.23
     environment:
       ES_JAVA_OPTS: ${ES_JAVA_OPTS:--Xms1g -Xmx1g}
     healthcheck:

@@ -12,9 +12,8 @@ from project.geosource.models import (
     CommandSource,
     Field,
     FieldTypes,
-    GeoJSONSource,
+    GeoFileSource,
     PostGISSource,
-    ShapefileSource,
     Source,
     SourceReporting,
 )
@@ -30,7 +29,7 @@ class SourceViewsetTestCase(APITestCase):
         cls.default_user = UserModel.objects.create(
             is_superuser=True, **{UserModel.USERNAME_FIELD: "testuser"}
         )
-        cls.source_geojson = GeoJSONSource.objects.create(
+        cls.source_geojson = GeoFileSource.objects.create(
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
@@ -109,7 +108,7 @@ class SourceViewsetTestCase(APITestCase):
 
     def test_refresh_view_accepted_with_existing_report(self):
         report = SourceReporting.objects.create(status=None)
-        source = GeoJSONSource.objects.create(
+        source = GeoFileSource.objects.create(
             name="test-with-report",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
@@ -336,7 +335,7 @@ class SourceViewsetTestCase(APITestCase):
     def test_ordering_filtering_search(self):
         self.source_geojson.delete()
 
-        obj = GeoJSONSource.objects.create(
+        obj = GeoFileSource.objects.create(
             name="foo",
             geom_type=GeometryTypes.Point.value,
             status=Source.Status.PENDING.value,
@@ -346,7 +345,7 @@ class SourceViewsetTestCase(APITestCase):
             geom_type=GeometryTypes.LineString.value,
             status=Source.Status.IN_PROGRESS.value,
         )
-        ShapefileSource.objects.create(
+        GeoFileSource.objects.create(
             name="baz",
             geom_type=GeometryTypes.Polygon.value,
             status=Source.Status.DONE.value,
@@ -420,7 +419,7 @@ class SourceViewsetTestCase(APITestCase):
         self.assertNotIn("WMTSSource", [d["_type"] for d in data])
 
     def test_property_values(self):
-        source = GeoJSONSource.objects.create(
+        source = GeoFileSource.objects.create(
             name="foo",
             geom_type=GeometryTypes.Point,
         )
@@ -456,12 +455,12 @@ class SourceViewsetTestCase(APITestCase):
             self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
 
     def test_q_params_filter_source_on_name(self):
-        GeoJSONSource.objects.create(
+        GeoFileSource.objects.create(
             name="source 1",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
         )
-        source_2 = GeoJSONSource.objects.create(
+        source_2 = GeoFileSource.objects.create(
             name="source 2",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
