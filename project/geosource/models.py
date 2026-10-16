@@ -254,7 +254,9 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             return response
 
         except Exception as exc:
-            self.report.status = self.report.Status.ERROR.value
+            if not self.report:
+                self.report = SourceReporting.objects.create()
+            self.report.status = SourceReporting.Status.ERROR.value
             self.report.message = str(exc)
             self.report.ended = timezone.now()
             self.report.save(update_fields=["status", "message", "ended"])
@@ -551,56 +553,6 @@ class PostGISSource(Source):
     class Meta:
         verbose_name = _("PostGIS Source")
         verbose_name_plural = _("PostGIS Sources")
-
-
-class GeoJSONSource(Source):
-    file = models.FileField(upload_to="geosource/geojson/%Y/")
-
-    def _get_records(self, limit=None):
-        with field_file_path(self.file) as file_path:
-            ds = DataSource(file_path)
-            layer = ds[0]
-            srid = layer.srs.srid if layer.srs else 4326
-            return self._records_from_layer(layer, srid, limit)
-
-    class Meta:
-        verbose_name = _("GeoJSON Source")
-        verbose_name_plural = _("GeoJSON Sources")
-
-
-class ShapefileSource(Source):
-    file = models.FileField(upload_to="geosource/shapefile/%Y/")
-
-    def _get_records(self, limit=None):
-        with (
-            field_file_path(self.file) as file_path,
-            open_zipped_shapefile_layer(file_path) as layer,
-        ):
-            if layer is None:
-                return [], [{"error": "No .shp file found in archive"}]
-            srid = layer.srs.srid if layer.srs else 4326
-            return self._records_from_layer(layer, srid, limit)
-
-    class Meta:
-        verbose_name = _("Shapefile Source")
-        verbose_name_plural = _("Shapefile Sources")
-
-
-class GeoPackageSource(Source):
-    file = models.FileField(upload_to="geosource/geopackage/%Y/")
-    layer_name = models.CharField(max_length=255, blank=True, default="")
-
-    def _get_records(self, limit=None):
-        with field_file_path(self.file) as file_path:
-            ds = DataSource(file_path)
-            layer = self._resolve_gpkg_layer(ds)
-            srid = layer.srs.srid if layer.srs else 4326
-            bool_fields = detect_boolean_fields(file_path, layer.name)
-            return self._records_from_layer(layer, srid, limit, bool_fields=bool_fields)
-
-    class Meta:
-        verbose_name = _("GeoPackage Source")
-        verbose_name_plural = _("GeoPackage Sources")
 
 
 class GeoFileSource(Source):

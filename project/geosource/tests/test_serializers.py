@@ -4,10 +4,10 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from rest_framework.exceptions import ValidationError
 
-from project.geosource.models import CSVSource, GeoJSONSource, Source, SourceReporting
+from project.geosource.models import CSVSource, GeoFileSource, Source, SourceReporting
 from project.geosource.serializers import (
     CSVSourceSerializer,
-    GeoJSONSourceSerializer,
+    GeoFileSourceSerializer,
     SourceSerializer,
 )
 from project.geosource.tests.helpers import get_file
@@ -178,18 +178,18 @@ class CSVSourceSerializerTestCase(TestCase):
             serializer._validate_field_infos(serializer.initial_data)
 
 
-class GeoJSONSourceSerializerTestCase(TestCase):
+class GeoFileSourceSerializerTestCase(TestCase):
     @patch(
-        "project.geosource.serializers.GeoJSONSource._get_records",
+        "project.geosource.serializers.GeoFileSource._get_records",
         side_effect=ValueError("ValueError mocked"),
     )
     def test_validate_fields_infos_exceptions(self, get_record_mock):
         data = {
-            "name": "source-geojson",
+            "name": "source-geofile",
             "file": get_file("test.geojson"),
-            "_type": "GeoJSONSource",
+            "_type": "GeoFileSource",
         }
-        serializer = GeoJSONSourceSerializer(data=data)
+        serializer = GeoFileSourceSerializer(data=data)
         with self.assertRaises(ValidationError):
             serializer._validate_field_infos(serializer.initial_data)
 
@@ -198,8 +198,8 @@ class SourceSerializerTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.report = SourceReporting.objects.create()
-        # Use GeoJSONSource for easier testing purpose
-        cls.source = GeoJSONSource.objects.create(
+        # Use GeoFileSource for easier testing purpose
+        cls.source = GeoFileSource.objects.create(
             name="test-source",
             file=get_file("test.geojson"),
             geom_type=0,
@@ -211,7 +211,7 @@ class SourceSerializerTestCase(TestCase):
         data = {
             "id": self.source.id,
             "name": "new-name",
-            "_type": "GeoJSONSource",
+            "_type": "GeoFileSource",
             "file": [get_file("test.geojson")],
             "fields": [],
         }
@@ -225,3 +225,13 @@ class SourceSerializerTestCase(TestCase):
         self.source.refresh_from_db()
         self.report.refresh_from_db()
         self.assertEqual(self.source.status, Source.Status.NEED_SYNC.value)
+
+    def test_backward_compatible_source_types(self):
+        for old_type in ("GeoJSONSource", "ShapefileSource", "GeoPackageSource"):
+            serializer_cls = SourceSerializer.get_serializer_from_type(old_type)
+            self.assertEqual(serializer_cls, GeoFileSourceSerializer)
+
+    def test_polymorphic_serializer_many(self):
+        serializer = SourceSerializer(Source.objects.all(), many=True)
+        self.assertIsInstance(serializer.data, list)
+        self.assertGreater(len(serializer.data), 0)

@@ -3,7 +3,7 @@ from unittest import mock
 
 from django.test import TestCase
 
-from project.geosource.models import GeoJSONSource, GeometryTypes, PostGISSource
+from project.geosource.models import GeoFileSource, GeometryTypes, PostGISSource
 from project.geosource.periodics import auto_refresh_source
 from project.geosource.tests.helpers import get_file
 
@@ -11,7 +11,7 @@ from project.geosource.tests.helpers import get_file
 class PeriodicsTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
-        cls.geosource = GeoJSONSource.objects.create(
+        cls.geosource = GeoFileSource.objects.create(
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),

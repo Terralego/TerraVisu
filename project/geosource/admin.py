@@ -4,10 +4,8 @@ from project.geosource.models import (
     CommandSource,
     CSVSource,
     Field,
-    GeoJSONSource,
-    GeoPackageSource,
+    GeoFileSource,
     PostGISSource,
-    ShapefileSource,
     WMTSSource,
 )
 
@@ -20,10 +18,8 @@ class FieldInline(admin.TabularInline):
 @admin.register(
     CSVSource,
     CommandSource,
-    GeoJSONSource,
-    GeoPackageSource,
+    GeoFileSource,
     PostGISSource,
-    ShapefileSource,
     WMTSSource,
 )
 class SourceAdmin(admin.ModelAdmin):

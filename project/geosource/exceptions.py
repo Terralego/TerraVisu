@@ -12,7 +12,10 @@ class CSVSourceException(SourceException):
     pass
 
 
-class GeoJSONSourceException(SourceException):
-    """GeoJSONSource exception raised by the GeoJSONSourec model"""
+class GeoFileSourceException(SourceException):
+    """GeoFileSource exception raised by the GeoFileSource model"""
 
     pass
+
+
+GeoJSONSourceException = GeoFileSourceException

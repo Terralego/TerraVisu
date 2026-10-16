@@ -5,7 +5,7 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
     dependencies = [
-        ("geosource", "0018_geopackagesource"),
+        ("geosource", "0017_alter_source_options"),
     ]
 
     operations = [
