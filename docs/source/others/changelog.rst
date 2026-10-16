@@ -17,6 +17,7 @@ Changelog
 - (Front) Map side panels open full screen on mobile
 
 **Tooling**
+
 - (Front) Migrate front-end tooling to Vite + vitest + oxlint
 - (Admin) Migrate admin tooling to Vite + vitest + oxlint, on Node 24
 - (Admin) Upgrade dependencies and maplibre-gl to 6, remove the Elasticsearch client
@@ -31,6 +32,7 @@ Changelog
 - (Admin) New JSON editor which works more reliably
 
 **Bugfix:**
+
 - Logging out of the admin or the front when logged in /config didn't work
 - (Front) An unconfigured map tools group no longer shows an empty button
 - (Front) Print title had a black background
