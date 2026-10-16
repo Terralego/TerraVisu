@@ -388,8 +388,6 @@ class SourceExceptionTestCase(TestCase):
         source._refresh_data = Mock(side_effect=side_effect)
         self.assertIsNone(source.report)
 
-        # Since we mocked "_refresh_data", we need to init an empty SourceReporting manually
-        source.report = SourceReporting.objects.create()
         source.refresh_data()
         self.assertIsInstance(source.report, SourceReporting)
         self.assertEqual(source.report.status, SourceReporting.Status.ERROR.value)
