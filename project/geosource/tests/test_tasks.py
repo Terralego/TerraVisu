@@ -7,7 +7,7 @@ from django.contrib.auth.models import Group
 from django.test import TestCase
 from geostore.models import Feature, Layer
 
-from project.geosource.models import GeoJSONSource, GeometryTypes, SourceReporting
+from project.geosource.models import GeoFileSource, GeometryTypes, SourceReporting
 from project.geosource.tasks import run_model_object_method
 from project.geosource.tests.helpers import get_file
 
@@ -19,7 +19,7 @@ class TaskTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.group = Group.objects.create(name="Group")
-        cls.element = GeoJSONSource.objects.create(
+        cls.element = GeoFileSource.objects.create(
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
@@ -124,7 +124,7 @@ class TaskTestCase(TestCase):
         source_report = SourceReporting.objects.create(
             status=SourceReporting.Status.PENDING.value,
         )
-        source = GeoJSONSource.objects.create(
+        source = GeoFileSource.objects.create(
             name="exception-test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
@@ -155,7 +155,7 @@ class TaskTestCase(TestCase):
     ):
         logging.disable(logging.ERROR)
         source_report = SourceReporting.objects.create(status=None)
-        source = GeoJSONSource.objects.create(
+        source = GeoFileSource.objects.create(
             name="exception-test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),

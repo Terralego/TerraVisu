@@ -11,19 +11,38 @@ class LayerESIndex(ESMixin):
     def __init__(self, layer, client=None):
         self.layer = layer
         self.client = self.get_client() if not client else client
+        self._field_types = {}
 
     def index(self):
         self.clean_index()
         self.create_index()
 
     def _get_formatted_record(self, index, feature):
+        properties = feature.properties
+        coerced = {}
+        for key, value in properties.items():
+            es_type = self._field_types.get(key)
+            if es_type == "boolean":
+                if isinstance(value, str):
+                    if value.lower() in {"true", "1"}:
+                        coerced[key] = True
+                    elif value.lower() in {"false", "0"}:
+                        coerced[key] = False
+                    else:
+                        coerced[key] = value
+                elif isinstance(value, (int, float)):
+                    coerced[key] = bool(value)
+                else:
+                    coerced[key] = value
+            else:
+                coerced[key] = value
         return {
             "index": index,
             "id": feature.identifier,
             "document": {
                 "_feature_id": feature.identifier,
                 "geom": json.loads(feature.geom.geojson),
-                **feature.properties,
+                **coerced,
             },
         }
 
@@ -57,9 +76,11 @@ class LayerESIndex(ESMixin):
 
         # Get type from source field configuration. Ignore undefined types.
         field_conf = {}
+        self._field_types = {}
         for field in s.fields.all():
             if field.data_type != 5:
                 field_type = type_mapping[FieldTypes(field.data_type).name.lower()]
+                self._field_types[field.name] = field_type
                 if field_type == "text":
                     # Exception for text field, we also want them to be keyword accessible
                     field_conf[field.name] = {

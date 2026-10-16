@@ -6,14 +6,14 @@ from django.test import TestCase
 from geostore.models import Feature, Layer
 
 from project.geosource import geostore_callbacks
-from project.geosource.models import GeoJSONSource, GeometryTypes
+from project.geosource.models import GeoFileSource, GeometryTypes
 from project.geosource.tests.helpers import get_file
 
 
 class GeostoreCallBacksTestCase(TestCase):
     def test_layer_callback(self):
         group = Group.objects.create(name="Group")
-        source = GeoJSONSource.objects.create(
+        source = GeoFileSource.objects.create(
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
@@ -24,7 +24,7 @@ class GeostoreCallBacksTestCase(TestCase):
 
     def test_feature_callback(self):
         group = Group.objects.create(name="Group")
-        source = GeoJSONSource.objects.create(
+        source = GeoFileSource.objects.create(
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
@@ -38,7 +38,7 @@ class GeostoreCallBacksTestCase(TestCase):
 
     def test_feature_callback_fail(self):
         group = Group.objects.create(name="Group")
-        source = GeoJSONSource.objects.create(
+        source = GeoFileSource.objects.create(
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
@@ -62,7 +62,7 @@ class GeostoreCallBacksTestCase(TestCase):
 
     def test_clean_features(self):
         group = Group.objects.create(name="Group")
-        source = GeoJSONSource.objects.create(
+        source = GeoFileSource.objects.create(
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
@@ -74,7 +74,7 @@ class GeostoreCallBacksTestCase(TestCase):
 
     def test_delete_layer(self):
         group = Group.objects.create(name="Group")
-        source = GeoJSONSource.objects.create(
+        source = GeoFileSource.objects.create(
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
@@ -90,7 +90,7 @@ class GeostoreCallBacksTestCase(TestCase):
     def test_feature_callback_return_none_tuple_when_valueerror(self, mocked_geos):
         # Setup test data
         group = Group.objects.create(name="Group")
-        source = GeoJSONSource.objects.create(
+        source = GeoFileSource.objects.create(
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),

@@ -3,6 +3,10 @@ services:
     image: node:${NODE_VERSION:-22}
     working_dir: /app/front
 
+    environment:
+      # the host UID has no home in the image, npm and git need a writable one
+      - HOME=/tmp
+
     volumes:
       - ../..:/app
     user: ${CURRENT_UID:-1000}:${CURRENT_GID:-1000}

@@ -10,10 +10,9 @@ from psycopg2 import OperationalError
 from project.geosource.exceptions import CSVSourceException, SourceException
 from project.geosource.models import (
     CSVSource,
-    GeoJSONSource,
+    GeoFileSource,
     GeometryTypes,
     PostGISSource,
-    ShapefileSource,
     Source,
     SourceReporting,
 )
@@ -308,7 +307,7 @@ class CSVSourceExceptionsTestCase(TestCase):
 
 @patch("elasticsearch.client.IndicesClient.create")
 @patch("elasticsearch.client.IndicesClient.delete")
-class GeoJSONSourceExceptionsTestCase(TestCase):
+class GeoFileSourceExceptionsTestCase(TestCase):
     def test_source_geojson_with_wrong_id_report_message(
         self, mocked_es_delete, mocked_es_create
     ):
@@ -326,7 +325,7 @@ class GeoJSONSourceExceptionsTestCase(TestCase):
             ],
         }
         geojson = json.dumps(geodict)
-        source = GeoJSONSource.objects.create(
+        source = GeoFileSource.objects.create(
             name="test",
             geom_type=GeometryTypes.Point,
             file=SimpleUploadedFile("geojson", bytes(geojson, encoding="UTF-8")),
@@ -360,11 +359,11 @@ class PostGISSourceExceptionsTestCase(TestCase):
 
 @patch("elasticsearch.client.IndicesClient.create")
 @patch("elasticsearch.client.IndicesClient.delete")
-class ShapefileSourceExceptionsTestCase(TestCase):
+class ShapefileGeoFileSourceExceptionsTestCase(TestCase):
     def test_wrong_id_report_message_on_refresh_and_get_reported(
         self, mocked_es_delete, mocked_es_create
     ):
-        source = ShapefileSource.objects.create(
+        source = GeoFileSource.objects.create(
             name="test_shapefile",
             geom_type=GeometryTypes.Point,
             file=get_file("test.zip"),
@@ -389,8 +388,6 @@ class SourceExceptionTestCase(TestCase):
         source._refresh_data = Mock(side_effect=side_effect)
         self.assertIsNone(source.report)
 
-        # Since we mocked "_refresh_data", we need to init an empty SourceReporting manually
-        source.report = SourceReporting.objects.create()
         source.refresh_data()
         self.assertIsInstance(source.report, SourceReporting)
         self.assertEqual(source.report.status, SourceReporting.Status.ERROR.value)

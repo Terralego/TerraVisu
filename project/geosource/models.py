@@ -1,10 +1,14 @@
 import json
+import os
+import subprocess
 import sys
+import tempfile
+from contextlib import contextmanager
 from datetime import date, timedelta
 from enum import Enum, auto
 from io import BytesIO
+from zipfile import ZipFile
 
-import fiona
 import psycopg2
 import pyexcel
 from celery.result import AsyncResult
@@ -12,8 +16,10 @@ from celery.utils.log import LoggingProxy
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
+from django.contrib.gis.gdal import DataSource
 from django.contrib.gis.gdal.error import GDALException
 from django.contrib.gis.geos import GEOSGeometry
+from django.core.files.uploadedfile import TemporaryUploadedFile
 from django.core.management import call_command
 from django.core.serializers.json import DjangoJSONEncoder
 from django.db import models, transaction
@@ -21,15 +27,13 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
-from fiona.crs import to_string
 from geostore import GeometryTypes
 from polymorphic.models import PolymorphicModel
 from psycopg2 import sql
-from pyproj import CRS
 
 from .callbacks import get_attr_from_path
 from .elasticsearch.index import LayerESIndex
-from .exceptions import CSVSourceException, GeoJSONSourceException, SourceException
+from .exceptions import CSVSourceException, SourceException
 from .fields import LongURLField
 from .mixins import CeleryCallMethodsMixin
 from .signals import refresh_data_done
@@ -43,6 +47,74 @@ DEC2FLOAT = psycopg2.extensions.new_type(
     lambda value, curs: float(value) if value is not None else None,
 )
 psycopg2.extensions.register_type(DEC2FLOAT)
+
+
+def detect_boolean_fields(file_path, layer_name):
+    try:
+        result = subprocess.run(
+            [
+                "ogrinfo",
+                "-json",
+                "-al",
+                "-so",
+                "-noextent",
+                "-nocount",
+                "-nogeomtype",
+                file_path,
+                layer_name,
+            ],
+            capture_output=True,
+            text=True,
+            timeout=60,
+            check=True,
+        )
+        data = json.loads(result.stdout)
+        layers = data.get("layers") or []
+        fields = layers[0].get("fields", []) if layers else []
+        return {f["name"] for f in fields if f.get("subType") == "Boolean"}
+    except (subprocess.SubprocessError, ValueError, KeyError, IndexError):
+        return set()
+
+
+@contextmanager
+def uploaded_file_path(uploaded_file):
+    """Yield a filesystem path for an uploaded file, reusing Django's
+    temporary upload file when already on disk."""
+    if isinstance(uploaded_file, TemporaryUploadedFile):
+        yield uploaded_file.temporary_file_path()
+    else:
+        suffix = os.path.splitext(uploaded_file.name)[1]
+        tmp = tempfile.NamedTemporaryFile(suffix=suffix, delete=False)
+        uploaded_file.seek(0)
+        tmp.write(uploaded_file.read())
+        uploaded_file.seek(0)
+        tmp.close()
+        try:
+            yield tmp.name
+        finally:
+            os.unlink(tmp.name)
+
+
+@contextmanager
+def field_file_path(field_file):
+    """Yield a filesystem path for a FileField value, including a file that
+    is not saved to the storage yet (source validated before its creation)."""
+    if field_file._committed:
+        yield field_file.path
+    else:
+        with uploaded_file_path(field_file.file) as path:
+            yield path
+
+
+@contextmanager
+def open_zipped_shapefile_layer(zip_path):
+    with ZipFile(zip_path) as z:
+        shp_names = [n for n in z.namelist() if n.lower().endswith(".shp")]
+    if not shp_names:
+        yield None
+        return
+    ds = DataSource(f"/vsizip/{zip_path}/{shp_names[0]}")
+    yield ds[0]
 
 
 class FieldTypes(Enum):
@@ -120,6 +192,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
     geom_type = models.IntegerField(
         choices=GeometryTypes.choices, null=True, blank=True
     )
+    original_srid = models.IntegerField(null=True, blank=True)
 
     settings = models.JSONField(default=dict, blank=True)
     groups = models.ManyToManyField(Group, blank=True, related_name="geosources")
@@ -181,11 +254,14 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             return response
 
         except Exception as exc:
-            self.report.status = self.report.Status.ERROR.value
+            if not self.report:
+                self.report = SourceReporting.objects.create()
+            self.report.status = SourceReporting.Status.ERROR.value
             self.report.message = str(exc)
             self.report.ended = timezone.now()
             self.report.save(update_fields=["status", "message", "ended"])
             self.status = self.Status.DONE
+            return {"count": 0, "total": 0}
 
         finally:
             self.last_refresh = timezone.now()
@@ -213,9 +289,12 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             records, records_errors = self._get_records()
         except Exception as exc:
             # Possible Uncatched exception (i.e ValueError, Integer Error)
-            raise SourceException(exc.args)
+            raise SourceException(str(exc))
 
         self.report.errors += records_errors
+        update_interval = max(1, len(records) // 100)
+        self.report.total = len(records)
+        self.report.save(update_fields=["total"])
         for i, row in enumerate(records):
             total += 1
             geometry = row.pop(self.SOURCE_GEOM_ATTRIBUTE)
@@ -226,9 +305,12 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                     feature, created = self.update_feature(
                         layer, identifier, geometry, row
                     )
-                    if es_index and feature:
-                        es_index.index_feature(layer, feature)
                     transaction.savepoint_commit(sid)
+                    if es_index and feature:
+                        try:
+                            es_index.index_feature(layer, feature)
+                        except Exception as exc:
+                            self.report.errors.append(f"ES index {identifier}: {exc}")
                     if created:
                         added_rows += 1
                     else:
@@ -243,6 +325,10 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                 )
                 continue
             row_count += 1
+            if row_count % update_interval == 0:
+                self.report.added_lines = added_rows
+                self.report.modified_lines = modified_rows
+                self.report.save(update_fields=["added_lines", "modified_lines"])
         deleted, _ = self.clear_features(layer, begin_date)
 
         self.report.added_lines = added_rows
@@ -309,7 +395,61 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         # Delete fields that are not anymore present
         self.fields.exclude(name__in=fields.keys()).delete()
 
+        self.save(update_fields=["original_srid"])
+
         return {"count": len(fields)}
+
+    def _coerce_booleans(self, records, layer, bool_fields=None):
+        """Convert GDAL integer 0/1 to Python bool for boolean-like fields."""
+        if not records or not layer:
+            return records
+
+        if bool_fields is None:
+            bool_fields = set()
+            for fn, ft in zip(layer.fields, layer.field_types):
+                if ft.__name__ in ("OFTInteger", "OFTInteger64"):
+                    vals = [r.get(fn) for r in records if r.get(fn) is not None]
+                    if (
+                        vals
+                        and 0 in vals
+                        and 1 in vals
+                        and all(v in (0, 1, True, False) for v in vals)
+                    ):
+                        bool_fields.add(fn)
+
+        for record in records:
+            for fn in bool_fields:
+                if fn in record:
+                    record[fn] = bool(record[fn])
+
+        return records
+
+    def _records_from_layer(self, layer, srid, limit=None, bool_fields=None):
+        self.original_srid = srid
+        records = []
+        errors = []
+        for feature in layer:
+            if limit and len(records) >= limit:
+                break
+            try:
+                geom = feature.geom.geos
+                geom.srid = srid
+                records.append(
+                    {
+                        self.SOURCE_GEOM_ATTRIBUTE: geom,
+                        **{fn: feature.get(fn) for fn in feature.fields},
+                    }
+                )
+            except Exception as exc:
+                errors.append(f"Feature fid {feature.fid}: {exc}")
+
+        return self._coerce_booleans(records, layer, bool_fields=bool_fields), errors
+
+    def _resolve_gpkg_layer(self, ds):
+        available = [ds[i].name for i in range(ds.layer_count)]
+        if self.layer_name and self.layer_name in available:
+            return ds[self.layer_name]
+        return ds[0]
 
     def get_status(self):
         response = {}
@@ -415,81 +555,33 @@ class PostGISSource(Source):
         verbose_name_plural = _("PostGIS Sources")
 
 
-class GeoJSONSource(Source):
-    file = models.FileField(upload_to="geosource/geojson/%Y/")
-
-    def get_file_as_dict(self):
-        try:
-            return json.load(self.file)
-        except json.JSONDecodeError:
-            msg = "Source's GeoJSON file is not valid"
-            raise GeoJSONSourceException(msg)
+class GeoFileSource(Source):
+    file = models.FileField(upload_to="geosource/geofile/%Y/")
+    layer_name = models.CharField(max_length=255, blank=True, default="")
 
     def _get_records(self, limit=None):
-        geojson = self.get_file_as_dict()
+        name = self.file.name.lower()
 
-        limit = limit if limit else len(geojson["features"])
+        with field_file_path(self.file) as file_path:
+            if name.endswith(".zip") or name.endswith(".shp"):
+                with open_zipped_shapefile_layer(file_path) as layer:
+                    if layer is None:
+                        return [], [{"error": "No .shp file found in archive"}]
+                    srid = layer.srs.srid if layer.srs else 4326
+                    return self._records_from_layer(layer, srid, limit)
 
-        records = []
-        errors = []
-        for i, record in enumerate(geojson["features"][:limit]):
-            try:
-                records.append(
-                    {
-                        self.SOURCE_GEOM_ATTRIBUTE: GEOSGeometry(
-                            json.dumps(record["geometry"])
-                        ),
-                        **record["properties"],
-                    }
-                )
-            except (ValueError, GDALException) as exc:
-                feature_id = record.get("properties", {}).get("id", i)
-                errors.append(f"Feature id {feature_id}: {exc}")
-        return (records, errors)
+            ds = DataSource(file_path)
+            is_gpkg = name.endswith(".gpkg")
+            layer = self._resolve_gpkg_layer(ds) if is_gpkg else ds[0]
+            srid = layer.srs.srid if layer.srs else 4326
+            bool_fields = (
+                detect_boolean_fields(file_path, layer.name) if is_gpkg else None
+            )
+            return self._records_from_layer(layer, srid, limit, bool_fields=bool_fields)
 
     class Meta:
-        verbose_name = _("GeoJSON Source")
-        verbose_name_plural = _("GeoJSON Sources")
-
-
-class ShapefileSource(Source):
-    # Zipped ShapeFile
-    file = models.FileField(upload_to="geosource/shapefile/%Y/")
-
-    def _get_records(self, limit=None):
-        with fiona.BytesCollection(self.file.read()) as shapefile:
-            limit = limit if limit else len(shapefile)
-            # Detect the EPSG
-
-            ccs = CRS(to_string(shapefile.crs))
-            srid = ccs.to_epsg()
-            if not srid:
-                srid = 4326
-            # Return geometries with a hack to set the correct geometry srid
-            records = []
-            for feature in shapefile[:limit]:
-                geometry = GEOSGeometry(
-                    json.dumps(
-                        {
-                            "type": feature.get("geometry").get("type"),
-                            "coordinates": feature.get("geometry").get("coordinates"),
-                        }
-                    )
-                )
-                geometry.srid = srid
-                records.append(
-                    {
-                        self.SOURCE_GEOM_ATTRIBUTE: geometry,
-                        **feature.get("properties", {}),
-                    }
-                )
-
-            # No errors caught for Shapefile
-            return records, []
-
-    class Meta:
-        verbose_name = _("Shapefile Source")
-        verbose_name_plural = _("Shapefile Sources")
+        verbose_name = _("GeoFile Source")
+        verbose_name_plural = _("GeoFile Sources")
 
 
 class CommandSource(Source):
