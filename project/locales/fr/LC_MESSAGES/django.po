@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-13 08:46+0000\n"
+"POT-Creation-Date: 2026-10-16 11:48+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -186,29 +186,11 @@ msgstr "Source PostGIS"
 msgid "PostGIS Sources"
 msgstr "Sources PostGIS"
 
-msgid "GeoJSON Source"
-msgstr "Source GeoJSON"
-
-msgid "GeoJSON Sources"
-msgstr "Sources GeoJSON"
-
-msgid "Shapefile Source"
-msgstr "Source Shapefile"
-
-msgid "Shapefile Sources"
-msgstr "Sources Shapefile"
-
-msgid "GeoPackage Source"
-msgstr "Source GeoPackage"
-
-msgid "GeoPackage Sources"
-msgstr "Sources GeoPackage"
-
 msgid "GeoFile Source"
-msgstr "Source fichier géo"
+msgstr "Source fichier"
 
 msgid "GeoFile Sources"
-msgstr "Sources fichier géo"
+msgstr "Sources fichiers"
 
 msgid "Command Source"
 msgstr "Source Commande"
