@@ -2,7 +2,7 @@
 Changelog
 ==========
 
-2026.08.00+dev  (XXXX-XX-XX)
+2026.10.00+dev  (XXXX-XX-XX)
 ----------------------------
 
 **New features:**
@@ -45,6 +45,19 @@ Changelog
 - (Front) Some generated legends of a layers tree node were missing
 - (Front) Pie chart markers ignored the zoom range and interactions of their layer
 - (Front) Layers tree logo could overflow its panel
+
+
+2026.10.00      (2026-10-07)
+----------------------------
+
+**Improvements:**
+
+- Add referrer tag to prevent 403 errors with OSM tiles
+
+**Documentation:**
+
+- Update python version for Read the Docs - (ref #1340)
+
 
 2026.08.00      (2026-08-14)
 ----------------------------

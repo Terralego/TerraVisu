@@ -4,7 +4,7 @@ alabaster==0.7.16
     # via sphinx
 annotated-types==0.7.0
     # via pydantic
-anyio==4.6.2.post1
+anyio==4.14.2
     # via
     #   starlette
     #   watchfiles
@@ -18,7 +18,7 @@ certifi==2026.7.22
     # via
     #   -c ../requirements.txt
     #   requests
-charset-normalizer==3.4.9
+charset-normalizer==3.5.2
     # via
     #   -c ../requirements.txt
     #   requests
@@ -33,7 +33,7 @@ docutils==0.22.4
     # via sphinx
 h11==0.16.0
     # via uvicorn
-idna==3.18
+idna==3.20
     # via
     #   -c ../requirements.txt
     #   anyio
@@ -46,7 +46,7 @@ markupsafe==2.1.5
     # via
     #   jinja2
     #   sphinx-immaterial
-packaging==26.2
+packaging==26.3
     # via
     #   -c ../requirements.txt
     #   sphinx
@@ -67,8 +67,6 @@ requests==2.34.2
     #   sphinx-immaterial
 roman-numerals==4.1.0
     # via sphinx
-sniffio==1.3.1
-    # via anyio
 snowballstemmer==2.2.0
     # via sphinx
 sphinx==9.1.0
@@ -100,12 +98,13 @@ starlette==1.3.1
 typing-extensions==4.16.0
     # via
     #   -c ../requirements.txt
+    #   anyio
     #   pydantic
     #   pydantic-core
     #   pydantic-extra-types
     #   sphinx-immaterial
     #   starlette
-urllib3==2.7.0
+urllib3==2.8.0
     # via
     #   -c ../requirements.txt
     #   requests
