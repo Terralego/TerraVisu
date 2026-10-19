@@ -50,7 +50,7 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "latitude_field": "YCOORDS",
             },
         )
-        _, errors = source._get_records()
+        _, errors, len_records = source._get_records()
         self.assertIn("Sheet row 0 - X is not a valid coordinate field", errors)
 
     def test_csv_with_wrong_y_coord(self, mocked_es_delete, mocked_es_create):
@@ -70,7 +70,7 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "latitude_field": "Y",  # Wrong on purpose
             },
         )
-        _, errors = source._get_records()
+        _, errors, len_records = source._get_records()
         self.assertIn("Sheet row 0 - Y is not a valid coordinate field", errors)
 
     def test_invalid_csv_file_raise_value_error(
@@ -122,7 +122,7 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "coordinates_field_count": "xy",
             },
         )
-        _, errors = source._get_records()
+        _, errors, len_records = source._get_records()
         self.assertIn("Sheet row 0 - coordxy is not a valid coordinate field", errors)
 
     def test_coordinates_system_without_digit_srid_raise_value_error(
@@ -236,7 +236,7 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "latitude_field": "YCOORD",
             },
         )
-        _, errors = source._get_records()
+        _, errors, len_records = source._get_records()
         msg = "Sheet row 0 - One of source's record has invalid geometry: Point(930077.50743 6922202.67316) srid=4326"
         self.assertIn(msg, errors)
 

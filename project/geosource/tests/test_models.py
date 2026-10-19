@@ -193,7 +193,7 @@ class ModelGeoFileSourceTestCase(TestCase):
         )
 
         #        with self.assertRaises(ValueError) as m:
-        records, errors = source._get_records(1)
+        records, errors, len_records = source._get_records(1)
         self.assertIn(
             'Feature fid 1: Invalid geometry pointer returned from "OGR_F_GetGeometryRef".',
             errors,
@@ -206,7 +206,7 @@ class ModelGeoFileSourceTestCase(TestCase):
             file=get_file("test.zip"),
         )
 
-        records, errors = source._get_records(1)
+        records, errors, len_records = source._get_records(1)
         self.assertEqual(records[0]["NOM"], "Trifouilli-les-Oies")
         self.assertEqual(records[0]["Insee"], 99999)
         self.assertEqual(records[0]["_geom_"].geom_typeid, GeometryTypes.Polygon)
@@ -217,9 +217,9 @@ class ModelGeoFileSourceTestCase(TestCase):
             geom_type=GeometryTypes.Point,
             file=get_file("test.gpkg"),
         )
-        records, errors = source._get_records()
+        records, errors, len_records = source._get_records()
         self.assertEqual(len(errors), 0)
-        self.assertGreater(len(records), 0)
+        self.assertGreater(len_records, 0)
         self.assertIn("_geom_", records[0])
         self.assertEqual(records[0]["_geom_"].geom_typeid, GeometryTypes.Point)
 
@@ -230,9 +230,9 @@ class ModelGeoFileSourceTestCase(TestCase):
             layer_name="layer_two",
             file=get_file("test.gpkg"),
         )
-        records, errors = source._get_records()
+        records, errors, len_records = source._get_records()
         self.assertEqual(len(errors), 0)
-        self.assertGreater(len(records), 0)
+        self.assertGreater(len_records, 0)
 
     def test_get_records_geopackage_invalid_layer_fallback(self):
         source = GeoFileSource.objects.create(
@@ -241,9 +241,9 @@ class ModelGeoFileSourceTestCase(TestCase):
             layer_name="non_existent_layer",
             file=get_file("test.gpkg"),
         )
-        records, errors = source._get_records()
+        records, errors, len_records = source._get_records()
         self.assertEqual(len(errors), 0)
-        self.assertGreater(len(records), 0)
+        self.assertGreater(len_records, 0)
 
     def test_get_records_zip_without_shp_returns_error(self):
         zip_buffer = io.BytesIO()
@@ -255,7 +255,7 @@ class ModelGeoFileSourceTestCase(TestCase):
             geom_type=GeometryTypes.Point,
             file=SimpleUploadedFile("empty.zip", zip_buffer.read()),
         )
-        records, errors = source._get_records()
+        records, errors, len_records = source._get_records()
         self.assertEqual(records, [])
         self.assertEqual(errors, [{"error": "No .shp file found in archive"}])
 
@@ -265,8 +265,8 @@ class ModelGeoFileSourceTestCase(TestCase):
             geom_type=GeometryTypes.Point,
             file=get_file("test.zip"),
         )
-        records, errors = source._get_records(limit=1)
-        self.assertEqual(len(records), 1)
+        records, errors, len_records = source._get_records(limit=1)
+        self.assertEqual(len_records, 1)
 
     def test_detect_boolean_fields_failure_returns_empty_set(self):
         result = detect_boolean_fields("/non/existent/path.gpkg", "layer")
@@ -348,7 +348,7 @@ class ModelCommandSourceTestCase(TestCase):
             self.assertIsNone(fake_proxy.encoding)
 
     def test_get_records(self):
-        self.assertEqual([None, None], self.source._get_records())
+        self.assertEqual([None, None, 0], self.source._get_records())
 
 
 class ModelWMTSSourceTestCase(TestCase):
@@ -361,7 +361,7 @@ class ModelWMTSSourceTestCase(TestCase):
         )
 
     def test_get_records(self):
-        self.assertEqual([None, None], self.source._get_records())
+        self.assertEqual([None, None, 0], self.source._get_records())
 
     def test_get_status(self):
         self.assertEqual({"state": "DONT_NEED"}, self.source.get_status())
@@ -404,11 +404,11 @@ class ModelCSVSourceTestCase(TestCase):
             },
         )
 
-        records, errors = source._get_records()
-        self.assertEqual(len(records), 6, len(records))
+        records, errors, len_records = source._get_records()
+        self.assertEqual(len_records, 6, len_records)
         with self.assertNumQueries(78):
             row_count = source.refresh_data()
-        self.assertEqual(row_count["count"], len(records), row_count)
+        self.assertEqual(row_count["count"], len_records, row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
@@ -430,11 +430,11 @@ class ModelCSVSourceTestCase(TestCase):
             },
         )
 
-        records, errors = source._get_records()
-        self.assertEqual(len(records), 9, len(records))
+        records, errors, len_records = source._get_records()
+        self.assertEqual(len_records, 9, len_records)
         with self.assertNumQueries(105):
             row_count = source.refresh_data()
-        self.assertEqual(row_count["count"], len(records), row_count)
+        self.assertEqual(row_count["count"], len_records, row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
@@ -460,11 +460,11 @@ class ModelCSVSourceTestCase(TestCase):
                 "coordinates_field_count": "xy",
             },
         )
-        records, errors = source._get_records()
-        self.assertEqual(len(records), 9, len(records))
+        records, errors, len_records = source._get_records()
+        self.assertEqual(len_records, 9, len_records)
         with self.assertNumQueries(105):
             row_count = source.refresh_data()
-        self.assertEqual(row_count["count"], len(records), row_count)
+        self.assertEqual(row_count["count"], len_records, row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
@@ -485,7 +485,7 @@ class ModelCSVSourceTestCase(TestCase):
                 "latitude_field": "YCOORD",
             },
         )
-        records, errors = source._get_records()
+        records, errors, len_records = source._get_records()
         # this entry as an empty column and should not be in records
         empty_entry = [
             record.get("photoEtablissement")
@@ -495,7 +495,7 @@ class ModelCSVSourceTestCase(TestCase):
         self.assertEqual(len(empty_entry), 0, empty_entry)
         with self.assertNumQueries(78):
             row_count = source.refresh_data()
-        self.assertEqual(row_count["count"], len(records), row_count)
+        self.assertEqual(row_count["count"], len_records, row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
@@ -517,11 +517,11 @@ class ModelCSVSourceTestCase(TestCase):
                 "coordinates_field_count": "yx",
             },
         )
-        records, errors = source._get_records()
-        self.assertEqual(len(records), 9, len(records))
+        records, errors, len_records = source._get_records()
+        self.assertEqual(len_records, 9, len_records)
         with self.assertNumQueries(105):
             row_count = source.refresh_data()
-        self.assertEqual(row_count["count"], len(records), row_count)
+        self.assertEqual(row_count["count"], len_records, row_count)
 
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
     @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
@@ -543,11 +543,11 @@ class ModelCSVSourceTestCase(TestCase):
                 "longitude_field": "0",
             },
         )
-        records, errors = source._get_records()
-        self.assertEqual(len(records), 10, len(records))
+        records, errors, len_records = source._get_records()
+        self.assertEqual(len_records, 10, len_records)
         with self.assertNumQueries(114):
             row_count = source.refresh_data()
-        self.assertEqual(row_count["count"], len(records), row_count)
+        self.assertEqual(row_count["count"], len_records, row_count)
 
     def test_update_fields_keep_order(self):
         source = CSVSource.objects.create(
@@ -676,6 +676,7 @@ class SourceReportingTestCase(TestCase):
                 {"_geom_": "wrong geom"},
             ],
             [],
+            2,
         )
         self.source._get_records = mock.MagicMock(return_value=mocked_rows)
         self.source.refresh_data()
