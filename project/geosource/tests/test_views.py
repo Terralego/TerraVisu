@@ -458,6 +458,32 @@ class FilePreviewSavedAPITestCase(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(response.json()["record_count"], 1)
 
+    @patch.object(
+        PostGISSource,
+        "_get_records",
+        return_value=([{"geom": "SRID=4326;POINT(2.35 48.85)"}], [], 1),
+    )
+    def test_file_preview_saved_postgis_bbox_and_count_without_report(
+        self, mock_get_records
+    ):
+        source = PostGISSource.objects.create(
+            name="preview_unsynced_postgis",
+            geom_type=GeometryTypes.Point.value,
+            geom_field="geom",
+            db_host="localhost",
+            db_name="db",
+            db_username="user",
+            db_password="pwd",
+            query="SELECT * FROM table",
+        )
+
+        url = reverse("geosource:geosource-file-preview-saved", args=[source.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["record_count"], 1)
+        self.assertEqual(data["bbox"], [2.35, 48.85, 2.35, 48.85])
+
 
 class DownloadAPITestCase(APITestCase):
     @classmethod
