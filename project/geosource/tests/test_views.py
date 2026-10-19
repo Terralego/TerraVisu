@@ -461,7 +461,14 @@ class FilePreviewSavedAPITestCase(APITestCase):
     @patch.object(
         PostGISSource,
         "_get_records",
-        return_value=([{"geom": "SRID=4326;POINT(2.35 48.85)"}], [], 1),
+        return_value=(
+            [
+                {"geom": None},
+                {"geom": "SRID=2154;POINT(652000 6862000)"},
+            ],
+            [],
+            2,
+        ),
     )
     def test_file_preview_saved_postgis_bbox_and_count_without_report(
         self, mock_get_records
@@ -481,8 +488,59 @@ class FilePreviewSavedAPITestCase(APITestCase):
         response = self.client.get(url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         data = response.json()
+        self.assertEqual(data["record_count"], 2)
+        self.assertIsNotNone(data["bbox"])
+
+    @patch.object(
+        PostGISSource,
+        "_get_records",
+        side_effect=RuntimeError("db error"),
+    )
+    def test_file_preview_saved_get_records_exception_fallback(self, mock_get_records):
+        source = PostGISSource.objects.create(
+            name="preview_error_postgis",
+            geom_type=GeometryTypes.Point.value,
+            geom_field="geom",
+            db_host="localhost",
+            db_name="db",
+            db_username="user",
+            db_password="pwd",
+            query="SELECT * FROM table",
+        )
+
+        url = reverse("geosource:geosource-file-preview-saved", args=[source.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        self.assertEqual(data["record_count"], 0)
+        self.assertIsNone(data["bbox"])
+
+    @patch.object(
+        PostGISSource,
+        "_get_records",
+        return_value=([{"geom": "invalid_geom"}], [], 1),
+    )
+    def test_file_preview_saved_records_bbox_with_existing_report_and_invalid_geom(
+        self, mock_get_records
+    ):
+        source = PostGISSource.objects.create(
+            name="preview_report_invalid_geom_postgis",
+            geom_type=GeometryTypes.Point.value,
+            geom_field="geom",
+            db_host="localhost",
+            db_name="db",
+            db_username="user",
+            db_password="pwd",
+            query="SELECT * FROM table",
+            report=SourceReporting.objects.create(total=1),
+        )
+
+        url = reverse("geosource:geosource-file-preview-saved", args=[source.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
         self.assertEqual(data["record_count"], 1)
-        self.assertEqual(data["bbox"], [2.35, 48.85, 2.35, 48.85])
+        self.assertIsNone(data["bbox"])
 
 
 class DownloadAPITestCase(APITestCase):
