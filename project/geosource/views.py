@@ -644,9 +644,18 @@ class SourceModelViewset(ModelViewSet):
             dict(zip(all_samples.keys(), row)) for row in zip(*all_samples.values())
         ]
 
+        crs = "EPSG:4326"
+        if source.original_srid and source.original_srid != 4326:
+            crs = f"EPSG:4326 (original : EPSG:{source.original_srid})"
+
         record_count = 0
         if source.report:
-            record_count = source.report.added_lines or 0
+            record_count = source.report.total or source.report.added_lines or 0
+        if not record_count:
+            try:
+                _, _, record_count = source._get_records()
+            except Exception:
+                record_count = 0
 
         file_field = getattr(source, "file", None)
         file_size = file_field.size if file_field else None
@@ -656,10 +665,6 @@ class SourceModelViewset(ModelViewSet):
         if source.geom_type is not None:
             geom_name = GeometryTypes(source.geom_type).name
             geom_id = source.geom_type
-
-        crs = "EPSG:4326"
-        if source.original_srid and source.original_srid != 4326:
-            crs = f"EPSG:4326 (original : EPSG:{source.original_srid})"
 
         bbox = None
         column_count = len(fields)

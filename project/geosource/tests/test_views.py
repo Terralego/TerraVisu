@@ -430,6 +430,34 @@ class FilePreviewSavedAPITestCase(APITestCase):
         data = response.json()
         self.assertIsNotNone(data["bbox"])
 
+    def test_file_preview_saved_record_count_from_report_total(self):
+        source = GeoFileSource.objects.create(
+            name="preview_resynced_source",
+            geom_type=GeometryTypes.Point.value,
+            file=get_file("test.geojson"),
+        )
+        source.report = SourceReporting.objects.create(
+            added_lines=0, modified_lines=20, total=20
+        )
+        source.save()
+
+        url = reverse("geosource:geosource-file-preview-saved", args=[source.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()["record_count"], 20)
+
+    def test_file_preview_saved_record_count_without_report(self):
+        source = GeoFileSource.objects.create(
+            name="preview_unsynced_source",
+            geom_type=GeometryTypes.Point.value,
+            file=get_file("test.geojson"),
+        )
+
+        url = reverse("geosource:geosource-file-preview-saved", args=[source.pk])
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()["record_count"], 1)
+
 
 class DownloadAPITestCase(APITestCase):
     @classmethod
