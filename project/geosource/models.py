@@ -286,14 +286,14 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
         modified_rows = 0
         total = 0
         try:
-            records, records_errors = self._get_records()
+            records, records_errors, len_records = self._get_records()
         except Exception as exc:
             # Possible Uncatched exception (i.e ValueError, Integer Error)
             raise SourceException(str(exc))
 
         self.report.errors += records_errors
-        update_interval = max(1, len(records) // 100)
-        self.report.total = len(records)
+        update_interval = max(1, len_records // 100)
+        self.report.total = len_records
         self.report.save(update_fields=["total"])
         for i, row in enumerate(records):
             total += 1
@@ -351,7 +351,7 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
 
     @transaction.atomic
     def update_fields(self):
-        records, _ = self._get_records(50)
+        records, errors, len_records = self._get_records(50)
 
         fields = {}
         if records is None:
@@ -443,7 +443,11 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
             except Exception as exc:
                 errors.append(f"Feature fid {feature.fid}: {exc}")
 
-        return self._coerce_booleans(records, layer, bool_fields=bool_fields), errors
+        return (
+            self._coerce_booleans(records, layer, bool_fields=bool_fields),
+            errors,
+            len(records),
+        )
 
     def _resolve_gpkg_layer(self, ds):
         available = [ds[i].name for i in range(ds.layer_count)]
@@ -548,7 +552,7 @@ class PostGISSource(Source):
 
         cursor.execute(sql.SQL(query).format(*attrs))
 
-        return (cursor, [])
+        return (cursor, [], cursor.rowcount)
 
     class Meta:
         verbose_name = _("PostGIS Source")
@@ -566,7 +570,7 @@ class GeoFileSource(Source):
             if name.endswith(".zip") or name.endswith(".shp"):
                 with open_zipped_shapefile_layer(file_path) as layer:
                     if layer is None:
-                        return [], [{"error": "No .shp file found in archive"}]
+                        return [], [{"error": "No .shp file found in archive"}], 0
                     srid = layer.srs.srid if layer.srs else 4326
                     return self._records_from_layer(layer, srid, limit)
 
@@ -611,7 +615,7 @@ class CommandSource(Source):
         return {"count": layer.features.count()}
 
     def _get_records(self, limit=None):
-        return [None, None]
+        return [None, None, 0]
 
     class Meta:
         verbose_name = _("Command Source")
@@ -635,7 +639,7 @@ class WMTSSource(Source):
         return {}
 
     def _get_records(self, limit=None):
-        return [None, None]
+        return [None, None, 0]
 
     class Meta:
         verbose_name = _("WMTS Source")
@@ -731,7 +735,7 @@ class CSVSource(Source):
                     f"Sheet row {i} - One of source's record has invalid geometry: Point({x} {y}) srid={srid}"
                 )
                 continue
-        return (records, errors)
+        return (records, errors, len(records))
 
     def _extract_coordinates(self, row, colnames, coord_fields):
         coords = []

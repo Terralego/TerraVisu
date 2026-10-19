@@ -14,6 +14,7 @@ from django.contrib.gis.gdal import (
     SpatialReference,
 )
 from django.contrib.gis.gdal.geometries import Point
+from django.contrib.gis.geos import GEOSGeometry
 from django.db.models import Count
 from django.http import Http404
 from geostore import GeometryTypes
@@ -644,9 +645,19 @@ class SourceModelViewset(ModelViewSet):
             dict(zip(all_samples.keys(), row)) for row in zip(*all_samples.values())
         ]
 
+        crs = "EPSG:4326"
+        if source.original_srid and source.original_srid != 4326:
+            crs = f"EPSG:4326 (original : EPSG:{source.original_srid})"
+
+        records = None
         record_count = 0
         if source.report:
-            record_count = source.report.added_lines or 0
+            record_count = source.report.total or source.report.added_lines or 0
+        if not record_count:
+            try:
+                records, _, record_count = source._get_records()
+            except Exception:
+                record_count = 0
 
         file_field = getattr(source, "file", None)
         file_size = file_field.size if file_field else None
@@ -656,10 +667,6 @@ class SourceModelViewset(ModelViewSet):
         if source.geom_type is not None:
             geom_name = GeometryTypes(source.geom_type).name
             geom_id = source.geom_type
-
-        crs = "EPSG:4326"
-        if source.original_srid and source.original_srid != 4326:
-            crs = f"EPSG:4326 (original : EPSG:{source.original_srid})"
 
         bbox = None
         column_count = len(fields)
@@ -689,6 +696,35 @@ class SourceModelViewset(ModelViewSet):
                         bbox = [ext.min_x, ext.min_y, ext.max_x, ext.max_y]
             except Exception:
                 logger.warning("file-based bbox fallback failed for source %s", pk)
+
+        if bbox is None:
+            try:
+                if records is None:
+                    records, _, _ = source._get_records()
+                minx = miny = float("inf")
+                maxx = maxy = float("-inf")
+                found_geom = False
+                for row in records or []:
+                    raw_geom = row.get(source.SOURCE_GEOM_ATTRIBUTE)
+                    if not raw_geom:
+                        continue
+                    geom = (
+                        raw_geom
+                        if isinstance(raw_geom, GEOSGeometry)
+                        else GEOSGeometry(raw_geom)
+                    )
+                    if geom.srid and geom.srid != 4326:
+                        geom.transform(4326)
+                    xmin, ymin, xmax, ymax = geom.extent
+                    minx = min(minx, xmin)
+                    miny = min(miny, ymin)
+                    maxx = max(maxx, xmax)
+                    maxy = max(maxy, ymax)
+                    found_geom = True
+                if found_geom:
+                    bbox = [minx, miny, maxx, maxy]
+            except Exception:
+                logger.warning("records-based bbox fallback failed for source %s", pk)
 
         geometry_types = None
         mixed_geometries = False
