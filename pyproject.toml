@@ -44,9 +44,8 @@ dependencies = [
     "pyproj",
     "python-magic",
 ]
-[project.scripts]
-osm_paths = "osm_paths:main"
-[project.optional-dependencies]
+
+[dependency-groups]
 dev = [
     "lxml",
     "tblib",
@@ -57,6 +56,16 @@ dev = [
     "django-extensions",
     "django-debug-toolbar",
 ]
+docs = [
+    "sphinx-autobuild",
+    "sphinx_immaterial",
+    "sphinx>=9.1.0",
+    "sphinx-autobuild",
+    "sphinx-intl",
+]
+
+[project.scripts]
+osm_paths = "osm_paths:main"
 
 [tool.coverage.run]
 source = [

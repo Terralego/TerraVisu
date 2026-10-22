@@ -180,9 +180,7 @@ numpy==2.5.4
 openid-connect==0.5.0
     # via django-auth-oidc
 packaging==26.3
-    # via
-    #   gunicorn
-    #   kombu
+    # via kombu
 pillow==13.0.0
     # via
     #   terravisu (pyproject.toml)
@@ -254,6 +252,7 @@ texttable==1.7.1
     # via pyexcel
 typing-extensions==4.16.0
     # via
+    #   click-repl
     #   django-polymorphic
     #   referencing
 tzdata==2026.5
