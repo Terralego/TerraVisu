@@ -21,6 +21,7 @@ from rest_framework.throttling import AnonRateThrottle
 from project.terra_layer.models import (
     Declaration,
     DeclarationConfig,
+    Extent,
     Report,
     Status,
     StyleImage,
@@ -28,6 +29,7 @@ from project.terra_layer.models import (
 from project.terra_layer.serializers import (
     DeclarationConfigSerializer,
     DeclarationSerializer,
+    ExtentSerializer,
     ReportAuthenticatedListSerializer,
     ReportCreateSerializer,
     ReportUnauthenticatedListSerializer,
@@ -206,3 +208,10 @@ class IconViewSet(viewsets.ModelViewSet):
         "name",
     )
     search_fields = ["name"]
+
+
+class ExtentListView(generics.ListAPIView):
+    queryset = (
+        Extent.objects.select_related("category").order_by("category", "pk").all()
+    )
+    serializer_class = ExtentSerializer

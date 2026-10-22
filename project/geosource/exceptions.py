@@ -3,6 +3,7 @@ class SourceException(Exception):
 
     def __init__(self, message):
         self.message = message
+        super().__init__(message)
 
 
 class CSVSourceException(SourceException):
@@ -11,7 +12,10 @@ class CSVSourceException(SourceException):
     pass
 
 
-class GeoJSONSourceException(SourceException):
-    """GeoJSONSource exception raised by the GeoJSONSourec model"""
+class GeoFileSourceException(SourceException):
+    """GeoFileSource exception raised by the GeoFileSource model"""
 
     pass
+
+
+GeoJSONSourceException = GeoFileSourceException

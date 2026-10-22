@@ -13,7 +13,11 @@ from rest_framework.routers import SimpleRouter
 
 from project.accounts.api import FunctionalPermissionViewSet, GroupViewSet, UserViewsSet
 from project.admin import config_site
-from project.terra_layer.views.extras import BaseLayerViewSet, IconViewSet
+from project.terra_layer.views.extras import (
+    BaseLayerViewSet,
+    ExtentListView,
+    IconViewSet,
+)
 from project.views import serve_private_files
 
 router = SimpleRouter()
@@ -36,6 +40,7 @@ urlpatterns = [
     path("api/geolayer/", include("project.terra_layer.urls")),
     path("api/geo-api/", include("project.geo_api.urls")),
     path("api/auth/", include("project.accounts.urls")),
+    path("api/extent/", ExtentListView.as_view(), name="extent"),
     path("api/", include(router.urls)),
     path("private/<path:path>", serve_private_files, name="serve_private_files"),
     path("", include("project.visu.urls")),

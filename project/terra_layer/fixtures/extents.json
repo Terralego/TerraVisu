@@ -1,0 +1,184 @@
+[
+  {
+    "model": "terra_layer.extentcategory",
+    "pk": 1,
+    "fields": {
+      "name": "Métropole"
+    }
+  },
+  {
+    "model": "terra_layer.extentcategory",
+    "pk": 2,
+    "fields": {
+      "name": "DROM-COM"
+    }
+  },
+  {
+    "model": "terra_layer.extent",
+    "pk": 1,
+    "fields": {
+      "name": "France métropolitaine",
+      "minLat": "41.3659120",
+      "minLon": "-5.1328020",
+      "maxLat": "51.0875410",
+      "maxLon": "9.5595810",
+      "pictogram": "terra_layer/extents/pictograms/france-metropolitaine.svg",
+      "adapts_to_theme": true,
+      "category": 1
+    }
+  },
+  {
+    "model": "terra_layer.extent",
+    "pk": 2,
+    "fields": {
+      "name": "Guadeloupe",
+      "minLat": "15.8469910",
+      "minLon": "-61.7978410",
+      "maxLat": "16.5130880",
+      "maxLon": "-60.9892470",
+      "pictogram": "terra_layer/extents/pictograms/guadeloupe.svg",
+      "adapts_to_theme": true,
+      "category": 2
+    }
+  },
+  {
+    "model": "terra_layer.extent",
+    "pk": 3,
+    "fields": {
+      "name": "Martinique",
+      "minLat": "14.4081080",
+      "minLon": "-61.2288310",
+      "maxLat": "14.8768990",
+      "maxLon": "-60.8104140",
+      "pictogram": "terra_layer/extents/pictograms/martinique.svg",
+      "adapts_to_theme": true,
+      "category": 2
+    }
+  },
+  {
+    "model": "terra_layer.extent",
+    "pk": 4,
+    "fields": {
+      "name": "Guyane",
+      "minLat": "2.1106730",
+      "minLon": "-54.6152920",
+      "maxLat": "5.7447650",
+      "maxLon": "-51.6490370",
+      "pictogram": "terra_layer/extents/pictograms/guyane.svg",
+      "adapts_to_theme": true,
+      "category": 2
+    }
+  },
+  {
+    "model": "terra_layer.extent",
+    "pk": 5,
+    "fields": {
+      "name": "La Réunion",
+      "minLat": "-21.3707820",
+      "minLon": "55.2254340",
+      "maxLat": "-20.8614230",
+      "maxLon": "55.8545030",
+      "pictogram": "terra_layer/extents/pictograms/la-reunion.svg",
+      "adapts_to_theme": true,
+      "category": 2
+    }
+  },
+  {
+    "model": "terra_layer.extent",
+    "pk": 6,
+    "fields": {
+      "name": "Mayotte",
+      "minLat": "-12.9891900",
+      "minLon": "45.0424910",
+      "maxLat": "-12.6472310",
+      "maxLon": "45.2908630",
+      "pictogram": "terra_layer/extents/pictograms/mayotte.svg",
+      "adapts_to_theme": true,
+      "category": 2
+    }
+  },
+  {
+    "model": "terra_layer.extent",
+    "pk": 7,
+    "fields": {
+      "name": "Saint-Pierre-et-Miquelon",
+      "minLat": "46.7527530",
+      "minLon": "-56.3965960",
+      "maxLat": "47.1412620",
+      "maxLon": "-56.1447650",
+      "pictogram": "terra_layer/extents/pictograms/saint-pierre-et-miquelon.svg",
+      "adapts_to_theme": true,
+      "category": 2
+    }
+  },
+  {
+    "model": "terra_layer.extent",
+    "pk": 8,
+    "fields": {
+      "name": "Saint-Barthélemy",
+      "minLat": "17.8819850",
+      "minLon": "-62.8673400",
+      "maxLat": "17.9291450",
+      "maxLon": "-62.7916560",
+      "pictogram": "terra_layer/extents/pictograms/saint-barthelemy.svg",
+      "adapts_to_theme": true,
+      "category": 2
+    }
+  },
+  {
+    "model": "terra_layer.extent",
+    "pk": 9,
+    "fields": {
+      "name": "Saint-Martin",
+      "minLat": "18.0333910",
+      "minLon": "-63.1468400",
+      "maxLat": "18.1221380",
+      "maxLon": "-63.0107320",
+      "pictogram": "terra_layer/extents/pictograms/saint-martin.svg",
+      "adapts_to_theme": true,
+      "category": 2
+    }
+  },
+  {
+    "model": "terra_layer.extent",
+    "pk": 10,
+    "fields": {
+      "name": "Nouvelle-Calédonie",
+      "minLat": "-22.6706680",
+      "minLon": "163.6157330",
+      "maxLat": "-19.6237120",
+      "maxLon": "171.3437650",
+      "pictogram": "terra_layer/extents/pictograms/nouvelle-caledonie.svg",
+      "adapts_to_theme": true,
+      "category": 2
+    }
+  },
+  {
+    "model": "terra_layer.extent",
+    "pk": 11,
+    "fields": {
+      "name": "Polynésie française",
+      "minLat": "-27.6412090",
+      "minLon": "-154.5369770",
+      "maxLat": "-7.9501280",
+      "maxLon": "-134.9429830",
+      "pictogram": "terra_layer/extents/pictograms/polynesie-francaise.svg",
+      "adapts_to_theme": true,
+      "category": 2
+    }
+  },
+  {
+    "model": "terra_layer.extent",
+    "pk": 12,
+    "fields": {
+      "name": "Wallis-et-Futuna",
+      "minLat": "-14.3194310",
+      "minLon": "-178.1857400",
+      "maxLat": "-13.2089170",
+      "maxLon": "-176.1256000",
+      "pictogram": "terra_layer/extents/pictograms/wallis-et-futuna.svg",
+      "adapts_to_theme": true,
+      "category": 2
+    }
+  }
+]

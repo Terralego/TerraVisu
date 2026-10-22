@@ -65,9 +65,11 @@ jobs:
       - name: Build admin
         if: steps.cache-admin.outputs.cache-hit != 'true'
         working-directory: ./admin
+        env:
+          PUBLIC_URL: /admin/
         run: |
           cp ../conf/admin.env .env
-          npx react-scripts --openssl-legacy-provider build
+          npm run build
 
       - name: Cache front
         id: cache-front

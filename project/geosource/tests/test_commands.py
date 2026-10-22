@@ -6,7 +6,7 @@ from django.test import TestCase
 from geostore.models import Layer
 from rest_framework.exceptions import MethodNotAllowed
 
-from project.geosource.models import GeoJSONSource, GeometryTypes
+from project.geosource.models import GeoFileSource, GeometryTypes
 from project.geosource.tests.helpers import get_file
 
 
@@ -16,7 +16,7 @@ def side_effect(method, list, **kwargs):
 
 class ResyncAllSourcesTestCase(TestCase):
     def setUp(self):
-        self.source = GeoJSONSource.objects.create(
+        self.source = GeoFileSource.objects.create(
             name="test",
             geom_type=GeometryTypes.Point,
             file=get_file("test.geojson"),
@@ -25,7 +25,7 @@ class ResyncAllSourcesTestCase(TestCase):
     def test_resync_all_sources(self):
         out = StringIO()
         with (
-            mock.patch("project.geosource.models.GeoJSONSource.refresh_data") as mocked,
+            mock.patch("project.geosource.models.GeoFileSource.refresh_data") as mocked,
             mock.patch(
                 "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
                 return_value=False,
@@ -38,7 +38,7 @@ class ResyncAllSourcesTestCase(TestCase):
     def test_resync_all_sources_sync(self):
         out = StringIO()
         with mock.patch(
-            "project.geosource.models.GeoJSONSource.refresh_data"
+            "project.geosource.models.GeoFileSource.refresh_data"
         ) as mocked:
             call_command("resync_all_sources", sync=True, stdout=out)
 
@@ -51,7 +51,7 @@ class ResyncAllSourcesTestCase(TestCase):
             return "Task"
 
         with (
-            mock.patch("project.geosource.models.GeoJSONSource.refresh_data") as mocked,
+            mock.patch("project.geosource.models.GeoFileSource.refresh_data") as mocked,
             mock.patch(
                 "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
                 return_value=False,
@@ -63,7 +63,7 @@ class ResyncAllSourcesTestCase(TestCase):
     def test_resync_source_sync(self):
         out = StringIO()
         with mock.patch(
-            "project.geosource.models.GeoJSONSource.refresh_data"
+            "project.geosource.models.GeoFileSource.refresh_data"
         ) as mocked:
             call_command("resync_source", pk=self.source.id, sync=True, stdout=out)
 
@@ -88,7 +88,7 @@ class ResyncAllSourcesTestCase(TestCase):
     def test_resync_all_sources_fail_force(self):
         out = StringIO()
         with (
-            mock.patch("project.geosource.models.GeoJSONSource.refresh_data") as mocked,
+            mock.patch("project.geosource.models.GeoFileSource.refresh_data") as mocked,
             mock.patch(
                 "project.geosource.mixins.CeleryCallMethodsMixin.update_status",
                 return_value=False,

@@ -10,10 +10,9 @@ from psycopg2 import OperationalError
 from project.geosource.exceptions import CSVSourceException, SourceException
 from project.geosource.models import (
     CSVSource,
-    GeoJSONSource,
+    GeoFileSource,
     GeometryTypes,
     PostGISSource,
-    ShapefileSource,
     Source,
     SourceReporting,
 )
@@ -51,7 +50,7 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "latitude_field": "YCOORDS",
             },
         )
-        _, errors = source._get_records()
+        _, errors, len_records = source._get_records()
         self.assertIn("Sheet row 0 - X is not a valid coordinate field", errors)
 
     def test_csv_with_wrong_y_coord(self, mocked_es_delete, mocked_es_create):
@@ -71,7 +70,7 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "latitude_field": "Y",  # Wrong on purpose
             },
         )
-        _, errors = source._get_records()
+        _, errors, len_records = source._get_records()
         self.assertIn("Sheet row 0 - Y is not a valid coordinate field", errors)
 
     def test_invalid_csv_file_raise_value_error(
@@ -123,7 +122,7 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "coordinates_field_count": "xy",
             },
         )
-        _, errors = source._get_records()
+        _, errors, len_records = source._get_records()
         self.assertIn("Sheet row 0 - coordxy is not a valid coordinate field", errors)
 
     def test_coordinates_system_without_digit_srid_raise_value_error(
@@ -237,7 +236,7 @@ class CSVSourceExceptionsTestCase(TestCase):
                 "latitude_field": "YCOORD",
             },
         )
-        _, errors = source._get_records()
+        _, errors, len_records = source._get_records()
         msg = "Sheet row 0 - One of source's record has invalid geometry: Point(930077.50743 6922202.67316) srid=4326"
         self.assertIn(msg, errors)
 
@@ -308,7 +307,7 @@ class CSVSourceExceptionsTestCase(TestCase):
 
 @patch("elasticsearch.client.IndicesClient.create")
 @patch("elasticsearch.client.IndicesClient.delete")
-class GeoJSONSourceExceptionsTestCase(TestCase):
+class GeoFileSourceExceptionsTestCase(TestCase):
     def test_source_geojson_with_wrong_id_report_message(
         self, mocked_es_delete, mocked_es_create
     ):
@@ -326,7 +325,7 @@ class GeoJSONSourceExceptionsTestCase(TestCase):
             ],
         }
         geojson = json.dumps(geodict)
-        source = GeoJSONSource.objects.create(
+        source = GeoFileSource.objects.create(
             name="test",
             geom_type=GeometryTypes.Point,
             file=SimpleUploadedFile("geojson", bytes(geojson, encoding="UTF-8")),
@@ -360,11 +359,11 @@ class PostGISSourceExceptionsTestCase(TestCase):
 
 @patch("elasticsearch.client.IndicesClient.create")
 @patch("elasticsearch.client.IndicesClient.delete")
-class ShapefileSourceExceptionsTestCase(TestCase):
+class ShapefileGeoFileSourceExceptionsTestCase(TestCase):
     def test_wrong_id_report_message_on_refresh_and_get_reported(
         self, mocked_es_delete, mocked_es_create
     ):
-        source = ShapefileSource.objects.create(
+        source = GeoFileSource.objects.create(
             name="test_shapefile",
             geom_type=GeometryTypes.Point,
             file=get_file("test.zip"),
@@ -389,8 +388,6 @@ class SourceExceptionTestCase(TestCase):
         source._refresh_data = Mock(side_effect=side_effect)
         self.assertIsNone(source.report)
 
-        # Since we mocked "_refresh_data", we need to init an empty SourceReporting manually
-        source.report = SourceReporting.objects.create()
         source.refresh_data()
         self.assertIsInstance(source.report, SourceReporting)
         self.assertEqual(source.report.status, SourceReporting.Status.ERROR.value)

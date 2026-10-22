@@ -1,3 +1,4 @@
+import re
 from os.path import basename
 
 import psycopg2
@@ -15,9 +16,8 @@ from .models import (
     CommandSource,
     CSVSource,
     Field,
-    GeoJSONSource,
+    GeoFileSource,
     PostGISSource,
-    ShapefileSource,
     Source,
     SourceReporting,
     WMTSSource,
@@ -55,6 +55,8 @@ class PolymorphicModelSerializer(serializers.ModelSerializer):
         """
         Returns the serializer class from datatype
         """
+        if data_type in ("GeoJSONSource", "ShapefileSource", "GeoPackageSource"):
+            data_type = "GeoFileSource"
         if data_type in cls.type_class_map:
             return cls.type_class_map[data_type]
         raise ValidationError({cls.type_field: f"{data_type}'s type is unknown"})
@@ -252,6 +254,14 @@ class PostGISSourceSerializer(SourceSerializer):
         extra_kwargs = {"db_password": {"write_only": True}}
 
 
+def strip_storage_suffix(name):
+    """Strip Django storage suffix: \"name_RANDOM7chars.ext\" -> \"name.ext\"."""
+    match = re.match(r"^(.+)_[A-Za-z0-9]{7}(\.[^.]+)$", name)
+    if match:
+        return f"{match.group(1)}{match.group(2)}"
+    return name
+
+
 class FileSourceSerializer(SourceSerializer):
     filename = serializers.SerializerMethodField()
 
@@ -263,17 +273,7 @@ class FileSourceSerializer(SourceSerializer):
 
     def get_filename(self, instance):
         if instance.file:
-            return basename(instance.file.name)
-
-    class Meta:
-        model = None
-
-
-class GeoJSONSourceSerializer(FileSourceSerializer):
-    class Meta:
-        model = GeoJSONSource
-        fields = "__all__"
-        extra_kwargs = {"file": {"write_only": True}}
+            return strip_storage_suffix(basename(instance.file.name))
 
     def _validate_field_infos(self, data):
         # remove _type field as it is not needed by the model
@@ -288,7 +288,7 @@ class GeoJSONSourceSerializer(FileSourceSerializer):
         except TypeError:
             return  # file field is empty in update no get_records
         try:
-            records, _ = instance._get_records(1)
+            records, _, len_records = instance._get_records(1)
         except Exception as err:
             raise ValidationError(err.args[0])
 
@@ -304,10 +304,13 @@ class GeoJSONSourceSerializer(FileSourceSerializer):
         self._validate_field_infos(data)
         return super().validate(data)
 
-
-class ShapefileSourceSerializer(FileSourceSerializer):
     class Meta:
-        model = ShapefileSource
+        model = None
+
+
+class GeoFileSourceSerializer(FileSourceSerializer):
+    class Meta:
+        model = GeoFileSource
         fields = "__all__"
         extra_kwargs = {"file": {"write_only": True}}
 
@@ -446,7 +449,7 @@ class CSVSourceSerializer(FileSourceSerializer):
         # create an instance without saving data
         instance = self.Meta.model(**data_copy)
         try:
-            records, _ = instance._get_records(1)
+            records, _, len_records = instance._get_records(1)
         except (ValueError, GDALException) as err:
             raise ValidationError(err.args[0])
 

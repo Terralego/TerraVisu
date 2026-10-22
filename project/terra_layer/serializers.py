@@ -23,6 +23,7 @@ from .models import (
     DeclarationConfig,
     DeclarationField,
     DeclarationFile,
+    Extent,
     FilterField,
     Layer,
     Report,
@@ -30,8 +31,34 @@ from .models import (
     ReportField,
     ReportFile,
     Scene,
+    SceneExtent,
     StyleImage,
 )
+
+
+class ExtentSerializer(serializers.ModelSerializer):
+    pictogram = serializers.SerializerMethodField(source="get_pictogram")
+    category = serializers.SerializerMethodField(source="get_category")
+
+    def get_pictogram(self, obj):
+        return obj.pictogram.url if obj.pictogram else None
+
+    def get_category(self, obj):
+        return obj.category.name if obj.category else None
+
+    class Meta:
+        model = Extent
+        fields = (
+            "id",
+            "category",
+            "name",
+            "minLat",
+            "minLon",
+            "maxLat",
+            "maxLon",
+            "pictogram",
+            "adapts_to_theme",
+        )
 
 
 class SceneListSerializer(serializers.ModelSerializer):
@@ -61,6 +88,13 @@ class SceneDetailSerializer(serializers.ModelSerializer):
         queryset=MapBaseLayer.objects.all(), source="base_layers", many=True
     )  # compat with old name of m2m attribute. to fix in admin.
 
+    extra_extents = serializers.PrimaryKeyRelatedField(
+        queryset=Extent.objects.all(),
+        many=True,
+        required=False,
+        source="ordered_extents",
+    )
+
     class Meta:
         model = Scene
         exclude = ("base_layers",)
@@ -75,6 +109,30 @@ class SceneDetailSerializer(serializers.ModelSerializer):
         querydict = data.copy()
         querydict.setlist("baselayer", json.loads(baselayer))
         return super().to_internal_value(querydict)
+
+    def set_extra_extents(self, instance, extents):
+        """Store extents with their submitted order, through SceneExtent"""
+        instance.scene_extents.all().delete()
+        SceneExtent.objects.bulk_create(
+            [
+                SceneExtent(scene=instance, extent=extent, order=order)
+                for order, extent in enumerate(extents)
+            ]
+        )
+
+    def create(self, validated_data):
+        extra_extents = validated_data.pop("ordered_extents", [])
+        instance = super().create(validated_data)
+        self.set_extra_extents(instance, extra_extents)
+        return instance
+
+    def update(self, instance, validated_data):
+        extra_extents = validated_data.pop("ordered_extents", None)
+        instance = super().update(instance, validated_data)
+
+        if extra_extents is not None:
+            self.set_extra_extents(instance, extra_extents)
+        return instance
 
 
 class FilterFieldSerializer(serializers.ModelSerializer):

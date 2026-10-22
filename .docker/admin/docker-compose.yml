@@ -1,11 +1,18 @@
 version: "3.8"
 services:
   admin:
-    image: node:${NODE_VERSION:-18}
-    working_dir: /app
+    image: node:${NODE_VERSION:-24}
+    working_dir: /app/admin
+
+    environment:
+      # the host UID has no home in the image, npm and git need a writable one
+      - HOME=/tmp
+      # vite.config.js reads the base path from the environment, not from .env
+      - PUBLIC_URL=/admin/
 
     volumes:
-      - ../../admin:/app
-      - ../../conf/admin.env:/app/.env
+      # the whole repository, so that git can reach the submodule's .git
+      - ../..:/app
+      - ../../conf/admin.env:/app/admin/.env
     user: ${CURRENT_UID:-1000}:${CURRENT_GID:-1000}
 

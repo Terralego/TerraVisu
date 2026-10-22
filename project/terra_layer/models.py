@@ -4,6 +4,7 @@ from hashlib import md5
 
 from autoslug import AutoSlugField
 from django.contrib.gis.db import models as gis_models
+from django.core.validators import FileExtensionValidator
 from django.db import models, transaction
 from django.db.models import Q, TextChoices, UniqueConstraint
 from django.db.models.signals import post_delete
@@ -30,6 +31,66 @@ logger = logging.getLogger(__name__)
 def scene_icon_path(instance, filename):
     y, m, d = timezone_today().isoformat().split("-")
     return f"terra_layer/scenes/custom_icon/{y}/{m}/{d}/{filename}"
+
+
+class ExtentCategory(models.Model):
+    name = models.CharField(verbose_name=_("Name"), max_length=255)
+
+    class Meta:
+        verbose_name = _("Extents category")
+        verbose_name_plural = _("Extents categories")
+
+    def __str__(self):
+        return self.name
+
+
+class Extent(models.Model):
+    name = models.CharField(verbose_name=_("Name"), max_length=255)
+    minLat = models.DecimalField(
+        verbose_name=_("Latitude min"), max_digits=10, decimal_places=7
+    )
+    minLon = models.DecimalField(
+        verbose_name=_("Longitude min"), max_digits=10, decimal_places=7
+    )
+    maxLat = models.DecimalField(
+        verbose_name=_("Latitude max"), max_digits=10, decimal_places=7
+    )
+    maxLon = models.DecimalField(
+        verbose_name=_("Longitude max"), max_digits=10, decimal_places=7
+    )
+    pictogram = models.FileField(
+        verbose_name=_("Pictogram"),
+        upload_to="terra_layer/extents/pictograms",
+        max_length=255,
+        null=True,
+        default=None,
+        blank=True,
+        validators=[
+            FileExtensionValidator(
+                allowed_extensions=["svg", "png", "jpg", "jpeg", "gif", "webp"]
+            )
+        ],
+    )
+    adapts_to_theme = models.BooleanField(
+        verbose_name=_("Adapt to theme"),
+        default=False,
+        help_text=_("Update the pictogram color to match theme"),
+    )
+    category = models.ForeignKey(
+        ExtentCategory,
+        on_delete=models.CASCADE,
+        null=True,
+        verbose_name=_("Category"),
+        blank=True,
+        related_name="extents",
+    )
+
+    class Meta:
+        verbose_name = _("Extent")
+        verbose_name_plural = _("Extents")
+
+    def __str__(self):
+        return self.name
 
 
 class Scene(models.Model):
@@ -62,6 +123,12 @@ class Scene(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    extra_extents = models.ManyToManyField(
+        Extent,
+        blank=True,
+        through="SceneExtent",
+        help_text=_("Define extra extents to enable on map."),
+    )
 
     objects = SceneManager()
 
@@ -80,6 +147,12 @@ class Scene(models.Model):
 
     def get_absolute_url(self):
         return reverse("scene-detail", args=[self.pk])
+
+    @property
+    def ordered_extents(self):
+        return Extent.objects.filter(extent_scenes__scene=self).order_by(
+            "extent_scenes__order"
+        )
 
     def tree2models(self, current_node=None, parent=None, order=0):
         """
@@ -168,6 +241,25 @@ class Scene(models.Model):
     def layers(self):
         """all scene layers"""
         return Layer.objects.filter(group__view=self).order_by("group__order", "order")
+
+
+class SceneExtent(models.Model):
+    scene = models.ForeignKey(
+        Scene, on_delete=models.CASCADE, related_name="scene_extents"
+    )
+    extent = models.ForeignKey(
+        Extent, on_delete=models.CASCADE, related_name="extent_scenes"
+    )
+    order = models.PositiveSmallIntegerField(default=0, db_index=True)
+
+    class Meta:
+        ordering = ["order", "pk"]
+        unique_together = [("scene", "extent")]
+        verbose_name = _("Scene extent")
+        verbose_name_plural = _("Scene extents")
+
+    def __str__(self):
+        return f"{self.scene} - {self.extent}"
 
 
 class LayerGroup(models.Model):

@@ -5,6 +5,53 @@ Changelog
 2026.10.00+dev  (XXXX-XX-XX)
 ----------------------------
 
+**New features:**
+
+- Add support for multiple extents (Territories selector)
+- (Admin) Add a "multiple extents" in view form
+- (Admin) Preview a file before importing it: fields, sample features and map of the data, with a new "Geo file" source type (GeoPackage, Shapefile, GeoJSON) and the choice of the GeoPackage layer
+- (Admin) Download the original file of a file source
+- (Admin) Follow the progress of a source refresh in its report tab
+- (Admin) New layout modern layout with filters upfront, a real dashboard and several UX improvements
+- (Front) Legends are grouped by layer and can be hidden
+- (Front) Map side panels open full screen on mobile
+
+**Tooling**
+
+- (Front) Migrate front-end tooling to Vite + vitest + oxlint
+- (Admin) Migrate admin tooling to Vite + vitest + oxlint, on Node 24
+- (Admin) Upgrade dependencies and maplibre-gl to 6, remove the Elasticsearch client
+
+**Improvements:**
+
+- Split the view API so that layers are loaded on demand, large views open much faster
+- (Front) total rewrite of map controls, now based on MUI and using React Portals for performance
+- (Front) Filter autocompletion searches as you type and finds values on layers with more than 10,000 features
+- (Front) View selector sidebar is now based on MUI, reusing theme colors and providing a more accessible experience
+- (Admin) Maps now use MapLibre
+- (Admin) New JSON editor which works more reliably
+
+**Bugfix:**
+
+- Logging out of the admin or the front when logged in /config didn't work
+- (Front) An unconfigured map tools group no longer shows an empty button
+- (Front) Print title had a black background
+- (Front) Sharing an URL with private layer could crash the app
+- (Front) Loading the app from another URL than `view` could cause the CSS to not load properly
+- (Admin) Colours picked for a palette lost their transparency
+- (Front) Mini-sheet icon in table was not shown as selected for a layer in a sub-group
+- (Front) Zoom control and attribution moved when the table or the mini-sheet opened
+- (Front) Details panel and table stayed open when their layer was turned off
+- (Front) Some generated legends of a layers tree node were missing
+- (Front) Pie chart markers ignored the zoom range and interactions of their layer
+- (Front) Layers tree logo could overflow its panel
+- (Front) Opening the details of a feature crashed the app when reporting was active
+- (Front) Highlighted feature was drawn below its layer
+- (Front) Print header image was blurry and could prevent the export
+- (Front) A layer shared by URL in a by-variable group was replaced by the group's default layer
+- (Admin) Expired session crashed the app instead of going back to the login form
+- (Admin) Uploading a too large file showed no explicit error message
+- (Admin) Unique identifier field could not be chosen when the source fields were not detected
 
 
 2026.10.00      (2026-10-07)
