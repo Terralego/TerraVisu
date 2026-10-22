@@ -79,7 +79,7 @@ sphinx-autobuild==2025.8.25
     # via terravisu (pyproject.toml:docs)
 sphinx-immaterial==0.13.9
     # via terravisu (pyproject.toml:docs)
-sphinx-intl==2.3.2
+sphinx-intl==2.4.0
     # via terravisu (pyproject.toml:docs)
 sphinxcontrib-applehelp==1.0.8
     # via sphinx
