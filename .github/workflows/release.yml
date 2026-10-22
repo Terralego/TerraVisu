@@ -166,3 +166,5 @@ jobs:
 
       - name: Attach zip archive as release binary
         run: gh release upload "${{ github.ref_name }}" *.zip --clobber
+        env:
+          GH_TOKEN: ${{ github.token }}
