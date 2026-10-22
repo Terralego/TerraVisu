@@ -81,7 +81,7 @@ sphinx-immaterial==0.13.9
     # via terravisu (pyproject.toml:docs)
 sphinx-intl==2.4.0
     # via terravisu (pyproject.toml:docs)
-sphinxcontrib-applehelp==1.0.8
+sphinxcontrib-applehelp==2.0.0
     # via sphinx
 sphinxcontrib-devhelp==1.0.6
     # via sphinx
