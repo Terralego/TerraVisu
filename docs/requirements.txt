@@ -10,7 +10,7 @@ anyio==4.14.2
     #   watchfiles
 appdirs==1.4.4
     # via sphinx-immaterial
-babel==2.15.0
+babel==2.18.0
     # via
     #   sphinx
     #   sphinx-intl
