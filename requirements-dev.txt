@@ -4,7 +4,7 @@ asgiref==3.12.1
     # via
     #   -c requirements.txt
     #   django
-coverage==7.16.2
+coverage==7.17.0
     # via terravisu (pyproject.toml:dev)
 django==5.2.18
     # via
@@ -27,7 +27,7 @@ python-dateutil==2.9.0.post0
     # via
     #   -c requirements.txt
     #   freezegun
-ruff==0.17.1
+ruff==0.17.2
     # via terravisu (pyproject.toml:dev)
 six==1.17.0
     # via
