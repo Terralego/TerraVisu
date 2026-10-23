@@ -29,7 +29,7 @@ click==8.5.0
     #   uvicorn
 colorama==0.4.6
     # via sphinx-autobuild
-docutils==0.22.4
+docutils==0.23
     # via sphinx
 h11==0.16.0
     # via uvicorn
