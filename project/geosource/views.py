@@ -344,15 +344,14 @@ class SourceModelViewset(ModelViewSet):
                 if len(data_rows) < 5:
                     data_rows.append(row)
                 record_count += 1
-                if coord_indexes is not None:
-                    xy = extract_xy(row)
-                    if xy:
-                        found_coord = True
-                        x, y = xy
-                        minx = min(minx, x)
-                        miny = min(miny, y)
-                        maxx = max(maxx, x)
-                        maxy = max(maxy, y)
+                xy = extract_xy(row)
+                if xy:
+                    found_coord = True
+                    x, y = xy
+                    minx = min(minx, x)
+                    miny = min(miny, y)
+                    maxx = max(maxx, x)
+                    maxy = max(maxy, y)
 
         def detect_type(values):
             if not values:
