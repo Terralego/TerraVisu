@@ -2,6 +2,7 @@ from admin_interface.admin import ThemeAdmin
 from admin_interface.models import Theme
 from constance.admin import Config, ConstanceAdmin
 from django.contrib import admin
+from django.db import models
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from ordered_model.admin import (
@@ -9,6 +10,7 @@ from ordered_model.admin import (
     OrderedModelAdmin,
     OrderedTabularInline,
 )
+from tinymce.widgets import TinyMCE
 
 from project.admin import config_site
 from project.geosource.models import Field, Source
@@ -29,6 +31,12 @@ from project.visu.models import (
     SheetListFieldThroughModel,
     SpriteValue,
 )
+
+
+class TinyMCEAdmin(admin.ModelAdmin):
+    formfield_overrides = {
+        models.TextField: {"widget": TinyMCE()},
+    }
 
 
 @admin.register(ExtraMenuItem, site=config_site)
@@ -177,7 +185,7 @@ class SourceAdmin(admin.ModelAdmin):
 
 
 @admin.register(SheetBlock, site=config_site)
-class SheetBlockAdmin(OrderedInlineModelAdminMixin, OrderedModelAdmin):
+class SheetBlockAdmin(OrderedInlineModelAdminMixin, OrderedModelAdmin, TinyMCEAdmin):
     list_display = (
         "title",
         "get_sheet_name",

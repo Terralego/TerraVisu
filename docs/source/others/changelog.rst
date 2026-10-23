@@ -35,6 +35,7 @@ Changelog
 - (Front) View selector sidebar is now based on MUI, reusing theme colors and providing a more accessible experience
 - (Admin) Maps now use MapLibre
 - (Admin) New JSON editor which works more reliably
+- (Config) Change Text field in sheet block to rich text field with TinyMCE
 
 **Bugfix:**
 
