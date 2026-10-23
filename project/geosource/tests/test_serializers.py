@@ -1,14 +1,24 @@
-from unittest.mock import patch
+from unittest.mock import MagicMock, patch
 
+import requests
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
 from rest_framework.exceptions import ValidationError
 
-from project.geosource.models import CSVSource, GeoFileSource, Source, SourceReporting
+from project.geosource.models import (
+    CSVSource,
+    Field,
+    GeoFileSource,
+    Source,
+    SourceReporting,
+)
 from project.geosource.serializers import (
+    CommandSourceSerializer,
     CSVSourceSerializer,
     GeoFileSourceSerializer,
+    PostGISSourceSerializer,
     SourceSerializer,
+    WMTSSourceSerialize,
 )
 from project.geosource.tests.helpers import get_file
 
@@ -235,3 +245,246 @@ class SourceSerializerTestCase(TestCase):
         serializer = SourceSerializer(Source.objects.all(), many=True)
         self.assertIsInstance(serializer.data, list)
         self.assertGreater(len(serializer.data), 0)
+
+    def test_polymorphic_create_subclass_serializer(self):
+        ser = SourceSerializer()
+        data = {
+            "_type": "CommandSource",
+            "name": "cmd_test_poly",
+            "command": "test_command",
+        }
+        mock_source = MagicMock()
+        with (
+            patch.object(
+                CommandSourceSerializer, "create", return_value=mock_source
+            ) as mock_create,
+            patch.object(SourceSerializer, "_update_fields", return_value=mock_source),
+        ):
+            instance = ser.create(data)
+            self.assertEqual(instance, mock_source)
+            mock_create.assert_called_once()
+
+    def test_update_fields_validation_error_and_does_not_exist(self):
+        Field.objects.create(source=self.source, name="id", label="ID")
+        data = {
+            "name": "new-name-2",
+            "_type": "GeoFileSource",
+            "file": [get_file("test.geojson")],
+            "fields": [],
+        }
+        serializer = SourceSerializer(data=data, partial=True)
+        self.assertTrue(serializer.is_valid(), serializer.errors)
+        with patch.object(SourceSerializer, "_update_fields", return_value=self.source):
+            with patch.object(
+                serializer,
+                "get_initial",
+                return_value={"fields": [{"name": "id", "label": ""}]},
+            ):
+                with self.assertRaises(ValidationError) as cm:
+                    serializer.update(
+                        self.source, {**serializer.validated_data, "fields": []}
+                    )
+                self.assertIn("Field configuration is not valid", str(cm.exception))
+
+            with patch.object(
+                serializer,
+                "get_initial",
+                return_value={"fields": [{"name": "does_not_exist", "label": "Valid"}]},
+            ):
+                res = serializer.update(
+                    self.source, {**serializer.validated_data, "fields": []}
+                )
+                self.assertEqual(res, self.source)
+
+
+class PostGISSourceSerializerTestCase(TestCase):
+    @patch("psycopg2.connect")
+    def test_first_record_and_get_connection(self, mock_connect):
+        mock_cursor = MagicMock()
+        mock_cursor.fetchone.return_value = {"id": 1, "geom": "POINT(0 0)"}
+        mock_connect.return_value.cursor.return_value = mock_cursor
+
+        ser = PostGISSourceSerializer()
+        data = {
+            "db_username": "u",
+            "db_password": "p",
+            "db_host": "h",
+            "db_port": 5432,
+            "db_name": "d",
+            "query": "SELECT * FROM test",
+        }
+        rec = ser._first_record(data)
+        self.assertEqual(rec, {"id": 1, "geom": "POINT(0 0)"})
+
+    def test_validate_geom_with_exception_in_non_geom_and_success(self):
+        ser = PostGISSourceSerializer()
+        with patch.object(
+            ser, "_first_record", return_value={"id": 1, "geom": "POINT(0 0)"}
+        ):
+            data = {"geom_field": None, "geom_type": 0}
+            result = ser._validate_geom(data)
+            self.assertEqual(result["geom_field"], "geom")
+
+    def test_validate_geom_missing_field_raises_error(self):
+        ser = PostGISSourceSerializer()
+        with patch.object(ser, "_first_record", return_value={"id": 1}):
+            data = {"geom_field": "non_existent_geom", "geom_type": 1}
+            with self.assertRaises(ValidationError) as cm:
+                ser._validate_geom(data)
+            self.assertIn("Field does not exist in source", str(cm.exception))
+
+    def test_validate_query_connection_fails_raises_error(self):
+        ser = PostGISSourceSerializer()
+        with patch.object(
+            ser, "_first_record", side_effect=Exception("DB connection failed")
+        ):
+            with self.assertRaises(ValidationError) as cm:
+                ser._validate_query_connection({"query": "SELECT 1"})
+            self.assertIn(
+                "Connection informations or query are not valid", str(cm.exception)
+            )
+
+
+class FileSourceSerializerValidationTestCase(TestCase):
+    def test_file_source_serializer_fields_without_file_returns_early(self):
+        ser = GeoFileSourceSerializer()
+        data = {"_type": "GeoFileSource", "fields": [{"name": "col"}], "file": None}
+        self.assertIsNone(ser._validate_field_infos(data))
+
+    def test_file_source_serializer_id_field_not_in_records_raises_validation_error(
+        self,
+    ):
+        ser = GeoFileSourceSerializer()
+        data = {
+            "_type": "GeoFileSource",
+            "name": "test_missing_id",
+            "id_field": "non_existent_id",
+            "file": get_file("test.geojson"),
+        }
+        with patch.object(
+            GeoFileSource, "_get_records", return_value=([{"other": 1}], [], 1)
+        ):
+            with self.assertRaises(ValidationError) as cm:
+                ser._validate_field_infos(data)
+            self.assertIn("Can't find identifier field", str(cm.exception))
+
+
+class WMTSSourceSerializerTestCase(TestCase):
+    @patch("requests.get", side_effect=requests.ConnectionError("Connection refused"))
+    def test_wmts_unreachable_raises_validation_error(self, mock_get):
+        ser = WMTSSourceSerialize()
+        data = {"url": "http://invalid-tile-server/{z}/{x}/{y}.png"}
+        with self.assertRaises(ValidationError) as cm:
+            ser.validate(data)
+        self.assertIn("Can't reach specified tile server", str(cm.exception))
+
+
+class CSVSourceSerializerExtraValidationTestCase(TestCase):
+    def test_csv_serializer_to_representation_one_column(self):
+        csv = SimpleUploadedFile(name="test.csv", content=b"coords\n1,2")
+        data = {
+            "file": csv,
+            "geom_type": 0,
+            "name": "test_rep_one_col",
+            "settings": {
+                "coordinate_reference_system": "EPSG_4326",
+                "field_separator": "semicolon",
+                "decimal_separator": "point",
+                "char_delimiter": "doublequote",
+                "number_lines_to_ignore": 0,
+                "use_header": True,
+                "ignore_columns": False,
+                "encoding": "UTF-8",
+                "coordinates_field": "one_column",
+                "coordinates_separator": "comma",
+                "latlong_field": "coords",
+                "coordinates_field_count": "xy",
+            },
+        }
+        source = CSVSource.objects.create(**data)
+        rep = CSVSourceSerializer(source).data
+        self.assertNotIn("latitude_field", rep)
+        self.assertNotIn("longitude_field", rep)
+
+    def test_csv_validate_field_infos_without_file_returns_early(self):
+        ser = CSVSourceSerializer()
+        data = {"_type": "CSVSource", "fields": [{"name": "col"}], "file": None}
+        self.assertIsNone(ser._validate_field_infos(data))
+
+    def test_csv_validate_field_infos_missing_id_raises_validation_error(self):
+        ser = CSVSourceSerializer()
+        data = {
+            "_type": "CSVSource",
+            "name": "csv_missing_id",
+            "id_field": "non_existent_id",
+            "file": get_file("source.csv"),
+        }
+        with patch.object(
+            CSVSource, "_get_records", return_value=([{"other": 1}], [], 1)
+        ):
+            with self.assertRaises(ValidationError) as cm:
+                ser._validate_field_infos(data)
+            self.assertIn("Can't find identifier field", str(cm.exception))
+
+    def test_csv_validate_settings_combinations(self):
+        ser = CSVSourceSerializer()
+        base = {
+            "_type": "CSVSource",
+            "fields": [{"name": "col"}],
+            "file": None,
+        }
+
+        # one_column missing latlong_field
+        with self.assertRaises(ValidationError) as cm:
+            ser.validate({**base, "settings": {"coordinates_field": "one_column"}})
+        self.assertIn("latlong_field must be defined", str(cm.exception))
+
+        # one_column missing coordinates_field_count
+        with self.assertRaises(ValidationError) as cm:
+            ser.validate(
+                {
+                    **base,
+                    "settings": {
+                        "coordinates_field": "one_column",
+                        "latlong_field": "coord",
+                    },
+                }
+            )
+        self.assertIn("Coordinates order must be specified", str(cm.exception))
+
+        # one_column missing coordinates_separator
+        with self.assertRaises(ValidationError) as cm:
+            ser.validate(
+                {
+                    **base,
+                    "settings": {
+                        "coordinates_field": "one_column",
+                        "latlong_field": "coord",
+                        "coordinates_field_count": "xy",
+                    },
+                }
+            )
+        self.assertIn("Coordinates separator must be specified", str(cm.exception))
+
+        # two_columns missing latitude_field
+        with self.assertRaises(ValidationError) as cm:
+            ser.validate({**base, "settings": {"coordinates_field": "two_columns"}})
+        self.assertIn("Latitude field must be specified", str(cm.exception))
+
+        # two_columns missing longitude_field
+        with self.assertRaises(ValidationError) as cm:
+            ser.validate(
+                {
+                    **base,
+                    "settings": {
+                        "coordinates_field": "two_columns",
+                        "latitude_field": "lat",
+                    },
+                }
+            )
+        self.assertIn("Longitude field must be specified", str(cm.exception))
+
+        # invalid coordinates_field value
+        with self.assertRaises(ValidationError) as cm:
+            ser.validate({**base, "settings": {"coordinates_field": "three_columns"}})
+        self.assertIn("Incorrect value for coordinates field", str(cm.exception))

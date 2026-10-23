@@ -3,7 +3,7 @@ from django.urls import reverse
 from requests import HTTPError
 from rest_framework.test import APITestCase
 
-from project.accounts.models import PermanentAccessToken
+from project.accounts.models import FunctionalPermission, PermanentAccessToken
 from project.accounts.tests.factories import UserFactory
 
 
@@ -53,6 +53,38 @@ class FunctionalPermissionAPITestCase(APITestCase):
         response = self.client.get(reverse("permission-available"))
         self.assertEqual(response.status_code, 200)
         self.client.logout()
+
+
+class GroupViewSetAPITestCase(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.regular_user = UserFactory()
+        cls.user_manager = UserFactory()
+        cls.user_manager.user_permissions.add(
+            FunctionalPermission.objects.get(codename="can_manage_users")
+        )
+        cls.group_manager = UserFactory()
+        cls.group_manager.user_permissions.add(
+            FunctionalPermission.objects.get(codename="can_manage_groups")
+        )
+
+    def test_group_list_forbidden_without_permission(self):
+        self.client.force_authenticate(self.regular_user)
+        response = self.client.get(reverse("group-list"))
+        self.assertEqual(response.status_code, 403)
+
+    def test_group_read_only_for_user_manager(self):
+        self.client.force_authenticate(self.user_manager)
+        get_response = self.client.get(reverse("group-list"))
+        self.assertEqual(get_response.status_code, 200)
+
+        post_response = self.client.post(reverse("group-list"), {"name": "NewGroup"})
+        self.assertEqual(post_response.status_code, 403)
+
+    def test_group_create_allowed_for_group_manager(self):
+        self.client.force_authenticate(self.group_manager)
+        response = self.client.post(reverse("group-list"), {"name": "NewGroup"})
+        self.assertEqual(response.status_code, 201)
 
 
 class LoginWithToken(TestCase):

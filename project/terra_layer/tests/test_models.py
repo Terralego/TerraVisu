@@ -3,7 +3,17 @@ from django.utils.translation import gettext_lazy as _
 
 from ...geosource.models import FieldTypes
 from ...geosource.tests.factories import PostGISSourceFactory
-from ..models import Layer, ReportField
+from ..models import (
+    CustomStyle,
+    Extent,
+    ExtentCategory,
+    FilterField,
+    Layer,
+    ReportField,
+    Scene,
+    SceneExtent,
+    StyleImage,
+)
 from .factories import (
     LayerFactory,
     LayerGroupFactory,
@@ -189,3 +199,73 @@ class ReportTestCase(TestCase):
             str(self.report.config.report_fields.first()),
             f"Report field {self.report_field.order}",
         )
+
+
+class ExtraModelsTestCase(TestCase):
+    def test_str_methods(self):
+        scene = Scene.objects.create(name="My Scene")
+        self.assertEqual(str(scene), "My Scene")
+
+        category = ExtentCategory.objects.create(name="Cat")
+        extent = Extent.objects.create(
+            name="My Extent", category=category, minLat=0, minLon=0, maxLat=0, maxLon=0
+        )
+        scene_extent = SceneExtent.objects.create(scene=scene, extent=extent)
+        self.assertEqual(str(scene_extent), f"{scene} - {extent}")
+
+        source = PostGISSourceFactory(name="src_cs")
+        layer = LayerFactory(main_field__source=source)
+        layer.source = source
+        layer.save()
+        cs = CustomStyle.objects.create(layer=layer, source=source)
+        self.assertEqual(
+            str(cs), f"{layer.name} - {source.name} - {cs.layer_identifier}"
+        )
+
+        f = source.fields.create(name="f1", label="Field 1")
+        ff = FilterField.objects.create(field=f, layer=layer, label="Filter 1")
+        self.assertEqual(str(ff), "Filter 1")
+
+        img = StyleImage.objects.create(name="icon.png")
+        self.assertEqual(str(img), "icon.png")
+
+    def test_replace_source_dry_run_and_apply(self):
+        source1 = PostGISSourceFactory(name="source1")
+        f1 = source1.fields.create(name="old_col", label="Old Col")
+        f_del = source1.fields.create(name="deleted_col", label="Del Col")
+
+        source2 = PostGISSourceFactory(name="source2")
+        source2.fields.create(name="new_col", label="New Col")
+        source2.fields.create(name="brand_new_col", label="Brand New")
+
+        layer = LayerFactory(main_field__source=source1)
+        layer.source = source1
+        layer.save()
+        FilterField.objects.create(field=f1, layer=layer)
+        FilterField.objects.create(field=f_del, layer=layer)
+
+        # dry_run=True
+        layer.replace_source(
+            source2, fields_matches={"old_col": "new_col"}, dry_run=True
+        )
+        self.assertEqual(layer.source, source1)
+
+        # dry_run=False
+        layer.replace_source(
+            source2, fields_matches={"old_col": "new_col"}, dry_run=False
+        )
+        self.assertEqual(layer.source, source2)
+        field_names = [ff.field.name for ff in layer.fields_filters.all()]
+        self.assertIn("new_col", field_names)
+        self.assertIn("brand_new_col", field_names)
+        self.assertNotIn("deleted_col", field_names)
+
+    def test_save_preserve_legend_style_dropped(self):
+        source = PostGISSourceFactory(name="source_legend")
+        layer = LayerFactory(main_field__source=source)
+        layer.source = source
+        layer.save()
+        layer.legends = [{"uid": "dropped_uid__color", "title": "Legend", "auto": True}]
+        layer.main_style = {"style": {}}
+        layer.save(preserve_legend=True)
+        self.assertEqual(layer.legends, [])

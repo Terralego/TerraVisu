@@ -1,6 +1,6 @@
 from django.db.models import Case, IntegerField, Value, When
 
-from .filters import Unaccent, _classify_params
+from .filters import _classify_params
 
 
 class AutoOrderMixin:
@@ -40,7 +40,7 @@ class PrefixBoostMixin:
                 **{
                     f"_boost_{key}": Case(
                         When(
-                            **{f"{ann}__istartswith": Unaccent(Value(value))},
+                            **{f"{ann}__unaccent__istartswith": value},
                             then=Value(0),
                         ),  # SI commence par le terme ALORS 0
                         default=Value(1),  # SINON 1

@@ -19,7 +19,6 @@ from ..filters import (
     OrderingFilterBackend,
     PropertiesFilterBackend,
     SearchAllFieldsBackend,
-    Unaccent,
     _clean_params,
 )
 from ..mixins import AutoOrderMixin, PrefixBoostMixin
@@ -103,12 +102,10 @@ class FeatureViewSet(
             una_ann = f"_una_sboost_{key}"
             queryset = queryset.annotate(
                 **{
-                    una_ann: Unaccent(KeyTextTransform(key, "properties")),
+                    una_ann: KeyTextTransform(key, "properties"),
                     ann: Case(
                         When(
-                            **{
-                                f"{una_ann}__istartswith": Unaccent(Value(search_param))
-                            },
+                            **{f"{una_ann}__unaccent__istartswith": search_param},
                             then=Value(0),
                         ),
                         default=Value(1),
@@ -189,16 +186,14 @@ class FeatureViewSet(
             ann = f"_una_{field}"
             qs = qs.annotate(
                 **{
-                    ann: Unaccent(KeyTextTransform(field, "properties")),
+                    ann: KeyTextTransform(field, "properties"),
                     f"_boost_{field}": Case(
-                        When(
-                            **{f"{ann}__istartswith": Unaccent(Value(q))}, then=Value(0)
-                        ),
+                        When(**{f"{ann}__unaccent__istartswith": q}, then=Value(0)),
                         default=Value(1),
                         output_field=IntegerField(),
                     ),
                 }
-            ).filter(**{f"{ann}__icontains": Unaccent(Value(q))})
+            ).filter(**{f"{ann}__unaccent__icontains": q})
             return (
                 qs.values_list(lookup, flat=True)
                 .order_by(f"_boost_{field}", ann)

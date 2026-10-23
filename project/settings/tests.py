@@ -19,7 +19,7 @@ TIME_ZONE = "UTC"
 
 class DisableMigrations:
     def __contains__(self, item):
-        return True
+        return item != "geo_api"
 
     def __getitem__(self, item):
         return None
