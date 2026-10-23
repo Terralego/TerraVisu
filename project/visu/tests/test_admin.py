@@ -11,6 +11,7 @@ from project.visu.models import (
 )
 from project.visu.tests.factories import (
     FeatureSheetFactory,
+    SheetBlockFactory,
     SheetFieldFactory,
     SheetFieldInlineFormSetFactory,
     SheetListFieldInlineFormSetFactory,
@@ -248,6 +249,39 @@ class SheetBlockAdminFormTest(AdminTestCase):
             }
         )
         self.assertTrue(form2.is_valid(), form2.errors)
+
+    def test_block_list_detail_displayed(self):
+        self.superuser = SuperUserFactory()
+        self.field_1 = SheetFieldFactory(
+            label="My Test Field 1", type=SheetFieldType.BOOLEAN
+        )
+        self.source = self.field_1.field.source
+        self.field_2 = SheetFieldFactory(
+            label="My Test Field 2",
+        )
+        self.sheet = FeatureSheetFactory(name="My Test Sheet", sources=[self.source])
+
+        self.block = SheetBlockFactory(
+            title="My Test Block",
+            sheet=self.sheet,
+            fields=[self.field_1, self.field_2],
+        )
+        self.block2 = SheetBlockFactory(
+            title="My Test Block 2",
+            sheet=self.sheet,
+            fields=[self.field_1, self.field_2],
+        )
+        self.block3 = SheetBlockFactory(
+            title="My Test Block 3",
+            sheet=self.sheet,
+            fields=[self.field_1, self.field_2],
+        )
+
+        response = self.client.get("/config/visu/sheetblock/")
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.get(f"/config/visu/sheetblock/{self.block.pk}/change/")
+        self.assertEqual(response.status_code, 200)
 
 
 class AutocompleteTestCase(AdminTestCase):

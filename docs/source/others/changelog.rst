@@ -5,6 +5,9 @@ Changelog
 2026.10.01+dev  (XXXX-XX-XX)
 ----------------------------
 
+**Improvements:**
+
+- (Config) Change Text field in sheet block to rich text field with TinyMCE
 
 
 2026.10.01      (2026-10-20)
