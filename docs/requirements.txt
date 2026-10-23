@@ -54,7 +54,7 @@ pydantic==2.10.3
     # via
     #   pydantic-extra-types
     #   sphinx-immaterial
-pydantic-core==2.27.1
+pydantic-core==2.50.1
     # via pydantic
 pydantic-extra-types==2.11.1
     # via sphinx-immaterial
