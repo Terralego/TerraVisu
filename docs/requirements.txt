@@ -83,7 +83,7 @@ sphinx-intl==2.4.0
     # via terravisu (pyproject.toml:docs)
 sphinxcontrib-applehelp==2.0.0
     # via sphinx
-sphinxcontrib-devhelp==1.0.6
+sphinxcontrib-devhelp==2.0.0
     # via sphinx
 sphinxcontrib-htmlhelp==2.1.0
     # via sphinx
