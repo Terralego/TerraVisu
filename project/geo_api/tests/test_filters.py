@@ -17,8 +17,6 @@ from project.geo_api.filters import (
     _clean_params,
 )
 
-from .base import BaseGeoAPITestCase
-
 
 class FiltersUnitTestCase(TestCase):
     def test_clean_params(self):
@@ -72,7 +70,7 @@ class FiltersUnitTestCase(TestCase):
         self.assertEqual(text_item[2], "Martin")
 
 
-class FilterBackendsTestCase(BaseGeoAPITestCase):
+class FilterBackendsTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.layer = Layer.objects.create(name="geo_layer")

@@ -1,6 +1,7 @@
 from unittest import mock
 
 from django.contrib.gis.geos import Point
+from django.test import TestCase
 from geostore.models import Feature, Layer
 from rest_framework.test import APIRequestFactory
 
@@ -14,10 +15,8 @@ from project.geo_api.views.stats import (
     _round_val,
 )
 
-from .base import BaseGeoAPITestCase
 
-
-class StatsUnitTestCase(BaseGeoAPITestCase):
+class StatsUnitTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.layer = Layer.objects.create(name="stats_layer")

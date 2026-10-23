@@ -1,6 +1,7 @@
 from unittest import mock
 
 from django.contrib.gis.geos import Point
+from django.test import TestCase
 from geostore.models import Feature, Layer
 from rest_framework.test import APIRequestFactory
 
@@ -11,10 +12,8 @@ from project.geo_api.views.discretize import (
 )
 from project.geo_api.views.feature_viewset import FeatureViewSet
 
-from .base import BaseGeoAPITestCase
 
-
-class DiscretizeUnitTestCase(BaseGeoAPITestCase):
+class DiscretizeUnitTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.layer = Layer.objects.create(name="disc_layer")

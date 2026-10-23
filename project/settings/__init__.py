@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     "model_clone",
     "django.contrib.admin",
     "django.contrib.auth",
+    "django.contrib.postgres",
     "django.contrib.gis",
     "django.contrib.sessions",
     "django.contrib.messages",

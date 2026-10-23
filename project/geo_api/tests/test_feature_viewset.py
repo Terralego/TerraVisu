@@ -1,6 +1,7 @@
 from unittest import mock
 
 from django.contrib.gis.geos import Point
+from django.test import TestCase
 from geostore.models import Feature, Layer
 from rest_framework.request import Request
 from rest_framework.test import APIRequestFactory
@@ -8,10 +9,8 @@ from rest_framework.test import APIRequestFactory
 from project.geo_api.serializers import FeatureGeoSerializer, FeatureListSerializer
 from project.geo_api.views.feature_viewset import FeatureViewSet
 
-from .base import BaseGeoAPITestCase
 
-
-class FeatureViewSetTestCase(BaseGeoAPITestCase):
+class FeatureViewSetTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.layer = Layer.objects.create(name="feat_layer")

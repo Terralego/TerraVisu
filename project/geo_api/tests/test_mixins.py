@@ -1,10 +1,9 @@
+from django.test import TestCase
 from geostore.models import Feature, Layer
 from rest_framework.request import Request
 from rest_framework.test import APIRequestFactory
 
 from project.geo_api.mixins import AutoOrderMixin, PrefixBoostMixin
-
-from .base import BaseGeoAPITestCase
 
 
 class DummyAutoOrderView(AutoOrderMixin):
@@ -17,7 +16,7 @@ class DummyPrefixBoostView(PrefixBoostMixin):
         self.request = request
 
 
-class MixinsTestCase(BaseGeoAPITestCase):
+class MixinsTestCase(TestCase):
     @classmethod
     def setUpTestData(cls):
         cls.layer = Layer.objects.create(name="mixins_layer")
