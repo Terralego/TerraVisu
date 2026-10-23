@@ -38,7 +38,7 @@ idna==3.20
     #   -c requirements.txt
     #   anyio
     #   requests
-imagesize==1.4.1
+imagesize==2.0.1
     # via sphinx
 jinja2==3.1.6
     # via sphinx
