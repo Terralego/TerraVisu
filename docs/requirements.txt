@@ -2,7 +2,7 @@
 #    uv pip compile --group docs -c requirements.txt -c requirements-dev.txt -o docs/requirements.txt
 alabaster==1.0.0
     # via sphinx
-annotated-types==0.7.0
+annotated-types==0.8.0
     # via pydantic
 anyio==4.15.1
     # via
