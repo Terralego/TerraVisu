@@ -6,8 +6,8 @@
 </p>
 <p align="center">
 <a href="https://github.com/Terralego/TerraVisu/releases/latest" rel="nofollow"><img alt="Release" src="https://img.shields.io/github/release/Terralego/TerraVisu.svg" style="max-width:100%;"></a>
-<a href="https://github.com/Terralego/TerraVisu/actions/workflows/test.yml" rel="nofollow"><img alt="Unit tests" src="https://github.com/submarcos/TerraVisu/actions/workflows/test.yml/badge.svg" style="max-width:100%;"></a>
-<a href="https://codecov.io/gh/submarcos/TerraVisu" rel="nofollow"><img alt="Codecov" src="https://codecov.io/gh/submarcos/TerraVisu/branch/master/graph/badge.svg" style="max-width:100%;"></a>
+<a href="https://github.com/Terralego/TerraVisu/actions/workflows/test.yml" rel="nofollow"><img alt="Unit tests" src="https://github.com/Terralego/TerraVisu/actions/workflows/test.yml/badge.svg" style="max-width:100%;"></a>
+<a href="https://codecov.io/gh/Terralego/TerraVisu" rel="nofollow"><img alt="Codecov" src="https://codecov.io/gh/Terralego/TerraVisu/branch/master/graph/badge.svg" style="max-width:100%;"></a>
 </p>
 
 <p align="center">
