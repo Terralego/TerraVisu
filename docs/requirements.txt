@@ -56,7 +56,7 @@ pydantic==2.10.3
     #   sphinx-immaterial
 pydantic-core==2.27.1
     # via pydantic
-pydantic-extra-types==2.10.0
+pydantic-extra-types==2.11.1
     # via sphinx-immaterial
 pygments==2.21.0
     # via sphinx
@@ -83,7 +83,7 @@ sphinx-intl==2.4.0
     # via terravisu (pyproject.toml:docs)
 sphinxcontrib-applehelp==2.0.0
     # via sphinx
-sphinxcontrib-devhelp==1.0.6
+sphinxcontrib-devhelp==2.0.0
     # via sphinx
 sphinxcontrib-htmlhelp==2.1.0
     # via sphinx
