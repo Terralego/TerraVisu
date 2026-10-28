@@ -44,3 +44,20 @@ class UpdatePostgisSourceTestCase(TestCase):
         out = StringIO()
         call_command("update_postgis_source", 42, self.new_source.name, stdout=out)
         mocked_replace_source.assert_not_called()
+
+    def test_replace_source_with_matches_and_dry_run(self, mocked_replace_source):
+        import tempfile
+
+        with tempfile.NamedTemporaryFile("w+", suffix=".csv") as tmp:
+            tmp.write("old_f,new_f\n")
+            tmp.flush()
+            call_command(
+                "update_postgis_source",
+                self.layer.pk,
+                self.new_source.name,
+                matches=tmp.name,
+                dry_run=True,
+            )
+            mocked_replace_source.assert_called_with(
+                self.new_source, {"old_f": "new_f"}, True
+            )

@@ -1646,3 +1646,112 @@ class DeclarationAPIViewTestCase(APITestCase):
         )
         self.assertEqual(len(mail.outbox), 1)
         self.assertEqual(mail.outbox[0].subject, "New declaration submitted")
+
+
+class ExtraViewsTestCase(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.superuser = SuperUserFactory()
+        cls.user = UserFactory()
+
+    def test_source_permission(self):
+        from rest_framework.test import APIRequestFactory
+
+        from project.terra_layer.permissions import SourcePermission
+
+        perm = SourcePermission()
+        factory = APIRequestFactory()
+
+        req_anon = factory.get("/")
+        req_anon.user = mock.MagicMock(is_anonymous=True)
+        self.assertFalse(perm.has_permission(req_anon, None))
+
+        req_auth = factory.get("/")
+        req_auth.user = self.superuser
+        self.assertTrue(perm.has_permission(req_auth, None))
+
+    def test_check_layer_status_layer_not_found(self):
+        from rest_framework.exceptions import ValidationError
+
+        from project.terra_layer.views.layers import SceneViewset
+
+        viewset = SceneViewset()
+        with self.assertRaises(ValidationError) as cm:
+            viewset.check_layer_status(1, [{"geolayer": 999999}])
+        self.assertIn("doesn't exists anymore", str(cm.exception))
+
+    def test_check_layer_status_layer_stolen_from_another_scene(self):
+        from rest_framework.exceptions import ValidationError
+
+        from project.terra_layer.views.layers import SceneViewset
+
+        scene1 = SceneFactory(name="Scene 1")
+        scene2 = SceneFactory(name="Scene 2")
+        lg1 = LayerGroup.objects.create(label="g1", view=scene1)
+        layer = TerraLayerFactory(group=lg1)
+
+        viewset = SceneViewset()
+        with self.assertRaises(ValidationError) as cm:
+            viewset.check_layer_status(scene2.pk, [{"geolayer": layer.pk}])
+        self.assertIn("can't be stolen from another scene", str(cm.exception))
+
+    def test_layer_views_scene_config_map_settings_and_string_background_style(self):
+
+        scene = SceneFactory(
+            name="Scene with map_settings",
+            config={
+                "map_settings": {
+                    "custom_key": "custom_val",
+                    "backgroundStyle": "http://background.style/url",
+                },
+            },
+        )
+        root_group = scene.layer_groups.get(parent=None)
+        layer_group = LayerGroup.objects.create(
+            label="grp", view=scene, parent=root_group
+        )
+        source = PostGISSourceFactory()
+        layer = TerraLayerFactory(
+            group=layer_group,
+            source=source,
+            variables={"var1": "val1"},
+        )
+
+        from project.terra_layer.views.layers import SceneTreeAPIView
+
+        view = SceneTreeAPIView()
+        view.scene = scene
+        view.request = mock.MagicMock()
+        view.request.build_absolute_uri.side_effect = lambda u: u
+        view.user_groups = []
+        view.layergroup = mock.MagicMock()
+
+        # test line 257 (map_settings)
+        map_settings = view.get_map_settings(scene)
+        self.assertEqual(map_settings.get("custom_key"), "custom_val")
+
+        # test line 303 (background_styles as string url)
+        from mapbox_baselayer.models import MapBaseLayer
+
+        MapBaseLayer.objects.all().delete()
+        struct = view.get_layer_structure()
+        self.assertEqual(
+            struct["map"]["backgroundStyle"],
+            [{"label": "", "url": "http://background.style/url"}],
+        )
+
+        # test line 484 (layer.variables)
+        with mock.patch.object(view, "is_layer_authorized", return_value=True):
+            layer_dict = view.get_basic_layer_dict(layer)
+            self.assertEqual(layer_dict.get("variables"), {"var1": "val1"})
+
+    def test_geostore_feature_viewset_get_queryset(self):
+        from project.terra_layer.views.extras import GeostoreFeatureViewSet
+
+        viewset = GeostoreFeatureViewSet()
+        viewset.kwargs = {"layer": self.superuser.pk}
+        with mock.patch("geostore.views.FeatureViewSet.get_queryset") as mock_super_qs:
+            mock_qs = mock.MagicMock()
+            mock_super_qs.return_value = mock_qs
+            viewset.get_queryset()
+            mock_qs.prefetch_related.assert_called_with("reports")

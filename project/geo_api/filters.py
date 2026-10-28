@@ -3,14 +3,10 @@ import re
 from functools import reduce
 
 from django.contrib.gis.geos import Polygon
-from django.db.models import F, FloatField, Func, Q, Value
+from django.db.models import F, FloatField, Func, Q
 from django.db.models.fields.json import KeyTextTransform
 from geostore.filters import JSONSearchField
 from rest_framework.filters import BaseFilterBackend, OrderingFilter
-
-
-class Unaccent(Func):
-    function = "unaccent"
 
 
 class ToFloat(Func):
@@ -129,12 +125,12 @@ class SearchAllFieldsBackend(JSONSearchField):
                 key = field[len("properties__") :]
                 ann = f"_unas_{i}"
                 queryset = queryset.annotate(
-                    **{ann: Unaccent(KeyTextTransform(key, "properties"))}
+                    **{ann: KeyTextTransform(key, "properties")}
                 )
             else:
                 ann = f"_unas_{i}"
-                queryset = queryset.annotate(**{ann: Unaccent(F(field))})
-            filters.append(Q(**{f"{ann}__icontains": Unaccent(Value(search_terms[0]))}))
+                queryset = queryset.annotate(**{ann: F(field)})
+            filters.append(Q(**{f"{ann}__unaccent__icontains": search_terms[0]}))
         return queryset.filter(reduce(operator.or_, filters))
 
 
@@ -147,8 +143,8 @@ class NoAccentFilterBackend(BaseFilterBackend):
                 continue
             ann = f"_una_{key}"
             queryset = queryset.annotate(
-                **{ann: Unaccent(KeyTextTransform(key, "properties"))}
-            ).filter(**{f"{ann}__icontains": Unaccent(Value(rest[0]))})
+                **{ann: KeyTextTransform(key, "properties")}
+            ).filter(**{f"{ann}__unaccent__icontains": rest[0]})
         return queryset
 
 

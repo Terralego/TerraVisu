@@ -2,7 +2,12 @@
 Changelog
 ==========
 
-2026.10.00+dev  (XXXX-XX-XX)
+2026.10.01+dev  (XXXX-XX-XX)
+----------------------------
+
+
+
+2026.10.01      (2026-10-20)
 ----------------------------
 
 **New features:**
@@ -45,6 +50,13 @@ Changelog
 - (Front) Some generated legends of a layers tree node were missing
 - (Front) Pie chart markers ignored the zoom range and interactions of their layer
 - (Front) Layers tree logo could overflow its panel
+- (Front) Opening the details of a feature crashed the app when reporting was active
+- (Front) Highlighted feature was drawn below its layer
+- (Front) Print header image was blurry and could prevent the export
+- (Front) A layer shared by URL in a by-variable group was replaced by the group's default layer
+- (Admin) Expired session crashed the app instead of going back to the login form
+- (Admin) Uploading a too large file showed no explicit error message
+- (Admin) Unique identifier field could not be chosen when the source fields were not detected
 
 
 2026.10.00      (2026-10-07)

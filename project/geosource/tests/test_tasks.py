@@ -8,7 +8,7 @@ from django.test import TestCase
 from geostore.models import Feature, Layer
 
 from project.geosource.models import GeoFileSource, GeometryTypes, SourceReporting
-from project.geosource.tasks import run_model_object_method
+from project.geosource.tasks import run_auto_refresh_source, run_model_object_method
 from project.geosource.tests.helpers import get_file
 
 
@@ -175,3 +175,41 @@ class TaskTestCase(TestCase):
         except AttributeError:
             source.report.refresh_from_db()
             self.assertEqual(source.report.status, SourceReporting.Status.ERROR.value)
+
+    def test_task_method_raises_exception_with_message(
+        self,
+        mock_index_feature,
+        mock_es_delete,
+        mock_es_create,
+    ):
+        logging.disable(logging.NOTSET)
+
+        class CustomException(Exception):
+            def __init__(self, message):
+                self.message = message
+                super().__init__(message)
+
+        with mock.patch.object(
+            GeoFileSource, "refresh_data", side_effect=CustomException("Custom message")
+        ):
+            with self.assertLogs("project.geosource.tasks", level="ERROR") as cm:
+                run_model_object_method.apply(
+                    (
+                        self.element._meta.app_label,
+                        self.element._meta.model_name,
+                        self.element.pk,
+                        "refresh_data",
+                    )
+                )
+                self.assertTrue(any("Custom message" in msg for msg in cm.output))
+
+    @mock.patch("project.geosource.periodics.auto_refresh_source")
+    def test_run_auto_refresh_source_task(
+        self,
+        mock_auto_refresh,
+        mock_index_feature,
+        mock_es_delete,
+        mock_es_create,
+    ):
+        run_auto_refresh_source.apply()
+        mock_auto_refresh.assert_called_once()
