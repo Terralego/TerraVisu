@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 14:00+0200\n"
+"POT-Creation-Date: 2026-10-30 15:58+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1234,6 +1234,9 @@ msgstr "Tableau de champs"
 msgid "Text"
 msgstr "Texte"
 
+msgid "Iframe"
+msgstr "Iframe"
+
 msgid "Panoramax"
 msgstr "Panoramax"
 
@@ -1347,6 +1350,20 @@ msgstr "Afficher dans un onglet"
 
 msgid "This block will be displayed in a dedicated tab."
 msgstr "Ce bloc sera affiché dans un onglet dédié."
+
+msgid "Iframe URL"
+msgstr "Url de l'iframe"
+
+#, python-brace-format
+msgid "Iframe URL with format like : https://example.com/{field1}/{field2}"
+msgstr ""
+"Url de l'iframe avec un format comme : https://example.com/{field1}/{field2}"
+
+msgid "Height iframe"
+msgstr "Hauteur de l'iframe"
+
+msgid "Height of the iframe in pixels"
+msgstr "Hauteur de l'iframe en pixels"
 
 msgid "Sheet block"
 msgstr "Bloc de fiche"

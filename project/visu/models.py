@@ -60,6 +60,7 @@ class SheetBlockType(models.TextChoices):
     BOOLEANS = "BOOLEANS", _("Booleans")
     FIELDS_TABLE = "FIELDS_TABLE", _("Fields table")
     TEXT = "TEXT", _("Text")
+    IFRAME = "IFRAME", _("Iframe")
     PANORAMAX = "PANORAMAX", _("Panoramax")
     MAP = "MAP", _("Map")
     RADAR_PLOT = "RADAR_PLOT", _("Radar plot")
@@ -102,7 +103,7 @@ class SheetField(OrderedModel):
         ordering = ("order",)
 
     def __str__(self):
-        return f"{self.label} ({self.field.source.slug})"
+        return f"{self.label} - {{{self.field.name}}} ({self.field.source.slug})"
 
 
 class FeatureSheet(models.Model):
@@ -231,6 +232,20 @@ class SheetBlock(OrderedModel):
         default=False,
         verbose_name=_("Display as tab"),
         help_text=_("This block will be displayed in a dedicated tab."),
+    )
+    url_iframe = models.URLField(
+        default="",
+        blank=True,
+        verbose_name=_("Iframe URL"),
+        help_text=_(
+            "Iframe URL with format like : https://example.com/{field1}/{field2}"
+        ),
+    )
+    height_iframe = models.PositiveIntegerField(
+        blank=True,
+        null=True,
+        verbose_name=_("Height iframe"),
+        help_text=_("Height of the iframe in pixels"),
     )
 
     class Meta:

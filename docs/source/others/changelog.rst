@@ -20,6 +20,7 @@ Changelog
 - (Admin) New layout modern layout with filters upfront, a real dashboard and several UX improvements
 - (Front) Legends are grouped by layer and can be hidden
 - (Front) Map side panels open full screen on mobile
+- (Config) Add IFRAME type to block sheet
 
 **Tooling**
 
