@@ -391,7 +391,7 @@ class SceneTreeAPIView(APIView):
                     "highlight_color"
                 ]
             if isinstance(layer.minisheet_config.get("blocks"), list):
-                settings_interactions["blocks"] = layer.minisheet_config["blocks"]
+                settings_interactions["blocks"] = layer.minisheet_config.get("blocks")
                 settings_interactions["title"] = layer.minisheet_config.get("title")
 
             interactions.append(settings_interactions)
