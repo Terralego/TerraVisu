@@ -550,6 +550,50 @@ class SceneViewsetTestCase(APITestCase):
 
         self.assertEqual(len(layer_tree["interactions"]), 4)
 
+    def test_layer_view_with_block(self):
+        layer = Layer.objects.create(
+            source=self.source,
+            name="Layer",
+            interactions=[
+                {
+                    "id": "terralego-eae-sync",
+                    "interaction": "highlight",
+                    "trigger": "mouseover",
+                },
+            ],
+            minisheet_config={
+                "enable": True,
+                "blocks": list(["test block"]),
+                "title": "My title",
+            },
+            popup_config={"enable": True},
+        )
+
+        CustomStyle.objects.create(
+            layer=layer,
+            source=self.source,
+            interactions=[
+                {"id": "custom_style", "interaction": "highlight", "trigger": "click"},
+            ],
+        )
+
+        query = {
+            "name": "Scene Name",
+            "category": "map",
+            "tree": [{"geolayer": layer.id}],
+            "baselayer": [],
+        }
+
+        response = self.client.post(reverse("scene-list"), query)
+        self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+
+        scene = response.json()
+
+        response = self.client.get(reverse("layerview", args=[scene["slug"]]))
+        layer_tree = response.json()
+
+        self.assertEqual(len(layer_tree["interactions"]), 4)
+
     def test_layer_view_with_table_enable(self):
         field = self.source.fields.create(
             name="_test_field", label="test_label", data_type=FieldTypes.String.value
