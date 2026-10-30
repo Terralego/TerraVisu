@@ -72,6 +72,8 @@ class SheetBlockSerializer(serializers.ModelSerializer):
             "limit",
             "text",
             "is_tab",
+            "url_iframe",
+            "height_iframe",
         )
 
 
