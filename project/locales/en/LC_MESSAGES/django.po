@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-19 12:53+0000\n"
+"POT-Creation-Date: 2026-11-24 15:34+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1205,6 +1205,9 @@ msgstr ""
 msgid "Text"
 msgstr ""
 
+msgid "Iframe"
+msgstr ""
+
 msgid "Panoramax"
 msgstr ""
 
@@ -1310,10 +1313,26 @@ msgstr ""
 msgid "This block will be displayed in a dedicated tab."
 msgstr ""
 
+msgid "Iframe URL"
+msgstr ""
+
+#, python-brace-format
+msgid "Iframe URL with format like : https://example.com/{field1}/{field2}"
+msgstr ""
+
+msgid "Height iframe"
+msgstr ""
+
+msgid "Height of the iframe in pixels"
+msgstr ""
+
 msgid "Sheet block"
 msgstr ""
 
 msgid "Sheet blocks"
+msgstr ""
+
+msgid "Iframe block must have an URL"
 msgstr ""
 
 msgid "Extra field"
