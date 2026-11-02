@@ -255,7 +255,7 @@ typing-extensions==4.16.0
     #   click-repl
     #   django-polymorphic
     #   referencing
-tzdata==2026.5
+tzdata==2026.6
     # via
     #   django-celery-beat
     #   kombu
