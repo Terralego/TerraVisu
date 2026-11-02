@@ -17,7 +17,7 @@ django-extensions==4.1
     # via terravisu (pyproject.toml:dev)
 factory-boy==3.3.3
     # via terravisu (pyproject.toml:dev)
-faker==40.43.0
+faker==40.44.0
     # via factory-boy
 freezegun==1.5.5
     # via terravisu (pyproject.toml:dev)
