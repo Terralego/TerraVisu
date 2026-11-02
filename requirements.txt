@@ -2,7 +2,7 @@
 #    uv pip compile pyproject.toml -o requirements.txt
 amqp==5.4.1
     # via kombu
-asgiref==3.12.1
+asgiref==3.13.0
     # via
     #   django
     #   django-cors-headers
