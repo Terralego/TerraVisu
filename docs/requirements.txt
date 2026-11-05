@@ -50,7 +50,7 @@ packaging==26.3
     # via
     #   -c requirements.txt
     #   sphinx
-pydantic==2.14.1
+pydantic==2.14.2
     # via
     #   pydantic-extra-types
     #   sphinx-immaterial
