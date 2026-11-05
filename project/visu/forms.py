@@ -146,6 +146,7 @@ class SheetBlockAdminForm(ModelForm):
         order_field = cleaned_data.get("order_field", [])
         first_geom_source = cleaned_data.get("first_geom_source")
         second_geom_source = cleaned_data.get("second_geom_source")
+        url_field = cleaned_data.get("url_iframe")
         fields_source = cleaned_data.get("fields_source")
         sheet = cleaned_data.get("sheet")
 
@@ -171,6 +172,10 @@ class SheetBlockAdminForm(ModelForm):
             SheetBlockType.MAP,
         }
 
+        REQUIRES_FIELDS_URL = {
+            SheetBlockType.IFRAME,
+        }
+
         if block_type in REQUIRES_FIELDS_SOURCE and not fields_source:
             raise ValidationError(
                 _("Block type '%(block_type)s' requires a fields source.")
@@ -180,6 +185,12 @@ class SheetBlockAdminForm(ModelForm):
         if block_type in REQUIRES_FIRST_GEOM_SOURCE and not first_geom_source:
             raise ValidationError(
                 _("Block type '%(block_type)s' requires a geometry source.")
+                % {"block_type": dict(SheetBlockType.choices)[block_type]}
+            )
+
+        if block_type in REQUIRES_FIELDS_URL and not url_field:
+            raise ValidationError(
+                _("Block type '%(block_type)s' requires a fields URL.")
                 % {"block_type": dict(SheetBlockType.choices)[block_type]}
             )
 

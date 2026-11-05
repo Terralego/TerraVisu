@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-30 15:55+0000\n"
+"POT-Creation-Date: 2026-11-05 14:08+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -993,6 +993,10 @@ msgstr ""
 
 #, python-format
 msgid "Block type '%(block_type)s' requires a geometry source."
+msgstr ""
+
+#, python-format
+msgid "Block type '%(block_type)s' requires a fields URL."
 msgstr ""
 
 msgid "Selected source does not match the sources of the Feature Sheet"
