@@ -243,7 +243,6 @@ six==1.17.0
     # via
     #   django-clone
     #   ecdsa
-    #   python-dateutil
 sqlparse==0.6.1
     # via django
 text-unidecode==1.3
