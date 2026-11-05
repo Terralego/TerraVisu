@@ -259,6 +259,7 @@ tzdata==2026.6
     # via
     #   django-celery-beat
     #   kombu
+    #   python-dateutil
 tzlocal==5.4.5
     # via celery
 uritemplate==4.2.0

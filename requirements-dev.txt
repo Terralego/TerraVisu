@@ -40,3 +40,7 @@ sqlparse==0.6.1
     #   django-debug-toolbar
 tblib==3.2.2
     # via terravisu (pyproject.toml:dev)
+tzdata==2026.6
+    # via
+    #   -c requirements.txt
+    #   python-dateutil
