@@ -50,11 +50,11 @@ packaging==26.3
     # via
     #   -c requirements.txt
     #   sphinx
-pydantic==2.14.1
+pydantic==2.14.3
     # via
     #   pydantic-extra-types
     #   sphinx-immaterial
-pydantic-core==2.50.1
+pydantic-core==2.50.4
     # via pydantic
 pydantic-extra-types==2.11.1
     # via sphinx-immaterial
@@ -105,7 +105,7 @@ typing-extensions==4.16.0
     #   sphinx-immaterial
     #   starlette
     #   typing-inspection
-typing-inspection==0.4.4
+typing-inspection==0.4.5
     # via pydantic
 urllib3==2.8.0
     # via
