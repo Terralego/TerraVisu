@@ -83,9 +83,12 @@ class DiscretizeMixin:
 
         try:
             breaks = _discretize(layer_obj, field, method, classes) or []
-        except ValueError as exc:
+        except ValueError:
             # méthode de discrétisation inconnue
-            return Response({"error": str(exc)}, status=status.HTTP_400_BAD_REQUEST)
+            return Response(
+                {"error": "invalid discretization parameters"},
+                status=status.HTTP_400_BAD_REQUEST,
+            )
         intervals = list(zip(breaks[:-1], breaks[1:])) if len(breaks) >= 2 else []
         entities_by_class = _count_by_intervals(qs, cast_field, intervals)
 
