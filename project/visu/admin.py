@@ -2,6 +2,7 @@ from admin_interface.admin import ThemeAdmin
 from admin_interface.models import Theme
 from constance.admin import Config, ConstanceAdmin
 from django.contrib import admin
+from django.db import models
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from ordered_model.admin import (
@@ -9,6 +10,7 @@ from ordered_model.admin import (
     OrderedModelAdmin,
     OrderedTabularInline,
 )
+from tinymce.widgets import TinyMCE
 
 from project.admin import config_site
 from project.geosource.models import Field, Source
@@ -189,6 +191,9 @@ class SheetBlockAdmin(OrderedInlineModelAdminMixin, OrderedModelAdmin):
     )
     inlines = (SheetFieldTabularInline, ExtraSheetFieldTabularInline)
     form = SheetBlockAdminForm
+    formfield_overrides = {
+        models.TextField: {"widget": TinyMCE()},
+    }
     autocomplete_fields = (
         "fields_source",
         "first_geom_source",
