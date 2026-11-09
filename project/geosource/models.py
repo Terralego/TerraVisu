@@ -305,12 +305,9 @@ class Source(PolymorphicModel, CeleryCallMethodsMixin):
                     feature, created = self.update_feature(
                         layer, identifier, geometry, row
                     )
-                    transaction.savepoint_commit(sid)
                     if es_index and feature:
-                        try:
-                            es_index.index_feature(layer, feature)
-                        except Exception as exc:
-                            self.report.errors.append(f"ES index {identifier}: {exc}")
+                        es_index.index_feature(layer, feature)
+                    transaction.savepoint_commit(sid)
                     if created:
                         added_rows += 1
                     else:

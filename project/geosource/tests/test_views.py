@@ -257,6 +257,57 @@ class FilePreviewAPITestCase(APITestCase):
         data = response.json()
         self.assertEqual(data["record_count"], 0)
 
+    def test_file_preview_csv_zero_bytes(self):
+        empty_csv = SimpleUploadedFile("empty_zero.csv", b"", content_type="text/csv")
+        response = self.client.post(
+            self.preview_url,
+            {"file": empty_csv},
+            format="multipart",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.json()["record_count"], 0)
+
+    def test_file_preview_csv_invalid_coords_and_decimal_dot_when_comma_expected(self):
+        csv_content = b"x;y;rate\n1;bad_coord;12.5\n"
+        csv_file = SimpleUploadedFile(
+            "bad_num.csv", csv_content, content_type="text/csv"
+        )
+        response = self.client.post(
+            self.preview_url,
+            {
+                "file": csv_file,
+                "field_separator": "semicolon",
+                "decimal_separator": "comma",
+                "coordinates_field": "two_columns",
+                "longitude_field": "x",
+                "latitude_field": "y",
+            },
+            format="multipart",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        data = response.json()
+        rate_field = next(f for f in data["fields"] if f["name"] == "rate")
+        self.assertEqual(rate_field["type"], "str")
+
+    def test_file_preview_csv_one_column_missing_separator_index_error(self):
+        csv_content = b"coords\ninvalid_no_sep\n"
+        csv_file = SimpleUploadedFile(
+            "no_sep.csv", csv_content, content_type="text/csv"
+        )
+        response = self.client.post(
+            self.preview_url,
+            {
+                "file": csv_file,
+                "coordinates_field": "one_column",
+                "latlong_field": "coords",
+                "coordinates_field_count": "xy",
+                "coordinates_separator": "comma",
+            },
+            format="multipart",
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertIsNone(response.json()["bbox"])
+
     def test_file_preview_unsupported_file_returns_400(self):
         invalid_file = SimpleUploadedFile(
             "test.xyz", b"not a valid vector data format", content_type="text/plain"
@@ -656,3 +707,98 @@ class ViewsHelperFunctionsTestCase(APITestCase):
         result = viewset._extract_layer_data(mock_layer)
         self.assertIsNotNone(result["bbox"])
         self.assertEqual(result["crs"], "EPSG:2154")
+
+    def test_extract_layer_data_more_than_5_features_and_bool_coercion(self):
+        features = [
+            MagicMock(
+                fields=["is_valid"], get=MagicMock(return_value=1 if i % 2 == 0 else 0)
+            )
+            for i in range(7)
+        ]
+        fake_type = MagicMock()
+        fake_type.__name__ = "OFTInteger"
+        mock_layer = MagicMock()
+        mock_layer.fields = ["is_valid"]
+        mock_layer.field_types = [fake_type]
+        mock_layer.num_feat = 7
+        mock_layer.geom_type.name = "Point"
+        mock_layer.extent = None
+        mock_layer.srs = None
+        mock_layer.__iter__.return_value = iter(features)
+
+        viewset = SourceModelViewset()
+        with patch(
+            "project.geosource.views._preview_bool_fields", return_value={"is_valid"}
+        ):
+            result = viewset._extract_layer_data(mock_layer)
+            self.assertEqual(len(result["features"]), 5)
+            self.assertIsInstance(result["features"][0]["is_valid"], bool)
+
+    def test_extract_layer_data_unknown_geom_type_single_detected(self):
+        mock_layer = MagicMock()
+        mock_layer.fields = []
+        mock_layer.field_types = []
+        mock_layer.num_feat = 1
+        mock_layer.geom_type.name = "Unknown"
+        mock_layer.extent = None
+        mock_layer.srs = None
+        mock_layer.name = "test_layer"
+        mock_layer.__iter__.return_value = []
+
+        viewset = SourceModelViewset()
+        with patch(
+            "project.geosource.views._detect_geometry_types", return_value={"Point"}
+        ):
+            result = viewset._extract_layer_data(
+                mock_layer, file_path="dummy.gpkg", is_geojson=False
+            )
+            self.assertEqual(result["geometry_type_name"], "Point")
+            self.assertEqual(result["geometry_type"], GeometryTypes.Point.value)
+
+
+class FilePreviewSavedExtraTestCase(APITestCase):
+    @classmethod
+    def setUpTestData(cls):
+        cls.default_user = UserModel.objects.create(
+            is_superuser=True, **{UserModel.USERNAME_FIELD: "saved_extra_user"}
+        )
+
+    def setUp(self):
+        self.client.force_authenticate(self.default_user)
+
+    def test_file_preview_saved_with_undefined_field_and_extent_and_exceptions(self):
+        source = GeoFileSource.objects.create(
+            name="preview_extra_source",
+            geom_type=GeometryTypes.Point.value,
+            file=get_file("test.geojson"),
+        )
+        Field.objects.create(
+            source=source,
+            name="undef_field",
+            data_type=FieldTypes.Undefined.value,
+            order=0,
+        )
+
+        mock_layer = MagicMock()
+        mock_layer.get_extent.return_value = {"extent": (1.0, 2.0, 3.0, 4.0)}
+        with patch(
+            "project.geosource.models.Source.get_layer", return_value=mock_layer
+        ):
+            url = reverse("geosource:geosource-file-preview-saved", args=[source.pk])
+            response = self.client.get(url)
+            self.assertEqual(response.status_code, status.HTTP_200_OK)
+            self.assertEqual(response.json()["bbox"], [1.0, 2.0, 3.0, 4.0])
+
+        with patch(
+            "project.geosource.models.Source.get_layer",
+            side_effect=Exception("Layer error"),
+        ):
+            with patch(
+                "project.geosource.views.DataSource",
+                side_effect=Exception("DataSource error"),
+            ):
+                url = reverse(
+                    "geosource:geosource-file-preview-saved", args=[source.pk]
+                )
+                response = self.client.get(url)
+                self.assertEqual(response.status_code, status.HTTP_200_OK)

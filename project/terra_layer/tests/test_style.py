@@ -1,4 +1,5 @@
 import random
+from unittest import mock
 
 from django.contrib.gis.geos import Point
 from django.test import TestCase
@@ -3309,3 +3310,71 @@ class StyleTestCase(TestCase):
         self.layer.save(preserve_legend=True)
 
         self.assertEqual(len(self.layer.legends), 1)
+
+    def test_discretize_jenks_kmeans1d(self):
+        from project.terra_layer.style.classifiers import discretize_jenks_kmeans1d
+
+        geo_layer = self.source.get_layer()
+        # Empty values -> returns []
+        self.assertEqual(discretize_jenks_kmeans1d(geo_layer, "val", 3), [])
+
+        # Add features with values
+        self._feature_factory(geo_layer, val=10)
+        self._feature_factory(geo_layer, val=20)
+        self._feature_factory(geo_layer, val=30)
+        self._feature_factory(geo_layer, val=40)
+        self._feature_factory(geo_layer, val=50)
+
+        breaks = discretize_jenks_kmeans1d(geo_layer, "val", 3)
+        self.assertEqual(len(breaks), 4)
+        self.assertEqual(breaks[0], 10.0)
+        self.assertEqual(breaks[-1], 50.0)
+
+    def test_gen_graduated_color_legend_without_boundaries(self):
+        from project.terra_layer.style.color import gen_graduated_color_legend
+
+        with mock.patch(
+            "project.terra_layer.style.color.discretize", return_value=None
+        ):
+            res = gen_graduated_color_legend(
+                None,
+                "prop",
+                "circle",
+                {"values": ["#111111"], "no_value": "#ff0000", "method": "jenks"},
+                "color_field",
+            )
+            self.assertEqual(res["items"][0]["color_field"], "#ff0000")
+
+    def test_gen_graduated_size_style_and_legend_without_boundaries(self):
+        from project.terra_layer.style.size import (
+            gen_graduated_size_legend,
+            gen_graduated_size_style,
+        )
+
+        with mock.patch("project.terra_layer.style.size.discretize", return_value=None):
+            style = gen_graduated_size_style(
+                None,
+                "prop",
+                "circle",
+                {"values": [10], "no_value": 5, "method": "jenks"},
+            )
+            self.assertEqual(style, 5)
+
+            legend = gen_graduated_size_legend(
+                None,
+                "prop",
+                "circle",
+                {"values": [10], "no_value": 5, "method": "jenks"},
+                "#000000",
+                "#ffffff",
+                "size_field",
+            )
+            self.assertEqual(legend["items"][0]["color"], "#ffffff")
+
+    def test_circle_boundaries_filter_values_skips_too_close_to_smallest(self):
+        # Trigger line 334: h - last_height < dmin and limit_id != last_value_id
+        values = [100, 50, 20, 11, 10]
+        # max_value=100, max_size=50, dmin=15
+        filtered = circle_boundaries_filter_values(values, 100, 50, 15)
+        self.assertIn(100, filtered)
+        self.assertIn(11, filtered)

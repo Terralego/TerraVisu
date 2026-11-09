@@ -99,3 +99,15 @@ class PeriodicsTestCase(TestCase):
             auto_refresh_source()
 
             mocked2.assert_not_called()
+
+    @mock.patch("project.geosource.models.Source.should_refresh", return_value=True)
+    @mock.patch(
+        "project.geosource.models.Source.run_async_method",
+        side_effect=Exception("Async run failed"),
+    )
+    def test_auto_refresh_source_handles_exception(self, mock_run, mock_should):
+        with self.assertLogs("project.geosource.periodics", level="ERROR") as cm:
+            auto_refresh_source()
+            self.assertTrue(
+                any("Failed to refresh source!" in msg for msg in cm.output)
+            )

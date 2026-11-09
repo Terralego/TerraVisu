@@ -12,6 +12,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile, TemporaryUploaded
 from django.test import TestCase
 from geostore.models import Layer
 
+from project.geosource.fields import LongURLField
 from project.geosource.models import (
     CommandSource,
     CSVSource,
@@ -268,6 +269,24 @@ class ModelGeoFileSourceTestCase(TestCase):
         records, errors, len_records = source._get_records(limit=1)
         self.assertEqual(len_records, 1)
 
+    def test_records_from_layer_limit_break_multiple_features(self):
+        source = GeoFileSource.objects.create(
+            name="limit_gpkg_source",
+            geom_type=GeometryTypes.Point,
+        )
+        feat1 = mock.MagicMock(
+            geom=mock.MagicMock(geos=Point(0, 0, srid=4326)), fields=[]
+        )
+        feat2 = mock.MagicMock(
+            geom=mock.MagicMock(geos=Point(1, 1, srid=4326)), fields=[]
+        )
+        mock_layer = mock.MagicMock(fields=[], field_types=[])
+        mock_layer.__iter__.return_value = iter([feat1, feat2])
+        records, errors, len_records = source._records_from_layer(
+            mock_layer, 4326, limit=1
+        )
+        self.assertEqual(len(records), 1)
+
     def test_detect_boolean_fields_failure_returns_empty_set(self):
         result = detect_boolean_fields("/non/existent/path.gpkg", "layer")
         self.assertEqual(result, set())
@@ -342,10 +361,28 @@ class ModelCommandSourceTestCase(TestCase):
         self.source.clear_features = mock.MagicMock(return_value=(0, 0))
         self.source.get_layer = mock.MagicMock()
         fake_proxy = mock.MagicMock(spec=LoggingProxy)
-        with mock.patch("sys.stdout", fake_proxy):
+        fake_stderr = mock.MagicMock()
+        with (
+            mock.patch("sys.stdout", fake_proxy),
+            mock.patch("sys.stderr", fake_stderr),
+        ):
             self.source._refresh_data()
             self.assertIsInstance(fake_proxy.buffer, BytesIO)
             self.assertIsNone(fake_proxy.encoding)
+            self.assertIsInstance(fake_stderr.buffer, BytesIO)
+            self.assertIsNone(fake_stderr.encoding)
+
+    @mock.patch("project.geosource.models.call_command")
+    @mock.patch("project.geosource.models.refresh_data_done.send_robust")
+    def test_refresh_data_with_logging_proxy_attribute_error(
+        self, mock_signal, mock_call
+    ):
+        self.source.clear_features = mock.MagicMock(return_value=(0, 0))
+        self.source.get_layer = mock.MagicMock()
+        fake_proxy = mock.MagicMock(spec=LoggingProxy)
+        type(fake_proxy).buffer = mock.PropertyMock(side_effect=AttributeError)
+        with mock.patch("sys.stdout", fake_proxy):
+            self.source._refresh_data()
 
     def test_get_records(self):
         self.assertEqual([None, None, 0], self.source._get_records())
@@ -686,3 +723,44 @@ class SourceReportingTestCase(TestCase):
             SourceReporting.Status.WARNING.value,
             self.source.report.get_status_display(),
         )
+
+    def test_report_str(self):
+        report = SourceReporting.objects.create(
+            status=SourceReporting.Status.SUCCESS.value
+        )
+        self.assertEqual(str(report), str(SourceReporting.Status.SUCCESS.value))
+
+    @mock.patch("elasticsearch.client.IndicesClient.create")
+    @mock.patch("elasticsearch.client.IndicesClient.delete")
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index")
+    @mock.patch("project.geosource.elasticsearch.index.LayerESIndex.index_feature")
+    def test_update_feature_exception_records_error_and_rolls_back(
+        self, mock_es_create, mock_es_delete, mock_es_index, mock_es_index_feature
+    ):
+        mocked_rows = (
+            [
+                {"_geom_": Point(2, 42, srid=4326), "id": 1, "test": 5},
+            ],
+            [],
+            1,
+        )
+        self.source._get_records = mock.MagicMock(return_value=mocked_rows)
+        with mock.patch.object(
+            self.source,
+            "update_feature",
+            side_effect=Exception("Update feature failed"),
+        ):
+            self.source.refresh_data()
+        self.source.refresh_from_db()
+        self.assertTrue(
+            any("Update feature failed" in err for err in self.source.report.errors)
+        )
+
+
+class LongURLFieldTestCase(TestCase):
+    def test_formfield(self):
+        field = LongURLField()
+        form_field = field.formfield()
+        from django import forms
+
+        self.assertIsInstance(form_field, forms.URLField)

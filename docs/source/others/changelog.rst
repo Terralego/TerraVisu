@@ -9,6 +9,10 @@ Changelog
 
 - (Config) Change Text field in sheet block to rich text field with TinyMCE
 
+**Bugfix:**
+
+- Fix reversion that permit storing data which cannot be indexed in ES.
+
 
 2026.10.01      (2026-10-20)
 ----------------------------

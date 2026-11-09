@@ -25,3 +25,12 @@ class PermanentAccesstokenTestCase(TestCase):
         user = UserFactory()
         access_token = PermanentAccessToken.objects.create(user=user)
         self.assertEqual(str(access_token), f"{user} - {access_token.token}")
+
+
+class FunctionalPermissionModelTestCase(TestCase):
+    def test_name_translated_and_str(self):
+        perm = FunctionalPermission.objects.get(codename="can_manage_users")
+        self.assertEqual(str(perm.name_translated), perm.name)
+        self.assertEqual(
+            str(perm), f"{perm.module}: {perm.original.name} ({perm.codename})"
+        )
