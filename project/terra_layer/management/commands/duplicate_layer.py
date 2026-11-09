@@ -6,7 +6,7 @@ from django.db import transaction
 from django.utils.translation import gettext as _
 
 from project.geosource.models import Field, Source
-from project.terra_layer.models import Layer
+from project.terra_layer.models import Layer, FilterField
 
 
 class Command(BaseCommand):
@@ -162,6 +162,16 @@ class Command(BaseCommand):
                 "Map fields from the original source to the target source. "
                 'Each value is "old_field_name,new_field_name". '
                 'Example: --fields-mapping "nom_m,name_field" "pop,population".'
+            ),
+        )
+        parser.add_argument(
+            "--table",
+            nargs="*",
+            default=None,
+            help=_(
+                "List fields to configure for the Table. Each field will be exportable and displayed in table by default."
+                'Each value is "field_name,field_label". '
+                'Example: --table "nom_m,Nom" "pop,Population".'
             ),
         )
 
@@ -375,6 +385,33 @@ class Command(BaseCommand):
                     raise CommandError(
                         _("Source with pk %(pk)s does not exist") % {"pk": source_pk}
                     )
+
+        if options["table"]:
+            for pair in options.get("table", []):
+                name, label = self.parse_pair(pair, "table")
+                print(name, label)
+                field = Field.objects.get(source=clone.source, name=name)
+                defaults = {
+                    "label": label,
+                    "shown": True,
+                    "display": True,
+                    "exportable": True,
+                }
+                filter_field, created = FilterField.objects.update_or_create(
+                    field=field,
+                    layer=clone,
+                    defaults=defaults,
+                    create_defaults=defaults,
+                )
+                if options["verbosity"] >= 2:
+                    if created:
+                        self.stdout.write(
+                            f"Created FilterField {filter_field.pk} for {name} - {label}"
+                        )
+                    else:
+                        self.stdout.write(
+                            f"Updated FilterField {filter_field.pk} for {name} - {label}"
+                        )
 
         # Save the clone's updates
         if clone_modified:

@@ -505,3 +505,36 @@ class DuplicateLayerErrorTestCase(TestCase):
             )
         self.assertIn("999999", str(ctx.exception))
         self.assertIn("does not exist", str(ctx.exception))
+
+    def test_table_configuration(self):
+        """Valid table fiels conifguration with label and shown, display, exportable booleans."""
+        target_source = PostGISSourceFactory(name="target_fm_ok")
+        original_field = FieldFactory(
+            source=target_source, name="nom_champs_2", label="Nom Champs 2"
+        )
+        FilterField.objects.create(
+            layer=self.layer,
+            field=original_field,
+            label="Nom Champs 2 FilterField",
+            filter_enable=True,
+            exportable=True,
+            shown=True,
+        )
+        out = StringIO()
+        call_command(
+            "duplicate_layer",
+            str(self.layer.pk),
+            source=target_source.pk,
+            main_field="nom_champs_2",
+            table=["nom_champs_2,Nom mis à jour"],
+            stdout=out,
+        )
+        clone_pk = int(re.findall(r"pk=(\d+)", out.getvalue())[0])
+        clone = Layer.objects.get(pk=clone_pk)
+        # FilterField should be remapped to the target field
+        self.assertEqual(clone.fields_filters.count(), 1)
+        filter_field = clone.fields_filters.first()
+        self.assertEqual(filter_field.label, "Nom mis à jour")
+        self.assertTrue(filter_field.exportable)
+        self.assertTrue(filter_field.shown)
+        self.assertTrue(filter_field.display)
