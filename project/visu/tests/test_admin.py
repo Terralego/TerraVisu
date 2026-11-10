@@ -227,6 +227,20 @@ class SheetBlockAdminFormTest(AdminTestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("Order field must be from selected source", str(form.errors))
 
+    def test_iframe_block_requires_url_field(self):
+        data = {
+            "sheet": self.feature_sheet,
+            "type": SheetBlockType.IFRAME,
+            "fields_source": self.source,
+            "title": "Block title",
+        }
+        form = SheetBlockAdminForm(data=data)
+        self.assertRaises(Exception, form.save)
+
+        data["url_iframe"] = "https://example.com/{test1}/{test2}"
+        form = SheetBlockAdminForm(data=data)
+        self.assertTrue(form.is_valid(), form.errors)
+
     def test_is_tab_false_does_not_conflict(self):
         form = SheetBlockAdminForm(
             data={

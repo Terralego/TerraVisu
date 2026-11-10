@@ -400,7 +400,10 @@ class SheetFieldAdminTest(APITestCase):
         self.assertContains(response, "My Test Block")
         self.assertContains(response, "My Test Field 1, My Test Field 2")
         self.assertEqual(str(self.block), "My Test Block")
-        self.assertEqual(str(self.field_1), f"My Test Field 1 ({self.source.slug})")
+        self.assertEqual(
+            str(self.field_1),
+            f"My Test Field 1 - {{{self.field_1.field.name}}} ({self.source.slug})",
+        )
 
     def test_sheet_field_admin_list(self):
         url = reverse("config_site:visu_sheetfield_changelist")
@@ -417,8 +420,14 @@ class SheetFieldAdminTest(APITestCase):
         through_model_2 = ExtraSheetFieldThroughModel.objects.create(
             block=self.block, extra_field=self.field_2
         )
-        self.assertEqual(str(through_model_1), f"My Test Field 1 ({self.source.slug})")
-        self.assertEqual(str(through_model_2), f"My Test Field 2 ({self.source.slug})")
+        self.assertEqual(
+            str(through_model_1),
+            f"My Test Field 1 - {{{self.field_1.field.name}}} ({self.source.slug})",
+        )
+        self.assertEqual(
+            str(through_model_2),
+            f"My Test Field 2 - {{{self.field_2.field.name}}} ({self.source.slug})",
+        )
 
 
 class FeatureSheetAPITest(APITestCase):
@@ -457,3 +466,20 @@ class FeatureSheetAPITest(APITestCase):
         response = self.client.get(reverse("feature-sheet"))
         self.assertEqual(response.status_code, 200)
         self.assertIn("geometry_column", str(response.json()))
+
+    def test_iframe_block_serializer(self):
+        url_field = SheetFieldFactory(label="URL Iframe", type=SheetFieldType.TEXTUAL)
+        height_field = SheetFieldFactory(
+            label="Height Iframe", type=SheetFieldType.NUMERICAL
+        )
+        self.block_3 = SheetBlockFactory(
+            sheet=self.sheet,
+            type=SheetBlockType.IFRAME,
+            url_iframe="https://example.com/{test1}/{test2}",
+            height_iframe=342,
+            fields=[url_field, height_field],
+        )
+        response = self.client.get(reverse("feature-sheet"))
+        self.assertEqual(response.status_code, 200)
+        self.assertIn("url_iframe", str(response.json()))
+        self.assertIn("height_iframe", str(response.json()))
