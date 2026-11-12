@@ -1853,10 +1853,99 @@ Pour modifier un fond de carte existant, cliquez sur le fond de carte dans la li
 Supprimer un fond de carte
 --------------------------
 
-Pour supprimer fond de carte, vous avez deux façons de procéder :
+Pour supprimer fond de carte, vous avez deux façons de procéder :
 
 * dans la liste, cliquez sur le fond de carte et en bas de la page cliquez sur le bouton :guilabel:`SUPPRIMER`
 * dans la liste, cochez le fond de carte et cliquez sur le bouton :guilabel:`SUPPRIMER`
 
 .. note::
     Toute suppression est définitive.
+
+
+Commandes de gestion Django
+============================
+
+TerraVisu inclut des commandes de gestion Django personnalisées pour effectuer des opérations avancées sur les couches et les données.
+
+Commande ``duplicate_layer``
+-----------------------------
+
+La commande ``duplicate_layer`` permet de dupliquer une couche existante en conservant ou modifiant ses paramètres de configuration (styles, légendes, popup, mini-fiche, table, filtres, etc.).
+
+**Syntaxe générale :**
+
+.. code-block:: bash
+
+   ./manage.py duplicate_layer <pk> [options]
+
+où ``<pk>`` est la clé primaire (identifiant) de la couche à dupliquer.
+
+**Options disponibles :**
+
+* ``--name`` : Nom personnalisé pour la couche dupliquée (par défaut : « Nom original (Copy) »)
+* ``--source`` : Clé primaire de la source de données à utiliser pour la couche dupliquée
+* ``--main-field`` : Nom du champ à utiliser comme champ principal sur la nouvelle source (obligatoire avec ``--source``)
+* ``--extra-styles-sources`` : Clés primaires des sources pour les styles supplémentaires, séparées par des virgules. Utiliser ``_`` pour conserver la source originale. Exemple : ``"12,_,17"``
+* ``--legend-titles-search-and-replace`` : Renommer les titres de légende. Format : ``"ancien_titre,nouveau_titre"``. Peut recevoir plusieurs paires de valeurs, séparées par des espaces
+* ``--legend-comments-search-and-replace`` : Mettre à jour les commentaires de légende. Format : ``"ancien_commentaire,nouveau_commentaire"``. Peut recevoir plusieurs paires de valeurs, séparées par des espaces
+* ``--popup-search-and-replace`` : Recherche et remplacement dans le template du popup. Format : ``"ancienne_chaine,nouvelle_chaine"``. Peut recevoir plusieurs paires de valeurs, séparées par des espaces
+* ``--minisheet-search-and-replace`` : Recherche et remplacement dans le template de la mini-fiche. Format : ``"ancienne_chaine,nouvelle_chaine"``. Peut recevoir plusieurs paires de valeurs, séparées par des espaces
+* ``--preserve-scene`` : Conserver la couche dupliquée dans la même scène (groupe) que la couche originale. Par défaut, le clone est détaché de toute scène
+* ``--fields-mapping`` : Table de correspondance entre les champs de la source originale vers la nouvelle source. Format : ``"ancien_nom,nouveau_nom"``. Peut recevoir plusieurs paires de valeurs, séparées par des espaces
+* ``--table`` : Configurer les champs à afficher dans le tableau. Chaque champ sera exportable et affiché par défaut. Format : ``"nom_du_champ,label"``. Peut recevoir plusieurs paires de valeurs, séparées par des espaces
+* ``--filter-settings`` : Configurer les paramètres de filtres pour les champs. Format : ``'nom_du_champ:{"type":"range","proposeValues":"all","fetchValue":true}'``. Peut recevoir plusieurs paires de valeurs, séparées par des espaces
+* ``-v`` ou ``--verbosity`` : Niveau de verbosité (0, 1, ou 2). Utiliser ``-v 2`` pour voir le détail des opérations
+
+**Types de filtres disponibles :**
+
+Pour l'option ``--filter-settings``, les paramètres de configuration sont :
+
+* ``type`` : Type de filtre (« single », « many », « range »)
+* ``values`` : Liste de valeurs par défaut (ex: ``[]`` ou ``[1,12,66]``)
+* ``fetchValue`` : Booléen pour activer la récupération automatique des valeurs (``true`` ou ``false``)
+* ``proposeValues`` : Méthode de proposition des valeurs (« none », « all », « list », « custom »)
+* ``range_format`` : Format pour les filtres de type range avec proposeValues « custom » (« number » ou « date »)
+
+**Exemple complet :**
+
+.. code-block:: bash
+
+   ./manage.py duplicate_layer 59 \
+     --name "Communes / 2020 / Céréales" \
+     --source 7 \
+     --main-field nom \
+     --fields-mapping "insee_com,commune" "insee_pays,pays" \
+     --legend-titles-search-and-replace "Part de céréales,Part de truffes" "commune (%),commune en 2020 (%)" \
+     --legend-comments-search-and-replace "Admin Express,OSM data" "2019,2020" \
+     --popup-search-and-replace "insee_com,insee_dep" "SAU totale,SAU totale en 2020" \
+     --minisheet-search-and-replace "Terres arables,Terres arables en 2020" \
+     -v 2 \
+     --preserve-scene \
+     --table "insee_com,Commune" "insee_reg,Région" "nom_dep,Département" \
+     --filter-settings 'nom_region:{"type":"range","values":[],"fetchValue":true,"proposeValues":"all"}' \
+     --filter-settings 'num_dep:{"type":"range","values":[1,12,66],"fetchValue":false,"proposeValues":"custom","range_format":"number"}'
+
+**Description de l'exemple :**
+
+Cet exemple duplique la couche d'identifiant 59 avec les transformations suivantes :
+
+1. **Nouveau nom** : « Communes / 2020 / Céréales »
+2. **Nouvelle source** : utilisation de la source 7 avec le champ principal « nom »
+3. **Correspondance des champs** : utiliser les champs "commune" et "pays" de la nouvelle source à la place des champs "insee_com" et "insee_pays" de l'ancienne source
+4. **Légendes** :
+   - Titres : « Part de céréales » devient « Part de truffes », « commune (%) » devient « commune en 2020 (%) »
+   - Commentaires : « Admin Express » devient « OSM data », « 2019 » devient « 2020 »
+5. **Popup** : « insee_com » devient « insee_dep », « SAU totale » devient « SAU totale en 2020 »
+6. **Minisheet** : « Terres arables » devient « Terres arables en 2020 »
+7. **Scène** : la couche dupliquée reste dans la même scène que l'originale
+8. **Tableau** : configuration des champs « insee_com », « insee_reg » et « nom_dep » avec leurs labels
+9. **Filtres** :
+   - ``nom_region`` : filtre de type range avec récupération automatique de toutes les valeurs
+   - ``nom_dep`` : filtre de type range avec valeurs personnalisées [1,12,66] au format nombre
+
+**Notes importantes :**
+
+* L'option ``--source`` nécessite obligatoirement ``--main-field`` et ``--fields-mapping`` pour mapper les champs entre l'ancienne et la nouvelle source
+* L'option ``--filter-settings`` met à jour les paramètres de filtre des champs existants (préalablement créés via ``--table`` ou déjà présents sur la couche)
+* Les options de recherche et remplacement lèvent une erreur si la chaîne recherchée n'est pas trouvée
+* Toutes les opérations sont atomiques : en cas d'erreur, aucune modification n'est appliquée
