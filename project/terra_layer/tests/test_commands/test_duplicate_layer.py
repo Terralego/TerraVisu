@@ -258,6 +258,29 @@ class DuplicateLayerTestCase(TestCase):
         self.assertIn("nonexistent_field", str(ctx.exception))
         self.assertIn("does not exist on source", str(ctx.exception))
 
+    def test_filter_settings_filterfield_not_found(self):
+        """filter-settings raises when a field exists on source but has no FilterField on the layer."""
+        target_source = PostGISSourceFactory(name="target_filter_no_filterfield")
+        FieldFactory(source=target_source, name="nom", label="Nom")
+        FieldFactory(source=target_source, name="pop", label="Population")
+        with self.assertRaises(CommandError) as ctx:
+            call_command(
+                "duplicate_layer",
+                str(self.layer.pk),
+                source=target_source.pk,
+                main_field="nom",
+                fields_mapping=["nom_2019,nom"],
+                table=[
+                    "nom,Nom",
+                ],
+                filter_settings=[
+                    'pop:{"type":"single","values":[],"proposeValues":"none"}',
+                ],
+                stdout=StringIO(),
+            )
+        self.assertIn("pop", str(ctx.exception))
+        self.assertIn("No FilterField found", str(ctx.exception))
+
 
 class DuplicateLayerSimpleTestCase(TestCase):
     """Test duplicating a layer without changing the source."""
