@@ -190,6 +190,74 @@ class DuplicateLayerTestCase(TestCase):
         # Success message
         self.assertIn("duplicated successfully", out.getvalue())
 
+    def test_filter_settings_configuration(self):
+        """Valid filter-settings configuration updates existing FilterFields with proper filter_settings."""
+        target_source = PostGISSourceFactory(name="target_filter_settings")
+        FieldFactory(source=target_source, name="nom_region", label="Nom Region")
+        FieldFactory(source=target_source, name="nom_dep", label="Nom Departement")
+        out = StringIO()
+        call_command(
+            "duplicate_layer",
+            str(self.layer.pk),
+            source=target_source.pk,
+            main_field="nom_region",
+            fields_mapping=["nom_2019,nom_region"],
+            table=[
+                "nom_region,Nom Region",
+                "nom_dep,Nom Departement",
+            ],
+            filter_settings=[
+                'nom_region:{"type":"range","values":[],"fetchValue":true,"proposeValues":"all"}',
+                'nom_dep:{"type":"range","values":[1,12,66],"fetchValue":false,"proposeValues":"custom","range_format":"number"}',
+            ],
+            stdout=out,
+            verbosity=2,
+        )
+        clone_pk = int(re.findall(r"pk=(\d+)", out.getvalue())[0])
+        clone = Layer.objects.get(pk=clone_pk)
+        self.assertEqual(clone.fields_filters.count(), 2)
+
+        filter_region = clone.fields_filters.filter(field__name="nom_region").first()
+        self.assertIsNotNone(filter_region)
+        self.assertTrue(filter_region.filter_enable)
+        self.assertEqual(filter_region.filter_settings["type"], "range")
+        self.assertEqual(filter_region.filter_settings["values"], [])
+        self.assertTrue(filter_region.filter_settings["fetchValue"])
+        self.assertEqual(filter_region.filter_settings["proposeValues"], "all")
+        self.assertEqual(filter_region.format_type, "")
+
+        filter_dep = clone.fields_filters.filter(field__name="nom_dep").first()
+        self.assertIsNotNone(filter_dep)
+        self.assertTrue(filter_dep.filter_enable)
+        self.assertEqual(filter_dep.filter_settings["type"], "range")
+        self.assertEqual(filter_dep.filter_settings["values"], [1, 12, 66])
+        self.assertFalse(filter_dep.filter_settings["fetchValue"])
+        self.assertEqual(filter_dep.filter_settings["proposeValues"], "custom")
+        self.assertEqual(filter_dep.filter_settings["range_format"], "number")
+        self.assertEqual(filter_dep.format_type, "number")
+
+    def test_filter_settings_field_not_found(self):
+        """filter-settings raises when a field doesn't exist on the source."""
+        target_source = PostGISSourceFactory(name="target_filter_missing")
+        FieldFactory(source=target_source, name="nom_region", label="Nom Region")
+        with self.assertRaises(CommandError) as ctx:
+            call_command(
+                "duplicate_layer",
+                str(self.layer.pk),
+                source=target_source.pk,
+                main_field="nom_region",
+                fields_mapping=["nom_2019,nom_region"],
+                table=[
+                    "nom_region,Nom Region",
+                ],
+                filter_settings=[
+                    'nonexistent_field:{"type":"single","values":[],"proposeValues":"none"}',
+                ],
+                stdout=StringIO(),
+            )
+        self.assertIn("nonexistent_field", str(ctx.exception))
+        self.assertIn("does not exist on source", str(ctx.exception))
+
 
 class DuplicateLayerSimpleTestCase(TestCase):
     """Test duplicating a layer without changing the source."""

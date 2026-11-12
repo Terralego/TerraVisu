@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-23 14:00+0200\n"
+"POT-Creation-Date: 2026-11-12 10:41+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -646,6 +646,23 @@ msgid ""
 "name_field\" \"pop,population\"."
 msgstr ""
 
+msgid ""
+"List fields to configure for the Table. Each field will be exportable and "
+"displayed in table by default.Each value is \"field_name,field_label\". "
+"Example: --table \"nom_m,Nom\" \"pop,Population\"."
+msgstr ""
+
+msgid ""
+"Configure filter settings for fields. Each value is 'field_name:"
+"JSON_CONFIG'. Example: --filter-settings 'nom_region:{\"type\":\"range\","
+"\"proposeValues\":\"all\",\"fetchValue\":true}' 'nom_dep:{\"type\":\"range\","
+"\"values\":[1,12,66],\"fetchValue\":false,\"proposeValues\":\"custom\","
+"\"range_format\":\"number\"}'. Possible type values: \"single\", \"many\", "
+"\"range\". Possible proposeValues values: \"none\", \"all\", \"list\", "
+"\"custom\". Possible range_format values: \"number\", \"date\". range_format "
+"is only required when proposeValues is \"custom\"."
+msgstr ""
+
 #, python-format
 msgid "Layer with pk %(pk)s does not exist"
 msgstr ""
@@ -702,6 +719,10 @@ msgstr ""
 msgid ""
 "Invalid value '%(value)s' in --extra-styles-sources. Expected an integer PK "
 "or \"_\"."
+msgstr ""
+
+#, python-format
+msgid "No FilterField found for field '%(name)s' on layer %(layer)s"
 msgstr ""
 
 #, python-format

@@ -6,7 +6,7 @@ from django.db import transaction
 from django.utils.translation import gettext as _
 
 from project.geosource.models import Field, Source
-from project.terra_layer.models import Layer, FilterField
+from project.terra_layer.models import FilterField, Layer
 
 
 class Command(BaseCommand):
@@ -172,6 +172,20 @@ class Command(BaseCommand):
                 "List fields to configure for the Table. Each field will be exportable and displayed in table by default."
                 'Each value is "field_name,field_label". '
                 'Example: --table "nom_m,Nom" "pop,Population".'
+            ),
+        )
+        parser.add_argument(
+            "--filter-settings",
+            nargs="*",
+            default=None,
+            help=_(
+                "Configure filter settings for fields. Each value is 'field_name:JSON_CONFIG'. "
+                'Example: --filter-settings \'nom_region:{"type":"range","proposeValues":"all","fetchValue":true}\' '
+                '\'nom_dep:{"type":"range","values":[1,12,66],"fetchValue":false,"proposeValues":"custom","range_format":"number"}\'. '
+                'Possible type values: "single", "many", "range". '
+                'Possible proposeValues values: "none", "all", "list", "custom". '
+                'Possible range_format values: "number", "date". '
+                'range_format is only required when proposeValues is "custom".'
             ),
         )
 
@@ -386,10 +400,10 @@ class Command(BaseCommand):
                         _("Source with pk %(pk)s does not exist") % {"pk": source_pk}
                     )
 
+        # Update the table configuration
         if options["table"]:
             for pair in options.get("table", []):
                 name, label = self.parse_pair(pair, "table")
-                print(name, label)
                 field = Field.objects.get(source=clone.source, name=name)
                 defaults = {
                     "label": label,
@@ -412,6 +426,74 @@ class Command(BaseCommand):
                         self.stdout.write(
                             f"Updated FilterField {filter_field.pk} for {name} - {label}"
                         )
+
+        # param --filter-settings '' should only empty filters
+        empty_filters = options.get("filter_settings") == [""]
+        new_filters = options.get("filter_settings") and not empty_filters
+        if empty_filters or new_filters:
+            # First empty filters that were copied
+            filter_fields = list(FilterField.objects.filter(layer=clone))
+            for ff in filter_fields:
+                ff.filter_enable = False
+                ff.filter_settings = {}
+            if filter_fields:
+                FilterField.objects.bulk_update(
+                    filter_fields, ["filter_enable", "filter_settings"]
+                )
+
+        filter_settings_data = {}
+        if new_filters:
+            for item in options.get("filter_settings"):
+                field_name, config_str = item.split(":", 1)
+                field_name = field_name.strip()
+                config_str = config_str.strip()
+                config_dict = json.loads(config_str.strip())
+                filter_settings_data[field_name] = config_dict
+
+            for order, (field_name, config) in enumerate(filter_settings_data.items()):
+                try:
+                    field = Field.objects.get(source=clone.source, name=field_name)
+                except Field.DoesNotExist:
+                    raise CommandError(
+                        _("Field '%(name)s' does not exist on source %(source)s")
+                        % {"name": field_name, "source": clone.source.pk}
+                    )
+
+                try:
+                    filter_field = FilterField.objects.get(field=field, layer=clone)
+                except FilterField.DoesNotExist:
+                    raise CommandError(
+                        _(
+                            "No FilterField found for field '%(name)s' on layer %(layer)s"
+                        )
+                        % {"name": field_name, "layer": clone.pk}
+                    )
+
+                filter_field.order = order
+                filter_field.filter_enable = True
+                filter_field.filter_settings = {
+                    "type": config.get("type"),
+                    "values": config.get("values", []),
+                    "proposeValues": config.get("proposeValues"),
+                }
+                if config.get("range_format"):
+                    filter_field.filter_settings["range_format"] = config[
+                        "range_format"
+                    ]
+                if config.get("fetchValue") is not None:
+                    filter_field.filter_settings["fetchValue"] = config["fetchValue"]
+
+                filter_field.format_type = (
+                    config.get("range_format", "")
+                    if config.get("proposeValues") == "custom"
+                    else ""
+                )
+                filter_field.save()
+
+                if options["verbosity"] >= 2:
+                    self.stdout.write(
+                        f"Updated FilterField {filter_field.pk} for {field_name} with filter settings {filter_field.filter_settings}"
+                    )
 
         # Save the clone's updates
         if clone_modified:
