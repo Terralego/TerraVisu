@@ -442,8 +442,8 @@ class DuplicateLayerErrorTestCase(TestCase):
         self.assertIn("nonexistent_new", str(ctx.exception))
         self.assertIn("target source", str(ctx.exception))
 
-    def test_fields_mapping_missing_required_field(self):
-        """When source changes and a field filter references a field not in the mapping."""
+    def test_fields_mapping_missing_field_filter_skipped(self):
+        """When source changes and a field filter references a field not in the mapping, it is skipped."""
         target_source = PostGISSourceFactory(name="target_fm_missing")
         FieldFactory(source=target_source, name="nom_target", label="Nom Target")
         # Add a filter field on the layer so clone_fields_filters needs a mapping
@@ -455,17 +455,64 @@ class DuplicateLayerErrorTestCase(TestCase):
             exportable=True,
             shown=True,
         )
+        # No fields_mapping provided, so "nom" won't be found on target
+        # The filter should be skipped silently
+        out = StringIO()
+        call_command(
+            "duplicate_layer",
+            str(self.layer.pk),
+            source=target_source.pk,
+            main_field="nom_target",
+            stdout=out,
+        )
+        self.assertIn("duplicated successfully", out.getvalue())
+
+    def test_fields_mapping_unmapped_sourcefieldid_in_popup(self):
+        """When source changes and popup config references a field not in the mapping, error is raised."""
+        target_source = PostGISSourceFactory(name="target_fm_popup")
+        FieldFactory(source=target_source, name="nom_target", label="Nom Target")
+        # Set up popup config with a field reference
+        self.layer.popup_config = {
+            "template": "<h1>{{ fields[0].value }}</h1>",
+            "wizard": {"fields": [{"sourceFieldId": self.field.pk}]},
+        }
+        self.layer.save()
         with self.assertRaises(CommandError) as ctx:
             call_command(
                 "duplicate_layer",
                 str(self.layer.pk),
                 source=target_source.pk,
                 main_field="nom_target",
-                # No fields_mapping provided, so "nom" won't be found on target
+                # No fields_mapping provided, so self.field.pk won't be mapped
                 stdout=StringIO(),
             )
         self.assertIn("nom", str(ctx.exception))
-        self.assertIn("Fields mapping need to include", str(ctx.exception))
+        self.assertIn("minisheet/popup config", str(ctx.exception))
+
+    def test_fields_mapping_unmapped_sourcefieldid_in_minisheet(self):
+        """When source changes and minisheet config references a field not in the mapping, error is raised."""
+        target_source = PostGISSourceFactory(name="target_fm_minisheet")
+        FieldFactory(source=target_source, name="nom_target", label="Nom Target")
+        # Set up minisheet config with a field reference
+        self.layer.minisheet_config = {
+            "template": "<div>{{ tree[0].value }}</div>",
+            "wizard": {
+                "title": {"sourceFieldId": self.field.pk},
+                "tree": [{"sourceFieldId": self.field.pk}],
+            },
+        }
+        self.layer.save()
+        with self.assertRaises(CommandError) as ctx:
+            call_command(
+                "duplicate_layer",
+                str(self.layer.pk),
+                source=target_source.pk,
+                main_field="nom_target",
+                # No fields_mapping provided, so self.field.pk won't be mapped
+                stdout=StringIO(),
+            )
+        self.assertIn("nom", str(ctx.exception))
+        self.assertIn("minisheet/popup config", str(ctx.exception))
 
     def test_popup_search_string_not_found(self):
         """popup-search-and-replace raises when the old string isn't in popup config."""

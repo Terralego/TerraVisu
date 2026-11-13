@@ -11,7 +11,6 @@ from project.terra_layer.models import FilterField, Layer
 
 class Command(BaseCommand):
     help = "Duplicate a layer by its primary key and optionally update the duplicate"
-    fields_mapping = {}
 
     def parse_pair(self, value, option_name):
         """Split on the first unescaped comma, unescape \\, and validate exactly two parts."""
@@ -48,28 +47,100 @@ class Command(BaseCommand):
                         % {"name": new_name, "source": target_source.pk}
                     )
 
-    def get_target_field(self, old_field, target_source):
+    def get_target_field(self, old_field, target_source, required=True):
         if old_field.pk not in self.fields_mapping:
             try:
                 new_field = Field.objects.get(source=target_source, name=old_field.name)
                 self.fields_mapping[old_field.pk] = new_field.pk
                 return new_field
             except Field.DoesNotExist:
-                raise CommandError(
-                    _("Fields mapping need to include '%(old_field_name)s'.")
-                    % {"old_field_name": old_field.name}
-                )
+                if required:
+                    raise CommandError(
+                        _("Fields mapping need to include '%(old_field_name)s'.")
+                        % {"old_field_name": old_field.name}
+                    )
+                return None
         return Field.objects.get(pk=self.fields_mapping[old_field.pk])
 
     def clone_fields_filters(self, original_layer, cloned_layer):
         for field_filter in original_layer.fields_filters.all():
             old_field = field_filter.field
-            new_field = self.get_target_field(old_field, cloned_layer.source)
+            new_field = self.get_target_field(
+                old_field, cloned_layer.source, required=False
+            )
+            if new_field is None:
+                continue
             attrs = {
                 "layer": cloned_layer,
                 "field": new_field,
             }
             field_filter.make_clone(attrs)
+
+    def update_config_field_references(self, config, config_name, target_source):
+        """Update sourceFieldId references in wizard config (tree items or fields list).
+
+        Args:
+            config: The config dict (minisheet_config or popup_config)
+            config_name: Name for logging ("minisheet" or "popup")
+            target_source: The target Source object
+
+        Returns:
+            bool: True if config was modified
+        """
+        modified = False
+        wizard = config.get("wizard", {})
+
+        # Process tree items (minisheet) or fields list (popup)
+        items_key = "tree" if config_name == "minisheet" else "fields"
+        if items_key in wizard:
+            for item in wizard[items_key]:
+                if "sourceFieldId" not in item:
+                    continue
+                old_field_id = item["sourceFieldId"]
+                new_field_id = self.fields_mapping.get(old_field_id)
+
+                if new_field_id is None:
+                    try:
+                        old_field = Field.objects.get(pk=old_field_id)
+                        new_field = self.get_target_field(
+                            old_field, target_source, required=False
+                        )
+                        if new_field is None:
+                            self.missing_fields.append(old_field.name)
+                            continue
+                        new_field_id = new_field.pk
+                        self.fields_mapping[old_field_id] = new_field_id
+                    except Field.DoesNotExist:
+                        self.missing_fields.append(f"pk={old_field_id}")
+                        continue
+
+                item["sourceFieldId"] = new_field_id
+                modified = True
+
+        # Process title (minisheet only)
+        if config_name == "minisheet" and "title" in wizard:
+            old_field_id = wizard["title"]["sourceFieldId"]
+            new_field_id = self.fields_mapping.get(old_field_id)
+
+            if new_field_id is None:
+                try:
+                    old_field = Field.objects.get(pk=old_field_id)
+                    new_field = self.get_target_field(
+                        old_field, target_source, required=False
+                    )
+                    if new_field is None:
+                        self.missing_fields.append(old_field.name)
+                        return modified
+                    new_field_id = new_field.pk
+                    self.fields_mapping[old_field_id] = new_field_id
+                except Field.DoesNotExist:
+                    self.missing_fields.append(f"pk={old_field_id}")
+                    return modified
+
+            wizard["title"]["sourceFieldId"] = new_field_id
+            modified = True
+
+        return modified
 
     def add_arguments(self, parser):
         parser.add_argument(
@@ -191,6 +262,9 @@ class Command(BaseCommand):
 
     @transaction.atomic
     def handle(self, *args, **options):
+        self.fields_mapping = {}
+        self.missing_fields = []
+
         # Get layer to duplicate
         try:
             layer = Layer.objects.get(pk=options["pk"])
@@ -325,40 +399,35 @@ class Command(BaseCommand):
 
         # Update the clone's fields using fields mapping if source was changed
         if options["source"]:
-            # Handle fields in minisheet config if source was changed
-            if "tree" in clone.minisheet_config.get("wizard", {}):
-                for item in clone.minisheet_config["wizard"]["tree"]:
-                    if "sourceFieldId" in item:
-                        old_field_id = item["sourceFieldId"]
-                        new_field_id = self.fields_mapping[old_field_id]
-                        item["sourceFieldId"] = new_field_id
-                        clone_modified = True
-                        if options["verbosity"] >= 2:
-                            self.stdout.write(
-                                _("Minisheet config:")
-                                + f"\n{clone.minisheet_config}\n\n"
-                            )
-                if "title" in clone.minisheet_config["wizard"]:
-                    old_field_id = clone.minisheet_config["wizard"]["title"][
-                        "sourceFieldId"
-                    ]
-                    new_field_id = self.fields_mapping[old_field_id]
-                    clone.minisheet_config["wizard"]["title"]["sourceFieldId"] = (
-                        new_field_id
-                    )
+            # Update minisheet config field references
+            if clone.minisheet_config.get("wizard"):
+                if self.update_config_field_references(
+                    clone.minisheet_config, "minisheet", target_source
+                ):
                     clone_modified = True
-            # Handle fields in popup config if source was changed
-            if "fields" in clone.popup_config.get("wizard", {}):
-                for item in clone.popup_config["wizard"]["fields"]:
-                    if "sourceFieldId" in item:
-                        old_field_id = item["sourceFieldId"]
-                        new_field_id = self.fields_mapping[old_field_id]
-                        item["sourceFieldId"] = new_field_id
-                        clone_modified = True
-                        if options["verbosity"] >= 2:
-                            self.stdout.write(
-                                _("Popup config:") + f"\n{clone.popup_config}\n\n"
-                            )
+                    if options["verbosity"] >= 2:
+                        self.stdout.write(
+                            _("Minisheet config:") + f"\n{clone.minisheet_config}\n\n"
+                        )
+
+            # Update popup config field references
+            if clone.popup_config.get("wizard"):
+                if self.update_config_field_references(
+                    clone.popup_config, "popup", target_source
+                ):
+                    clone_modified = True
+                    if options["verbosity"] >= 2:
+                        self.stdout.write(
+                            _("Popup config:") + f"\n{clone.popup_config}\n\n"
+                        )
+
+            if self.missing_fields:
+                raise CommandError(
+                    _(
+                        "Cannot map sourceFieldId(s) in minisheet/popup config: %(names)s"
+                    )
+                    % {"names": ", ".join(self.missing_fields)}
+                )
 
         # Update the clone's extra styles sources
         if options["extra_styles_sources"]:
