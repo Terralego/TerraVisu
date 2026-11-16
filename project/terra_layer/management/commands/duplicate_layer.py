@@ -316,6 +316,19 @@ class Command(BaseCommand):
         if source_changed:
             self.clone_fields_filters(layer, clone)
 
+        if options["preserve_scene"] and layer.group:
+            group = layer.group
+            parents = [group.label]
+            # Rebuild layer group tree
+            current_parent = group.parent
+            while current_parent:
+                if current_parent.label != "Root":
+                    parents.append(current_parent.label)
+                current_parent = current_parent.parent
+
+            scene = group.view
+            scene.insert_in_tree(clone, reversed(parents))
+
         # Update the clone's legend
         clone_modified = False
         if options["legend_titles_search_and_replace"]:
