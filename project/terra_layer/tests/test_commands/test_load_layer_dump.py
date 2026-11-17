@@ -89,7 +89,7 @@ class LayerDumpTestCase(TestCase):
                         {
                             "group": True,
                             "label": "layer2",
-                            "children": [{"geolayer": new_layer.pk}],
+                            "children": [{"geolayer": new_layer.pk, "variables": []}],
                         }
                     ],
                     "expanded": True,

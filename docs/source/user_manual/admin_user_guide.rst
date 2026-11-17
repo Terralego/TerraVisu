@@ -1890,7 +1890,8 @@ où ``<pk>`` est la clé primaire (identifiant) de la couche à dupliquer.
 * ``--legend-comments-search-and-replace`` : Mettre à jour les commentaires de légende. Format : ``"ancien_commentaire,nouveau_commentaire"``. Peut recevoir plusieurs paires de valeurs, séparées par des espaces
 * ``--popup-search-and-replace`` : Recherche et remplacement dans le template du popup. Format : ``"ancienne_chaine,nouvelle_chaine"``. Peut recevoir plusieurs paires de valeurs, séparées par des espaces
 * ``--minisheet-search-and-replace`` : Recherche et remplacement dans le template de la mini-fiche. Format : ``"ancienne_chaine,nouvelle_chaine"``. Peut recevoir plusieurs paires de valeurs, séparées par des espaces
-* ``--preserve-scene`` : Conserver la couche dupliquée dans la même scène (groupe) que la couche originale. Par défaut, le clone est détaché de toute scène
+* ``--preserve-scene`` : Conserver la couche dupliquée dans le même groupe que la couche originale, au sein de la même vue. Par défaut, le clone est détaché de toute scène
+* ``--variables`` : Permet de surcharger les variables utilisées dans l'arboresence de la vue. Peut recevoir plusieurs paires de valeurs, séparées par des espaces
 * ``--fields-mapping`` : Table de correspondance entre les champs de la source originale vers la nouvelle source. Format : ``"ancien_nom,nouveau_nom"``. Peut recevoir plusieurs paires de valeurs, séparées par des espaces
 * ``--table`` : Configurer les champs à afficher dans le tableau. Chaque champ sera exportable et affiché par défaut. Format : ``"nom_du_champ,label"``. Peut recevoir plusieurs paires de valeurs, séparées par des espaces
 * ``--filter-settings`` : Configurer les paramètres de filtres pour les champs. Format : ``'nom_du_champ:{"type":"range","proposeValues":"all","fetchValue":true}'``. Peut recevoir plusieurs paires de valeurs, séparées par des espaces
@@ -1921,6 +1922,7 @@ Pour l'option ``--filter-settings``, les paramètres de configuration sont :
      --minisheet-search-and-replace "Terres arables,Terres arables en 2020" \
      -v 2 \
      --preserve-scene \
+     --variables "Todo,Done" "Backlog,Next" \
      --table "insee_com,Commune" "insee_reg,Région" "nom_dep,Département" \
      --filter-settings 'nom_region:{"type":"range","values":[],"fetchValue":true,"proposeValues":"all"}' \
      --filter-settings 'num_dep:{"type":"range","values":[1,12,66],"fetchValue":false,"proposeValues":"custom","range_format":"number"}'
@@ -1937,11 +1939,13 @@ Cet exemple duplique la couche d'identifiant 59 avec les transformations suivant
    - Commentaires : « Admin Express » devient « OSM data », « 2019 » devient « 2020 »
 5. **Popup** : « insee_com » devient « insee_dep », « SAU totale » devient « SAU totale en 2020 »
 6. **Minisheet** : « Terres arables » devient « Terres arables en 2020 »
-7. **Scène** : la couche dupliquée reste dans la même scène que l'originale
-8. **Tableau** : configuration des champs « insee_com », « insee_reg » et « nom_dep » avec leurs labels
-9. **Filtres** :
-   - ``nom_region`` : filtre de type range avec récupération automatique de toutes les valeurs
-   - ``nom_dep`` : filtre de type range avec valeurs personnalisées [1,12,66] au format nombre
+7. **Scène** : la couche dupliquée reste dans le même groupe et même vue que l'originale
+8. **Variables** : les variables sont mises à jour pour cette couche au sein du groupe
+9. **Tableau** : configuration des champs « insee_com », « insee_reg » et « nom_dep » avec leurs labels
+10. **Filtres** :
+    - ``nom_region`` : filtre de type range avec récupération automatique de toutes les valeurs
+    - ``nom_dep`` : filtre de type range avec valeurs personnalisées [1,12,66] au format nombre
+
 
 **Notes importantes :**
 

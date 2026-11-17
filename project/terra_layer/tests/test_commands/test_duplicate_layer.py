@@ -98,6 +98,25 @@ class DuplicateLayerTestCase(TestCase):
             },
         )
 
+        # Layer is in a group with variables on the View
+        tree = [
+            {
+                "group": True,
+                "label": cls.group.label,
+                "children": [
+                    {
+                        "geolayer": cls.layer.id,
+                        "variables": {
+                            "30c46d50-78c1-48c7-a7ea-45644ef4bf66": "MyLabelValue"
+                        },
+                    }
+                ],
+            }
+        ]
+        view = cls.group.view
+        view.tree = tree
+        view.save()
+
         # FilterField
         FilterField.objects.create(
             layer=cls.layer,
@@ -129,6 +148,7 @@ class DuplicateLayerTestCase(TestCase):
             source=self.source_2020.pk,
             main_field="nom_2020",
             preserve_scene=True,
+            variables=["MyLabelValue,MyNewLabel"],
             fields_mapping=["nom_2019,nom_2020", "pop_2019,pop_2020"],
             legend_titles_search_and_replace=["Communes 2019,Communes 2020"],
             legend_comments_search_and_replace=["Données 2019,Données 2020"],
@@ -142,11 +162,33 @@ class DuplicateLayerTestCase(TestCase):
         clone_pk = int(re.findall(r"pk=(\d+)", out.getvalue())[0])
         clone = Layer.objects.get(pk=clone_pk)
 
+        expected_tree = [
+            {
+                "group": True,
+                "label": self.group.label,
+                "children": [
+                    {
+                        "geolayer": self.layer.id,
+                        "variables": {
+                            "30c46d50-78c1-48c7-a7ea-45644ef4bf66": "MyLabelValue"
+                        },
+                    },
+                    {
+                        "geolayer": clone.id,
+                        "variables": {
+                            "30c46d50-78c1-48c7-a7ea-45644ef4bf66": "MyNewLabel"
+                        },
+                    },
+                ],
+            }
+        ]
+
         # Basic attributes
         self.assertEqual(clone.name, "Communes 2020")
         self.assertEqual(clone.source.pk, self.source_2020.pk)
         self.assertEqual(clone.main_field, self.field_nom_2020)
-        self.assertEqual(clone.group, self.group)
+        self.assertEqual(clone.group.label, self.group.label)
+        self.assertEqual(clone.group.view, self.group.view)
 
         # Legends
         self.assertEqual(clone.legends[0]["title"], "Communes 2020")
@@ -180,6 +222,17 @@ class DuplicateLayerTestCase(TestCase):
         self.assertTrue(clone_filter.filter_enable)
         self.assertTrue(clone_filter.exportable)
         self.assertTrue(clone_filter.shown)
+
+        # View : group tree maintained with variables updated
+        self.layer.refresh_from_db()
+        clone.refresh_from_db()
+        self.assertEqual(clone.group, self.layer.group)
+        self.assertEqual(clone.group.view, self.layer.group.view)
+        view = clone.group.view
+        self.assertEqual(view.tree, expected_tree)
+        self.assertEqual(
+            clone.variables, {"30c46d50-78c1-48c7-a7ea-45644ef4bf66": "MyNewLabel"}
+        )
 
         # Extra styles: first replaced, second kept ("_")
         clone_extras = list(clone.extra_styles.order_by("pk"))
@@ -486,8 +539,7 @@ class DuplicateLayerErrorTestCase(TestCase):
                 # No fields_mapping provided, so self.field.pk won't be mapped
                 stdout=StringIO(),
             )
-        self.assertIn("nom", str(ctx.exception))
-        self.assertIn("minisheet/popup config", str(ctx.exception))
+        self.assertIn("Fields mapping need to include 'nom'.", str(ctx.exception))
 
     def test_fields_mapping_unmapped_sourcefieldid_in_minisheet(self):
         """When source changes and minisheet config references a field not in the mapping, error is raised."""
@@ -511,8 +563,7 @@ class DuplicateLayerErrorTestCase(TestCase):
                 # No fields_mapping provided, so self.field.pk won't be mapped
                 stdout=StringIO(),
             )
-        self.assertIn("nom", str(ctx.exception))
-        self.assertIn("minisheet/popup config", str(ctx.exception))
+        self.assertIn("Fields mapping need to include 'nom'", str(ctx.exception))
 
     def test_popup_search_string_not_found(self):
         """popup-search-and-replace raises when the old string isn't in popup config."""

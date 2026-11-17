@@ -100,19 +100,12 @@ class Command(BaseCommand):
                 new_field_id = self.fields_mapping.get(old_field_id)
 
                 if new_field_id is None:
-                    try:
-                        old_field = Field.objects.get(pk=old_field_id)
-                        new_field = self.get_target_field(
-                            old_field, target_source, required=False
-                        )
-                        if new_field is None:
-                            self.missing_fields.append(old_field.name)
-                            continue
-                        new_field_id = new_field.pk
-                        self.fields_mapping[old_field_id] = new_field_id
-                    except Field.DoesNotExist:
-                        self.missing_fields.append(f"pk={old_field_id}")
-                        continue
+                    old_field = Field.objects.get(pk=old_field_id)
+                    new_field = self.get_target_field(
+                        old_field, target_source, required=True
+                    )
+                    new_field_id = new_field.pk
+                    self.fields_mapping[old_field_id] = new_field_id
 
                 item["sourceFieldId"] = new_field_id
                 modified = True
@@ -123,19 +116,12 @@ class Command(BaseCommand):
             new_field_id = self.fields_mapping.get(old_field_id)
 
             if new_field_id is None:
-                try:
-                    old_field = Field.objects.get(pk=old_field_id)
-                    new_field = self.get_target_field(
-                        old_field, target_source, required=False
-                    )
-                    if new_field is None:
-                        self.missing_fields.append(old_field.name)
-                        return modified
-                    new_field_id = new_field.pk
-                    self.fields_mapping[old_field_id] = new_field_id
-                except Field.DoesNotExist:
-                    self.missing_fields.append(f"pk={old_field_id}")
-                    return modified
+                old_field = Field.objects.get(pk=old_field_id)
+                new_field = self.get_target_field(
+                    old_field, target_source, required=True
+                )
+                new_field_id = new_field.pk
+                self.fields_mapping[old_field_id] = new_field_id
 
             wizard["title"]["sourceFieldId"] = new_field_id
             modified = True
@@ -196,6 +182,15 @@ class Command(BaseCommand):
             help=_(
                 'Update legend comments. Each value is "old_comment,new_comment". '
                 'Example: --legend-comments-search-and-replace "Old comment,New comment here"'
+            ),
+        )
+        parser.add_argument(
+            "--variables",
+            nargs="*",
+            default=None,
+            help=_(
+                'Update layer group variables. Each value is "old_value,new_value". '
+                'Example: --variables "MyLabel,MyOtherLabel"'
             ),
         )
         parser.add_argument(
@@ -282,6 +277,16 @@ class Command(BaseCommand):
 
         if options["preserve_scene"]:
             attrs["group"] = layer.group
+            attrs["variables"] = layer.variables
+
+        if options["variables"] and layer.variables:
+            new_variables = layer.variables
+            for pair in options["variables"]:
+                before, after = self.parse_pair(pair, "variables")
+                for key, value in layer.variables.items():
+                    if value == before:
+                        new_variables[key] = after
+            attrs["variables"] = new_variables
 
         source_changed = False
         if options["source"]:
@@ -325,12 +330,12 @@ class Command(BaseCommand):
                 if current_parent.label != "Root":
                     parents.append(current_parent.label)
                 current_parent = current_parent.parent
-
             scene = group.view
             scene.insert_in_tree(clone, reversed(parents))
+            clone.refresh_from_db()
 
-        # Update the clone's legend
         clone_modified = False
+
         if options["legend_titles_search_and_replace"]:
             for pair in options["legend_titles_search_and_replace"]:
                 old_title, new_title = self.parse_pair(
@@ -367,7 +372,6 @@ class Command(BaseCommand):
                         % {"comment": old_comment}
                     )
             clone_modified = True
-
         # Update the clone's popup
         if options["popup_search_and_replace"]:
             popup_text = json.dumps(clone.popup_config, ensure_ascii=False)
@@ -409,7 +413,6 @@ class Command(BaseCommand):
                     _("Minisheet template:")
                     + f"\n{clone.minisheet_config.get('template', '')}\n\n"
                 )
-
         # Update the clone's fields using fields mapping if source was changed
         if options["source"]:
             # Update minisheet config field references
@@ -441,7 +444,6 @@ class Command(BaseCommand):
                     )
                     % {"names": ", ".join(self.missing_fields)}
                 )
-
         # Update the clone's extra styles sources
         if options["extra_styles_sources"]:
             extra_sources_map = {}
@@ -522,7 +524,6 @@ class Command(BaseCommand):
                 FilterField.objects.bulk_update(
                     filter_fields, ["filter_enable", "filter_settings"]
                 )
-
         filter_settings_data = {}
         if new_filters:
             for item in options.get("filter_settings"):
@@ -580,7 +581,6 @@ class Command(BaseCommand):
         # Save the clone's updates
         if clone_modified:
             clone.save(wizard_update=True)
-
         self.stdout.write(
             _(
                 "Layer %(old_pk)s duplicated successfully. "
