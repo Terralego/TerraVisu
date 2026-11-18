@@ -55,7 +55,8 @@ class DuplicateLayerTestCase(TestCase):
         cls.extra_source_keep = PostGISSourceFactory(name="extra_keep")
 
         # Scene / group
-        cls.group = LayerGroupFactory()
+        cls.parent_group = LayerGroupFactory()
+        cls.group = LayerGroupFactory(parent=cls.parent_group)
 
         # Layer
         cls.layer = LayerFactory(
@@ -102,13 +103,19 @@ class DuplicateLayerTestCase(TestCase):
         tree = [
             {
                 "group": True,
-                "label": cls.group.label,
+                "label": cls.parent_group.label,
                 "children": [
                     {
-                        "geolayer": cls.layer.id,
-                        "variables": {
-                            "30c46d50-78c1-48c7-a7ea-45644ef4bf66": "MyLabelValue"
-                        },
+                        "group": True,
+                        "label": cls.group.label,
+                        "children": [
+                            {
+                                "geolayer": cls.layer.id,
+                                "variables": {
+                                    "30c46d50-78c1-48c7-a7ea-45644ef4bf66": "MyLabelValue"
+                                },
+                            }
+                        ],
                     }
                 ],
             }
@@ -165,20 +172,26 @@ class DuplicateLayerTestCase(TestCase):
         expected_tree = [
             {
                 "group": True,
-                "label": self.group.label,
+                "label": self.parent_group.label,
                 "children": [
                     {
-                        "geolayer": self.layer.id,
-                        "variables": {
-                            "30c46d50-78c1-48c7-a7ea-45644ef4bf66": "MyLabelValue"
-                        },
-                    },
-                    {
-                        "geolayer": clone.id,
-                        "variables": {
-                            "30c46d50-78c1-48c7-a7ea-45644ef4bf66": "MyNewLabel"
-                        },
-                    },
+                        "group": True,
+                        "label": self.group.label,
+                        "children": [
+                            {
+                                "geolayer": self.layer.id,
+                                "variables": {
+                                    "30c46d50-78c1-48c7-a7ea-45644ef4bf66": "MyLabelValue"
+                                },
+                            },
+                            {
+                                "geolayer": clone.id,
+                                "variables": {
+                                    "30c46d50-78c1-48c7-a7ea-45644ef4bf66": "MyNewLabel"
+                                },
+                            },
+                        ],
+                    }
                 ],
             }
         ]
@@ -541,8 +554,8 @@ class DuplicateLayerErrorTestCase(TestCase):
             )
         self.assertIn("Fields mapping need to include 'nom'.", str(ctx.exception))
 
-    def test_fields_mapping_unmapped_sourcefieldid_in_minisheet(self):
-        """When source changes and minisheet config references a field not in the mapping, error is raised."""
+    def test_fields_mapping_unmapped_title_in_minisheet(self):
+        """When source changes and minisheet config references as title a field which is not in the mapping, error is raised."""
         target_source = PostGISSourceFactory(name="target_fm_minisheet")
         FieldFactory(source=target_source, name="nom_target", label="Nom Target")
         # Set up minisheet config with a field reference
@@ -550,6 +563,28 @@ class DuplicateLayerErrorTestCase(TestCase):
             "template": "<div>{{ tree[0].value }}</div>",
             "wizard": {
                 "title": {"sourceFieldId": self.field.pk},
+            },
+        }
+        self.layer.save()
+        with self.assertRaises(CommandError) as ctx:
+            call_command(
+                "duplicate_layer",
+                str(self.layer.pk),
+                source=target_source.pk,
+                main_field="nom_target",
+                # No fields_mapping provided, so self.field.pk won't be mapped
+                stdout=StringIO(),
+            )
+        self.assertIn("Fields mapping need to include 'nom'", str(ctx.exception))
+
+    def test_fields_mapping_unmapped_sourcefieldid_in_minisheet(self):
+        """When source changes and minisheet config references in tree a field not in the mapping, error is raised."""
+        target_source = PostGISSourceFactory(name="target_fm_minisheet")
+        FieldFactory(source=target_source, name="nom_target", label="Nom Target")
+        # Set up minisheet config with a field reference
+        self.layer.minisheet_config = {
+            "template": "<div>{{ tree[0].value }}</div>",
+            "wizard": {
                 "tree": [{"sourceFieldId": self.field.pk}],
             },
         }
@@ -564,6 +599,30 @@ class DuplicateLayerErrorTestCase(TestCase):
                 stdout=StringIO(),
             )
         self.assertIn("Fields mapping need to include 'nom'", str(ctx.exception))
+
+    def test_fields_mapping_unmapped_existing_title_in_minisheet(self):
+        """When source changes and minisheet has for title a field which is not in the mapping, find the same field on the new source."""
+        target_source = PostGISSourceFactory(name="target_fm_minisheet")
+        FieldFactory(source=target_source, name="nom_target", label="Nom Target")
+        FieldFactory(source=target_source, name="nom", label="Nom")
+        # Set up minisheet config with a field reference
+        self.layer.minisheet_config = {
+            "template": "<div>{{ tree[0].value }}</div>",
+            "wizard": {
+                "title": {"sourceFieldId": self.field.pk},
+                "tree": [{"sourceFieldId": self.field.pk}],
+            },
+        }
+        self.layer.save()
+        out = StringIO()
+        call_command(
+            "duplicate_layer",
+            str(self.layer.pk),
+            source=target_source.pk,
+            main_field="nom_target",
+            stdout=out,
+        )
+        self.assertIn("duplicated successfully", out.getvalue())
 
     def test_popup_search_string_not_found(self):
         """popup-search-and-replace raises when the old string isn't in popup config."""

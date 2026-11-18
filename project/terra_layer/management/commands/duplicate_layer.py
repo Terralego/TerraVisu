@@ -26,6 +26,16 @@ class Command(BaseCommand):
         return [p.replace("\\,", ",") for p in parts]
 
     def prepare_fields_mapping(self, layer, target_source, fields_mapping_options):
+        # Init mapping with identical fields that exist on the new source
+        for original_field in Field.objects.filter(source=layer.source).all():
+            try:
+                new_field = Field.objects.get(
+                    source=target_source, name=original_field.name
+                )
+                self.fields_mapping[original_field.pk] = new_field.pk
+            except Field.DoesNotExist:
+                continue
+        # Add mapping from arguments
         if fields_mapping_options:
             for pair in fields_mapping_options:
                 old_name, new_name = self.parse_pair(pair, "fields-mapping")
@@ -47,29 +57,14 @@ class Command(BaseCommand):
                         % {"name": new_name, "source": target_source.pk}
                     )
 
-    def get_target_field(self, old_field, target_source, required=True):
-        if old_field.pk not in self.fields_mapping:
-            try:
-                new_field = Field.objects.get(source=target_source, name=old_field.name)
-                self.fields_mapping[old_field.pk] = new_field.pk
-                return new_field
-            except Field.DoesNotExist:
-                if required:
-                    raise CommandError(
-                        _("Fields mapping need to include '%(old_field_name)s'.")
-                        % {"old_field_name": old_field.name}
-                    )
-                return None
-        return Field.objects.get(pk=self.fields_mapping[old_field.pk])
-
     def clone_fields_filters(self, original_layer, cloned_layer):
         for field_filter in original_layer.fields_filters.all():
             old_field = field_filter.field
-            new_field = self.get_target_field(
-                old_field, cloned_layer.source, required=False
-            )
-            if new_field is None:
+            new_field_pk_from_mapping = self.fields_mapping.get(old_field.pk)
+            if not new_field_pk_from_mapping:
                 continue
+            new_field = Field.objects.get(pk=new_field_pk_from_mapping)
+
             attrs = {
                 "layer": cloned_layer,
                 "field": new_field,
@@ -94,18 +89,13 @@ class Command(BaseCommand):
         items_key = "tree" if config_name == "minisheet" else "fields"
         if items_key in wizard:
             for item in wizard[items_key]:
-                if "sourceFieldId" not in item:
-                    continue
                 old_field_id = item["sourceFieldId"]
                 new_field_id = self.fields_mapping.get(old_field_id)
-
                 if new_field_id is None:
-                    old_field = Field.objects.get(pk=old_field_id)
-                    new_field = self.get_target_field(
-                        old_field, target_source, required=True
+                    raise CommandError(
+                        _("Fields mapping need to include '%(old_field_name)s'.")
+                        % {"old_field_name": Field.objects.get(pk=old_field_id).name}
                     )
-                    new_field_id = new_field.pk
-                    self.fields_mapping[old_field_id] = new_field_id
 
                 item["sourceFieldId"] = new_field_id
                 modified = True
@@ -114,14 +104,11 @@ class Command(BaseCommand):
         if config_name == "minisheet" and "title" in wizard:
             old_field_id = wizard["title"]["sourceFieldId"]
             new_field_id = self.fields_mapping.get(old_field_id)
-
             if new_field_id is None:
-                old_field = Field.objects.get(pk=old_field_id)
-                new_field = self.get_target_field(
-                    old_field, target_source, required=True
+                raise CommandError(
+                    _("Fields mapping need to include '%(old_field_name)s'.")
+                    % {"old_field_name": Field.objects.get(pk=old_field_id).name}
                 )
-                new_field_id = new_field.pk
-                self.fields_mapping[old_field_id] = new_field_id
 
             wizard["title"]["sourceFieldId"] = new_field_id
             modified = True
@@ -258,7 +245,6 @@ class Command(BaseCommand):
     @transaction.atomic
     def handle(self, *args, **options):
         self.fields_mapping = {}
-        self.missing_fields = []
 
         # Get layer to duplicate
         try:
@@ -413,6 +399,7 @@ class Command(BaseCommand):
                     _("Minisheet template:")
                     + f"\n{clone.minisheet_config.get('template', '')}\n\n"
                 )
+
         # Update the clone's fields using fields mapping if source was changed
         if options["source"]:
             # Update minisheet config field references
@@ -437,13 +424,6 @@ class Command(BaseCommand):
                             _("Popup config:") + f"\n{clone.popup_config}\n\n"
                         )
 
-            if self.missing_fields:
-                raise CommandError(
-                    _(
-                        "Cannot map sourceFieldId(s) in minisheet/popup config: %(names)s"
-                    )
-                    % {"names": ", ".join(self.missing_fields)}
-                )
         # Update the clone's extra styles sources
         if options["extra_styles_sources"]:
             extra_sources_map = {}
@@ -581,6 +561,7 @@ class Command(BaseCommand):
         # Save the clone's updates
         if clone_modified:
             clone.save(wizard_update=True)
+
         self.stdout.write(
             _(
                 "Layer %(old_pk)s duplicated successfully. "
