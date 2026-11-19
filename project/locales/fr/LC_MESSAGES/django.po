@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-11-18 12:12+0000\n"
+"POT-Creation-Date: 2026-11-19 12:53+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -861,9 +861,12 @@ msgstr ""
 "primaires (entiers) ou \"_\"."
 
 #, python-format
-msgid "No FilterField found for field '%(name)s' on layer %(layer)s"
-msgstr ""
-"Pas FilterField trouvé pour le champ '%(name)s' sur la couche %(layer)s"
+msgid "[--TABLE] Field %(name)s does not exist on source %(pk)s"
+msgstr "[--TABLE] Le champs (Field) %(name)s n'existe pas sur la source %(pk)s"
+
+#, python-format
+msgid "Formatting error in JSON config : %(config)s"
+msgstr "Erreur de formatage de la config JSON : %(config)s"
 
 #, python-format
 msgid ""
