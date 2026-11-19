@@ -831,3 +831,31 @@ class DuplicateLayerErrorTestCase(TestCase):
         self.assertTrue(filter_field.exportable)
         self.assertTrue(filter_field.shown)
         self.assertTrue(filter_field.display)
+
+    def test_invalid_table_configuration(self):
+        """Invalid table fields conifguration raises Error."""
+        target_source = PostGISSourceFactory(name="target_fm_ok")
+        original_field = FieldFactory(
+            source=target_source, name="nom_champs_2", label="Nom Champs 2"
+        )
+        FilterField.objects.create(
+            layer=self.layer,
+            field=original_field,
+            label="Nom Champs 2 FilterField",
+            filter_enable=True,
+            exportable=True,
+            shown=True,
+        )
+        out = StringIO()
+        with self.assertRaises(CommandError) as ctx:
+            call_command(
+                "duplicate_layer",
+                str(self.layer.pk),
+                source=target_source.pk,
+                main_field="nom_champs_2",
+                table=["idontexist,Nom mis à jour"],
+                stdout=out,
+            )
+        self.assertIn(
+            "[--TABLE] Field idontexist does not exist on source", str(ctx.exception)
+        )
