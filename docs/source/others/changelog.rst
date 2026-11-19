@@ -2,12 +2,20 @@
 Changelog
 ==========
 
-2026.10.01+dev  (XXXX-XX-XX)
+2026.11.00+dev  (XXXX-XX-XX)
 ----------------------------
 
 **Improvements:**
 
 - (Config) Change Text field in sheet block to rich text field with TinyMCE
+
+
+2026.11.00      (2026-11-19)
+----------------------------
+
+**Security**
+
+- Fix default elasticsearch environment variable to prevent java4shell issue
 
 **Bugfix:**
 
