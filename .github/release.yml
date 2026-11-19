@@ -8,6 +8,8 @@ changelog:
           - dependencies
           - Bug
           - documentation
+          - Tests
+          - CI
 
     - title: 🛠 Bug fixes
       labels:
@@ -16,6 +18,15 @@ changelog:
     - title: 📘 Documentation
       labels:
         - documentation
+
+    - title: ✅ Tests
+      labels:
+        - 'Tests'
+
+    - title: 👷 CI
+      labels:
+        - 'CI'
+        - github_actions
 
     - title: ⤴ Dependencies
       labels:
