@@ -5,6 +5,10 @@ Changelog
 2026.10.01+dev  (XXXX-XX-XX)
 ----------------------------
 
+**Security**
+
+- Fix default elasticsearch environment variable to prevent java4shell issue
+
 **Bugfix:**
 
 - Fix reversion that permit storing data which cannot be indexed in ES.
