@@ -22,7 +22,7 @@ charset-normalizer==3.5.2
     # via
     #   -c requirements.txt
     #   requests
-click==8.5.0
+click==8.5.1
     # via
     #   -c requirements.txt
     #   sphinx-intl
@@ -77,7 +77,7 @@ sphinx==9.1.1
     #   sphinx-intl
 sphinx-autobuild==2025.8.25
     # via terravisu (pyproject.toml:docs)
-sphinx-immaterial==0.13.9
+sphinx-immaterial==0.13.11
     # via terravisu (pyproject.toml:docs)
 sphinx-intl==2.4.0
     # via terravisu (pyproject.toml:docs)

@@ -4,7 +4,7 @@ asgiref==3.13.0
     # via
     #   -c requirements.txt
     #   django
-coverage==7.17.2
+coverage==7.17.3
     # via terravisu (pyproject.toml:dev)
 django==5.2.19
     # via
@@ -17,7 +17,7 @@ django-extensions==4.1
     # via terravisu (pyproject.toml:dev)
 factory-boy==3.3.3
     # via terravisu (pyproject.toml:dev)
-faker==40.44.0
+faker==40.54.0
     # via factory-boy
 freezegun==1.5.5
     # via terravisu (pyproject.toml:dev)
@@ -27,7 +27,7 @@ python-dateutil==4.0.0
     # via
     #   -c requirements.txt
     #   freezegun
-ruff==0.17.4
+ruff==0.17.5
     # via terravisu (pyproject.toml:dev)
 sqlparse==0.6.1
     # via
