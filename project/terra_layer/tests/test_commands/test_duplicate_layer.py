@@ -384,6 +384,9 @@ class DuplicateLayerTestCase(TestCase):
         clone_pk = int(re.findall(r"pk=(\d+)", output)[0])
         f = Field.objects.get(layer=clone_pk, name="pop")
         ff = FilterField.objects.get(layer=clone_pk, field=f)
+        self.assertFalse(ff.exportable)
+        self.assertFalse(ff.shown)
+        self.assertFalse(ff.display)
         self.assertIn(
             f"[--FILTERS] Created FilterField {ff.pk} for pop - Population with filter settings",
             output,

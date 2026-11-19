@@ -546,6 +546,12 @@ class Command(BaseCommand):
                 filter_field.filter_enable = True
                 if config.get("label"):
                     filter_field.label = config.get("label")
+
+                # This step should not enable the fields in the table by default, this happens in the "--table" step
+                filter_field.shown = False
+                filter_field.display = False
+                filter_field.exportable = False
+
                 filter_field.filter_settings = {
                     "type": config.get("type"),
                     "values": config.get("values", []),
