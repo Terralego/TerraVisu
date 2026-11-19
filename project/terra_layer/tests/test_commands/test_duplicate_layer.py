@@ -6,7 +6,7 @@ from django.core.management.base import CommandError
 from django.test import TestCase
 
 from project.geosource.tests.factories import PostGISSourceFactory
-from project.terra_layer.models import CustomStyle, FilterField, Layer
+from project.terra_layer.models import CustomStyle, FilterField, Layer, Field
 from project.terra_layer.tests.factories import (
     FieldFactory,
     LayerFactory,
@@ -329,23 +329,30 @@ class DuplicateLayerTestCase(TestCase):
         target_source = PostGISSourceFactory(name="target_filter_no_filterfield")
         FieldFactory(source=target_source, name="nom", label="Nom")
         FieldFactory(source=target_source, name="pop", label="Population")
-        with self.assertRaises(CommandError) as ctx:
-            call_command(
-                "duplicate_layer",
-                str(self.layer.pk),
-                source=target_source.pk,
-                main_field="nom",
-                fields_mapping=["nom_2019,nom"],
-                table=[
-                    "nom,Nom",
-                ],
-                filter_settings=[
-                    'pop:{"type":"single","values":[],"proposeValues":"none"}',
-                ],
-                stdout=StringIO(),
-            )
-        self.assertIn("pop", str(ctx.exception))
-        self.assertIn("No FilterField found", str(ctx.exception))
+        out = StringIO()
+        call_command(
+            "duplicate_layer",
+            str(self.layer.pk),
+            source=target_source.pk,
+            main_field="nom",
+            fields_mapping=["nom_2019,nom"],
+            table=[
+                "nom,Nom",
+            ],
+            filter_settings=[
+                'pop:{"label":"Population","type":"single","values":[],"proposeValues":"none"}',
+            ],
+            verbosity=2,
+            stdout=out,
+        )
+        output = out.getvalue()
+        clone_pk = int(re.findall(r"pk=(\d+)", output)[0])
+        f = Field.objects.get(layer=clone_pk, name="pop")
+        ff = FilterField.objects.get(layer=clone_pk, field=f)
+        self.assertIn(
+            f"[--FILTERS] Created FilterField {ff.pk} for pop - Population with filter settings",
+            output,
+        )
 
 
 class DuplicateLayerSimpleTestCase(TestCase):
