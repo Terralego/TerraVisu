@@ -1,8 +1,5 @@
 changelog:
   categories:
-    - title: 🛡️ Security
-      labels:
-        - 'Security'
     - title: 🎉 Features
       labels:
         - '*'
@@ -11,7 +8,8 @@ changelog:
           - dependencies
           - Bug
           - documentation
-          - Security
+          - Tests
+          - CI
 
     - title: 🛠 Bug fixes
       labels:
@@ -20,6 +18,15 @@ changelog:
     - title: 📘 Documentation
       labels:
         - documentation
+
+    - title: ✅ Tests
+      labels:
+        - 'Tests'
+
+    - title: 👷 CI
+      labels:
+        - 'CI'
+        - github_actions
 
     - title: ⤴ Dependencies
       labels:
