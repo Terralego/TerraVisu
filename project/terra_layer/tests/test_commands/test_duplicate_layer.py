@@ -6,7 +6,7 @@ from django.core.management.base import CommandError
 from django.test import TestCase
 
 from project.geosource.tests.factories import PostGISSourceFactory
-from project.terra_layer.models import CustomStyle, FilterField, Layer
+from project.terra_layer.models import CustomStyle, Field, FilterField, Layer
 from project.terra_layer.tests.factories import (
     FieldFactory,
     LayerFactory,
@@ -325,10 +325,11 @@ class DuplicateLayerTestCase(TestCase):
         self.assertIn("does not exist on source", str(ctx.exception))
 
     def test_filter_settings_filterfield_not_found(self):
-        """filter-settings raises when a field exists on source but has no FilterField on the layer."""
+        """filter-settings when a field exists on source but has no FilterField on the layer : creates it, else raise error"""
         target_source = PostGISSourceFactory(name="target_filter_no_filterfield")
         FieldFactory(source=target_source, name="nom", label="Nom")
         FieldFactory(source=target_source, name="pop", label="Population")
+
         with self.assertRaises(CommandError) as ctx:
             call_command(
                 "duplicate_layer",
@@ -340,12 +341,53 @@ class DuplicateLayerTestCase(TestCase):
                     "nom,Nom",
                 ],
                 filter_settings=[
-                    'pop:{"type":"single","values":[],"proposeValues":"none"}',
+                    'idontexist:{"type":"single","values":[],"proposeValues":"none"}',
                 ],
                 stdout=StringIO(),
             )
-        self.assertIn("pop", str(ctx.exception))
-        self.assertIn("No FilterField found", str(ctx.exception))
+        self.assertIn("Field 'idontexist' does not exist on source", str(ctx.exception))
+
+        with self.assertRaises(CommandError) as ctx:
+            call_command(
+                "duplicate_layer",
+                str(self.layer.pk),
+                source=target_source.pk,
+                main_field="nom",
+                fields_mapping=["nom_2019,nom"],
+                table=[
+                    "nom,Nom",
+                ],
+                filter_settings=[
+                    'pop:{"type":syntaxerror"single","values":[],"proposeValues":"none"}',
+                ],
+                stdout=StringIO(),
+            )
+        self.assertIn("Formatting error in JSON config", str(ctx.exception))
+
+        out = StringIO()
+        call_command(
+            "duplicate_layer",
+            str(self.layer.pk),
+            source=target_source.pk,
+            main_field="nom",
+            fields_mapping=["nom_2019,nom"],
+            table=[
+                "nom,Nom",
+            ],
+            filter_settings=[
+                'pop:{"label":"Population","type":"single","values":[],"proposeValues":"none"}',
+            ],
+            verbosity=2,
+            stdout=out,
+        )
+        output = out.getvalue()
+        clone_pk = int(re.findall(r"pk=(\d+)", output)[0])
+        f = Field.objects.get(layer=clone_pk, name="pop")
+        ff = FilterField.objects.get(layer=clone_pk, field=f)
+        self.assertIn(
+            f"[--FILTERS] Created FilterField {ff.pk} for pop - Population with filter settings",
+            output,
+        )
 
 
 class DuplicateLayerSimpleTestCase(TestCase):

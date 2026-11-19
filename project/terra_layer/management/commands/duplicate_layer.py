@@ -57,7 +57,7 @@ class Command(BaseCommand):
                         % {"name": new_name, "source": target_source.pk}
                     )
 
-    def clone_fields_filters(self, original_layer, cloned_layer):
+    def clone_fields_filters(self, original_layer, cloned_layer, verbosity):
         for field_filter in original_layer.fields_filters.all():
             old_field = field_filter.field
             new_field_pk_from_mapping = self.fields_mapping.get(old_field.pk)
@@ -69,7 +69,11 @@ class Command(BaseCommand):
                 "layer": cloned_layer,
                 "field": new_field,
             }
-            field_filter.make_clone(attrs)
+            fields_filter_clone = field_filter.make_clone(attrs)
+            if verbosity >= 2:
+                self.stdout.write(
+                    f"[CLONE] Cloned FilterField for field {new_field.name} and layer {cloned_layer.pk} - from {field_filter.id} to {fields_filter_clone.id}"
+                )
 
     def update_config_field_references(self, config, config_name, target_source):
         """Update sourceFieldId references in wizard config (tree items or fields list).
@@ -305,7 +309,7 @@ class Command(BaseCommand):
         # Make sure to handle fields filters manually if source changed
         clone = layer.make_clone(attrs=attrs, skip_fields_filters=source_changed)
         if source_changed:
-            self.clone_fields_filters(layer, clone)
+            self.clone_fields_filters(layer, clone, options["verbosity"])
 
         if options["preserve_scene"] and layer.group:
             group = layer.group
@@ -468,7 +472,13 @@ class Command(BaseCommand):
         if options["table"]:
             for pair in options.get("table", []):
                 name, label = self.parse_pair(pair, "table")
-                field = Field.objects.get(source=clone.source, name=name)
+                try:
+                    field = Field.objects.get(source=clone.source, name=name)
+                except Field.DoesNotExist:
+                    raise CommandError(
+                        _("[--TABLE] Field %(name)s does not exist on source %(pk)s")
+                        % {"name": name, "pk": clone.source.pk}
+                    )
                 defaults = {
                     "label": label,
                     "shown": True,
@@ -484,11 +494,11 @@ class Command(BaseCommand):
                 if options["verbosity"] >= 2:
                     if created:
                         self.stdout.write(
-                            f"Created FilterField {filter_field.pk} for {name} - {label}"
+                            f"[--TABLE] Created FilterField {filter_field.pk} for {name} - {label}"
                         )
                     else:
                         self.stdout.write(
-                            f"Updated FilterField {filter_field.pk} for {name} - {label}"
+                            f"[--TABLE] Updated FilterField {filter_field.pk} for {name} - {label}"
                         )
 
         # param --filter-settings '' should only empty filters
@@ -510,7 +520,13 @@ class Command(BaseCommand):
                 field_name, config_str = item.split(":", 1)
                 field_name = field_name.strip()
                 config_str = config_str.strip()
-                config_dict = json.loads(config_str.strip())
+                try:
+                    config_dict = json.loads(config_str.strip())
+                except json.JSONDecodeError:
+                    raise CommandError(
+                        _("Formatting error in JSON config : %(config)s")
+                        % {"config": config_str.strip()}
+                    )
                 filter_settings_data[field_name] = config_dict
 
             for order, (field_name, config) in enumerate(filter_settings_data.items()):
@@ -522,18 +538,14 @@ class Command(BaseCommand):
                         % {"name": field_name, "source": clone.source.pk}
                     )
 
-                try:
-                    filter_field = FilterField.objects.get(field=field, layer=clone)
-                except FilterField.DoesNotExist:
-                    raise CommandError(
-                        _(
-                            "No FilterField found for field '%(name)s' on layer %(layer)s"
-                        )
-                        % {"name": field_name, "layer": clone.pk}
-                    )
-
+                filter_field, created = FilterField.objects.update_or_create(
+                    field=field,
+                    layer=clone,
+                )
                 filter_field.order = order
                 filter_field.filter_enable = True
+                if config.get("label"):
+                    filter_field.label = config.get("label")
                 filter_field.filter_settings = {
                     "type": config.get("type"),
                     "values": config.get("values", []),
@@ -551,12 +563,16 @@ class Command(BaseCommand):
                     if config.get("proposeValues") == "custom"
                     else ""
                 )
-                filter_field.save()
-
                 if options["verbosity"] >= 2:
-                    self.stdout.write(
-                        f"Updated FilterField {filter_field.pk} for {field_name} with filter settings {filter_field.filter_settings}"
-                    )
+                    if created:
+                        self.stdout.write(
+                            f"[--FILTERS] Created FilterField {filter_field.pk} for {field_name} - {config.get('label')} with filter settings {filter_field.filter_settings}"
+                        )
+                    else:
+                        self.stdout.write(
+                            f"[--FILTERS] Updated FilterField {filter_field.pk} for {field_name} - {config.get('label')} with filter settings {filter_field.filter_settings}"
+                        )
+                filter_field.save()
 
         # Save the clone's updates
         if clone_modified:
