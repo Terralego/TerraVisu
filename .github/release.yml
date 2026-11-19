@@ -1,5 +1,8 @@
 changelog:
   categories:
+    - title: 🔒 Security
+      labels:
+        - 'Security'
     - title: 🎉 Features
       labels:
         - '*'
@@ -10,6 +13,7 @@ changelog:
           - documentation
           - Tests
           - CI
+          - Security
 
     - title: 🛠 Bug fixes
       labels:
