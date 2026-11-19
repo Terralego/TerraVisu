@@ -55,7 +55,8 @@ class DuplicateLayerTestCase(TestCase):
         cls.extra_source_keep = PostGISSourceFactory(name="extra_keep")
 
         # Scene / group
-        cls.group = LayerGroupFactory()
+        cls.parent_group = LayerGroupFactory()
+        cls.group = LayerGroupFactory(parent=cls.parent_group)
 
         # Layer
         cls.layer = LayerFactory(
@@ -98,6 +99,31 @@ class DuplicateLayerTestCase(TestCase):
             },
         )
 
+        # Layer is in a group with variables on the View
+        tree = [
+            {
+                "group": True,
+                "label": cls.parent_group.label,
+                "children": [
+                    {
+                        "group": True,
+                        "label": cls.group.label,
+                        "children": [
+                            {
+                                "geolayer": cls.layer.id,
+                                "variables": {
+                                    "30c46d50-78c1-48c7-a7ea-45644ef4bf66": "MyLabelValue"
+                                },
+                            }
+                        ],
+                    }
+                ],
+            }
+        ]
+        view = cls.group.view
+        view.tree = tree
+        view.save()
+
         # FilterField
         FilterField.objects.create(
             layer=cls.layer,
@@ -129,6 +155,7 @@ class DuplicateLayerTestCase(TestCase):
             source=self.source_2020.pk,
             main_field="nom_2020",
             preserve_scene=True,
+            variables=["MyLabelValue,MyNewLabel"],
             fields_mapping=["nom_2019,nom_2020", "pop_2019,pop_2020"],
             legend_titles_search_and_replace=["Communes 2019,Communes 2020"],
             legend_comments_search_and_replace=["Données 2019,Données 2020"],
@@ -142,11 +169,39 @@ class DuplicateLayerTestCase(TestCase):
         clone_pk = int(re.findall(r"pk=(\d+)", out.getvalue())[0])
         clone = Layer.objects.get(pk=clone_pk)
 
+        expected_tree = [
+            {
+                "group": True,
+                "label": self.parent_group.label,
+                "children": [
+                    {
+                        "group": True,
+                        "label": self.group.label,
+                        "children": [
+                            {
+                                "geolayer": self.layer.id,
+                                "variables": {
+                                    "30c46d50-78c1-48c7-a7ea-45644ef4bf66": "MyLabelValue"
+                                },
+                            },
+                            {
+                                "geolayer": clone.id,
+                                "variables": {
+                                    "30c46d50-78c1-48c7-a7ea-45644ef4bf66": "MyNewLabel"
+                                },
+                            },
+                        ],
+                    }
+                ],
+            }
+        ]
+
         # Basic attributes
         self.assertEqual(clone.name, "Communes 2020")
         self.assertEqual(clone.source.pk, self.source_2020.pk)
         self.assertEqual(clone.main_field, self.field_nom_2020)
-        self.assertEqual(clone.group, self.group)
+        self.assertEqual(clone.group.label, self.group.label)
+        self.assertEqual(clone.group.view, self.group.view)
 
         # Legends
         self.assertEqual(clone.legends[0]["title"], "Communes 2020")
@@ -180,6 +235,17 @@ class DuplicateLayerTestCase(TestCase):
         self.assertTrue(clone_filter.filter_enable)
         self.assertTrue(clone_filter.exportable)
         self.assertTrue(clone_filter.shown)
+
+        # View : group tree maintained with variables updated
+        self.layer.refresh_from_db()
+        clone.refresh_from_db()
+        self.assertEqual(clone.group, self.layer.group)
+        self.assertEqual(clone.group.view, self.layer.group.view)
+        view = clone.group.view
+        self.assertEqual(view.tree, expected_tree)
+        self.assertEqual(
+            clone.variables, {"30c46d50-78c1-48c7-a7ea-45644ef4bf66": "MyNewLabel"}
+        )
 
         # Extra styles: first replaced, second kept ("_")
         clone_extras = list(clone.extra_styles.order_by("pk"))
@@ -442,8 +508,8 @@ class DuplicateLayerErrorTestCase(TestCase):
         self.assertIn("nonexistent_new", str(ctx.exception))
         self.assertIn("target source", str(ctx.exception))
 
-    def test_fields_mapping_missing_required_field(self):
-        """When source changes and a field filter references a field not in the mapping."""
+    def test_fields_mapping_missing_field_filter_skipped(self):
+        """When source changes and a field filter references a field not in the mapping, it is skipped."""
         target_source = PostGISSourceFactory(name="target_fm_missing")
         FieldFactory(source=target_source, name="nom_target", label="Nom Target")
         # Add a filter field on the layer so clone_fields_filters needs a mapping
@@ -455,17 +521,108 @@ class DuplicateLayerErrorTestCase(TestCase):
             exportable=True,
             shown=True,
         )
+        # No fields_mapping provided, so "nom" won't be found on target
+        # The filter should be skipped silently
+        out = StringIO()
+        call_command(
+            "duplicate_layer",
+            str(self.layer.pk),
+            source=target_source.pk,
+            main_field="nom_target",
+            stdout=out,
+        )
+        self.assertIn("duplicated successfully", out.getvalue())
+
+    def test_fields_mapping_unmapped_sourcefieldid_in_popup(self):
+        """When source changes and popup config references a field not in the mapping, error is raised."""
+        target_source = PostGISSourceFactory(name="target_fm_popup")
+        FieldFactory(source=target_source, name="nom_target", label="Nom Target")
+        # Set up popup config with a field reference
+        self.layer.popup_config = {
+            "template": "<h1>{{ fields[0].value }}</h1>",
+            "wizard": {"fields": [{"sourceFieldId": self.field.pk}]},
+        }
+        self.layer.save()
         with self.assertRaises(CommandError) as ctx:
             call_command(
                 "duplicate_layer",
                 str(self.layer.pk),
                 source=target_source.pk,
                 main_field="nom_target",
-                # No fields_mapping provided, so "nom" won't be found on target
+                # No fields_mapping provided, so self.field.pk won't be mapped
                 stdout=StringIO(),
             )
-        self.assertIn("nom", str(ctx.exception))
-        self.assertIn("Fields mapping need to include", str(ctx.exception))
+        self.assertIn("Fields mapping need to include 'nom'.", str(ctx.exception))
+
+    def test_fields_mapping_unmapped_title_in_minisheet(self):
+        """When source changes and minisheet config references as title a field which is not in the mapping, error is raised."""
+        target_source = PostGISSourceFactory(name="target_fm_minisheet")
+        FieldFactory(source=target_source, name="nom_target", label="Nom Target")
+        # Set up minisheet config with a field reference
+        self.layer.minisheet_config = {
+            "template": "<div>{{ tree[0].value }}</div>",
+            "wizard": {
+                "title": {"sourceFieldId": self.field.pk},
+            },
+        }
+        self.layer.save()
+        with self.assertRaises(CommandError) as ctx:
+            call_command(
+                "duplicate_layer",
+                str(self.layer.pk),
+                source=target_source.pk,
+                main_field="nom_target",
+                # No fields_mapping provided, so self.field.pk won't be mapped
+                stdout=StringIO(),
+            )
+        self.assertIn("Fields mapping need to include 'nom'", str(ctx.exception))
+
+    def test_fields_mapping_unmapped_sourcefieldid_in_minisheet(self):
+        """When source changes and minisheet config references in tree a field not in the mapping, error is raised."""
+        target_source = PostGISSourceFactory(name="target_fm_minisheet")
+        FieldFactory(source=target_source, name="nom_target", label="Nom Target")
+        # Set up minisheet config with a field reference
+        self.layer.minisheet_config = {
+            "template": "<div>{{ tree[0].value }}</div>",
+            "wizard": {
+                "tree": [{"sourceFieldId": self.field.pk}],
+            },
+        }
+        self.layer.save()
+        with self.assertRaises(CommandError) as ctx:
+            call_command(
+                "duplicate_layer",
+                str(self.layer.pk),
+                source=target_source.pk,
+                main_field="nom_target",
+                # No fields_mapping provided, so self.field.pk won't be mapped
+                stdout=StringIO(),
+            )
+        self.assertIn("Fields mapping need to include 'nom'", str(ctx.exception))
+
+    def test_fields_mapping_unmapped_existing_title_in_minisheet(self):
+        """When source changes and minisheet has for title a field which is not in the mapping, find the same field on the new source."""
+        target_source = PostGISSourceFactory(name="target_fm_minisheet")
+        FieldFactory(source=target_source, name="nom_target", label="Nom Target")
+        FieldFactory(source=target_source, name="nom", label="Nom")
+        # Set up minisheet config with a field reference
+        self.layer.minisheet_config = {
+            "template": "<div>{{ tree[0].value }}</div>",
+            "wizard": {
+                "title": {"sourceFieldId": self.field.pk},
+                "tree": [{"sourceFieldId": self.field.pk}],
+            },
+        }
+        self.layer.save()
+        out = StringIO()
+        call_command(
+            "duplicate_layer",
+            str(self.layer.pk),
+            source=target_source.pk,
+            main_field="nom_target",
+            stdout=out,
+        )
+        self.assertIn("duplicated successfully", out.getvalue())
 
     def test_popup_search_string_not_found(self):
         """popup-search-and-replace raises when the old string isn't in popup config."""

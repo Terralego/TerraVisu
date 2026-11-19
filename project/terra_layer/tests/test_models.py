@@ -60,7 +60,7 @@ class LayerTestCase(TestCase):
                         {
                             "group": True,
                             "label": "level2",
-                            "children": [{"geolayer": layer.id}],
+                            "children": [{"geolayer": layer.id, "variables": []}],
                         }
                     ],
                 }
@@ -80,9 +80,9 @@ class LayerTestCase(TestCase):
                         {
                             "group": True,
                             "label": "level2",
-                            "children": [{"geolayer": layer.id}],
+                            "children": [{"geolayer": layer.id, "variables": []}],
                         },
-                        {"geolayer": layer2.id},
+                        {"geolayer": layer2.id, "variables": []},
                     ],
                 }
             ],
@@ -101,15 +101,15 @@ class LayerTestCase(TestCase):
                         {
                             "group": True,
                             "label": "level2",
-                            "children": [{"geolayer": layer.id}],
+                            "children": [{"geolayer": layer.id, "variables": []}],
                         },
-                        {"geolayer": layer2.id},
+                        {"geolayer": layer2.id, "variables": []},
                     ],
                 },
                 {
                     "group": True,
                     "label": "level1Foo",
-                    "children": [{"geolayer": layer3.id}],
+                    "children": [{"geolayer": layer3.id, "variables": []}],
                 },
             ],
         )
@@ -129,20 +129,20 @@ class LayerTestCase(TestCase):
                         {
                             "group": True,
                             "label": "level2",
-                            "children": [{"geolayer": layer.id}],
+                            "children": [{"geolayer": layer.id, "variables": []}],
                         },
-                        {"geolayer": layer2.id},
+                        {"geolayer": layer2.id, "variables": []},
                     ],
                 },
                 {
                     "group": True,
                     "label": "level1Foo",
                     "children": [
-                        {"geolayer": layer3.id},
+                        {"geolayer": layer3.id, "variables": []},
                         {
                             "group": True,
                             "label": "level2",
-                            "children": [{"geolayer": layer4.id}],
+                            "children": [{"geolayer": layer4.id, "variables": []}],
                             "selectors": [],
                         },
                     ],

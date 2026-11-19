@@ -230,7 +230,7 @@ class Scene(models.Model):
                 current_node = new_group["children"]
 
         # Node if found (or created) we can add the geolayer now
-        current_node.append({"geolayer": layer.id})
+        current_node.append({"geolayer": layer.id, "variables": layer.variables})
 
         if group_config and last_group:
             # And update tho config
