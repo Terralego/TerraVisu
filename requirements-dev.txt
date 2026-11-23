@@ -27,7 +27,7 @@ python-dateutil==4.0.0
     # via
     #   -c requirements.txt
     #   freezegun
-ruff==0.17.5
+ruff==0.17.6
     # via terravisu (pyproject.toml:dev)
 sqlparse==0.6.1
     # via
