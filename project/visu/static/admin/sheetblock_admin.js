@@ -16,6 +16,8 @@
         var secondGeomSourceRow = document.querySelector('.field-second_geom_source');
         var orderRow = document.querySelector('.field-order_field');
         var limitRow = document.querySelector('.field-limit');
+        var urlIframe = document.querySelector('.field-url_iframe');
+        var heightIframe = document.querySelector('.field-height_iframe');
 
         function toggleFields() {
             var selectedType = typeField.value;
@@ -27,6 +29,8 @@
             if (secondGeomSourceRow) secondGeomSourceRow.style.display = 'none';
             if (orderRow) orderRow.style.display = 'none';
             if (limitRow) limitRow.style.display = 'none';
+            if (urlIframe) urlIframe.style.display = 'none';
+            if (heightIframe) heightIframe.style.display = 'none';
 
             // Show relevant fields based on type
             if ((selectedType === 'BOOLEANS') || (selectedType === 'BAR_PLOT') || (selectedType === 'DISTRIB_PLOT')) {
@@ -37,6 +41,11 @@
                 if (fieldsRow) fieldsRow.style.display = '';
             } else if (selectedType === 'TEXT') {
                 if (textRow) textRow.style.display = '';
+            } else if (selectedType === 'IFRAME') {
+                if (fieldsSourceRow) fieldsSourceRow.style.display = '';
+                if (urlIframe) urlIframe.style.display = "";
+                if (heightIframe) heightIframe.style.display = "";
+                if (fieldsRow) fieldsRow.style.display = '';
             } else if (selectedType === 'PANORAMAX') {
                 if (firstGeomSourceRow) firstGeomSourceRow.style.display = '';
             } else if (selectedType === 'MAP') {
